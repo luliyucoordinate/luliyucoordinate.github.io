@@ -53,32 +53,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -136,45 +114,45 @@
         <!-- 
         <div id='tag_cloud' class="tags">
             
-                <a href="#linux" title="linux" rel="12">linux</a>
-            
                 <a href="#Eassy" title="Eassy" rel="3">Eassy</a>
             
-                <a href="#process" title="process" rel="1">process</a>
+                <a href="#linux" title="linux" rel="12">linux</a>
             
                 <a href="#signal" title="signal" rel="2">signal</a>
             
                 <a href="#c" title="c" rel="15">c</a>
             
-                <a href="#shell" title="shell" rel="1">shell</a>
-            
-                <a href="#thread" title="thread" rel="2">thread</a>
-            
                 <a href="#pipe" title="pipe" rel="2">pipe</a>
             
+                <a href="#process" title="process" rel="1">process</a>
+            
+                <a href="#shell" title="shell" rel="1">shell</a>
+            
                 <a href="#network" title="network" rel="4">network</a>
+            
+                <a href="#thread" title="thread" rel="2">thread</a>
             
                 <a href="#QT" title="QT" rel="3">QT</a>
             
                 <a href="#cpp" title="cpp" rel="90">cpp</a>
             
+                <a href="#hook" title="hook" rel="1">hook</a>
+            
                 <a href="#sql" title="sql" rel="2">sql</a>
             
                 <a href="#MySQL" title="MySQL" rel="2">MySQL</a>
-            
-                <a href="#hook" title="hook" rel="1">hook</a>
             
                 <a href="#oracle" title="oracle" rel="2">oracle</a>
             
                 <a href="#stl" title="stl" rel="12">stl</a>
             
-                <a href="#算法" title="算法" rel="6">算法</a>
-            
                 <a href="#迭代器" title="迭代器" rel="4">迭代器</a>
             
-                <a href="#适配器" title="适配器" rel="1">适配器</a>
-            
                 <a href="#仿函数" title="仿函数" rel="1">仿函数</a>
+            
+                <a href="#算法" title="算法" rel="6">算法</a>
+            
+                <a href="#适配器" title="适配器" rel="1">适配器</a>
             
                 <a href="#分配器" title="分配器" rel="1">分配器</a>
             
@@ -186,9 +164,9 @@
             
                 <a href="#原理" title="原理" rel="15">原理</a>
             
-                <a href="#计算机网络" title="计算机网络" rel="2">计算机网络</a>
-            
                 <a href="#vmware" title="vmware" rel="1">vmware</a>
+            
+                <a href="#计算机网络" title="计算机网络" rel="2">计算机网络</a>
             
                 <a href="#转载" title="转载" rel="11">转载</a>
             
@@ -210,13 +188,11 @@
             
                 <a href="#prvalue" title="prvalue" rel="1">prvalue</a>
             
-                <a href="#多态" title="多态" rel="1">多态</a>
-            
                 <a href="#upcasting" title="upcasting" rel="1">upcasting</a>
             
                 <a href="#downcasting" title="downcasting" rel="1">downcasting</a>
             
-                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
+                <a href="#多态" title="多态" rel="1">多态</a>
             
                 <a href="#c#" title="c#" rel="1">c#</a>
             
@@ -238,6 +214,12 @@
             
                 <a href="#forward" title="forward" rel="1">forward</a>
             
+                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
+            
+                <a href="#Aggregate" title="Aggregate" rel="1">Aggregate</a>
+            
+                <a href="#POD" title="POD" rel="1">POD</a>
+            
                 <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
             
                 <a href="#trie树" title="trie树" rel="1">trie树</a>
@@ -246,25 +228,31 @@
             
                 <a href="#oj" title="oj" rel="1">oj</a>
             
-                <a href="#Aggregate" title="Aggregate" rel="1">Aggregate</a>
-            
-                <a href="#POD" title="POD" rel="1">POD</a>
-            
-                <a href="#cin" title="cin" rel="1">cin</a>
+                <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
             
                 <a href="#auto&amp;" title="auto&amp;" rel="1">auto&amp;</a>
             
                 <a href="#auto&amp;&amp;" title="auto&amp;&amp;" rel="1">auto&amp;&amp;</a>
             
-                <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
+                <a href="#default" title="default" rel="1">default</a>
+            
+                <a href="#cin" title="cin" rel="1">cin</a>
             
                 <a href="#piecewise_construct" title="piecewise_construct" rel="1">piecewise_construct</a>
-            
-                <a href="#default" title="default" rel="1">default</a>
             
                 <a href="#error" title="error" rel="3">error</a>
             
                 <a href="#unordered_multimap" title="unordered_multimap" rel="1">unordered_multimap</a>
+            
+                <a href="#map" title="map" rel="1">map</a>
+            
+                <a href="#sql注入" title="sql注入" rel="1">sql注入</a>
+            
+                <a href="#mysql" title="mysql" rel="1">mysql</a>
+            
+                <a href="#python" title="python" rel="26">python</a>
+            
+                <a href="#re" title="re" rel="3">re</a>
             
                 <a href="#asp" title="asp" rel="1">asp</a>
             
@@ -274,17 +262,7 @@
             
                 <a href="#ExecuteGlobal" title="ExecuteGlobal" rel="1">ExecuteGlobal</a>
             
-                <a href="#sql注入" title="sql注入" rel="1">sql注入</a>
-            
-                <a href="#mysql" title="mysql" rel="1">mysql</a>
-            
-                <a href="#python" title="python" rel="26">python</a>
-            
                 <a href="#requests" title="requests" rel="2">requests</a>
-            
-                <a href="#map" title="map" rel="1">map</a>
-            
-                <a href="#re" title="re" rel="3">re</a>
             
                 <a href="#pip" title="pip" rel="1">pip</a>
             
@@ -298,11 +276,11 @@
             
                 <a href="#PIL" title="PIL" rel="1">PIL</a>
             
-                <a href="#排列组合" title="排列组合" rel="1">排列组合</a>
-            
                 <a href="#threading" title="threading" rel="1">threading</a>
             
                 <a href="#pytesseract" title="pytesseract" rel="1">pytesseract</a>
+            
+                <a href="#排列组合" title="排列组合" rel="1">排列组合</a>
             
                 <a href="#vector" title="vector" rel="1">vector</a>
             
@@ -374,13 +352,13 @@
             
                 <a href="#estimator" title="estimator" rel="3">estimator</a>
             
-                <a href="#IOU" title="IOU" rel="1">IOU</a>
-            
-                <a href="#identity" title="identity" rel="1">identity</a>
-            
                 <a href="#YOLO" title="YOLO" rel="4">YOLO</a>
             
                 <a href="#darknet" title="darknet" rel="4">darknet</a>
+            
+                <a href="#identity" title="identity" rel="1">identity</a>
+            
+                <a href="#IOU" title="IOU" rel="1">IOU</a>
             
         </div> 
         -->
@@ -9662,9 +9640,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
