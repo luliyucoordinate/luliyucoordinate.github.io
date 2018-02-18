@@ -1251,10 +1251,8 @@ ul.widget-tab-nav {
 	color: #1fa0ae;
 	}
 .site-info {
-	float: left;
-	}
-.site-credit {
-	float: right;
+	float: none;
+	text-align: center;
 	}
 
 /* RESPONSIVE SUPPORT
