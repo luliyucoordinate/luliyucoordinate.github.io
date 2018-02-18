@@ -26,7 +26,7 @@
 <meta property="og:description" content="写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。 首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。secure boot选项要设置为disabled，至">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.385Z">
+<meta property="og:updated_time" content="2018-02-18T08:40:04.377Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录">
 <meta name="twitter:description" content="写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。 首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。secure boot选项要设置为disabled，至">
@@ -67,32 +67,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -173,6 +151,7 @@
 <p>接下来是关于<code>uefi</code>和<code>legacy</code>的问题，很多教程中都是使用<code>legacy</code>，但是经过我的尝试，我这里选择<code>uefi</code>，<code>uefi</code>是一种新的装机手法，而<code>legacy</code>是老的。所以对于那些10年之后的电脑，我强烈推荐你使用<code>uefi</code>。</p>
 <p>接着是<code>AHCI</code>和<code>RAID</code>的问题，对于双硬盘的主机都可能会面对的问题。如果你要安装<code>ubuntu</code>的话，必须使用<code>AHCI</code>。</p>
 <p>别的都不变，save and reset。</p>
+<a id="more"></a>
 <h2 id="做ubuntu系统盘"><a href="#做ubuntu系统盘" class="headerlink" title="做ubuntu系统盘"></a>做<code>ubuntu</code>系统盘</h2><p>因为我在bios中设置了<code>uefi</code>，所以我这里使用<a href="http://rufus.akeo.ie/" target="_blank" rel="noopener">rufus</a>这个工具。如果你使用<code>legacy</code>（我不推荐你这样去做），可以使用软碟通这个工具。</p>
 <p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg" class="img-fluid"><br></a></p>
 <p>这里主要的问题之第二个选项，按照图上去选就可以了。为什么？这里我要说一说<code>GPT</code>分区和<code>MBR</code>分区，如果你前面选择的是<code>uefi</code>，那么这里就是用<code>GPT</code>。具体区别看<a href="http://www.chinaz.com/server/2016/1017/595444.shtml" target="_blank" rel="noopener">这篇</a>。</p>
@@ -338,9 +317,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

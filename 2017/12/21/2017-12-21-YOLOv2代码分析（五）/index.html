@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2代码分析（五） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="#0x01 make_convolutional_layer 终于又回到了make_convolutional_layer这个函数">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2代码分析（五）">
+<meta property="og:url" content="http://coordinate.wang/2017/12/21/2017-12-21-YOLOv2代码分析（五）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="#0x01 make_convolutional_layer 终于又回到了make_convolutional_layer这个函数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T08:44:17.396Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2代码分析（五）">
+<meta name="twitter:description" content="#0x01 make_convolutional_layer 终于又回到了make_convolutional_layer这个函数">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-21-YOLOv2代码分析（五）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2代码分析（五）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/" class="article-date">
+	  <time datetime="2017-12-20T16:00:00.000Z" itemprop="datePublished">十二月 21, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#0x01 make_convolutional_layer</p>
+<p>终于又回到了<code>make_convolutional_layer</code>这个函数</p>
+<a id="more"></a>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//make_convolutional_layer</span></span><br><span class="line">	<span class="keyword">if</span>(binary)&#123;</span><br><span class="line">        l.binary_weights = <span class="built_in">calloc</span>(l.nweights, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.cweights = <span class="built_in">calloc</span>(l.nweights, <span class="keyword">sizeof</span>(<span class="keyword">char</span>));</span><br><span class="line">        l.scales = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(xnor)&#123;</span><br><span class="line">        l.binary_weights = <span class="built_in">calloc</span>(l.nweights, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.binary_input = <span class="built_in">calloc</span>(l.inputs*l.batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(batch_normalize)&#123;</span><br><span class="line">        l.scales = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.scale_updates = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">            l.scales[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        l.mean = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.variance = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line"></span><br><span class="line">        l.mean_delta = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.variance_delta = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line"></span><br><span class="line">        l.rolling_mean = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.rolling_variance = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.x = <span class="built_in">calloc</span>(l.batch*l.outputs, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.x_norm = <span class="built_in">calloc</span>(l.batch*l.outputs, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    &#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"conv  %5d %2d x%2d /%2d  %4d x%4d x%4d   -&gt;  %4d x%4d x%4d\n"</span>, n, size, size, stride, w, h, c, l.out_w, l.out_h, l.out_c);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你把之前的几篇文章都看过的话，那么这里的参数意义你应该很清楚了。这里面我唯一要说的几个内容是关于cuda编程的，但是我会把这部分内容放到本系列文章的最后去说，如果你感兴趣的话，可以到时候去看看。</p>
+<p>至此我们终于结束了<code>make_convolutional_layer</code>函数</p>
+<p>#0x02 parse_convolutional</p>
+<p>大家可以回到（二）中的0x0103</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">//parse_convolutional</span></span><br><span class="line">	convolutional_layer layer = make_convolutional_layer(batch,h,w,c,n,groups,size,stride,padding,activation, batch_normalize, binary, xnor, params.net-&gt;adam);</span><br><span class="line">    layer.flipped = option_find_int_quiet(options, <span class="string">"flipped"</span>, <span class="number">0</span>);</span><br><span class="line">    layer.dot = option_find_float_quiet(options, <span class="string">"dot"</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> layer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>后面没什么好说的，回到<code>parse_network_cfg</code></p>
+<p>#0x03 parse_network_cfg</p>
+<p>时隔多日，又回到了这里（二）0x0102</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//parse_network_cfg</span></span><br><span class="line">   <span class="keyword">if</span>(lt == CONVOLUTIONAL)&#123;</span><br><span class="line">          l = parse_convolutional(options, params);</span><br><span class="line">      &#125;<span class="keyword">else</span> <span class="keyword">if</span>(lt == DECONVOLUTIONAL)&#123;</span><br><span class="line">          l = parse_deconvolutional(options, params);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>我们看这个<code>parse_deconvolutional</code>函数</p>
+<h2 id="0x00301-parse-deconvolutional"><a href="#0x00301-parse-deconvolutional" class="headerlink" title="0x00301 parse_deconvolutional"></a>0x00301 parse_deconvolutional</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">parse_deconvolutional</span><span class="params">(<span class="built_in">list</span> *options, size_params params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = option_find_int(options, <span class="string">"filters"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> size = option_find_int(options, <span class="string">"size"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> stride = option_find_int(options, <span class="string">"stride"</span>,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> *activation_s = option_find_str(options, <span class="string">"activation"</span>, <span class="string">"logistic"</span>);</span><br><span class="line">    ACTIVATION activation = get_activation(activation_s);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> batch,h,w,c;</span><br><span class="line">    h = params.h;</span><br><span class="line">    w = params.w;</span><br><span class="line">    c = params.c;</span><br><span class="line">    batch=params.batch;</span><br><span class="line">    <span class="keyword">if</span>(!(h &amp;&amp; w &amp;&amp; c)) error(<span class="string">"Layer before deconvolutional layer must output image."</span>);</span><br><span class="line">    <span class="keyword">int</span> batch_normalize = option_find_int_quiet(options, <span class="string">"batch_normalize"</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> pad = option_find_int_quiet(options, <span class="string">"pad"</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> padding = option_find_int_quiet(options, <span class="string">"padding"</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(pad) padding = size/<span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    layer l = make_deconvolutional_layer(batch,h,w,c,n,size,stride,padding, activation, batch_normalize, params.net-&gt;adam);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的一些参数我在之前的文章中已经说过了，这里就不再说明了。直接看关键函数<code>make_deconvolutional_layer</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">make_deconvolutional_layer</span><span class="params">(<span class="keyword">int</span> batch, <span class="keyword">int</span> h, <span class="keyword">int</span> w, <span class="keyword">int</span> c, <span class="keyword">int</span> n, <span class="keyword">int</span> size, <span class="keyword">int</span> stride, <span class="keyword">int</span> padding, ACTIVATION activation, <span class="keyword">int</span> batch_normalize, <span class="keyword">int</span> adam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    layer l = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    l.type = DECONVOLUTIONAL;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    l.forward = forward_deconvolutional_layer;</span><br><span class="line">    l.backward = backward_deconvolutional_layer;</span><br><span class="line">    l.update = update_deconvolutional_layer;</span><br></pre></td></tr></table></figure>
+<p>前面的参数信息我这里也不再提了，直接看关键的三个函数，先看第一个<code>forward_deconvolutional_layer</code></p>
+<h2 id="0x030101-forward-deconvolutional-layer"><a href="#0x030101-forward-deconvolutional-layer" class="headerlink" title="0x030101 forward_deconvolutional_layer"></a>0x030101 forward_deconvolutional_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_deconvolutional_layer</span><span class="params">(<span class="keyword">const</span> layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m = l.size*l.size*l.n;</span><br><span class="line">    <span class="keyword">int</span> n = l.h*l.w;</span><br><span class="line">    <span class="keyword">int</span> k = l.c;</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs*l.batch, <span class="number">0</span>, l.output, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        <span class="keyword">float</span> *a = l.weights;</span><br><span class="line">        <span class="keyword">float</span> *b = net.input + i*l.c*l.h*l.w;</span><br><span class="line">        <span class="keyword">float</span> *c = net.workspace;</span><br><span class="line"></span><br><span class="line">        gemm_cpu(<span class="number">1</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,m,b,n,<span class="number">0</span>,c,n);</span><br><span class="line"></span><br><span class="line">        col2im_cpu(net.workspace, l.out_c, l.out_h, l.out_w, l.size, l.stride, l.pad, l.output+i*l.outputs);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (l.batch_normalize) &#123;</span><br><span class="line">        forward_batchnorm_layer(l, net);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        add_bias(l.output, l.biases, l.batch, l.n, l.out_w*l.out_h);</span><br><span class="line">    &#125;</span><br><span class="line">    activate_array(l.output, l.batch*l.n*l.out_w*l.out_h, l.activation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的函数我在之前的文章中都分析过，我这里主要分析一下这个函数的逻辑。</p>
+<p>我们可以对比之前的卷积层，对比后发现区别有两个：</p>
+<ul>
+<li><code>A</code>转置了</li>
+<li><code>col2im_cpu</code>函数放在了卷积函数的后面</li>
+</ul>
+<p>这几点说明了什么？<code>deconvolutional</code>确实是一种<code>convolutional</code>，只是它是一种转置的卷积。</p>
+<h2 id="0x030102-backward-deconvolutional-layer"><a href="#0x030102-backward-deconvolutional-layer" class="headerlink" title="0x030102 backward_deconvolutional_layer"></a>0x030102 backward_deconvolutional_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_deconvolutional_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        backward_batchnorm_layer(l, net);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        backward_bias(l.bias_updates, l.delta, l.batch, l.n, l.out_w*l.out_h);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//if(net.delta) memset(net.delta, 0, l.batch*l.h*l.w*l.c*sizeof(float));</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        <span class="keyword">int</span> m = l.c;</span><br><span class="line">        <span class="keyword">int</span> n = l.size*l.size*l.n;</span><br><span class="line">        <span class="keyword">int</span> k = l.h*l.w;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">float</span> *a = net.input + i*m*k;</span><br><span class="line">        <span class="keyword">float</span> *b = net.workspace;</span><br><span class="line">        <span class="keyword">float</span> *c = l.weight_updates;</span><br><span class="line"></span><br><span class="line">        im2col_cpu(l.delta + i*l.outputs, l.out_c, l.out_h, l.out_w, </span><br><span class="line">                l.size, l.stride, l.pad, b);</span><br><span class="line">        gemm_cpu(<span class="number">0</span>,<span class="number">1</span>,m,n,k,<span class="number">1</span>,a,k,b,k,<span class="number">1</span>,c,n);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(net.delta)&#123;</span><br><span class="line">            <span class="keyword">int</span> m = l.c;</span><br><span class="line">            <span class="keyword">int</span> n = l.h*l.w;</span><br><span class="line">            <span class="keyword">int</span> k = l.size*l.size*l.n;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">float</span> *a = l.weights;</span><br><span class="line">            <span class="keyword">float</span> *b = net.workspace;</span><br><span class="line">            <span class="keyword">float</span> *c = net.delta + i*n*m;</span><br><span class="line"></span><br><span class="line">            gemm_cpu(<span class="number">0</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,k,b,n,<span class="number">1</span>,c,n);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的理解和之前的<code>backward_convolutional_layer</code>没有太大区别，而且变化也不大。</p>
+<h2 id="0x030103-update-deconvolutional-layer"><a href="#0x030103-update-deconvolutional-layer" class="headerlink" title="0x030103 update_deconvolutional_layer"></a>0x030103 update_deconvolutional_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_deconvolutional_layer</span><span class="params">(layer l, update_args a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> learning_rate = a.learning_rate*l.learning_rate_scale;</span><br><span class="line">    <span class="keyword">float</span> momentum = a.momentum;</span><br><span class="line">    <span class="keyword">float</span> decay = a.decay;</span><br><span class="line">    <span class="keyword">int</span> batch = a.batch;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> size = l.size*l.size*l.c*l.n;</span><br><span class="line">    axpy_cpu(l.n, learning_rate/batch, l.bias_updates, <span class="number">1</span>, l.biases, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(l.n, momentum, l.bias_updates, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(l.scales)&#123;</span><br><span class="line">        axpy_cpu(l.n, learning_rate/batch, l.scale_updates, <span class="number">1</span>, l.scales, <span class="number">1</span>);</span><br><span class="line">        scal_cpu(l.n, momentum, l.scale_updates, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    axpy_cpu(size, -decay*batch, l.weights, <span class="number">1</span>, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">    axpy_cpu(size, learning_rate/batch, l.weight_updates, <span class="number">1</span>, l.weights, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(size, momentum, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样的这个函数也只是起到了更新参数的作用，和之前的<code>update_convolutional_layer</code>一样。我们回到<code>make_deconvolutional_layer</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//make_deconvolutional_layer</span></span><br><span class="line">  	l.batch_normalize = batch_normalize;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(batch_normalize)&#123;</span><br><span class="line">        l.scales = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        l.scale_updates = <span class="built_in">calloc</span>(n, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">            l.scales[i] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这里都是一些参数的配置，我在之前文章中都有说过，这里不再重复。</p>
+<p>好的，<code>parse_deconvolutional</code>这个函数就结束了。</p>
+<h2 id="0x0302-parse-local"><a href="#0x0302-parse-local" class="headerlink" title="0x0302 parse_local"></a>0x0302 parse_local</h2><p>我们回到<code>parse_network_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(lt == LOCAL)&#123;</span><br><span class="line">          l = parse_local(options, params);</span><br></pre></td></tr></table></figure>
+<p>我们来看<code>parse_local</code>这个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">local_layer <span class="title">parse_local</span><span class="params">(<span class="built_in">list</span> *options, size_params params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n = option_find_int(options, <span class="string">"filters"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> size = option_find_int(options, <span class="string">"size"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> stride = option_find_int(options, <span class="string">"stride"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> pad = option_find_int(options, <span class="string">"pad"</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">char</span> *activation_s = option_find_str(options, <span class="string">"activation"</span>, <span class="string">"logistic"</span>);</span><br><span class="line">    ACTIVATION activation = get_activation(activation_s);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> batch,h,w,c;</span><br><span class="line">    h = params.h;</span><br><span class="line">    w = params.w;</span><br><span class="line">    c = params.c;</span><br><span class="line">    batch=params.batch;</span><br><span class="line">    <span class="keyword">if</span>(!(h &amp;&amp; w &amp;&amp; c)) error(<span class="string">"Layer before local layer must output image."</span>);</span><br><span class="line"></span><br><span class="line">    local_layer layer = make_local_layer(batch,h,w,c,n,size,stride,pad,activation);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> layer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的一些参数我在之前的文章中已经说过了，这里就不再说明了。直接看关键函数<code>make_local_layer</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">local_layer <span class="title">make_local_layer</span><span class="params">(<span class="keyword">int</span> batch, <span class="keyword">int</span> h, <span class="keyword">int</span> w, <span class="keyword">int</span> c, <span class="keyword">int</span> n, <span class="keyword">int</span> size, <span class="keyword">int</span> stride, <span class="keyword">int</span> pad, ACTIVATION activation)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    l.forward = forward_local_layer;</span><br><span class="line">    l.backward = backward_local_layer;</span><br><span class="line">    l.update = update_local_layer;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Local Layer: %d x %d x %d image, %d filters -&gt; %d x %d x %d image\n"</span>, h,w,c,n, out_h, out_w, n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样的前面的参数配置我们不管了，直接看三个关键的函数，先看第一个<code>forward_local_layer</code></p>
+<h2 id="0x030201-forward-local-layer"><a href="#0x030201-forward-local-layer" class="headerlink" title="0x030201 forward_local_layer"></a>0x030201 forward_local_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_local_layer</span><span class="params">(<span class="keyword">const</span> local_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> out_h = local_out_height(l);</span><br><span class="line">    <span class="keyword">int</span> out_w = local_out_width(l);</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">int</span> locations = out_h * out_w;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        copy_cpu(l.outputs, l.biases, <span class="number">1</span>, l.output + i*l.outputs, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        <span class="keyword">float</span> *input = net.input + i*l.w*l.h*l.c;</span><br><span class="line">        im2col_cpu(input, l.c, l.h, l.w, </span><br><span class="line">                l.size, l.stride, l.pad, net.workspace);</span><br><span class="line">        <span class="keyword">float</span> *output = l.output + i*l.outputs;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; locations; ++j)&#123;</span><br><span class="line">            <span class="keyword">float</span> *a = l.weights + j*l.size*l.size*l.c*l.n;</span><br><span class="line">            <span class="keyword">float</span> *b = net.workspace + j;</span><br><span class="line">            <span class="keyword">float</span> *c = output + j;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> m = l.n;</span><br><span class="line">            <span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">int</span> k = l.size*l.size*l.c;</span><br><span class="line"></span><br><span class="line">            gemm(<span class="number">0</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,k,b,locations,<span class="number">1</span>,c,locations);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    activate_array(l.output, l.outputs*l.batch, l.activation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们先看前面两个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">local_out_height</span><span class="params">(local_layer l)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> h = l.h;</span><br><span class="line">    <span class="keyword">if</span> (!l.pad) h -= l.size;</span><br><span class="line">    <span class="keyword">else</span> h -= <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> h/l.stride + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">local_out_width</span><span class="params">(local_layer l)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> w = l.w;</span><br><span class="line">    <span class="keyword">if</span> (!l.pad) w -= l.size;</span><br><span class="line">    <span class="keyword">else</span> w -= <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> w/l.stride + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这两个函数同样是计算卷积后的图像的高度和宽度，和我们之前的卷积层计算公式对比</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(l.h + <span class="number">2</span>*l.pad - l.size) / l.stride + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>和卷积层不一样的是这里没有考虑<code>pad</code>。</p>
+<p>我们可以对比之前的卷积层，对比后发现唯一一个区别就是参数<code>b</code>，我们这里的参数<code>b</code>是变化的，这个恰恰符合了<code>local layer</code>的原理。<code>local layer</code>就是一种权重不共享的卷积层（早期的AlexNet和GoogleNet中有所应用）。</p>
+<p>我这里说的可能有一些抽象¬_¬，有时间画个图吧，先就这样了。</p>
+<h2 id="0x030202-backward-local-layer"><a href="#0x030202-backward-local-layer" class="headerlink" title="0x030202 backward_local_layer"></a>0x030202 backward_local_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_local_layer</span><span class="params">(local_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">int</span> locations = l.out_w*l.out_h;</span><br><span class="line"></span><br><span class="line">    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        axpy_cpu(l.outputs, <span class="number">1</span>, l.delta + i*l.outputs, <span class="number">1</span>, l.bias_updates, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        <span class="keyword">float</span> *input = net.input + i*l.w*l.h*l.c;</span><br><span class="line">        im2col_cpu(input, l.c, l.h, l.w, </span><br><span class="line">                l.size, l.stride, l.pad, net.workspace);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; locations; ++j)&#123; </span><br><span class="line">            <span class="keyword">float</span> *a = l.delta + i*l.outputs + j;</span><br><span class="line">            <span class="keyword">float</span> *b = net.workspace + j;</span><br><span class="line">            <span class="keyword">float</span> *c = l.weight_updates + j*l.size*l.size*l.c*l.n;</span><br><span class="line">            <span class="keyword">int</span> m = l.n;</span><br><span class="line">            <span class="keyword">int</span> n = l.size*l.size*l.c;</span><br><span class="line">            <span class="keyword">int</span> k = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            gemm(<span class="number">0</span>,<span class="number">1</span>,m,n,k,<span class="number">1</span>,a,locations,b,locations,<span class="number">1</span>,c,n);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(net.delta)&#123;</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; locations; ++j)&#123; </span><br><span class="line">                <span class="keyword">float</span> *a = l.weights + j*l.size*l.size*l.c*l.n;</span><br><span class="line">                <span class="keyword">float</span> *b = l.delta + i*l.outputs + j;</span><br><span class="line">                <span class="keyword">float</span> *c = net.workspace + j;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">int</span> m = l.size*l.size*l.c;</span><br><span class="line">                <span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">int</span> k = l.n;</span><br><span class="line"></span><br><span class="line">                gemm(<span class="number">1</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,m,b,locations,<span class="number">0</span>,c,locations);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            col2im_cpu(net.workspace, l.c,  l.h,  l.w,  l.size,  l.stride, l.pad, net.delta+i*l.c*l.h*l.w);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里和之前<code>backward_convolutional_layer</code>的区别还是在<code>b</code></p>
+<h2 id="0x030203-update-local-layer"><a href="#0x030203-update-local-layer" class="headerlink" title="0x030203 update_local_layer"></a>0x030203 update_local_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_local_layer</span><span class="params">(local_layer l, update_args a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> learning_rate = a.learning_rate*l.learning_rate_scale;</span><br><span class="line">    <span class="keyword">float</span> momentum = a.momentum;</span><br><span class="line">    <span class="keyword">float</span> decay = a.decay;</span><br><span class="line">    <span class="keyword">int</span> batch = a.batch;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> locations = l.out_w*l.out_h;</span><br><span class="line">    <span class="keyword">int</span> size = l.size*l.size*l.c*l.n*locations;</span><br><span class="line">    axpy_cpu(l.outputs, learning_rate/batch, l.bias_updates, <span class="number">1</span>, l.biases, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(l.outputs, momentum, l.bias_updates, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    axpy_cpu(size, -decay*batch, l.weights, <span class="number">1</span>, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">    axpy_cpu(size, learning_rate/batch, l.weight_updates, <span class="number">1</span>, l.weights, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(size, momentum, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数没什么好说的，就是更新参数信息。</p>
+<p>至此<code>parse_local</code>函数就分析完了，下一章我们会回到<code>parse_network_cfg</code>函数</p>
+<p>文章全部<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<p>由于本人水平有限，文中有不对之处，希望大家指出，谢谢^_^!</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2代码分析（六）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2代码分析（四）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00301-parse-deconvolutional"><span class="nav-number">1.</span> <span class="nav-text">0x00301 parse_deconvolutional</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x030101-forward-deconvolutional-layer"><span class="nav-number">2.</span> <span class="nav-text">0x030101 forward_deconvolutional_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x030102-backward-deconvolutional-layer"><span class="nav-number">3.</span> <span class="nav-text">0x030102 backward_deconvolutional_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x030103-update-deconvolutional-layer"><span class="nav-number">4.</span> <span class="nav-text">0x030103 update_deconvolutional_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0302-parse-local"><span class="nav-number">5.</span> <span class="nav-text">0x0302 parse_local</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x030201-forward-local-layer"><span class="nav-number">6.</span> <span class="nav-text">0x030201 forward_local_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x030202-backward-local-layer"><span class="nav-number">7.</span> <span class="nav-text">0x030202 backward_local_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x030203-update-local-layer"><span class="nav-number">8.</span> <span class="nav-text">0x030203 update_local_layer</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

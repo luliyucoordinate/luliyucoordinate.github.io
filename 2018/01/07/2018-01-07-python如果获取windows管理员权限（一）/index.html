@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python如果获取windows管理员权限（一） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonwindows" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="我们在运行我们编写好的python代码时，会碰到这样的报错问题 1PermissionError: [WinError 5] 拒绝访问。 这是因为我们编写的脚本的权限不够。一种解决办法是在管理员cmd中运行我们的脚本（右键以 run as administrator），但是这种办法不够优雅。我们经常看到当我们运行一些需要高权限的软件时，会弹出以下对话框   这被称为用户安全控制，简称为UAC。">
+<meta name="keywords" content="python,windows">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python如果获取windows管理员权限（一）">
+<meta property="og:url" content="http://coordinate.wang/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我们在运行我们编写好的python代码时，会碰到这样的报错问题 1PermissionError: [WinError 5] 拒绝访问。 这是因为我们编写的脚本的权限不够。一种解决办法是在管理员cmd中运行我们的脚本（右键以 run as administrator），但是这种办法不够优雅。我们经常看到当我们运行一些需要高权限的软件时，会弹出以下对话框   这被称为用户安全控制，简称为UAC。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn8yommimij20df09pab9.jpg">
+<meta property="og:updated_time" content="2018-02-18T08:46:44.057Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python如果获取windows管理员权限（一）">
+<meta name="twitter:description" content="我们在运行我们编写好的python代码时，会碰到这样的报错问题 1PermissionError: [WinError 5] 拒绝访问。 这是因为我们编写的脚本的权限不够。一种解决办法是在管理员cmd中运行我们的脚本（右键以 run as administrator），但是这种办法不够优雅。我们经常看到当我们运行一些需要高权限的软件时，会弹出以下对话框   这被称为用户安全控制，简称为UAC。">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn8yommimij20df09pab9.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-01-07-python如果获取windows管理员权限（一）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      python如果获取windows管理员权限（一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/" class="article-date">
+	  <time datetime="2018-01-06T16:00:00.000Z" itemprop="datePublished">一月 7, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在运行我们编写好的<code>python</code>代码时，会碰到这样的报错问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PermissionError: [WinError <span class="number">5</span>] 拒绝访问。</span><br></pre></td></tr></table></figure>
+<p>这是因为我们编写的脚本的权限不够。一种解决办法是在管理员<code>cmd</code>中运行我们的脚本（右键以 run as administrator），但是这种办法不够优雅。我们经常看到当我们运行一些需要高权限的软件时，会弹出以下对话框</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn8yommimij20df09pab9.jpg"><br></center>
+
+<p>这被称为用户安全控制，简称为UAC。</p>
+<a id="more"></a>
+<ul>
+<li><strong>用户帐户控制</strong>（<em>User Account Control</em>，简写作UAC)是微软司在其Windows Vista及更高版本操作系统中采用的一种控制机制。其原理是通知用户是否对应用程序使用硬盘驱动器8)和系统文件授权，以达到帮助阻止恶意程序（有时也称为“恶意软件”）损坏系统的效果。</li>
+</ul>
+<p>那么我们在写代码的时候怎么添加这个功能呢？</p>
+<p>这里我们要用到一个关键的函数<code>ShellExecute</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HINSTANCE <span class="title">ShellExecute</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_opt_ HWND    hwnd,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_opt_ LPCTSTR lpOperation,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     LPCTSTR lpFile,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_opt_ LPCTSTR lpParameters,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_opt_ LPCTSTR lpDirectory,</span></span></span><br><span class="line"><span class="function"><span class="params">  _In_     INT     nShowCmd</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>具体细节看微软官方的文档<a href="https://msdn.microsoft.com/en-us/library/windows/desktop/bb762153(v=vs.85" target="_blank" rel="noopener">ShellExecute function</a>.aspx)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"><span class="keyword">import</span> ctypes, sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_admin</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">return</span> ctypes.windll.shell32.IsUserAnAdmin()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"><span class="keyword">if</span> is_admin():</span><br><span class="line">    <span class="comment"># 将要运行的代码加到这里</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="keyword">if</span> sys.version_info[<span class="number">0</span>] == <span class="number">3</span>:</span><br><span class="line">    	ctypes.windll.shell32.ShellExecuteW(<span class="keyword">None</span>, <span class="string">"runas"</span>, sys.executable, __file__, <span class="keyword">None</span>, <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:<span class="comment">#in python2.x</span></span><br><span class="line">        ctypes.windll.shell32.ShellExecuteW(<span class="keyword">None</span>, <span class="string">u"runas"</span>, unicode(sys.executable), unicode(__file__), <span class="keyword">None</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>要提醒你的是，<strong>不要在IDE中运行</strong>。</p>
+<p>如果在非管理员权限下运行的话，其实这里运行了两次代码，第一次肯定是没有管理员权限的，第二次拥有管理员权限。</p>
+<p>有的时候我们不希望有这种UAC弹框，我们希望程序偷偷的拥有管理员权限，这要怎么做呢？这其实挺邪恶的。感兴趣的话，可以看这篇<a href="http://blog.csdn.net/qq_17550379/article/details/79006718" target="_blank" rel="noopener">python如果获取windows管理员权限（二）</a></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/">windows</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/08/2018-01-08-python如果获取windows管理员权限（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python如果获取windows管理员权限（二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2源码分析--reorg layer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

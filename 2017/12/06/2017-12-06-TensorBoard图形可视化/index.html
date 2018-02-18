@@ -34,7 +34,7 @@
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgyk7epj20tq0h777t.jpg">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgz1b12j20az050mxt.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm4kgzet29j20tt0g2dja.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.585Z">
+<meta property="og:updated_time" content="2018-02-18T08:37:40.782Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorBoard计算图可视化">
 <meta name="twitter:description" content="TensorFlow计算图功能强大但复杂。 图表可视化可以帮助您理解和调试它们。 这是一个可视化工作的例子。    命名空间和节点典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用tf.name_sc">
@@ -75,32 +75,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -181,6 +159,7 @@
 
 <h2 id="命名空间和节点"><a href="#命名空间和节点" class="headerlink" title="命名空间和节点"></a>命名空间和节点</h2><p>典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用<code>tf.name_scope</code>在<code>hidden</code>名称范围下定义三个操作的示例：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'hidden'</span>) <span class="keyword">as</span> scope:</span><br><span class="line">  a = tf.constant(<span class="number">5</span>, name=<span class="string">'alpha'</span>)</span><br><span class="line">  W = tf.Variable(tf.random_uniform([<span class="number">1</span>, <span class="number">2</span>], <span class="number">-1.0</span>, <span class="number">1.0</span>), name=<span class="string">'weights'</span>)</span><br><span class="line">  b = tf.Variable(tf.zeros([<span class="number">1</span>]), name=<span class="string">'biases'</span>)</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>这产生了以下三个操作名称：</p>
 <ul>
 <li><p><code>hidden/alpha</code></p>
@@ -355,9 +334,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -26,7 +26,7 @@
 <meta property="og:description" content="您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：    序列化数据Te">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4jyazdrfj20pw0dy77c.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.585Z">
+<meta property="og:updated_time" content="2018-02-18T08:37:54.052Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TensorBoard可视化学习">
 <meta name="twitter:description" content="您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：    序列化数据Te">
@@ -67,32 +67,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -176,6 +154,7 @@
 <p>例如，假设您正在训练用于识别MNIST数字的卷积神经网络。您想记录学习率随时间的变化，以及目标函数如何变化。通过将<code>tf.summary.scalar</code> 操作分别附加到输出学习率和损失来收集这些信息。然后，给每个标量附上有意义的标签，如“学习率”或“损失函数”。</p>
 <p>也许你也想看到特定层的激活分布，或梯度或权重的分布。通过将<code>tf.summary.histogram</code>操作附加到梯度输出和保存您权重的变量来收集这些数据。</p>
 <p>有关所有可用摘要操作的详细信息，请查看有关摘要操作的文档。</p>
+<a id="more"></a>
 <p>在运行之前，TensorFlow中不会执行任何操作，或者取决于其输出的操作。我们刚刚创建的摘要节点是图形的外围设备：您当前正在运行的操作都不依赖于它们。所以，为了生成摘要，我们需要运行所有这些汇总节点。手工管理它们会很麻烦，所以使用<code>tf.summary.merge_all</code>将它们组合成一个单独的操作来生成所有的汇总数据。</p>
 <p>然后，您可以运行合并的摘要操作，该操作将在给定的步骤中生成包含所有摘要数据的序列化的protobuf对象。最后，为了将这个总结数据写入磁盘，将总结的protobuf传递给<code>tf.summary.FileWriter</code>。</p>
 <p><code>FileWriter</code>在其构造函数中使用了一个<code>logdir</code> - 这个<code>logdir</code>非常重要，它是所有事件将被写出的目录。另外，<code>FileWriter</code>可以选择在其构造函数中使用Graph。如果它接收到一个Graph对象，那么TensorBoard会将您的图形与张量形状信息一起可视化。这将使您更好地理解图中流动的情况：请参阅张量形状信息。</p>
@@ -313,9 +292,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

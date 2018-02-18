@@ -28,7 +28,7 @@
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmh85d281aj20lc0g0tub.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmhhfup0kyj20br07e741.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmhi58wr3uj20ga0bijr8.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.607Z">
+<meta property="og:updated_time" content="2018-02-18T08:37:23.444Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="目标检测中的IOU计算问题">
 <meta name="twitter:description" content="在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。   那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？   IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为">
@@ -69,32 +69,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -179,6 +157,7 @@
 <ul>
 <li>$IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTruth}$</li>
 </ul>
+<a id="more"></a>
 <p>公式里面的<code>DetectionResult</code>就表示黄框（也就是通过神经网络得到的结果），<code>GroundResult</code>表示绿框（也就是标注的结果）。</p>
 <p>好的，这看上去很容易，但是在具体实现的时候就会有一些问题了。接下来我先用YOLO2中的做法讲解其实现原理。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">overlap</span><span class="params">(<span class="keyword">float</span> x1, <span class="keyword">float</span> w1, <span class="keyword">float</span> x2, <span class="keyword">float</span> w2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> l1 = x1 - w1/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> l2 = x2 - w2/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> left = l1 &gt; l2 ? l1 : l2;</span><br><span class="line">    <span class="keyword">float</span> r1 = x1 + w1/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> r2 = x2 + w2/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> right = r1 &lt; r2 ? r1 : r2;</span><br><span class="line">    <span class="keyword">return</span> right - left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">box_intersection</span><span class="params">(box a, box b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> w = overlap(a.x, a.w, b.x, b.w);</span><br><span class="line">    <span class="keyword">float</span> h = overlap(a.y, a.h, b.y, b.h);</span><br><span class="line">    <span class="keyword">if</span>(w &lt; <span class="number">0</span> || h &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">float</span> area = w*h;</span><br><span class="line">    <span class="keyword">return</span> area;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">box_union</span><span class="params">(box a, box b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> i = box_intersection(a, b);</span><br><span class="line">    <span class="keyword">float</span> u = a.w*a.h + b.w*b.h - i;</span><br><span class="line">    <span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">box_iou</span><span class="params">(box a, box b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> box_intersection(a, b)/box_union(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -333,9 +312,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

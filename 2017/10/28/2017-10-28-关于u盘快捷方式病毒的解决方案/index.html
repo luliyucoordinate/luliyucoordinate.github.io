@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="最近学校的电脑中了病毒，导致上课时u盘插上电脑后，u盘里面的文件全变成了快捷方式。可能是xxx的一个恶作剧吧，但是挺麻烦的。解决方法非常简单 123456789@echo off@echo 2017.10.28 by coordinate@echo +-------------------------------------------------------------+attrib -s -h">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.369Z">
+<meta property="og:updated_time" content="2018-02-18T08:41:44.783Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于u盘快捷方式病毒的解决方案">
 <meta name="twitter:description" content="最近学校的电脑中了病毒，导致上课时u盘插上电脑后，u盘里面的文件全变成了快捷方式。可能是xxx的一个恶作剧吧，但是挺麻烦的。解决方法非常简单 123456789@echo off@echo 2017.10.28 by coordinate@echo +-------------------------------------------------------------+attrib -s -h">
@@ -65,32 +65,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -168,6 +146,7 @@
         <p>最近学校的电脑中了病毒，导致上课时u盘插上电脑后，u盘里面的文件全变成了快捷方式。可能是xxx的一个恶作剧吧，但是挺麻烦的。解决方法非常简单</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@echo off</span><br><span class="line">@echo 2017.10.28 by coordinate</span><br><span class="line">@echo +-------------------------------------------------------------+</span><br><span class="line">attrib -s -h *. /S /D</span><br><span class="line">attrib +s +h System~1</span><br><span class="line">attrib +s +h Recycled</span><br><span class="line">attrib +s +h +a ntldr</span><br><span class="line">@echo 完成！</span><br><span class="line">@echo on</span><br></pre></td></tr></table></figure>
 <p>将上面的代码copy到一个<code>.txt</code>文件中，然后将这个命名为<code>go.bat</code>，注意后缀名变为<code>bat</code>，也就是一个批处理。接着将<code>go.bat</code>文件copy到u盘中，双击运行即可。</p>
+<a id="more"></a>
 <p>关于上面代码的一些解析</p>
 <p><code>ATTRIB [+R | -R][+A | -A ] [+S | -S][+H | -H] [[drive:] [path] filename][/S [/D]]</code></p>
 <ul>
@@ -309,9 +288,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

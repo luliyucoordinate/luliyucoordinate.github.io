@@ -26,7 +26,7 @@
 <meta property="og:description" content="0x00 写在开头写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。 0x01 从main函数开始12345678910int main(int argc, char **argv)&amp;#123;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmkrbpakepj20v1063jrc.jpg">
-<meta property="og:updated_time" content="2018-02-18T05:05:24.530Z">
+<meta property="og:updated_time" content="2018-02-18T08:37:08.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YOLOv2代码分析（一）">
 <meta name="twitter:description" content="0x00 写在开头写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。 0x01 从main函数开始12345678910int main(int argc, char **argv)&amp;#123;">
@@ -67,32 +67,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -169,6 +147,7 @@
       
         <h1 id="0x00-写在开头"><a href="#0x00-写在开头" class="headerlink" title="0x00 写在开头"></a>0x00 写在开头</h1><p>写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。</p>
 <h1 id="0x01-从main函数开始"><a href="#0x01-从main函数开始" class="headerlink" title="0x01 从main函数开始"></a>0x01 从main函数开始</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//test_resize("data/bad.jpg");</span></span><br><span class="line">    <span class="comment">//test_box();</span></span><br><span class="line">    <span class="comment">//test_convolutional_layer();</span></span><br><span class="line">    <span class="keyword">if</span>(argc &lt; <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"usage: %s &lt;function&gt;\n"</span>, argv[<span class="number">0</span>]);<span class="comment">//如果参数小于2就打印出错信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//出错后返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    gpu_index = find_int_arg(argc, argv, <span class="string">"-i"</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>接着看到<code>find_int_arg</code>函数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_int_arg</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv, <span class="keyword">char</span> *arg, <span class="keyword">int</span> def)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; argc<span class="number">-1</span>; ++i)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!argv[i]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[i], arg))&#123;</span><br><span class="line">            def = atoi(argv[i+<span class="number">1</span>]);</span><br><span class="line">            del_arg(argc, argv, i);</span><br><span class="line">            del_arg(argc, argv, i);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> def;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>find_int_arg</code>这个函数本身的目的是要找出参数中的<code>int</code>值。在这里主要任务就是判断输入参数是不是有<code>-i</code>，将<code>-i</code>后一位的数值转化为<code>int</code>，然后返回这个值。其中又出现了两次<code>del_arg</code>函数</p>
@@ -356,9 +335,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

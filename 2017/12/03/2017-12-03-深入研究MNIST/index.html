@@ -26,7 +26,7 @@
 <meta property="og:description" content="加载MNIST数据如果您正在复制和粘贴本教程的代码，请从这里开始，下面这两行代码将自动下载并读取数据： 12from tensorflow.examples.tutorials.mnist import input_datamnist = input_data.read_data_sets(&apos;MNIST_data&apos;, one_hot=True) 这里mnist是一个轻量级数据集，它将训练、验证和测">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm3dvcsajhj20c20qltan.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.570Z">
+<meta property="og:updated_time" content="2018-02-18T08:38:31.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入研究MNIST">
 <meta name="twitter:description" content="加载MNIST数据如果您正在复制和粘贴本教程的代码，请从这里开始，下面这两行代码将自动下载并读取数据： 12from tensorflow.examples.tutorials.mnist import input_datamnist = input_data.read_data_sets(&apos;MNIST_data&apos;, one_hot=True) 这里mnist是一个轻量级数据集，它将训练、验证和测">
@@ -67,32 +67,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -170,6 +148,7 @@
         <h2 id="加载MNIST数据"><a href="#加载MNIST数据" class="headerlink" title="加载MNIST数据"></a>加载MNIST数据</h2><p>如果您正在复制和粘贴本教程的代码，请从这里开始，下面这两行代码将自动下载并读取数据：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">'MNIST_data'</span>, one_hot=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
 <p>这里mnist是一个轻量级数据集，它将训练、验证和测试集存储为NumPy数组。 它还提供了一个函数来迭代数据minibatches，我们将在下面使用。</p>
+<a id="more"></a>
 <h2 id="启动TensorFlow-InteractiveSession"><a href="#启动TensorFlow-InteractiveSession" class="headerlink" title="启动TensorFlow InteractiveSession"></a>启动TensorFlow InteractiveSession</h2><p>TensorFlow依靠高效的C ++后端来完成它的计算。 与此后端的连接称为会话。 TensorFlow程序的常见用法是首先创建一个图形，然后在会话中启动它。</p>
 <p>在这里，我们使用便利的<code>InteractiveSession</code>类，这使得TensorFlow更加灵活地了解如何构建代码。 它允许您将构建计算图的操作与运行图的操作交错。 在IPython等交互式环境中工作时，这特别方便。 如果您没有使用<code>InteractiveSession</code>，则应在开始会话并启动图之前构建整个计算图。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">sess = tf.InteractiveSession()</span><br></pre></td></tr></table></figure>
@@ -397,9 +376,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

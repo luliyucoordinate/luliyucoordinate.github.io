@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Python实现2048 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="python" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="Tkinter是 Python 的标准 GUI 库。Python 使用 Tkinter 可以快速的创建 GUI 应用程序。 由于 Tkinter 是内置到 python 的安装包中、只要安装好 Python 之后就能import Tkinter` 库、而且 IDLE 也是用Tkinter编写而成、对于简单的图形界面Tkinter` 还是能应付自如。">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python实现2048">
+<meta property="og:url" content="http://coordinate.wang/2018/02/10/2018-02-10-python实现2048/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Tkinter是 Python 的标准 GUI 库。Python 使用 Tkinter 可以快速的创建 GUI 应用程序。 由于 Tkinter 是内置到 python 的安装包中、只要安装好 Python 之后就能import Tkinter` 库、而且 IDLE 也是用Tkinter编写而成、对于简单的图形界面Tkinter` 还是能应付自如。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars">
+<meta property="og:updated_time" content="2018-02-18T08:47:50.449Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python实现2048">
+<meta name="twitter:description" content="Tkinter是 Python 的标准 GUI 库。Python 使用 Tkinter 可以快速的创建 GUI 应用程序。 由于 Tkinter 是内置到 python 的安装包中、只要安装好 Python 之后就能import Tkinter` 库、而且 IDLE 也是用Tkinter编写而成、对于简单的图形界面Tkinter` 还是能应付自如。">
+<meta name="twitter:image" content="https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Stars">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-02-10-python实现2048" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Python实现2048
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/10/2018-02-10-python实现2048/" class="article-date">
+	  <time datetime="2018-02-09T16:00:00.000Z" itemprop="datePublished">二月 10, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><code>Tkinter</code>是 Python 的标准 GUI 库。Python 使用 Tkinter 可以快速的创建 GUI 应用程序。</p>
+<p>由于 <code>Tkinter</code> 是内置到 python 的安装包中、只要安装好 Python 之后就能<code>import Tkinter` 库、而且 IDLE 也是用</code>Tkinter<code>编写而成、对于简单的图形界面</code>Tkinter` 还是能应付自如。</p>
+<a id="more"></a>
+<p>首先先我们先定义几个按键和颜色、背景框大小等信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">KEY_UP = <span class="string">"'w'"</span></span><br><span class="line">KEY_DOWN = <span class="string">"'s'"</span></span><br><span class="line">KEY_LEFT = <span class="string">"'a'"</span></span><br><span class="line">KEY_RIGHT = <span class="string">"'d'"</span></span><br><span class="line">BACKGROUND_COLOR_GAME = <span class="string">"#92877d"</span></span><br><span class="line">BACKGROUND_COLOR_CELL_EMPTY = <span class="string">"#9e948a"</span></span><br><span class="line">BACKGROUND_COLOR_DICT = &#123;   <span class="number">2</span>:<span class="string">"#eee4da"</span>, <span class="number">4</span>:<span class="string">"#ede0c8"</span>, <span class="number">8</span>:<span class="string">"#f2b179"</span>, <span class="number">16</span>:<span class="string">"#f59563"</span>, \</span><br><span class="line">                            <span class="number">32</span>:<span class="string">"#f67c5f"</span>, <span class="number">64</span>:<span class="string">"#f65e3b"</span>, <span class="number">128</span>:<span class="string">"#edcf72"</span>, <span class="number">256</span>:<span class="string">"#edcc61"</span>, \</span><br><span class="line">                            <span class="number">512</span>:<span class="string">"#edc850"</span>, <span class="number">1024</span>:<span class="string">"#edc53f"</span>, <span class="number">2048</span>:<span class="string">"#edc22e"</span> &#125;</span><br><span class="line">CELL_COLOR_DICT = &#123; <span class="number">2</span>:<span class="string">"#776e65"</span>, <span class="number">4</span>:<span class="string">"#776e65"</span>, <span class="number">8</span>:<span class="string">"#f9f6f2"</span>, <span class="number">16</span>:<span class="string">"#f9f6f2"</span>, \</span><br><span class="line">                    <span class="number">32</span>:<span class="string">"#f9f6f2"</span>, <span class="number">64</span>:<span class="string">"#f9f6f2"</span>, <span class="number">128</span>:<span class="string">"#f9f6f2"</span>, <span class="number">256</span>:<span class="string">"#f9f6f2"</span>, \</span><br><span class="line">                    <span class="number">512</span>:<span class="string">"#f9f6f2"</span>, <span class="number">1024</span>:<span class="string">"#f9f6f2"</span>, <span class="number">2048</span>:<span class="string">"#f9f6f2"</span> &#125;</span><br><span class="line">FONT = (<span class="string">"Verdana"</span>, <span class="number">40</span>, <span class="string">"bold"</span>)</span><br><span class="line">SIZE = <span class="number">500</span></span><br><span class="line">GRID_LEN = <span class="number">4</span></span><br><span class="line">GRID_PADDING = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>接着我们来写一个<code>GameGrid</code>类，这个类继承自<code>Tkinter</code>的<code>Frame</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GameGrid</span><span class="params">(Frame)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        Frame.__init__(self)</span><br><span class="line">        self.commands = &#123;KEY_UP: up, KEY_DOWN: down, KEY_LEFT: left, KEY_RIGHT: right&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">init_grid</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">init_matrix</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update_grid_cells</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">key_down</span><span class="params">(self, event)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">generate_next</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>定好框架后，我们来写各个函数，先来写一个矩阵处理函数<code>reverse</code>，这个函数主要将矩阵</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">1 2 3     3 2 1</span></span><br><span class="line"><span class="string">4 5 6 ==&gt; 6 5 4</span></span><br><span class="line"><span class="string">7 8 9     9 8 7</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span><span class="params">(mat)</span>:</span></span><br><span class="line">    new=[]</span><br><span class="line">    x=y=len(mat)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x):</span><br><span class="line">        new.append([])</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(y):</span><br><span class="line">            new[i].append(mat[i][y-j<span class="number">-1</span>])</span><br><span class="line">    <span class="keyword">return</span> new</span><br></pre></td></tr></table></figure>
+<p>接着定义函数<code>transpose</code>，计算矩阵转置</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">1 2 3     1 4 7</span></span><br><span class="line"><span class="string">4 5 6 ==&gt; 2 5 8</span></span><br><span class="line"><span class="string">7 8 9     3 6 9</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transpose</span><span class="params">(mat)</span>:</span></span><br><span class="line">    new=[]</span><br><span class="line">    x=y=len(mat)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(y):</span><br><span class="line">        new.append([])</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(x):</span><br><span class="line">            new[i].append(mat[j][i])</span><br><span class="line">    <span class="keyword">return</span> new</span><br></pre></td></tr></table></figure>
+<p>定义函数<code>cover_up</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> 0  0  2  1       2  1  0  0</span></span><br><span class="line"><span class="string"> 6  6  5  4  ==&gt;  6  6  5  4</span></span><br><span class="line"><span class="string"> 0  9  8  7       9  8  7  0</span></span><br><span class="line"><span class="string">10 11 12 13      10 11 12 13</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cover_up</span><span class="params">(mat)</span>:</span></span><br><span class="line">    x=y=len(mat)</span><br><span class="line">    new=[x*[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> range(y)]</span><br><span class="line">    done=<span class="keyword">False</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x):</span><br><span class="line">        count=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(y):</span><br><span class="line">            <span class="keyword">if</span> mat[i][j]!=<span class="number">0</span>:</span><br><span class="line">                new[i][count]=mat[i][j]</span><br><span class="line">                <span class="keyword">if</span> j!=count:</span><br><span class="line">                    done=<span class="keyword">True</span></span><br><span class="line">                count+=<span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> (new,done)</span><br></pre></td></tr></table></figure>
+<p>定义函数<code>merge</code>，也就是一个合并函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> 0  0  2  1       2  1  0  0</span></span><br><span class="line"><span class="string"> 6  6  5  4  ==&gt; 12  0  5  4</span></span><br><span class="line"><span class="string"> 0  9  8  7       9  8  7  0</span></span><br><span class="line"><span class="string">10 11 12 13      10 11 12 13</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span><span class="params">(mat)</span>:</span></span><br><span class="line">    done=<span class="keyword">False</span></span><br><span class="line">    x=y=len(mat)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x):</span><br><span class="line">         <span class="keyword">for</span> j <span class="keyword">in</span> range(y<span class="number">-1</span>):</span><br><span class="line">             <span class="keyword">if</span> mat[i][j]==mat[i][j+<span class="number">1</span>] <span class="keyword">and</span> mat[i][j]!=<span class="number">0</span>:</span><br><span class="line">                 mat[i][j]*=<span class="number">2</span></span><br><span class="line">                 mat[i][j+<span class="number">1</span>]=<span class="number">0</span></span><br><span class="line">                 done=<span class="keyword">True</span></span><br><span class="line">    <span class="keyword">return</span> (mat,done)</span><br></pre></td></tr></table></figure>
+<p>接着我们处理<code>up</code>、<code>down</code>、<code>right</code>、<code>left</code>函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> 0  0  2  1       6  6  2  1</span></span><br><span class="line"><span class="string"> 6  6  5  4  ==&gt; 10  9  5  4</span></span><br><span class="line"><span class="string"> 0  9  8  7       0 11  8  7</span></span><br><span class="line"><span class="string">10 11 12 13       0  0 12 13</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">up</span><span class="params">(game)</span>:</span></span><br><span class="line">        game=transpose(game)</span><br><span class="line">        game,done=cover_up(game)</span><br><span class="line">        temp=merge(game)</span><br><span class="line">        game=temp[<span class="number">0</span>]</span><br><span class="line">        done=done <span class="keyword">or</span> temp[<span class="number">1</span>]</span><br><span class="line">        game=cover_up(game)[<span class="number">0</span>]</span><br><span class="line">        game=transpose(game)</span><br><span class="line">        <span class="keyword">return</span> (game,done)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> 0  0  2  1       0  0  2  1</span></span><br><span class="line"><span class="string"> 6  6  5  4  ==&gt;  0  6  5  4</span></span><br><span class="line"><span class="string"> 0  9  8  7       6  9  8  7</span></span><br><span class="line"><span class="string">10 11 12 13      10 11 12 13</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">down</span><span class="params">(game)</span>:</span></span><br><span class="line">        game=reverse(transpose(game))</span><br><span class="line">        game,done=cover_up(game)</span><br><span class="line">        temp=merge(game)</span><br><span class="line">        game=temp[<span class="number">0</span>]</span><br><span class="line">        done=done <span class="keyword">or</span> temp[<span class="number">1</span>]</span><br><span class="line">        game=cover_up(game)[<span class="number">0</span>]</span><br><span class="line">        game=transpose(reverse(game))</span><br><span class="line">        <span class="keyword">return</span> (game,done)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> 0  0  2  1       2  1  0  0</span></span><br><span class="line"><span class="string"> 6  6  5  4  ==&gt; 12  5  4  0</span></span><br><span class="line"><span class="string"> 0  9  8  7       9  8  7  0</span></span><br><span class="line"><span class="string">10 11 12 13      10 11 12 13</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">left</span><span class="params">(game)</span>:</span></span><br><span class="line">        game,done=cover_up(game)</span><br><span class="line">        temp=merge(game)</span><br><span class="line">        game=temp[<span class="number">0</span>]</span><br><span class="line">        done=done <span class="keyword">or</span> temp[<span class="number">1</span>]</span><br><span class="line">        game=cover_up(game)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">return</span> (game,done)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string"> 0  0  2  1       0  0  2  1</span></span><br><span class="line"><span class="string"> 6  6  5  4  ==&gt;  0 12  5  4</span></span><br><span class="line"><span class="string"> 0  9  8  7       0  9  8  0</span></span><br><span class="line"><span class="string">10 11 12 13      10 11 12 13</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">right</span><span class="params">(game)</span>:</span></span><br><span class="line">        game=reverse(game)</span><br><span class="line">        game,done=cover_up(game)</span><br><span class="line">        temp=merge(game)</span><br><span class="line">        game=temp[<span class="number">0</span>]</span><br><span class="line">        done=done <span class="keyword">or</span> temp[<span class="number">1</span>]</span><br><span class="line">        game=cover_up(game)[<span class="number">0</span>]</span><br><span class="line">        game=reverse(game)</span><br><span class="line">        <span class="keyword">return</span> (game,done)</span><br></pre></td></tr></table></figure>
+<p>接着定义<code>init_grid</code>这个图像初始化函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_grid</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment">#定义背景颜色和大小</span></span><br><span class="line">    background = Frame(self, bg=BACKGROUND_COLOR_GAME, width=SIZE, height=SIZE)</span><br><span class="line">    <span class="comment">#绘制背景</span></span><br><span class="line">    background.grid()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(GRID_LEN):</span><br><span class="line">        grid_row = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(GRID_LEN):</span><br><span class="line">            <span class="comment">#定义每个背景小方格的颜色和大小</span></span><br><span class="line">            cell = Frame(background, bg=BACKGROUND_COLOR_CELL_EMPTY, width=SIZE/GRID_LEN, height=SIZE/GRID_LEN)</span><br><span class="line">            <span class="comment">#填充小方格的分割线</span></span><br><span class="line">            cell.grid(row=i, column=j, padx=GRID_PADDING, pady=GRID_PADDING)</span><br><span class="line">            <span class="comment">#将label加入到frame中</span></span><br><span class="line">            t = Label(master=cell, text=<span class="string">""</span>, bg=BACKGROUND_COLOR_CELL_EMPTY, justify=CENTER, font=FONT, width=<span class="number">4</span>, height=<span class="number">2</span>)</span><br><span class="line">            t.grid()</span><br><span class="line">            grid_row.append(t)</span><br><span class="line">            self.grid_cells.append(grid_row)</span><br></pre></td></tr></table></figure>
+<p>接着我们定义一个产生随机数的函数<code>gen</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#产生[0, GRID_LEN-1]之间的随机数</span></span><br><span class="line">    <span class="keyword">return</span> randint(<span class="number">0</span>, GRID_LEN - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>接着我们开始定义游戏逻辑函数，首先定义<code>new_game</code>函数，这个函数用来初始化<code>n*n</code>矩阵为0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">new_game</span><span class="params">(n)</span>:</span></span><br><span class="line">    matrix = [[<span class="number">0</span>]*n <span class="keyword">for</span> i <span class="keyword">in</span> range(n)]</span><br><span class="line">    <span class="keyword">return</span> matrix</span><br></pre></td></tr></table></figure>
+<p>接着我们定义坐标产生函数<code>generate_next</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_next</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment">#产生随机坐标xy</span></span><br><span class="line">    index = (self.gen(), self.gen())</span><br><span class="line">    <span class="comment">#如果坐标xy格子对应的数字不是0的话，重新产生坐标</span></span><br><span class="line">    <span class="keyword">while</span> self.matrix[index[<span class="number">0</span>]][index[<span class="number">1</span>]] != <span class="number">0</span>:</span><br><span class="line">        index = (self.gen(), self.gen())</span><br><span class="line">    self.matrix[index[<span class="number">0</span>]][index[<span class="number">1</span>]] = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>接着我们定义矩阵初始化函数<code>init_matrix</code>（逻辑上）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init_matrix</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="comment">#初始化矩阵</span></span><br><span class="line">    self.matrix = new_game(<span class="number">4</span>)</span><br><span class="line">    <span class="comment">#随机初始化两个格子</span></span><br><span class="line">    self.generate_next()</span><br><span class="line">    self.generate_next()</span><br></pre></td></tr></table></figure>
+<p>接着我们定义格子初始化函数<code>update_grid_cells</code>（图形上）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update_grid_cells</span><span class="params">(self)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(GRID_LEN):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(GRID_LEN):</span><br><span class="line">            <span class="comment">#获取每个格子的数值</span></span><br><span class="line">            new_number = self.matrix[i][j]</span><br><span class="line">            <span class="comment">#如果格子的数值为0，设置对应的格子背景颜色</span></span><br><span class="line">            <span class="keyword">if</span> new_number == <span class="number">0</span>:</span><br><span class="line">                self.grid_cells[i][j].configure(text=<span class="string">""</span>, bg=BACKGROUND_COLOR_CELL_EMPTY)</span><br><span class="line">            <span class="keyword">else</span>:<span class="comment">#如果格子的数值不为0，设置对应的格子背景颜色，不同数字对应不同背景</span></span><br><span class="line">                self.grid_cells[i][j].configure(text=str(new_number), bg=BACKGROUND_COLOR_DICT[new_number], fg=CELL_COLOR_DICT[new_number])</span><br><span class="line">    <span class="comment">#更新所有的操作</span></span><br><span class="line">    self.update_idletasks()</span><br></pre></td></tr></table></figure>
+<p>我们定义游戏状态函数<code>game_state</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">game_state</span><span class="params">(mat)</span>:</span></span><br><span class="line">    x=y=len(mat)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(y):</span><br><span class="line">            <span class="comment">#如果矩阵有数是2048，那么就赢了</span></span><br><span class="line">            <span class="keyword">if</span> mat[i][j]==<span class="number">2048</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'win'</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x<span class="number">-1</span>): </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(y<span class="number">-1</span>): </span><br><span class="line">            <span class="keyword">if</span> mat[i][j]==mat[i+<span class="number">1</span>][j] <span class="keyword">or</span> mat[i][j+<span class="number">1</span>]==mat[i][j]:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'not over'</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(x): </span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(len(y):</span><br><span class="line">            <span class="keyword">if</span> mat[i][j]==<span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'not over'</span></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(x<span class="number">-1</span>): </span><br><span class="line">        <span class="keyword">if</span> mat[x<span class="number">-1</span>][k]==mat[x<span class="number">-1</span>][k+<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'not over'</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(x<span class="number">-1</span>): </span><br><span class="line">        <span class="keyword">if</span> mat[j][x<span class="number">-1</span>]==mat[j+<span class="number">1</span>][x<span class="number">-1</span>]:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">'not over'</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'lose'</span></span><br></pre></td></tr></table></figure>
+<p>接着我们定义按键处理函数<code>key_down</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">key_down</span><span class="params">(self, event)</span>:</span></span><br><span class="line">    <span class="comment">#得到输入的按键</span></span><br><span class="line">    key = repr(event.char)</span><br><span class="line">    <span class="keyword">if</span> key <span class="keyword">in</span> self.commands:</span><br><span class="line">        self.matrix,done = self.commands[key](self.matrix)</span><br><span class="line">        <span class="keyword">if</span> done:</span><br><span class="line">            <span class="comment">#产生新的坐标</span></span><br><span class="line">            self.generate_next()</span><br><span class="line">            <span class="comment">#图形上更新小方格</span></span><br><span class="line">            self.update_grid_cells()</span><br><span class="line">            done=<span class="keyword">False</span></span><br><span class="line">            <span class="comment">#如果游戏状态为赢的话</span></span><br><span class="line">            <span class="keyword">if</span> game_state(self.matrix)==<span class="string">'win'</span>:</span><br><span class="line">                self.grid_cells[<span class="number">1</span>][<span class="number">1</span>].configure(text=<span class="string">"You"</span>,bg=BACKGROUND_COLOR_CELL_EMPTY)</span><br><span class="line">                self.grid_cells[<span class="number">1</span>][<span class="number">2</span>].configure(text=<span class="string">"Win!"</span>,bg=BACKGROUND_COLOR_CELL_EMPTY)</span><br><span class="line">            <span class="comment">#如果游戏状态为输的话</span></span><br><span class="line">            <span class="keyword">if</span> game_state(self.matrix)==<span class="string">'lose'</span>:</span><br><span class="line">                self.grid_cells[<span class="number">1</span>][<span class="number">1</span>].configure(text=<span class="string">"You"</span>,bg=BACKGROUND_COLOR_CELL_EMPTY)</span><br><span class="line">                self.grid_cells[<span class="number">1</span>][<span class="number">2</span>].configure(text=<span class="string">"Lose!"</span>,bg=BACKGROUND_COLOR_CELL_EMPTY)</span><br></pre></td></tr></table></figure>
+<p>回顾上面的所有细节，我们发现最困难的地方就在于矩阵的处理上面</p>
+<p>项目地址，give me a star O(∩_∩)O！<a href="https://github.com/luliyucoordinate/Python2048" target="_blank" rel="noopener"><img src="https://img.shields.io/github/stars/badges/shields.svg?style=social&amp;label=Stars" alt="GitHub stars"></a></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/02/09/2018-02-09-图片转字符画/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">图片转化为字符画</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

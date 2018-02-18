@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="“when VTABLE is get created in Memory , In compiletime or runtime?” Compile time. The vtable is simple an array of function pointers that gets stored in the executable. It never changes and this arra">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.507Z">
+<meta property="og:updated_time" content="2018-02-18T08:41:12.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="虚函数表到底是怎么存放的">
 <meta name="twitter:description" content="“when VTABLE is get created in Memory , In compiletime or runtime?” Compile time. The vtable is simple an array of function pointers that gets stored in the executable. It never changes and this arra">
@@ -65,32 +65,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -179,6 +157,7 @@
 </ul>
 <p>“如果这个类包含一个虚拟函数，那么类的大小是多少？”</p>
 <p>如果具有1或100个虚拟函数，类数据成员的大小+ vtable指针的大小（x86为4个字节，x64为8个字节）（单个继承），则该类具有相同的大小。</p>
+<a id="more"></a>
 <ul>
 <li><p>“Heap or Stack?”</p>
 <p>As I said, the vtable is stored in the executable. The executable is memory mapped so basically it’s stored in the same place where the code is, in memory that belongs to a memory mapped section, that’s neither heap nor stack.</p>
@@ -314,9 +293,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

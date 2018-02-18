@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2代码分析（六） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="我们再次回到了parse_network_cfg函数 1234//parse_network_cfgelse if(lt == ACTIVE)&amp;#123;          l = parse_activation(options, params);      &amp;#125;">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2代码分析（六）">
+<meta property="og:url" content="http://coordinate.wang/2017/12/22/2017-12-22-YOLOv2代码分析（六）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我们再次回到了parse_network_cfg函数 1234//parse_network_cfgelse if(lt == ACTIVE)&amp;#123;          l = parse_activation(options, params);      &amp;#125;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmqgyg10coj207x0c4t9h.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fmqqerg7x0j20kl08w408.jpg">
+<meta property="og:updated_time" content="2018-02-18T08:44:30.003Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2代码分析（六）">
+<meta name="twitter:description" content="我们再次回到了parse_network_cfg函数 1234//parse_network_cfgelse if(lt == ACTIVE)&amp;#123;          l = parse_activation(options, params);      &amp;#125;">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmqgyg10coj207x0c4t9h.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-22-YOLOv2代码分析（六）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2代码分析（六）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/" class="article-date">
+	  <time datetime="2017-12-21T16:00:00.000Z" itemprop="datePublished">十二月 22, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们再次回到了<code>parse_network_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//parse_network_cfg</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(lt == ACTIVE)&#123;</span><br><span class="line">          l = parse_activation(options, params);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>接着看后面这个<code>parse_activation</code>函数</p>
+<p>#0x01 parse_activation</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">parse_activation</span><span class="params">(<span class="built_in">list</span> *options, size_params params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *activation_s = option_find_str(options, <span class="string">"activation"</span>, <span class="string">"linear"</span>);</span><br><span class="line">    ACTIVATION activation = get_activation(activation_s);</span><br><span class="line"></span><br><span class="line">    layer l = make_activation_layer(params.batch, params.inputs, activation);</span><br><span class="line"></span><br><span class="line">    l.out_h = params.h;</span><br><span class="line">    l.out_w = params.w;</span><br><span class="line">    l.out_c = params.c;</span><br><span class="line">    l.h = params.h;</span><br><span class="line">    l.w = params.w;</span><br><span class="line">    l.c = params.c;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的一些参数我在之前的文章中已经说过了，这里就不再说明了。直接看关键函数<code>make_activation_layer</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">make_activation_layer</span><span class="params">(<span class="keyword">int</span> batch, <span class="keyword">int</span> inputs, ACTIVATION activation)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">    l.forward = forward_activation_layer;</span><br><span class="line">    l.backward = backward_activation_layer;</span><br><span class="line">...</span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面的参数信息我这里也不再提了，直接看关键的两个函数，先看第一个<code>forward_activation_layer</code></p>
+<h2 id="0x0101-forward-activation-layer"><a href="#0x0101-forward-activation-layer" class="headerlink" title="0x0101 forward_activation_layer"></a>0x0101 forward_activation_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_activation_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    copy_cpu(l.outputs*l.batch, net.input, <span class="number">1</span>, l.output, <span class="number">1</span>);</span><br><span class="line">    activate_array(l.output, l.outputs*l.batch, l.activation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>貌似这里没什么好说的b（￣▽￣）d　</p>
+<h2 id="0x0102-backward-activation-layer"><a href="#0x0102-backward-activation-layer" class="headerlink" title="0x0102 backward_activation_layer"></a>0x0102 backward_activation_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_activation_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);</span><br><span class="line">    copy_cpu(l.outputs*l.batch, l.delta, <span class="number">1</span>, net.delta, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>貌似这里也没什么好说的d( •̀ ω •́ )y　</p>
+<p>回到<code>parse_network_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//parse_network_cfg</span></span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(lt == RNN)&#123;</span><br><span class="line">          l = parse_rnn(options, params);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>#0x02 parse_rnn</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">parse_rnn</span><span class="params">(<span class="built_in">list</span> *options, size_params params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> output = option_find_int(options, <span class="string">"output"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> hidden = option_find_int(options, <span class="string">"hidden"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">char</span> *activation_s = option_find_str(options, <span class="string">"activation"</span>, <span class="string">"logistic"</span>);</span><br><span class="line">    ACTIVATION activation = get_activation(activation_s);</span><br><span class="line">    <span class="keyword">int</span> batch_normalize = option_find_int_quiet(options, <span class="string">"batch_normalize"</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> logistic = option_find_int_quiet(options, <span class="string">"logistic"</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    layer l = make_rnn_layer(params.batch, params.inputs, hidden, output, params.time_steps, activation, batch_normalize, logistic);</span><br><span class="line"></span><br><span class="line">    l.shortcut = option_find_int_quiet(options, <span class="string">"shortcut"</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我先说说这里的几个参数的含义，因为我之前有的没有讲过。</p>
+<ul>
+<li><code>hidden</code>:<code>RNN</code>隐藏层的元素个数</li>
+<li><code>time_steps</code>:<code>RNN</code>的步长</li>
+<li><code>logistic</code>:<code>Logistic</code>激活函数</li>
+</ul>
+<p>接着我们来看关键函数<code>make_rnn_layer</code></p>
+<h2 id="0x02-make-rnn-layer"><a href="#0x02-make-rnn-layer" class="headerlink" title="0x02 make_rnn_layer"></a>0x02 make_rnn_layer</h2><p>作者这里使用的是<code>vanilla RNN</code>结构，有三个全连接层组成。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmqgyg10coj207x0c4t9h.jpg"><br></center>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">make_rnn_layer</span><span class="params">(<span class="keyword">int</span> batch, <span class="keyword">int</span> inputs, <span class="keyword">int</span> outputs, <span class="keyword">int</span> steps, ACTIVATION activation, <span class="keyword">int</span> batch_normalize, <span class="keyword">int</span> adam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line">    l.input_layer = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));<span class="comment">//隐藏层1</span></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.input_layer) = make_connected_layer(batch*steps, inputs, outputs, activation, batch_normalize, adam);</span><br><span class="line">    l.input_layer-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.self_layer = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));<span class="comment">//隐藏层2</span></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.self_layer) = make_connected_layer(batch*steps, outputs, outputs, activation, batch_normalize, adam);</span><br><span class="line">    l.self_layer-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.output_layer = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));<span class="comment">//隐藏层3</span></span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.output_layer) = make_connected_layer(batch*steps, outputs, outputs, activation, batch_normalize, adam);</span><br><span class="line">    l.output_layer-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.outputs = outputs;</span><br><span class="line">    l.output = l.output_layer-&gt;output;</span><br><span class="line">    l.delta = l.output_layer-&gt;delta;</span><br><span class="line"></span><br><span class="line">    l.forward = forward_rnn_layer;</span><br><span class="line">    l.backward = backward_rnn_layer;</span><br><span class="line">    l.update = update_rnn_layer;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>我们看这里的<code>make_connected_layer</code>函数</p>
+<h2 id="0x0201-make-connected-layer"><a href="#0x0201-make-connected-layer" class="headerlink" title="0x0201 make_connected_layer"></a>0x0201 make_connected_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">make_connected_layer</span><span class="params">(<span class="keyword">int</span> batch, <span class="keyword">int</span> inputs, <span class="keyword">int</span> outputs, ACTIVATION activation, <span class="keyword">int</span> batch_normalize, <span class="keyword">int</span> adam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    l.forward = forward_connected_layer;</span><br><span class="line">    l.backward = backward_connected_layer;</span><br><span class="line">    l.update = update_connected_layer;   </span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的参数信息也没什么好说的，直接看函数吧</p>
+<h2 id="0x020101-forward-connected-layer"><a href="#0x020101-forward-connected-layer" class="headerlink" title="0x020101 forward_connected_layer"></a>0x020101 forward_connected_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_connected_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fill_cpu(l.outputs*l.batch, <span class="number">0</span>, l.output, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> m = l.batch;</span><br><span class="line">    <span class="keyword">int</span> k = l.inputs;</span><br><span class="line">    <span class="keyword">int</span> n = l.outputs;</span><br><span class="line">    <span class="keyword">float</span> *a = net.input;</span><br><span class="line">    <span class="keyword">float</span> *b = l.weights;</span><br><span class="line">    <span class="keyword">float</span> *c = l.output;</span><br><span class="line">    gemm(<span class="number">0</span>,<span class="number">1</span>,m,n,k,<span class="number">1</span>,a,k,b,k,<span class="number">1</span>,c,n);</span><br><span class="line">    <span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        forward_batchnorm_layer(l, net);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        add_bias(l.output, l.biases, l.batch, l.outputs, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    activate_array(l.output, l.outputs*l.batch, l.activation);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数其实没什么好说的，要注意的地方就是这里的<code>b</code>是转置的。还有一个地方要注意的是，这里没有了<code>groups</code>和<code>batch</code>，这也非常好理解。</p>
+<h2 id="0x020102-backward-connected-layer"><a href="#0x020102-backward-connected-layer" class="headerlink" title="0x020102 backward_connected_layer"></a>0x020102 backward_connected_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_connected_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        backward_batchnorm_layer(l, net);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        backward_bias(l.bias_updates, l.delta, l.batch, l.outputs, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m = l.outputs;</span><br><span class="line">    <span class="keyword">int</span> k = l.batch;</span><br><span class="line">    <span class="keyword">int</span> n = l.inputs;</span><br><span class="line">    <span class="keyword">float</span> *a = l.delta;</span><br><span class="line">    <span class="keyword">float</span> *b = net.input;</span><br><span class="line">    <span class="keyword">float</span> *c = l.weight_updates;</span><br><span class="line">    gemm(<span class="number">1</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,m,b,n,<span class="number">1</span>,c,n);</span><br><span class="line"></span><br><span class="line">    m = l.batch;</span><br><span class="line">    k = l.outputs;</span><br><span class="line">    n = l.inputs;</span><br><span class="line"></span><br><span class="line">    a = l.delta;</span><br><span class="line">    b = l.weights;</span><br><span class="line">    c = net.delta;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(c) gemm(<span class="number">0</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,k,b,n,<span class="number">1</span>,c,n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没什么好说的</p>
+<h2 id="0x020103-update-connected-layer"><a href="#0x020103-update-connected-layer" class="headerlink" title="0x020103 update_connected_layer"></a>0x020103 update_connected_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_connected_layer</span><span class="params">(layer l, update_args a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> learning_rate = a.learning_rate*l.learning_rate_scale;</span><br><span class="line">    <span class="keyword">float</span> momentum = a.momentum;</span><br><span class="line">    <span class="keyword">float</span> decay = a.decay;</span><br><span class="line">    <span class="keyword">int</span> batch = a.batch;</span><br><span class="line">    axpy_cpu(l.outputs, learning_rate/batch, l.bias_updates, <span class="number">1</span>, l.biases, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(l.outputs, momentum, l.bias_updates, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        axpy_cpu(l.outputs, learning_rate/batch, l.scale_updates, <span class="number">1</span>, l.scales, <span class="number">1</span>);</span><br><span class="line">        scal_cpu(l.outputs, momentum, l.scale_updates, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    axpy_cpu(l.inputs*l.outputs, -decay*batch, l.weights, <span class="number">1</span>, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">    axpy_cpu(l.inputs*l.outputs, learning_rate/batch, l.weight_updates, <span class="number">1</span>, l.weights, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(l.inputs*l.outputs, momentum, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没什么说的(￣▽￣)”</p>
+<h2 id="0x0202-forward-rnn-layer"><a href="#0x0202-forward-rnn-layer" class="headerlink" title="0x0202 forward_rnn_layer"></a>0x0202 forward_rnn_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_rnn_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    network s = net;</span><br><span class="line">    s.train = net.train;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    layer input_layer = *(l.input_layer);</span><br><span class="line">    layer self_layer = *(l.self_layer);</span><br><span class="line">    layer output_layer = *(l.output_layer);</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, output_layer.delta, <span class="number">1</span>);</span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, self_layer.delta, <span class="number">1</span>);</span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, input_layer.delta, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span>(net.train) fill_cpu(l.outputs * l.batch, <span class="number">0</span>, l.state, <span class="number">1</span>);<span class="comment">//如果网络是训练状态的话，将state设置为0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; l.steps; ++i) &#123;</span><br><span class="line">        s.input = net.input;</span><br><span class="line">        forward_connected_layer(input_layer, s);</span><br><span class="line"></span><br><span class="line">        s.input = l.state;</span><br><span class="line">        forward_connected_layer(self_layer, s);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">float</span> *old_state = l.state;<span class="comment">//存储当前状态</span></span><br><span class="line">        <span class="keyword">if</span>(net.train) l.state += l.outputs*l.batch;</span><br><span class="line">        <span class="keyword">if</span>(l.shortcut)&#123;<span class="comment">//是否添加shortcut连接</span></span><br><span class="line">            copy_cpu(l.outputs * l.batch, old_state, <span class="number">1</span>, l.state, <span class="number">1</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            fill_cpu(l.outputs * l.batch, <span class="number">0</span>, l.state, <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        axpy_cpu(l.outputs * l.batch, <span class="number">1</span>, input_layer.output, <span class="number">1</span>, l.state, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.outputs * l.batch, <span class="number">1</span>, self_layer.output, <span class="number">1</span>, l.state, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        s.input = l.state;</span><br><span class="line">        forward_connected_layer(output_layer, s);</span><br><span class="line">		<span class="comment">//结束后，三个层都向前移动一步</span></span><br><span class="line">        net.input += l.inputs*l.batch;</span><br><span class="line">        increment_layer(&amp;input_layer, <span class="number">1</span>);</span><br><span class="line">        increment_layer(&amp;self_layer, <span class="number">1</span>);</span><br><span class="line">        increment_layer(&amp;output_layer, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先说说这个函数吧<code>increment_layer</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">increment_layer</span><span class="params">(layer *l, <span class="keyword">int</span> steps)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> num = l-&gt;outputs*l-&gt;batch*steps;</span><br><span class="line">    l-&gt;output += num;</span><br><span class="line">    l-&gt;delta += num;</span><br><span class="line">    l-&gt;x += num;</span><br><span class="line">    l-&gt;x_norm += num;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> GPU</span></span><br><span class="line">    l-&gt;output_gpu += num;</span><br><span class="line">    l-&gt;delta_gpu += num;</span><br><span class="line">    l-&gt;x_gpu += num;</span><br><span class="line">    l-&gt;x_norm_gpu += num;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的作用就是<code>rnn</code>向前的过程中，调整参数的初始位置。</p>
+<p>这个<code>RNN</code>网络主要前向传播<code>time_steps</code>次。网络总共分为三层，第一层将输入数据编码（one-hot），是一个256的向量。第二层主要是传入上一次的状态和前一层的输出。第二层主要是传入上一次的状态和前一层的输出，并且输出结果转化为一个256维的向量，并且进行归一化处理。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fmqqerg7x0j20kl08w408.jpg"><br></center>
+
+
+<h2 id="0x0203-backward-rnn-layer"><a href="#0x0203-backward-rnn-layer" class="headerlink" title="0x0203 backward_rnn_layer"></a>0x0203 backward_rnn_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_rnn_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    network s = net;</span><br><span class="line">    s.train = net.train;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    layer input_layer = *(l.input_layer);</span><br><span class="line">    layer self_layer = *(l.self_layer);</span><br><span class="line">    layer output_layer = *(l.output_layer);</span><br><span class="line"></span><br><span class="line">    increment_layer(&amp;input_layer, l.steps<span class="number">-1</span>);</span><br><span class="line">    increment_layer(&amp;self_layer, l.steps<span class="number">-1</span>);</span><br><span class="line">    increment_layer(&amp;output_layer, l.steps<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">    l.state += l.outputs*l.batch*l.steps;</span><br><span class="line">    <span class="keyword">for</span> (i = l.steps<span class="number">-1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">        copy_cpu(l.outputs * l.batch, input_layer.output, <span class="number">1</span>, l.state, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.outputs * l.batch, <span class="number">1</span>, self_layer.output, <span class="number">1</span>, l.state, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        s.input = l.state;</span><br><span class="line">        s.delta = self_layer.delta;</span><br><span class="line">        backward_connected_layer(output_layer, s);</span><br><span class="line"></span><br><span class="line">        l.state -= l.outputs*l.batch;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">           if(i &gt; 0)&#123;</span></span><br><span class="line"><span class="comment">           copy_cpu(l.outputs * l.batch, input_layer.output - l.outputs*l.batch, 1, l.state, 1);</span></span><br><span class="line"><span class="comment">           axpy_cpu(l.outputs * l.batch, 1, self_layer.output - l.outputs*l.batch, 1, l.state, 1);</span></span><br><span class="line"><span class="comment">           &#125;else&#123;</span></span><br><span class="line"><span class="comment">           fill_cpu(l.outputs * l.batch, 0, l.state, 1);</span></span><br><span class="line"><span class="comment">           &#125;</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line"></span><br><span class="line">        s.input = l.state;</span><br><span class="line">        s.delta = self_layer.delta - l.outputs*l.batch;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>) s.delta = <span class="number">0</span>;</span><br><span class="line">        backward_connected_layer(self_layer, s);</span><br><span class="line"></span><br><span class="line">        copy_cpu(l.outputs*l.batch, self_layer.delta, <span class="number">1</span>, input_layer.delta, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">if</span> (i &gt; <span class="number">0</span> &amp;&amp; l.shortcut) axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, self_layer.delta, <span class="number">1</span>, self_layer.delta - l.outputs*l.batch, <span class="number">1</span>);</span><br><span class="line">        s.input = net.input + i*l.inputs*l.batch;</span><br><span class="line">        <span class="keyword">if</span>(net.delta) s.delta = net.delta + i*l.inputs*l.batch;</span><br><span class="line">        <span class="keyword">else</span> s.delta = <span class="number">0</span>;</span><br><span class="line">        backward_connected_layer(input_layer, s);</span><br><span class="line">		<span class="comment">//误差传回后，后退一步</span></span><br><span class="line">        increment_layer(&amp;input_layer, <span class="number">-1</span>);</span><br><span class="line">        increment_layer(&amp;self_layer, <span class="number">-1</span>);</span><br><span class="line">        increment_layer(&amp;output_layer, <span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没啥好说的(￣▽￣)”</p>
+<h2 id="0x0204-update-rnn-layer"><a href="#0x0204-update-rnn-layer" class="headerlink" title="0x0204 update_rnn_layer"></a>0x0204 update_rnn_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_rnn_layer</span><span class="params">(layer l, update_args a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    update_connected_layer(*(l.input_layer),  a);</span><br><span class="line">    update_connected_layer(*(l.self_layer),   a);</span><br><span class="line">    update_connected_layer(*(l.output_layer), a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更新参数信息，调用三次全连接层的更新函数</p>
+<p>回到<code>parse_network_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(lt == GRU)&#123;</span><br><span class="line">          l = parse_gru(options, params);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="0x03-parse-gru"><a href="#0x03-parse-gru" class="headerlink" title="0x03 parse_gru"></a>0x03 parse_gru</h2><p>这一部分内容我本来不打算写了，因为这和YOLOv2没有一点关系，但是抱着一种学习的态度，我还是将这部分代码做一些简要地分析，如果有不对的地方，希望大家指出，互相学习。<a href="https://arxiv.org/pdf/1406.1078v3.pdf" target="_blank" rel="noopener">参考这篇论文</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">parse_gru</span><span class="params">(<span class="built_in">list</span> *options, size_params params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> output = option_find_int(options, <span class="string">"output"</span>,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> batch_normalize = option_find_int_quiet(options, <span class="string">"batch_normalize"</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    layer l = make_gru_layer(params.batch, params.inputs, output, params.time_steps, batch_normalize, params.net-&gt;adam);</span><br><span class="line">    l.<span class="built_in">tanh</span> = option_find_int_quiet(options, <span class="string">"tanh"</span>, <span class="number">0</span>);<span class="comment">//tanh激活函数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们现在看看这个<code>make_gru_layer</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">layer <span class="title">make_gru_layer</span><span class="params">(<span class="keyword">int</span> batch, <span class="keyword">int</span> inputs, <span class="keyword">int</span> outputs, <span class="keyword">int</span> steps, <span class="keyword">int</span> batch_normalize, <span class="keyword">int</span> adam)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">    l.uz = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.uz) = make_connected_layer(batch*steps, inputs, outputs, LINEAR, batch_normalize, adam);</span><br><span class="line">    l.uz-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.wz = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.wz) = make_connected_layer(batch*steps, outputs, outputs, LINEAR, batch_normalize, adam);</span><br><span class="line">    l.wz-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.ur = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.ur) = make_connected_layer(batch*steps, inputs, outputs, LINEAR, batch_normalize, adam);</span><br><span class="line">    l.ur-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.wr = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.wr) = make_connected_layer(batch*steps, outputs, outputs, LINEAR, batch_normalize, adam);</span><br><span class="line">    l.wr-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.uh = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.uh) = make_connected_layer(batch*steps, inputs, outputs, LINEAR, batch_normalize, adam);</span><br><span class="line">    l.uh-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.wh = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(layer));</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"\t\t"</span>);</span><br><span class="line">    *(l.wh) = make_connected_layer(batch*steps, outputs, outputs, LINEAR, batch_normalize, adam);</span><br><span class="line">    l.wh-&gt;batch = batch;</span><br><span class="line"></span><br><span class="line">    l.batch_normalize = batch_normalize;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    l.outputs = outputs;</span><br><span class="line">    l.output = <span class="built_in">calloc</span>(outputs*batch*steps, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.delta = <span class="built_in">calloc</span>(outputs*batch*steps, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.state = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.prev_state = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.forgot_state = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.forgot_delta = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line"></span><br><span class="line">    l.r_cpu = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.z_cpu = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">    l.h_cpu = <span class="built_in">calloc</span>(outputs*batch, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line"></span><br><span class="line">    l.forward = forward_gru_layer;</span><br><span class="line">    l.backward = backward_gru_layer;</span><br><span class="line">    l.update = update_gru_layer;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="0x0301-forward-gru-layer"><a href="#0x0301-forward-gru-layer" class="headerlink" title="0x0301 forward_gru_layer"></a>0x0301 forward_gru_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_gru_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    network s = net;</span><br><span class="line">    s.train = net.train;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    layer uz = *(l.uz);</span><br><span class="line">    layer ur = *(l.ur);</span><br><span class="line">    layer uh = *(l.uh);</span><br><span class="line"></span><br><span class="line">    layer wz = *(l.wz);</span><br><span class="line">    layer wr = *(l.wr);</span><br><span class="line">    layer wh = *(l.wh);</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, uz.delta, <span class="number">1</span>);</span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, ur.delta, <span class="number">1</span>);</span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, uh.delta, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, wz.delta, <span class="number">1</span>);</span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, wr.delta, <span class="number">1</span>);</span><br><span class="line">    fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, wh.delta, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span>(net.train) &#123;</span><br><span class="line">        fill_cpu(l.outputs * l.batch * l.steps, <span class="number">0</span>, l.delta, <span class="number">1</span>);</span><br><span class="line">        copy_cpu(l.outputs*l.batch, l.state, <span class="number">1</span>, l.prev_state, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; l.steps; ++i) &#123;</span><br><span class="line">        s.input = l.state;</span><br><span class="line">        forward_connected_layer(wz, s);</span><br><span class="line">        forward_connected_layer(wr, s);</span><br><span class="line"></span><br><span class="line">        s.input = net.input;</span><br><span class="line">        forward_connected_layer(uz, s);</span><br><span class="line">        forward_connected_layer(ur, s);</span><br><span class="line">        forward_connected_layer(uh, s);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        copy_cpu(l.outputs*l.batch, uz.output, <span class="number">1</span>, l.z_cpu, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, wz.output, <span class="number">1</span>, l.z_cpu, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        copy_cpu(l.outputs*l.batch, ur.output, <span class="number">1</span>, l.r_cpu, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, wr.output, <span class="number">1</span>, l.r_cpu, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        activate_array(l.z_cpu, l.outputs*l.batch, LOGISTIC);</span><br><span class="line">        activate_array(l.r_cpu, l.outputs*l.batch, LOGISTIC);</span><br><span class="line"></span><br><span class="line">        copy_cpu(l.outputs*l.batch, l.state, <span class="number">1</span>, l.forgot_state, <span class="number">1</span>);</span><br><span class="line">        mul_cpu(l.outputs*l.batch, l.r_cpu, <span class="number">1</span>, l.forgot_state, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        s.input = l.forgot_state;</span><br><span class="line">        forward_connected_layer(wh, s);</span><br><span class="line"></span><br><span class="line">        copy_cpu(l.outputs*l.batch, uh.output, <span class="number">1</span>, l.h_cpu, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, wh.output, <span class="number">1</span>, l.h_cpu, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(l.<span class="built_in">tanh</span>)&#123;</span><br><span class="line">            activate_array(l.h_cpu, l.outputs*l.batch, TANH);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            activate_array(l.h_cpu, l.outputs*l.batch, LOGISTIC);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        weighted_sum_cpu(l.state, l.h_cpu, l.z_cpu, l.outputs*l.batch, l.output);</span><br><span class="line"></span><br><span class="line">        copy_cpu(l.outputs*l.batch, l.output, <span class="number">1</span>, l.state, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        net.input += l.inputs*l.batch;</span><br><span class="line">        l.output += l.outputs*l.batch;</span><br><span class="line">        increment_layer(&amp;uz, <span class="number">1</span>);</span><br><span class="line">        increment_layer(&amp;ur, <span class="number">1</span>);</span><br><span class="line">        increment_layer(&amp;uh, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        increment_layer(&amp;wz, <span class="number">1</span>);</span><br><span class="line">        increment_layer(&amp;wr, <span class="number">1</span>);</span><br><span class="line">        increment_layer(&amp;wh, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, wz.output, <span class="number">1</span>, l.z_cpu, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>对应$i^z(t)=x_tU^z+s_{t-1}W^z$</p>
+</li>
+<li><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, wr.output, <span class="number">1</span>, l.r_cpu, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>对应$i^z(t)=x_tU^z+s_{t-1}W^z$</p>
+</li>
+<li><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mul_cpu(l.outputs*l.batch, l.r_cpu, <span class="number">1</span>, l.forgot_state, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>对应$s_{t-1}\odot r(t)$</p>
+</li>
+<li><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">axpy_cpu(l.outputs*l.batch, <span class="number">1</span>, wh.output, <span class="number">1</span>, l.h_cpu, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>对应$i^h(t)=x_tU^h+(s_{t-1}\odot r(t))W^h$</p>
+</li>
+</ul>
+<p>看一下<code>weighted_sum_cpu</code>函数的作用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">weighted_sum_cpu</span><span class="params">(<span class="keyword">float</span> *a, <span class="keyword">float</span> *b, <span class="keyword">float</span> *s, <span class="keyword">int</span> n, <span class="keyword">float</span> *c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">        c[i] = s[i]*a[i] + (<span class="number">1</span>-s[i])*(b ? b[i] : <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">weighted_sum_cpu(l.state, l.h_cpu, l.z_cpu, l.outputs*l.batch, l.output);</span><br></pre></td></tr></table></figure>
+<p>对应$(1-z)\odot h+z\odot s_{t-1}$</p>
+</li>
+</ul>
+<h2 id="0x0302-update-gru-layer"><a href="#0x0302-update-gru-layer" class="headerlink" title="0x0302 update_gru_layer"></a>0x0302 update_gru_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_gru_layer</span><span class="params">(layer l, update_args a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    update_connected_layer(*(l.ur), a);</span><br><span class="line">    update_connected_layer(*(l.uz), a);</span><br><span class="line">    update_connected_layer(*(l.uh), a);</span><br><span class="line">    update_connected_layer(*(l.wr), a);</span><br><span class="line">    update_connected_layer(*(l.wz), a);</span><br><span class="line">    update_connected_layer(*(l.wh), a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我现在看到的这个源码，作者还没有实现<code>backward_gru_layer</code></p>
+<p>文章全部<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<p>由于本人水平有限，文中有不对之处，希望大家指出，谢谢^_^!</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/24/2017-12-24-YOLOv2参数解析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2参数解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2代码分析（五）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-forward-activation-layer"><span class="nav-number">1.</span> <span class="nav-text">0x0101 forward_activation_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0102-backward-activation-layer"><span class="nav-number">2.</span> <span class="nav-text">0x0102 backward_activation_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-make-rnn-layer"><span class="nav-number">3.</span> <span class="nav-text">0x02 make_rnn_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0201-make-connected-layer"><span class="nav-number">4.</span> <span class="nav-text">0x0201 make_connected_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x020101-forward-connected-layer"><span class="nav-number">5.</span> <span class="nav-text">0x020101 forward_connected_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x020102-backward-connected-layer"><span class="nav-number">6.</span> <span class="nav-text">0x020102 backward_connected_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x020103-update-connected-layer"><span class="nav-number">7.</span> <span class="nav-text">0x020103 update_connected_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0202-forward-rnn-layer"><span class="nav-number">8.</span> <span class="nav-text">0x0202 forward_rnn_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0203-backward-rnn-layer"><span class="nav-number">9.</span> <span class="nav-text">0x0203 backward_rnn_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0204-update-rnn-layer"><span class="nav-number">10.</span> <span class="nav-text">0x0204 update_rnn_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-parse-gru"><span class="nav-number">11.</span> <span class="nav-text">0x03 parse_gru</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0301-forward-gru-layer"><span class="nav-number">12.</span> <span class="nav-text">0x0301 forward_gru_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0302-update-gru-layer"><span class="nav-number">13.</span> <span class="nav-text">0x0302 update_gru_layer</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

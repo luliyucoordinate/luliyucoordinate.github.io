@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>RefineDet论文笔记 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="论文地址：Single-Shot Refinement Neural Network for Object Detection 项目地址：RefineDet 0x01 Abstract当前的目标检测网络主要分为两大类：  single-stage：SSD、YOLO、YOLO9000 two-stage：Faster RCNN 、 R-FCN、Mask R-CNN  single-stage通过对位">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RefineDet论文笔记">
+<meta property="og:url" content="http://coordinate.wang/2018/01/15/2018-01-15-RefineDet论文笔记/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="论文地址：Single-Shot Refinement Neural Network for Object Detection 项目地址：RefineDet 0x01 Abstract当前的目标检测网络主要分为两大类：  single-stage：SSD、YOLO、YOLO9000 two-stage：Faster RCNN 、 R-FCN、Mask R-CNN  single-stage通过对位">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fniigbskepj20qw0eomzg.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fnijb7g8a4j20c50d53z8.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fnjdf3ssb7j20r80f40x2.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fnjdf7d3wrj20ru0j97ay.jpg">
+<meta property="og:updated_time" content="2018-02-18T08:47:13.604Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RefineDet论文笔记">
+<meta name="twitter:description" content="论文地址：Single-Shot Refinement Neural Network for Object Detection 项目地址：RefineDet 0x01 Abstract当前的目标检测网络主要分为两大类：  single-stage：SSD、YOLO、YOLO9000 two-stage：Faster RCNN 、 R-FCN、Mask R-CNN  single-stage通过对位">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fniigbskepj20qw0eomzg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-01-15-RefineDet论文笔记" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      RefineDet论文笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/01/15/2018-01-15-RefineDet论文笔记/" class="article-date">
+	  <time datetime="2018-01-14T16:00:00.000Z" itemprop="datePublished">一月 15, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>论文地址：<a href="https://arxiv.org/pdf/1711.06897.pdf" target="_blank" rel="noopener">Single-Shot Refinement Neural Network for Object Detection</a></p>
+<p>项目地址：<a href="https://github.com/sfzhang15/RefineDet" target="_blank" rel="noopener">RefineDet</a></p>
+<h1 id="0x01-Abstract"><a href="#0x01-Abstract" class="headerlink" title="0x01 Abstract"></a>0x01 Abstract</h1><p>当前的目标检测网络主要分为两大类：</p>
+<ul>
+<li><code>single-stage</code>：SSD、YOLO、YOLO9000</li>
+<li><code>two-stage</code>：Faster RCNN 、 R-FCN、Mask R-CNN</li>
+</ul>
+<p><code>single-stage</code>通过对位置，比例和长宽进行规则和密度采样来检测对象。<code>two-stage</code>首先选取目标区域，然后对目标分类。<code>single-stage</code>方法速度快，但是检测精度比<code>two-stage</code>低。</p>
+<a id="more"></a>
+<p>因此作者提出了<code>RefineDet</code>方法，同行继承了<code>two-stage</code>和<code>single-stage</code>两者的优点。它有两个模块构成，一个是anchor细化模块（ARM）一个是目标检测模块（ODM）。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fniigbskepj20qw0eomzg.jpg"><br></center>
+
+<p>ARM模块用来减小分类器的搜索空间，粗略地描述anchor的位置和大小。通过连接模块（TCB）将ARM中的特征，传输给ODM模块，以获取更加准确的目标位置和大小。</p>
+<p>其实这里我们可以知道，这个网络的好处就是将那个原来two-stage的串行结构转化成了并行结构。很不错的思想！！！</p>
+<h1 id="0x02-网络结构"><a href="#0x02-网络结构" class="headerlink" title="0x02 网络结构"></a>0x02 网络结构</h1><p>和SSD一样，<code>RefineDet</code>采用前馈网络，该网络产生固定数量的框，并且区分框中的不同类别对象，最后非极大值抑制输出最终结果。</p>
+<p><code>RefineDet</code>有两个互相连接的模块ARM和ODM组成。这两个模块之间通过TCB模块连接</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fnijb7g8a4j20c50d53z8.jpg"><br></center>
+
+<p>而且这里的TCB是将不同层次的ARM特征转化为ODM，它这里有一个回传的操作，将高层次的特征通过去卷机操作（实际是一种转置卷积），使特征图之间的尺寸匹配，然后与低层次的特征相加。</p>
+<p>针对小目标的识别，作者这里采用了两步级联回归。在ARM中先调整anchor的位置和大小，然后用这种粗略的操作作为ODM的输入，最后ODM再进一步检测和识别物体，这种做法会有更加精确的检测结果。</p>
+<p><code>single-stage</code>精度落后于<code>two-stage</code>的一个主要原因是类别不平衡问题。为了解决这种问题，作者采用了<code>Negative anchor</code>过滤。在训练阶段，针对ARM中的anchor，如果<code>negative confidence</code>大于一个阈值$\theta$（$\theta=0.99$），那么在训练ODM时将它舍弃。也就是通过<code>hard Negative anchor</code>和ARM anchor来训练ODM。</p>
+<p>RefineDet的损失函数由两部分组成，即ARM中的损失和ODM中的损失。损失函数定义为</p>
+<ul>
+<li>$L({p_i},{x_i},{c_i},{t_i}) = \frac{1}{N_{arm}}(\sum_iL_b(p_i, [l_i^<em> \geq1])+\sum_i[l_i^</em> \geq1]L_r(x_i,g_i^<em>)+\frac{1}{N_{odm}}(\sum_iL_m(c_i,l_i^</em>)+\sum_i[l_i^<em>\geq1]L_r(t_i,g_i^</em>))$</li>
+</ul>
+<p>其中<code>i</code>表示一个batch中的第几个anchor，$l_i^<em>$表示<code>anchor_i</code>的ground truth的类别 ，$g_i^</em>$表示<code>anchor_i</code>的ground truth位置和大小，$p_i$b表示置信度，$x_i$表示ARM中anchor的坐标。$c_i$表示预测类别，$t_i$表示ODM中的预测框坐标信息。$N_{arm}$和$N_{odm}$分别表示ARM和ODM中的<code>positive anchor</code>数量。$L_b$表示二值分类损失（有目标\没有目标），$L_m$表示多类别损失，$L_r$表示回归损失。$[l_i^<em>\geq1]$就表示如果<code>negative confidence</code>大于一个阈值$\theta$，那么返回1，否则返回0。如果$N_{arm}=0$，设置$L_b(p_i, [l_i^</em> \geq1])=0$和$L_r(x_i,g_i^<em>)=0$；如果$N_{odm}=0$，那么设置$L_m(c_i,l_i^</em>)=0$和$L_r(t_i,g_i^*)=0$。</p>
+<h1 id="0x03-训练结果"><a href="#0x03-训练结果" class="headerlink" title="0x03 训练结果"></a>0x03 训练结果</h1><center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fnjdf3ssb7j20r80f40x2.jpg"><br></center>
+
+
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fnjdf7d3wrj20ru0j97ay.jpg"><br></center>
+
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/26/2018-01-26-python字符串令牌解析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python字符串令牌解析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Abstract"><span class="nav-number">1.</span> <span class="nav-text">0x01 Abstract</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-网络结构"><span class="nav-number">2.</span> <span class="nav-text">0x02 网络结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-训练结果"><span class="nav-number">3.</span> <span class="nav-text">0x03 训练结果</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

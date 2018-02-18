@@ -27,7 +27,7 @@
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fmogsxbpjvj20sd0943yh.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmogsxrz62j20rw0bldft.jpg">
-<meta property="og:updated_time" content="2018-02-18T04:58:52.934Z">
+<meta property="og:updated_time" content="2018-02-18T08:36:31.492Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YOLOv2代码分析（四）">
 <meta name="twitter:description" content="0x01 backward_convolutional_layer12345678void backward_convolutional_layer(convolutional_layer l, network net)&amp;#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/l.">
@@ -68,32 +68,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -170,6 +148,7 @@
       
         <h1 id="0x01-backward-convolutional-layer"><a href="#0x01-backward-convolutional-layer" class="headerlink" title="0x01 backward_convolutional_layer"></a>0x01 backward_convolutional_layer</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_convolutional_layer</span><span class="params">(convolutional_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">int</span> m = l.n/l.groups;				<span class="comment">//每组卷积核的个数</span></span><br><span class="line">    <span class="keyword">int</span> n = l.size*l.size*l.c/l.groups;	<span class="comment">//每组卷积核的元素个数</span></span><br><span class="line">    <span class="keyword">int</span> k = l.out_w*l.out_h;			<span class="comment">//输出图像的元素个数</span></span><br><span class="line"></span><br><span class="line">    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);</span><br></pre></td></tr></table></figure>
 <p>这里出现了一个<code>gradient_array</code>函数，我们看看这个函数有什么作用。</p>
+<a id="more"></a>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">gradient</span><span class="params">(<span class="keyword">float</span> x, ACTIVATION a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span>(a)&#123;</span><br><span class="line">        <span class="keyword">case</span> LINEAR:</span><br><span class="line">            <span class="keyword">return</span> linear_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LOGISTIC:</span><br><span class="line">            <span class="keyword">return</span> logistic_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LOGGY:</span><br><span class="line">            <span class="keyword">return</span> loggy_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> RELU:</span><br><span class="line">            <span class="keyword">return</span> relu_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> ELU:</span><br><span class="line">            <span class="keyword">return</span> elu_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> RELIE:</span><br><span class="line">            <span class="keyword">return</span> relie_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> RAMP:</span><br><span class="line">            <span class="keyword">return</span> ramp_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LEAKY:</span><br><span class="line">            <span class="keyword">return</span> leaky_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> TANH:</span><br><span class="line">            <span class="keyword">return</span> tanh_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> PLSE:</span><br><span class="line">            <span class="keyword">return</span> plse_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> STAIR:</span><br><span class="line">            <span class="keyword">return</span> stair_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> HARDTAN:</span><br><span class="line">            <span class="keyword">return</span> hardtan_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LHTAN:</span><br><span class="line">            <span class="keyword">return</span> lhtan_gradient(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gradient_array</span><span class="params">(<span class="keyword">const</span> <span class="keyword">float</span> *x, <span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> ACTIVATION a, <span class="keyword">float</span> *delta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">        delta[i] *= gradient(x[i], a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">linear_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> <span class="number">1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">logistic_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (<span class="number">1</span>-x)*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">relu_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">elu_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x &gt;= <span class="number">0</span>) + (x &lt; <span class="number">0</span>)*(x + <span class="number">1</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">relie_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>) ? <span class="number">1</span> : <span class="number">.01</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">ramp_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>)+<span class="number">.1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">leaky_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>) ? <span class="number">1</span> : <span class="number">.1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">tanh_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> <span class="number">1</span>-x*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">plse_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x &lt; <span class="number">0</span> || x &gt; <span class="number">1</span>) ? <span class="number">.01</span> : <span class="number">.125</span>;&#125;</span><br></pre></td></tr></table></figure>
 <p>这个函数的作用很明显，就是将<code>layer</code>的输出图像，输入到相应的梯度下降算法（计算每一个元素对应激活函数的导数），最后将<code>delta</code>的每个元素乘以激活函数的导数，结果送到<code>delta</code>指向的内存中。</p>
 <p>举个例子</p>
@@ -315,6 +294,15 @@
     
 <nav id="article-nav">
   
+    <a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2代码分析（五）
+        
+      </div>
+    </a>
+  
   
     <a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
@@ -382,9 +370,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

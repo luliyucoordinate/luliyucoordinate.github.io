@@ -26,7 +26,7 @@
 <meta property="og:description" content="关于重载、隐藏、重写的一些思考（1）内容我们谈到了override，我说它和namehiding看上去很相似。我们先验证一下，它是否有namehiding的一些特征，并且又有哪些不同。 1234567891011121314151617class Base&amp;#123;public:	virtual void func1() = 0;	virtual void func2();	virtual vo">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fl85n9oxzrj20q00c274j.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.469Z">
+<meta property="og:updated_time" content="2018-02-18T08:41:29.057Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于重载、隐藏、重写的一些思考（2）">
 <meta name="twitter:description" content="关于重载、隐藏、重写的一些思考（1）内容我们谈到了override，我说它和namehiding看上去很相似。我们先验证一下，它是否有namehiding的一些特征，并且又有哪些不同。 1234567891011121314151617class Base&amp;#123;public:	virtual void func1() = 0;	virtual void func2();	virtual vo">
@@ -67,32 +67,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -169,6 +147,7 @@
       
         <p><a href="http://blog.csdn.net/qq_17550379/article/details/78436845" target="_blank" rel="noopener">关于重载、隐藏、重写的一些思考（1）</a>内容我们谈到了override，我说它和namehiding看上去很相似。我们先验证一下，它是否有namehiding的一些特征，并且又有哪些不同。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">(<span class="keyword">int</span>)</span></span>;	<span class="comment">//重载</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func3</span><span class="params">(<span class="keyword">int</span>)</span></span>;			<span class="comment">//重载</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span> <span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>;		<span class="comment">//override</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func4</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Derived d;</span><br><span class="line">d.func1();		<span class="comment">//调用Derived::func1()</span></span><br><span class="line">d.func2();		<span class="comment">//调用Derived::func2()重写了Base::func2() 隐藏了Base::func2(int)</span></span><br><span class="line">d.func2(<span class="number">3</span>);		<span class="comment">//错误，无法调用Base::func2(int)</span></span><br><span class="line">d.func3();		<span class="comment">//调用Derived::func3()隐藏了Base::func3()和Base::func3(int)</span></span><br><span class="line">d.func3(<span class="number">3</span>);		<span class="comment">//错误，无法调用Base::func3(int)</span></span><br></pre></td></tr></table></figure>
 <p>override和namehiding发生了同样的事情。好，很不错。</p>
 <p>既然我们把一个东西藏起来了，那么我们也有办法把他找到。</p>
@@ -327,9 +306,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

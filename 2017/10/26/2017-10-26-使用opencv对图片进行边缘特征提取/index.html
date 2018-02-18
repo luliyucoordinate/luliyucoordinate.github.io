@@ -17,13 +17,13 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="问题的描述  我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。 解决思路使用Laplacian看到这个问题，我想到的第一办法就是拉普拉斯算子。ok，沿着这个思路，我通过opencv在windows平台上进行了一些测试。Laplacian 算子的定义:  $Laplace(f)=\frac{(∂^2 f)}{(∂x^2 )}+\frac{(∂^2 f)}{(∂y^2 )}">
+  <meta name="description" content="问题的描述  我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。">
 <meta name="keywords" content="cpp,opencv,qt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用opencv对图片进行边缘特征提取">
 <meta property="og:url" content="http://coordinate.wang/2017/10/26/2017-10-26-使用opencv对图片进行边缘特征提取/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="问题的描述  我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。 解决思路使用Laplacian看到这个问题，我想到的第一办法就是拉普拉斯算子。ok，沿着这个思路，我通过opencv在windows平台上进行了一些测试。Laplacian 算子的定义:  $Laplace(f)=\frac{(∂^2 f)}{(∂x^2 )}+\frac{(∂^2 f)}{(∂y^2 )}">
+<meta property="og:description" content="问题的描述  我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkvuxch0bsj20f40a0aog.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkvuxd41xvj20f40a042b.jpg">
@@ -33,10 +33,10 @@
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkvuxffqauj20j40dsaf6.jpg">
 <meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkvuxfvookj20j40dsk3f.jpg">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkvuxg94mej20zm0m70u8.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.353Z">
+<meta property="og:updated_time" content="2018-02-18T08:41:50.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用opencv对图片进行边缘特征提取">
-<meta name="twitter:description" content="问题的描述  我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。 解决思路使用Laplacian看到这个问题，我想到的第一办法就是拉普拉斯算子。ok，沿着这个思路，我通过opencv在windows平台上进行了一些测试。Laplacian 算子的定义:  $Laplace(f)=\frac{(∂^2 f)}{(∂x^2 )}+\frac{(∂^2 f)}{(∂y^2 )}">
+<meta name="twitter:description" content="问题的描述  我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。">
 <meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkvuxch0bsj20f40a0aog.jpg">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
@@ -74,32 +74,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -177,6 +155,7 @@
         <h1 id="问题的描述"><a href="#问题的描述" class="headerlink" title="问题的描述"></a>问题的描述</h1><center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkvuxch0bsj20f40a0aog.jpg" width="300"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkvuxd41xvj20f40a042b.jpg" width="300"><br></center>
 
 <p>我们需要通过一些图像处理的手段，将a图中图像的轮廓提取出来，结果类似于b图。</p>
+<a id="more"></a>
 <h1 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h1><h2 id="使用Laplacian"><a href="#使用Laplacian" class="headerlink" title="使用Laplacian"></a>使用Laplacian</h2><p>看到这个问题，我想到的第一办法就是拉普拉斯算子。ok，沿着这个思路，我通过opencv在windows平台上进行了一些测试。<br>Laplacian 算子的定义:</p>
 <ul>
 <li>$Laplace(f)=\frac{(∂^2 f)}{(∂x^2 )}+\frac{(∂^2 f)}{(∂y^2 )}$</li>
@@ -411,9 +390,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

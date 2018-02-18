@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="还是从一个例子开始讲起 1234567891011x = tf.Variable(0.0)x_plus_1 = tf.assign_add(x, 1)#对x进行加1操作#tf.control_dependencies的作用是:在执行y=x前，先执行x_plus_1with tf.control_dependencies([x_plus_1]):    y = xinit = tf.initiali">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.604Z">
+<meta property="og:updated_time" content="2018-02-18T08:37:30.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tf.identity的作用">
 <meta name="twitter:description" content="还是从一个例子开始讲起 1234567891011x = tf.Variable(0.0)x_plus_1 = tf.assign_add(x, 1)#对x进行加1操作#tf.control_dependencies的作用是:在执行y=x前，先执行x_plus_1with tf.control_dependencies([x_plus_1]):    y = xinit = tf.initiali">
@@ -65,32 +65,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -167,6 +145,7 @@
       
         <p>还是从一个<a href="https://stackoverflow.com/questions/34877523/in-tensorflow-what-is-tf-identity-used-for" target="_blank" rel="noopener">例子</a>开始讲起</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = tf.Variable(<span class="number">0.0</span>)</span><br><span class="line">x_plus_1 = tf.assign_add(x, <span class="number">1</span>)<span class="comment">#对x进行加1操作</span></span><br><span class="line"><span class="comment">#tf.control_dependencies的作用是:在执行y=x前，先执行x_plus_1</span></span><br><span class="line"><span class="keyword">with</span> tf.control_dependencies([x_plus_1]):</span><br><span class="line">    y = x</span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> session:</span><br><span class="line">    init.run()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">5</span>):</span><br><span class="line">        print(y.eval())</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>这个代码的输出和我们想象的不一样，他的输出是<code>0, 0, 0, 0, 0</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = tf.Variable(<span class="number">0.0</span>)</span><br><span class="line">x_plus_1 = tf.assign_add(x, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.control_dependencies([x_plus_1]):</span><br><span class="line">    y = tf.identity(x)</span><br><span class="line">init = tf.initialize_all_variables()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> session:</span><br><span class="line">    init.run()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">5</span>):</span><br><span class="line">        print(y.eval())</span><br></pre></td></tr></table></figure>
 <p>这段代码的输出才是<code>1, 2, 3, 4, 5</code></p>
@@ -298,9 +277,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

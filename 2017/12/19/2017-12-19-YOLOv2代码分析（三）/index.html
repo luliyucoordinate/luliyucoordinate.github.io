@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="接着上一讲没有讲完的make_convolutional_layer函数 0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = updat">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-18T04:59:25.664Z">
+<meta property="og:updated_time" content="2018-02-18T08:36:47.841Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YOLOv2代码分析（三）">
 <meta name="twitter:description" content="接着上一讲没有讲完的make_convolutional_layer函数 0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = updat">
@@ -65,32 +65,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -169,6 +147,7 @@
 <h1 id="0x01-make-convolutional-layer"><a href="#0x01-make-convolutional-layer" class="headerlink" title="0x01 make_convolutional_layer"></a>0x01 make_convolutional_layer</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//make_convolutional_layer</span></span><br><span class="line">l.forward = forward_convolutional_layer;</span><br><span class="line">   l.backward = backward_convolutional_layer;</span><br><span class="line">   l.update = update_convolutional_layer;</span><br></pre></td></tr></table></figure>
 <p>上来就是三坐大山^_^，我们先从第一个<code>forward_convolutional_layer</code>开始。</p>
 <h2 id="0x0101-forward-convolutional-layer"><a href="#0x0101-forward-convolutional-layer" class="headerlink" title="0x0101 forward_convolutional_layer"></a>0x0101 forward_convolutional_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_convolutional_layer</span><span class="params">(convolutional_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//传入卷积层参数和网络的总参数</span></span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs*l.batch, <span class="number">0</span>, l.output, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>看这个<code>fill_cpu</code>函数</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fill_cpu</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">float</span> ALPHA, <span class="keyword">float</span> *X, <span class="keyword">int</span> INCX)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; ++i) X[i*INCX] = ALPHA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>输入的参数<code>N</code>表示一个<code>batch</code>中所有的图像元素个数，<code>x</code>指向<code>n</code>对应大小分配的内存空间。整个函数来看就是对输出图像元素的一个初始化操作。</p>
@@ -430,9 +409,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

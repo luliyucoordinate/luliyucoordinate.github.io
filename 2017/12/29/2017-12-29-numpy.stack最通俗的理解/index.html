@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>numpy.stack最通俗的理解 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonnumpy" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="numpy.stack(arrays, axis=0) 沿着新轴连接数组的序列。 axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它将是第一个维度，如果axis=-1，它将是最后一个维度。  参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。  返回： 堆叠：ndarray堆叠数组比输入数组多一个维。  上面">
+<meta name="keywords" content="python,numpy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="numpy.stack最通俗的理解">
+<meta property="og:url" content="http://coordinate.wang/2017/12/29/2017-12-29-numpy.stack最通俗的理解/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="numpy.stack(arrays, axis=0) 沿着新轴连接数组的序列。 axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它将是第一个维度，如果axis=-1，它将是最后一个维度。  参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。  返回： 堆叠：ndarray堆叠数组比输入数组多一个维。  上面">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmxw587oboj20hb0brgli.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmxw58osmzj20fm0c6mx2.jpg">
+<meta property="og:updated_time" content="2018-02-18T08:46:08.892Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="numpy.stack最通俗的理解">
+<meta name="twitter:description" content="numpy.stack(arrays, axis=0) 沿着新轴连接数组的序列。 axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它将是第一个维度，如果axis=-1，它将是最后一个维度。  参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。  返回： 堆叠：ndarray堆叠数组比输入数组多一个维。  上面">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmxw587oboj20hb0brgli.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-29-numpy.stack最通俗的理解" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      numpy.stack最通俗的理解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/" class="article-date">
+	  <time datetime="2017-12-28T16:00:00.000Z" itemprop="datePublished">十二月 29, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><code>numpy.stack(arrays, axis=0)</code></p>
+<p>沿着新轴连接数组的序列。</p>
+<p><em>axis</em>参数指定新轴在结果尺寸中的索引。例如，如果<code>axis=0</code>，它将是第一个维度，如果<code>axis=-1</code>，它将是最后一个维度。</p>
+<ul>
+<li>参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。 </li>
+<li>返回： 堆叠：ndarray堆叠数组比输入数组多一个维。</li>
+</ul>
+<p>上面是官方给出的解释，很难理解。</p>
+<p>我们先从增加维度说起。</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = np.array([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">3</span>,)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.shape</span><br><span class="line">(<span class="number">3</span>,)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">0</span>).shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">1</span>).shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>我先说一说这里<code>(2,3)</code>和<code>(3,2)</code>中的<code>2</code>是怎么来的：因为有<code>a</code>和<code>b</code>两个<code>array</code>。如果这里我们增加一个<code>c= np.array([3, 4, 5])</code>，那么这里我们改变原来的<code>np.stack</code>就会变成下面这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = np.array([<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b, c), axis=<span class="number">0</span>).shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b, c), axis=<span class="number">1</span>).shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>那么因为这里是<code>a,b,c</code>三个<code>array</code>，所以这里<code>2</code>变成了<code>3</code></p>
+<p>接着说说这个<code>axis</code>参数的意义，我们可以理解这里的<code>axis</code>就是要增加哪一个维度，比如说这里的<code>axis=0</code>，就是增加第一维度，所以这里的<code>(2,3)</code>中的<code>2</code>在第一个位置。<code>axis=1</code>，就是增加第二维度，所以这里的<code>(3,2)</code>中的<code>2</code>在第二个位置。</p>
+<p>我现在举一个稍微复杂的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = np.array([[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b.shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">0</span>).shape</span><br><span class="line">(<span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">1</span>).shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">2</span>).shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>这里的<code>2</code>就是指的<code>a</code>和<code>b</code>，而<code>2</code>放在什么位置是根据<code>axis</code>来确定的。</p>
+<p>接着说一下矩阵的坐标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a			a的元素对应的坐标</span><br><span class="line">[1 2 3]		(0,0) (0,1) (0,2)</span><br><span class="line">[1 2 3]		(1,0) (1,1) (1,2)</span><br><span class="line">[1 2 3]		(2,0) (2,1) (2,2)</span><br></pre></td></tr></table></figure>
+<p>很好理解。</p>
+<p>接着以<code>np.stack((a, b), axis=1)</code>为例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">1</span>).shape</span><br><span class="line">(<span class="number">3</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.stack((a, b), axis=<span class="number">1</span>)</span><br><span class="line">array([[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">       [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]],</span><br><span class="line"></span><br><span class="line">       [[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">        [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]]])</span><br></pre></td></tr></table></figure>
+<p>原来我们<code>a[0][0]=1</code>，现在中间加上一个维度（因为这里<code>axis=1</code>），就变成了<code>a[0][0][0]=1</code>，注意这里为什么中间是<code>0</code>，因为<code>np.stack((a, b), axis=1)</code>中，<code>a</code>在<code>b</code>的前面。同理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a			a的元素对应的坐标</span><br><span class="line">[1 2 3]		(0,0,0) (0,0,1) (0,0,2)</span><br><span class="line">[1 2 3]		(1,0,0) (1,0,1) (1,0,2)</span><br><span class="line">[1 2 3]		(2,0,0) (2,0,1) (2,0,2)</span><br></pre></td></tr></table></figure>
+<p>那么<code>b[0][0]=4</code>，因为<code>np.stack((a, b), axis=1)</code>中，<code>b</code>在<code>a</code>的后面。所以<code>b[0][1][0]=4</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b			b的元素对应的坐标</span><br><span class="line">[4 5 6]		(0,1,0) (0,1,1) (0,1,2)</span><br><span class="line">[4 5 6]		(1,1,0) (1,1,1) (1,1,2)</span><br><span class="line">[4 5 6]		(2,1,0) (2,1,1) (2,1,2)</span><br></pre></td></tr></table></figure>
+<p>接着将对应坐标的数组合，就得到了新的<code>array</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">					   元素对应的坐标</span><br><span class="line">array([[[1, 2, 3],		(0,0,0) (0,0,1) (0,0,2)</span><br><span class="line">        [4, 5, 6]],		(0,1,0) (0,1,1) (0,1,2)</span><br><span class="line"></span><br><span class="line">       [[1, 2, 3],		(1,0,0) (1,0,1) (1,0,2)</span><br><span class="line">        [4, 5, 6]],		(1,1,0) (1,1,1) (1,1,2)</span><br><span class="line"></span><br><span class="line">       [[1, 2, 3],		(2,0,0) (2,0,1) (2,0,2)</span><br><span class="line">        [4, 5, 6]]])	(2,1,0) (2,1,1) (2,1,2)</span><br></pre></td></tr></table></figure>
+<p>还有一个更加简单的理解方式（堆叠）</p>
+<p>对于<code>axis=1</code>，就是横着切开，对应行横着堆</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmxw587oboj20hb0brgli.jpg"><br></center>
+
+
+<p>对于<code>axis=2</code>，就是横着切开，对应行竖着堆</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmxw58osmzj20fm0c6mx2.jpg"><br></center>
+
+<p>对于<code>axis=0</code>，就是不切开，两个堆一起。</p>
+<p>就是这么的简单^_^!</p>
+<p><strong>觉得不错，点个赞吧b(￣▽￣)d</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          torch.autograd.backward中的参数问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2代码分析（六）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

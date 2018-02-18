@@ -26,7 +26,7 @@
 <meta property="og:description" content="看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子 123456789101112131415161718192021222324class Abstract_base&amp;#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &amp;#123; re">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl6brmv6hlj20m809i3yq.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.485Z">
+<meta property="og:updated_time" content="2018-02-18T08:41:21.336Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="纯虚函数的调用">
 <meta name="twitter:description" content="看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子 123456789101112131415161718192021222324class Abstract_base&amp;#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &amp;#123; re">
@@ -67,32 +67,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -169,6 +147,7 @@
       
         <p>看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Abstract_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">virtual</span> ~Abstract_base();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">interface</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">mumble</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _mumble; &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">char</span> *_mumble;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Concrete_derived</span> :</span><span class="keyword">public</span> Abstract_base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Concrete_deriverd</span><span class="params">()</span> </span>&#123;&#125;;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">interface</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Abstract_base::interface()</span><br><span class="line">&#123;</span><br><span class="line">    function</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Concrete_derived::interface()</span><br><span class="line">&#123;</span><br><span class="line">    Abstract_base::interface();<span class="comment">//静态调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>不过只可以通过静态调用，不可以通过虚拟机制去调用。为什么不可以？如果这样做</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Concrete_derived *p = <span class="keyword">new</span> Abstract_base;<span class="comment">//错误，Abstract_Base是一个抽象数据类，不允许构造一个对象</span></span><br><span class="line">p-&gt;interface();</span><br></pre></td></tr></table></figure>
 <p>你似乎会觉得这没什么！那我接着加大难度</p>
@@ -308,9 +287,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

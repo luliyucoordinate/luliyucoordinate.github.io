@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>torch.autograd.backward中的参数问题 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonpytorch" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False) 给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=T">
+<meta name="keywords" content="python,pytorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="torch.autograd.backward中的参数问题">
+<meta property="og:url" content="http://coordinate.wang/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False) 给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=T">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T08:46:16.539Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="torch.autograd.backward中的参数问题">
+<meta name="twitter:description" content="torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False) 给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=T">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-30-torch.autograd.backward中的参数问题" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      torch.autograd.backward中的参数问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" class="article-date">
+	  <time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">十二月 30, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False)</strong></p>
+<p>给定图的叶子节点<code>variables</code>, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果<code>variables</code>中的任何一个<code>variable</code>是 非标量(<code>non-scalar</code>)的，且<code>requires_grad=True</code>。那么此函数需要指定<code>grad_variables</code>，它的长度应该和<code>variables</code>的长度匹配，里面保存了相关<code>variable</code>的梯度(对于不需要<code>gradient tensor</code>的<code>variable</code>，<code>None</code>是可取的)。</p>
+<p>此函数累积<code>leaf variables</code>计算的梯度。你可能需要在调用此函数之前将<code>leaf variable</code>的梯度置零。</p>
+<p><strong>参数：</strong></p>
+<ul>
+<li><code>variables</code>（变量的序列） - 被求微分的叶子节点，即 <code>ys</code> 。</li>
+<li><code>grad_variables</code>（（张量，变量）的序列或无） - 对应<code>variable</code>的梯度。仅当<code>variable</code>不是标量且需要求梯度的时候使用。</li>
+<li><code>retain_graph</code>（<code>bool</code>，可选） - 如果为<code>False</code>，则用于释放计算<code>grad</code>的图。请注意，在几乎所有情况下，没有必要将此选项设置为<code>True</code>，通常可以以更有效的方式解决。默认值为<code>create_graph</code>的值。</li>
+<li><code>create_graph</code>（<code>bool</code>，可选） - 如果为<code>True</code>，则将构造派生图，允许计算更高阶的派生产品。默认为<code>False</code>。</li>
+</ul>
+<a id="more"></a>
+<p>我这里举一个官方的例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch.autograd <span class="keyword">import</span> Variable</span><br><span class="line">x = Variable(torch.ones(<span class="number">2</span>, <span class="number">2</span>), requires_grad=<span class="keyword">True</span>)</span><br><span class="line">y = x + <span class="number">2</span></span><br><span class="line">z = y * y * <span class="number">3</span></span><br><span class="line">out = z.mean()</span><br><span class="line">out.backward()<span class="comment">#这里是默认情况，相当于out.backward(torch.Tensor([1.0]))</span></span><br><span class="line">print(x.grad)</span><br></pre></td></tr></table></figure>
+<p>输出结果是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Variable containing:</span><br><span class="line"> <span class="number">4.5000</span>  <span class="number">4.5000</span></span><br><span class="line"> <span class="number">4.5000</span>  <span class="number">4.5000</span></span><br><span class="line">[torch.FloatTensor of size <span class="number">2</span>x2]</span><br></pre></td></tr></table></figure>
+<p>$out = \frac{1}{4}\sum_i z_i$，$z_i = 3(x_i+2)^2$并且$z_i\bigr\rvert_{x_i=1} = 27$。接着$\frac{\partial out}{\partial x_i} = \frac{3}{2}(x_i+2)$，因此$\frac{\partial out}{\partial x_i}\bigr\rvert_{x_i=1} = \frac{9}{2} = 4.5$</p>
+<p>接着我们继续</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">x = torch.randn(<span class="number">3</span>)</span><br><span class="line">x = Variable(x, requires_grad=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">y = x * <span class="number">2</span></span><br><span class="line"><span class="keyword">while</span> y.data.norm() &lt; <span class="number">1000</span>:</span><br><span class="line">    y = y * <span class="number">2</span></span><br><span class="line"></span><br><span class="line">gradients = torch.FloatTensor([<span class="number">0.1</span>, <span class="number">1.0</span>, <span class="number">0.0001</span>])</span><br><span class="line">y.backward(gradients)</span><br><span class="line">print(x.grad)</span><br></pre></td></tr></table></figure>
+<p>输出结果是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Variable containing:</span><br><span class="line">  <span class="number">204.8000</span></span><br><span class="line"> <span class="number">2048.0000</span></span><br><span class="line">    <span class="number">0.2048</span></span><br><span class="line">[torch.FloatTensor of size <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+<p>这里这个<code>gradients</code>为什么要是<code>[0.1, 1.0, 0.0001]</code>？</p>
+<p>如果输出的多个<code>loss</code>权重不同的话，例如有三个<code>loss</code>，一个是<code>x loss</code>，一个是<code>y loss</code>，一个是<code>class loss</code>。那么很明显的不可能所有<code>loss</code>对结果影响程度都一样，他们之间应该有一个比例。那么比例这里指的就是<code>[0.1, 1.0, 0.0001]</code>，这个问题中的<code>loss</code>对应的就是上面说的<code>y</code>，那么这里的输出就很好理解了<code>dy/dx=0.1*dy1/dx+1.0*dy2/dx+0.0001*dy3/dx</code>。</p>
+<p>如有问题希望大家指正，谢谢^_^!</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/">pytorch</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2源码分析--reorg layer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">numpy.stack最通俗的理解</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

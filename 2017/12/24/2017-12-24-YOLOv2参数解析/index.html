@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2参数解析 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="前言其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章YOLOv2源码分析 参数总结其实yolo v2的参数主要集中在两个结构体中一个是network，一个是layer">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2参数解析">
+<meta property="og:url" content="http://coordinate.wang/2017/12/24/2017-12-24-YOLOv2参数解析/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="前言其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章YOLOv2源码分析 参数总结其实yolo v2的参数主要集中在两个结构体中一个是network，一个是layer">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T08:44:38.273Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2参数解析">
+<meta name="twitter:description" content="前言其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章YOLOv2源码分析 参数总结其实yolo v2的参数主要集中在两个结构体中一个是network，一个是layer">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-24-YOLOv2参数解析" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2参数解析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/24/2017-12-24-YOLOv2参数解析/" class="article-date">
+	  <time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">十二月 24, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<h2 id="参数总结"><a href="#参数总结" class="headerlink" title="参数总结"></a>参数总结</h2><p>其实yolo v2的参数主要集中在两个结构体中一个是<code>network</code>，一个是<code>layer</code></p>
+<a id="more"></a>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">network</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> n;				<span class="comment">//网络总层数</span></span><br><span class="line">    <span class="keyword">int</span> batch;			<span class="comment">//一个batch包含的图片数目，看下面的subdivisions</span></span><br><span class="line">    <span class="keyword">size_t</span> *seen;		<span class="comment">//已经读取的图片数量</span></span><br><span class="line">    <span class="keyword">int</span> *t;</span><br><span class="line">    <span class="keyword">float</span> epoch;		<span class="comment">//训练的次数</span></span><br><span class="line">    <span class="keyword">int</span> subdivisions;	<span class="comment">//注意前面的batch/subdivisions才是网络的batch大小，可能目的是防止gpu显存不够</span></span><br><span class="line">    layer *layers;		<span class="comment">//指向网络的层</span></span><br><span class="line">    <span class="keyword">float</span> *output;		<span class="comment">//指向输出特征图的内存空间</span></span><br><span class="line">    learning_rate_policy policy;<span class="comment">//学习率的策略，是一个枚举类型</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> learning_rate;<span class="comment">//学习率</span></span><br><span class="line">    <span class="keyword">float</span> momentum;		<span class="comment">//动量，一般0.9</span></span><br><span class="line">    <span class="keyword">float</span> decay;		<span class="comment">//权重衰减正则项，防止过拟合</span></span><br><span class="line">    <span class="keyword">float</span> gamma;		<span class="comment">//用于计算学习率</span></span><br><span class="line">    <span class="keyword">float</span> scale;		<span class="comment">//用于计算学习率</span></span><br><span class="line">    <span class="keyword">float</span> power;		<span class="comment">//用于计算学习率</span></span><br><span class="line">    <span class="keyword">int</span> time_steps;		<span class="comment">//rnn中的移动步数</span></span><br><span class="line">    <span class="keyword">int</span> step;			<span class="comment">//用于计算学习率</span></span><br><span class="line">    <span class="keyword">int</span> max_batches;	<span class="comment">//最大的训练batch数目</span></span><br><span class="line">    <span class="keyword">float</span> *scales;		<span class="comment">//用于计算学习率</span></span><br><span class="line">    <span class="keyword">int</span>   *steps;		<span class="comment">//用于计算学习率</span></span><br><span class="line">    <span class="keyword">int</span> num_steps;		<span class="comment">//steps中的数据个数</span></span><br><span class="line">    <span class="keyword">int</span> burn_in;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> adam;			<span class="comment">//adam算法</span></span><br><span class="line">    <span class="keyword">float</span> B1;			<span class="comment">//一阶矩估计的指数衰减率</span></span><br><span class="line">    <span class="keyword">float</span> B2;			<span class="comment">//二阶矩估计的指数衰减率</span></span><br><span class="line">    <span class="keyword">float</span> eps;			<span class="comment">//为了防止在实现中除以零</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> inputs;			<span class="comment">//h*w*c输入图像大小</span></span><br><span class="line">    <span class="keyword">int</span> outputs;		<span class="comment">//输出图像大小</span></span><br><span class="line">    <span class="keyword">int</span> truths;			<span class="comment">//每一张图片含有的真实值参数个数</span></span><br><span class="line">    <span class="keyword">int</span> notruth;</span><br><span class="line">    <span class="keyword">int</span> h, w, c;			<span class="comment">//输入图像的高，宽，通道数</span></span><br><span class="line">    <span class="keyword">int</span> max_crop;			<span class="comment">//控制图片缩放的最大值</span></span><br><span class="line">    <span class="keyword">int</span> min_crop;			<span class="comment">//控制图片缩放的最小值</span></span><br><span class="line">    <span class="keyword">float</span> max_ratio;		<span class="comment">//控制图片缩放的最大比例</span></span><br><span class="line">    <span class="keyword">float</span> min_ratio;		<span class="comment">//控制图片缩放的最小比例</span></span><br><span class="line">    <span class="keyword">int</span> center;</span><br><span class="line">    <span class="keyword">float</span> angle;			<span class="comment">//设置旋转角度，扩充数据</span></span><br><span class="line">    <span class="keyword">float</span> aspect;			<span class="comment">//设置方位，扩充数据</span></span><br><span class="line">    <span class="keyword">float</span> exposure;			<span class="comment">//设置曝光量，扩充数据</span></span><br><span class="line">    <span class="keyword">float</span> saturation;		<span class="comment">//设置饱和度，扩充数据</span></span><br><span class="line">    <span class="keyword">float</span> hue;				<span class="comment">//设置色调，扩充数据</span></span><br><span class="line">    <span class="keyword">int</span> random;				<span class="comment">//random为1时随机使用不同尺寸的图片进行训练</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> gpu_index;			<span class="comment">//设置第几个gpu</span></span><br><span class="line">    tree *hierarchy;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> *input;			<span class="comment">//输入图像存储空间</span></span><br><span class="line">    <span class="keyword">float</span> *truth;			<span class="comment">//存储了网络输入的所有图片的真实矩形框信息</span></span><br><span class="line">    <span class="keyword">float</span> *delta;			<span class="comment">//误差存储空间</span></span><br><span class="line">    <span class="keyword">float</span> *workspace;		<span class="comment">//</span></span><br><span class="line">    <span class="keyword">int</span> train;</span><br><span class="line">    <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">float</span> *cost;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> GPU</span></span><br><span class="line">    <span class="keyword">float</span> *input_gpu;</span><br><span class="line">    <span class="keyword">float</span> *truth_gpu;</span><br><span class="line">    <span class="keyword">float</span> *delta_gpu;</span><br><span class="line">    <span class="keyword">float</span> *output_gpu;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">&#125; network;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">layer</span>&#123;</span></span><br><span class="line">    LAYER_TYPE type;		<span class="comment">//layer类型</span></span><br><span class="line">    ACTIVATION activation;	<span class="comment">//激活函数类型</span></span><br><span class="line">    COST_TYPE cost_type;	<span class="comment">//损失函数类型</span></span><br><span class="line">    <span class="keyword">void</span> (*forward)   (struct layer, struct network);	<span class="comment">//不同的forward函数</span></span><br><span class="line">    <span class="keyword">void</span> (*backward)  (struct layer, struct network);	<span class="comment">//不同的backward函数</span></span><br><span class="line">    <span class="keyword">void</span> (*update)    (struct layer, update_args);		<span class="comment">//不同的update函数</span></span><br><span class="line">    <span class="keyword">void</span> (*forward_gpu)   (struct layer, struct network);</span><br><span class="line">    <span class="keyword">void</span> (*backward_gpu)  (struct layer, struct network);</span><br><span class="line">    <span class="keyword">void</span> (*update_gpu)    (struct layer, update_args);</span><br><span class="line">    <span class="keyword">int</span> batch_normalize;	<span class="comment">//BN操作</span></span><br><span class="line">    <span class="keyword">int</span> shortcut;			<span class="comment">//shortcut连接操作</span></span><br><span class="line">    <span class="keyword">int</span> batch;				<span class="comment">//batch大小</span></span><br><span class="line">    <span class="keyword">int</span> forced;</span><br><span class="line">    <span class="keyword">int</span> flipped;</span><br><span class="line">    <span class="keyword">int</span> inputs;				<span class="comment">//输入的元素个数</span></span><br><span class="line">    <span class="keyword">int</span> outputs;			<span class="comment">//输出的元素个数</span></span><br><span class="line">    <span class="keyword">int</span> nweights;			<span class="comment">//权重数目</span></span><br><span class="line">    <span class="keyword">int</span> nbiases;			<span class="comment">//偏向数目</span></span><br><span class="line">    <span class="keyword">int</span> extra;</span><br><span class="line">    <span class="keyword">int</span> truths;				<span class="comment">//30*(5)，5表示class以及coordinate（xywh），30表示一幅图片最多处理多少个目标框</span></span><br><span class="line">    <span class="keyword">int</span> h,w,c;				<span class="comment">//输入图像的高度，宽度，通道数</span></span><br><span class="line">    <span class="keyword">int</span> out_h, out_w, out_c;<span class="comment">//输出图像的高度，宽度，通道数</span></span><br><span class="line">    <span class="keyword">int</span> n;					<span class="comment">//卷积层中表示卷积核的个数，region中表示anchors个数</span></span><br><span class="line">    <span class="keyword">int</span> max_boxes;			<span class="comment">//30，表示一幅图片最多有多少目标在相同位置</span></span><br><span class="line">    <span class="keyword">int</span> groups;				<span class="comment">//卷积核组数</span></span><br><span class="line">    <span class="keyword">int</span> size;				<span class="comment">//kernel_size（包括卷积、池化）</span></span><br><span class="line">    <span class="keyword">int</span> side;</span><br><span class="line">    <span class="keyword">int</span> stride;				<span class="comment">//步长（包括卷积、池化）</span></span><br><span class="line">    <span class="keyword">int</span> reverse;</span><br><span class="line">    <span class="keyword">int</span> flatten;</span><br><span class="line">    <span class="keyword">int</span> spatial;</span><br><span class="line">    <span class="keyword">int</span> pad;				<span class="comment">//图像周围是否补0</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">sqrt</span>;				<span class="comment">//预测w,h是否开方</span></span><br><span class="line">    <span class="keyword">int</span> flip;				<span class="comment">//翻转</span></span><br><span class="line">    <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">int</span> binary;				<span class="comment">//权重二值化</span></span><br><span class="line">    <span class="keyword">int</span> xnor;				<span class="comment">//权重和输入二值化</span></span><br><span class="line">    <span class="keyword">int</span> steps;</span><br><span class="line">    <span class="keyword">int</span> hidden;				<span class="comment">//隐藏层的数量</span></span><br><span class="line">    <span class="keyword">int</span> truth;</span><br><span class="line">    <span class="keyword">float</span> smooth;</span><br><span class="line">    <span class="keyword">float</span> dot;</span><br><span class="line">    <span class="keyword">float</span> angle;			<span class="comment">//旋转角度</span></span><br><span class="line">    <span class="keyword">float</span> jitter;			<span class="comment">//抖动</span></span><br><span class="line">    <span class="keyword">float</span> saturation;		<span class="comment">//饱和度</span></span><br><span class="line">    <span class="keyword">float</span> exposure;			<span class="comment">//曝光量</span></span><br><span class="line">    <span class="keyword">float</span> shift;			<span class="comment">//移动</span></span><br><span class="line">    <span class="keyword">float</span> ratio;			<span class="comment">//缩放比率</span></span><br><span class="line">    <span class="keyword">float</span> learning_rate_scale;<span class="comment">//学习率系数</span></span><br><span class="line">    <span class="keyword">int</span> softmax;			<span class="comment">//是否使用softmax</span></span><br><span class="line">    <span class="keyword">int</span> classes;			<span class="comment">//类别个数</span></span><br><span class="line">    <span class="keyword">int</span> coords;				<span class="comment">//4（坐标参数个数）</span></span><br><span class="line">    <span class="keyword">int</span> background;</span><br><span class="line">    <span class="keyword">int</span> rescore;			<span class="comment">//非0时调整l.delta</span></span><br><span class="line">    <span class="keyword">int</span> objectness;</span><br><span class="line">    <span class="keyword">int</span> does_cost;</span><br><span class="line">    <span class="keyword">int</span> joint;</span><br><span class="line">    <span class="keyword">int</span> noadjust;			<span class="comment">//是否调整</span></span><br><span class="line">    <span class="keyword">int</span> reorg;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">log</span>;				<span class="comment">//是否计算log</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">tanh</span>;				<span class="comment">//gru中是否使用tanh激活函数</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> alpha;</span><br><span class="line">    <span class="keyword">float</span> beta;</span><br><span class="line">    <span class="keyword">float</span> kappa;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> coord_scale;		<span class="comment">//cost function的权重</span></span><br><span class="line">    <span class="keyword">float</span> object_scale;		<span class="comment">//cost function的权重</span></span><br><span class="line">    <span class="keyword">float</span> noobject_scale;	<span class="comment">//cost function的权重</span></span><br><span class="line">    <span class="keyword">float</span> mask_scale;		<span class="comment">//cost function的权重</span></span><br><span class="line">    <span class="keyword">float</span> class_scale;		<span class="comment">//cost function的权重</span></span><br><span class="line">    <span class="keyword">int</span> bias_match;			<span class="comment">//为1时，计算best iou时，预测宽高强制与anchors一致 </span></span><br><span class="line">    <span class="keyword">int</span> random;				<span class="comment">//为1时随机改变图片大小</span></span><br><span class="line">    <span class="keyword">float</span> thresh;			<span class="comment">//决定cost function是否有IOU</span></span><br><span class="line">    <span class="keyword">int</span> classfix;</span><br><span class="line">    <span class="keyword">int</span> absolute;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> onlyforward;</span><br><span class="line">    <span class="keyword">int</span> stopbackward;</span><br><span class="line">    <span class="keyword">int</span> dontload;</span><br><span class="line">    <span class="keyword">int</span> dontloadscales;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> temperature;</span><br><span class="line">    <span class="keyword">float</span> probability;</span><br><span class="line">    <span class="keyword">float</span> scale;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>  * cweights;</span><br><span class="line">    <span class="keyword">int</span>   * indexes;</span><br><span class="line">    <span class="keyword">int</span>   * input_layers;</span><br><span class="line">    <span class="keyword">int</span>   * input_sizes;</span><br><span class="line">    <span class="keyword">int</span>   * <span class="built_in">map</span>;</span><br><span class="line">    <span class="keyword">float</span> * rand;</span><br><span class="line">    <span class="keyword">float</span> * cost;			<span class="comment">//损失</span></span><br><span class="line">    <span class="keyword">float</span> * state;			<span class="comment">//rnn中当前层的状态</span></span><br><span class="line">    <span class="keyword">float</span> * prev_state;		<span class="comment">//rnn中前一层的状态</span></span><br><span class="line">    <span class="keyword">float</span> * forgot_state;	<span class="comment">//gru参数</span></span><br><span class="line">    <span class="keyword">float</span> * forgot_delta;</span><br><span class="line">    <span class="keyword">float</span> * state_delta;</span><br><span class="line">    <span class="keyword">float</span> * combine_cpu;</span><br><span class="line">    <span class="keyword">float</span> * combine_delta_cpu;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * concat;</span><br><span class="line">    <span class="keyword">float</span> * concat_delta;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * binary_weights;	<span class="comment">//二值化的权重</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * biases;			<span class="comment">//偏置，BN中的系数beta；region层中的anchors</span></span><br><span class="line">    <span class="keyword">float</span> * bias_updates;	<span class="comment">//更新后的偏置</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * scales;			<span class="comment">//BN中的系数gamma</span></span><br><span class="line">    <span class="keyword">float</span> * scale_updates;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * weights;		<span class="comment">//权重</span></span><br><span class="line">    <span class="keyword">float</span> * weight_updates;	<span class="comment">//更新后的权重</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * delta;			<span class="comment">//一个batch的梯度信息（region）</span></span><br><span class="line">    <span class="keyword">float</span> * output;			<span class="comment">//一个batch的输出存储空间（region）</span></span><br><span class="line">    <span class="keyword">float</span> * squared;</span><br><span class="line">    <span class="keyword">float</span> * norms;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * spatial_mean;</span><br><span class="line">    <span class="keyword">float</span> * mean;			<span class="comment">//标准差</span></span><br><span class="line">    <span class="keyword">float</span> * variance;		<span class="comment">//方差</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * mean_delta;</span><br><span class="line">    <span class="keyword">float</span> * variance_delta;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * rolling_mean;</span><br><span class="line">    <span class="keyword">float</span> * rolling_variance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * x;</span><br><span class="line">    <span class="keyword">float</span> * x_norm;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * m;</span><br><span class="line">    <span class="keyword">float</span> * v;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">float</span> * bias_m;</span><br><span class="line">    <span class="keyword">float</span> * bias_v;</span><br><span class="line">    <span class="keyword">float</span> * scale_m;</span><br><span class="line">    <span class="keyword">float</span> * scale_v;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> *z_cpu;			<span class="comment">//gru</span></span><br><span class="line">    <span class="keyword">float</span> *r_cpu;			<span class="comment">//gru</span></span><br><span class="line">    <span class="keyword">float</span> *h_cpu;			<span class="comment">//gru</span></span><br><span class="line">    <span class="keyword">float</span> * prev_state_cpu;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> *temp_cpu;</span><br><span class="line">    <span class="keyword">float</span> *temp2_cpu;</span><br><span class="line">    <span class="keyword">float</span> *temp3_cpu;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> *dh_cpu;</span><br><span class="line">    <span class="keyword">float</span> *hh_cpu;</span><br><span class="line">    <span class="keyword">float</span> *prev_cell_cpu;</span><br><span class="line">    <span class="keyword">float</span> *cell_cpu;</span><br><span class="line">    <span class="keyword">float</span> *f_cpu;</span><br><span class="line">    <span class="keyword">float</span> *i_cpu;</span><br><span class="line">    <span class="keyword">float</span> *g_cpu;</span><br><span class="line">    <span class="keyword">float</span> *o_cpu;</span><br><span class="line">    <span class="keyword">float</span> *c_cpu;</span><br><span class="line">    <span class="keyword">float</span> *dc_cpu; </span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> * binary_input;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">self_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">output_layer</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">reset_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">update_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_layer</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_gate_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_gate_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_save_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_save_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_state_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_state_layer</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_z_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_z_layer</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_r_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_r_layer</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">input_h_layer</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">state_h_layer</span>;</span></span><br><span class="line">	</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wz</span>;</span>				<span class="comment">//gru参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">uz</span>;</span>				<span class="comment">//gru参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wr</span>;</span>				<span class="comment">//gru参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">ur</span>;</span>				<span class="comment">//gru参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wh</span>;</span>				<span class="comment">//gru参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">uh</span>;</span>				<span class="comment">//gru参数</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">uo</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wo</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">uf</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wf</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">ui</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wi</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">ug</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">layer</span> *<span class="title">wg</span>;</span></span><br><span class="line"></span><br><span class="line">    tree *softmax_tree;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span> workspace_size;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2代码分析（六）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2代码分析（六）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数总结"><span class="nav-number">2.</span> <span class="nav-text">参数总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

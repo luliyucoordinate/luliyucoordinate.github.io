@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2源码分析--reorg layer | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonyolo" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="文章全部YOLOv2源码分析 reorg layer中最关键的代码如下 12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&amp;#123;    int b,i,j,k;    int out_c">
+<meta name="keywords" content="python,yolo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2源码分析--reorg layer">
+<meta property="og:url" content="http://coordinate.wang/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="文章全部YOLOv2源码分析 reorg layer中最关键的代码如下 12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&amp;#123;    int b,i,j,k;    int out_c">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fn1yyl8fnfj20rg0eaq3f.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fn20wg6nflj20cd0ewweh.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn212t4l1fj20o20d8q2x.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fn1zy29yxej20bq0h9dfz.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fn21bwz88oj20vp0fv74c.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn21j8ocyxj20o60cajra.jpg">
+<meta property="og:updated_time" content="2018-02-18T08:46:29.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2源码分析--reorg layer">
+<meta name="twitter:description" content="文章全部YOLOv2源码分析 reorg layer中最关键的代码如下 12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&amp;#123;    int b,i,j,k;    int out_c">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fn1yyl8fnfj20rg0eaq3f.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-01-01-YOLOv2源码分析--reorg layer" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2源码分析--reorg layer
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" class="article-date">
+	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">一月 1, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文章全部<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<p>reorg layer中最关键的代码如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reorg_cpu</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">int</span> w, <span class="keyword">int</span> h, <span class="keyword">int</span> c, <span class="keyword">int</span> batch, <span class="keyword">int</span> stride, <span class="keyword">int</span> forward, <span class="keyword">float</span> *out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b,i,j,k;</span><br><span class="line">    <span class="keyword">int</span> out_c = c/(stride*stride);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(b = <span class="number">0</span>; b &lt; batch; ++b)&#123;</span><br><span class="line">        <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; c; ++k)&#123;</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; h; ++j)&#123;</span><br><span class="line">                <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; w; ++i)&#123;</span><br><span class="line">                    <span class="keyword">int</span> in_index  = i + w*(j + h*(k + c*b));</span><br><span class="line">                    <span class="keyword">int</span> c2 = k % out_c;</span><br><span class="line">                    <span class="keyword">int</span> offset = k / out_c;</span><br><span class="line">                    <span class="keyword">int</span> w2 = i*stride + offset % stride;</span><br><span class="line">                    <span class="keyword">int</span> h2 = j*stride + offset / stride;</span><br><span class="line">                    <span class="keyword">int</span> out_index = w2 + w*stride*(h2 + h*stride*(c2 + out_c*b));</span><br><span class="line">                    <span class="keyword">if</span>(forward) out[out_index] = x[in_index];</span><br><span class="line">                    <span class="keyword">else</span> out[in_index] = x[out_index];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>这一部分表述为数学公式就是</p>
+<ul>
+<li>$in_index=W_1+W<em>stride</em>(H_1+H<em>(C_1+C</em>B))$</li>
+</ul>
+<ul>
+<li>$C_2=C_1\%C_{out}$</li>
+<li>$offset = C_1/C_{out}$</li>
+<li>$W_2=W_1*stride+offset\%stride$</li>
+<li>$H_2=H_1*stride+offset/stride$</li>
+<li>$out_index = W_2+W<em>stride</em>(H_2+H<em>stride</em>(C_2+C_{out}*B))$</li>
+</ul>
+<p>对于前向传播，想要表达的意思就是下面这个图</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fn1yyl8fnfj20rg0eaq3f.jpg"><br></center>
+
+<p>那么我们知道，矩阵运算可以更加简洁的表示上面的代码中的循环，我这里给出pytorch下的代码示例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">B,C,H,W = input.size()</span><br><span class="line">input = input.view(B, C, H/stride, stride, W/stride, stride).transpose(<span class="number">3</span>,<span class="number">4</span>).contiguous()</span><br><span class="line">input = input.view(B, C, H/stride*W/stride, stride*stride).transpose(<span class="number">2</span>,<span class="number">3</span>).contiguous()</span><br><span class="line">input = input.view(B, C, stride*stride, H/stride, W/stride).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous()</span><br><span class="line">input = input.view(B, stride*stride*C, H/stride, W/stride)</span><br></pre></td></tr></table></figure>
+<p>非常简洁的就解决了上述的问题，但是简洁背后的数学原理你要明白。</p>
+<p>首先我先说一下这里的参数含义:</p>
+<ul>
+<li><code>B</code>:<code>batch</code></li>
+<li><code>C</code>:通道数目</li>
+<li><code>H</code>:高</li>
+<li><code>W</code>:宽</li>
+</ul>
+<p>按照论文中的做法，我们这里<code>stride</code>取2</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input = input.view(B, C, H/stride, stride, W/stride, stride).transpose(<span class="number">3</span>,<span class="number">4</span>).contiguous()</span><br></pre></td></tr></table></figure>
+<p>这里的<code>view</code>函数的意义，我么可以理解为“看成”</p>
+<p>这个式子想要表达的含义如下图：</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fn20wg6nflj20cd0ewweh.jpg"><br></center>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input = input.view(B, C, H/stride*W/stride, stride*stride).transpose(<span class="number">2</span>,<span class="number">3</span>).contiguous()</span><br></pre></td></tr></table></figure>
+<p>这个式子想要表达的含义如下图：</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn212t4l1fj20o20d8q2x.jpg"><br></center>
+
+<p>从第一个式子到第二个式子的过程我们可以抽象为</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fn1zy29yxej20bq0h9dfz.jpg"><br></center>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">input = input.view(B, C, stride*stride, H/stride, W/stride).transpose(<span class="number">1</span>,<span class="number">2</span>).contiguous()</span><br></pre></td></tr></table></figure>
+<p>这个式子想要表达的含义如下图：</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fn21bwz88oj20vp0fv74c.jpg"><br></center>
+
+<p>最后抽象为</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn21j8ocyxj20o60cajra.jpg"><br></center>
+
+<p><strong>觉得不错，点个赞吧b(￣▽￣)d</strong></p>
+<p>由于本人水平有限，文中有不对之处，希望大家指出，谢谢^_^!</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python如果获取windows管理员权限（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">torch.autograd.backward中的参数问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

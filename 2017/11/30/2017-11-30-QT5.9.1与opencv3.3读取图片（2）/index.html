@@ -17,22 +17,22 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。  我们看到MDI Area的边界和MainWindow的">
+  <meta name="description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。">
 <meta name="keywords" content="cpp,opencv,qt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QT5.9.1与opencv3.3读取图片（2）">
 <meta property="og:url" content="http://coordinate.wang/2017/11/30/2017-11-30-QT5.9.1与opencv3.3读取图片（2）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。  我们看到MDI Area的边界和MainWindow的">
+<meta property="og:description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm08birinoj20fv0qtwf8.jpg">
 <meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm08jm9ejlj20ma0fi0ss.jpg">
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0yy0g0i8j20kd0h4149.jpg">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.454Z">
+<meta property="og:updated_time" content="2018-02-18T08:39:39.410Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="QT5.9.1与opencv3.3读取图片（2）">
-<meta name="twitter:description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。  我们看到MDI Area的边界和MainWindow的">
+<meta name="twitter:description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。">
 <meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
@@ -70,32 +70,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -174,6 +152,7 @@
 <p>关于如何新建一个项目，请看上一篇。</p>
 <p>我们想要有一个小窗口去显示图片，那我们就要用到<code>QMdiArea</code>。从左边拖一个<code>MDI Area</code>到窗口中，点击<code>MainWindow</code>然后选择栅格布局。</p>
 <p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg" class="img-fluid"><br></a></p>
+<a id="more"></a>
 <p>我们看到<code>MDI Area</code>的边界和<code>MainWindow</code>的边界有一些距离，这很难看，所以我们要调整这个间隔。选中<code>centralWidget</code>，然后修改<code>LayoutLeftMargin</code>、<code>LayoutTopMargin</code>、 <code>LayoutRightMargin</code>、<code>LayoutBottomMargin</code> 都设置为0。</p>
 <p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm08birinoj20fv0qtwf8.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm08birinoj20fv0qtwf8.jpg" class="img-fluid"><br></a></p>
 <p>接着我们要对小窗口进行设计，由于我们要显示一个图片，最简单的做法就是新建一个<code>ChildWindow</code>类，让这类继承<code>QLabel</code>类就可以了。</p>
@@ -322,9 +301,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
