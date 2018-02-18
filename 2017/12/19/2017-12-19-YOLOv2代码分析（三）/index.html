@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="接着上一讲没有讲完的make_convolutional_layer函数 #0x01 make_convolutional_layer 1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = upd">
+  <meta name="description" content="接着上一讲没有讲完的make_convolutional_layer函数 0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = updat">
 <meta name="keywords" content="c,python,YOLO,darknet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YOLOv2代码分析（三）">
 <meta property="og:url" content="http://coordinate.wang/2017/12/19/2017-12-19-YOLOv2代码分析（三）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="接着上一讲没有讲完的make_convolutional_layer函数 #0x01 make_convolutional_layer 1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = upd">
+<meta property="og:description" content="接着上一讲没有讲完的make_convolutional_layer函数 0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = updat">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.639Z">
+<meta property="og:updated_time" content="2018-02-18T04:59:25.664Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YOLOv2代码分析（三）">
-<meta name="twitter:description" content="接着上一讲没有讲完的make_convolutional_layer函数 #0x01 make_convolutional_layer 1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = upd">
+<meta name="twitter:description" content="接着上一讲没有讲完的make_convolutional_layer函数 0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = updat">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -138,8 +138,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>接着上一讲没有讲完的<code>make_convolutional_layer</code>函数</p>
-<p>#0x01 make_convolutional_layer</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//make_convolutional_layer</span></span><br><span class="line">l.forward = forward_convolutional_layer;</span><br><span class="line">   l.backward = backward_convolutional_layer;</span><br><span class="line">   l.update = update_convolutional_layer;</span><br></pre></td></tr></table></figure>
+<h1 id="0x01-make-convolutional-layer"><a href="#0x01-make-convolutional-layer" class="headerlink" title="0x01 make_convolutional_layer"></a>0x01 make_convolutional_layer</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//make_convolutional_layer</span></span><br><span class="line">l.forward = forward_convolutional_layer;</span><br><span class="line">   l.backward = backward_convolutional_layer;</span><br><span class="line">   l.update = update_convolutional_layer;</span><br></pre></td></tr></table></figure>
 <p>上来就是三坐大山^_^，我们先从第一个<code>forward_convolutional_layer</code>开始。</p>
 <h2 id="0x0101-forward-convolutional-layer"><a href="#0x0101-forward-convolutional-layer" class="headerlink" title="0x0101 forward_convolutional_layer"></a>0x0101 forward_convolutional_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_convolutional_layer</span><span class="params">(convolutional_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//传入卷积层参数和网络的总参数</span></span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs*l.batch, <span class="number">0</span>, l.output, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
 <p>看这个<code>fill_cpu</code>函数</p>
@@ -353,7 +352,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-forward-convolutional-layer"><span class="nav-number">1.</span> <span class="nav-text">0x0101 forward_convolutional_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0102-im2col-cpu-amp-amp-gemm"><span class="nav-number">2.</span> <span class="nav-text">0x0102 im2col_cpu &amp;&amp; gemm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0103-forward-batchnorm-layer"><span class="nav-number">3.</span> <span class="nav-text">0x0103 forward_batchnorm_layer</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-make-convolutional-layer"><span class="nav-number">1.</span> <span class="nav-text">0x01 make_convolutional_layer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-forward-convolutional-layer"><span class="nav-number">1.1.</span> <span class="nav-text">0x0101 forward_convolutional_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0102-im2col-cpu-amp-amp-gemm"><span class="nav-number">1.2.</span> <span class="nav-text">0x0102 im2col_cpu &amp;&amp; gemm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0103-forward-batchnorm-layer"><span class="nav-number">1.3.</span> <span class="nav-text">0x0103 forward_batchnorm_layer</span></a></li></ol></li></ol>
     
     </div>
   </aside>

@@ -11,18 +11,18 @@
   
   
   
-  <meta name="description" content="#0x01 parse_network_cfg 我们继续前面没有说完的parse_network_cfg 123//parse_network_cfgnode *n = sections-&amp;gt;front;   if(!n) error(&quot;Config file has no sections&quot;); 我么先要了解一下list结构 12345678910typedef struct list&amp;#1">
+  <meta name="description" content="0x01 parse_network_cfg我们继续前面没有说完的parse_network_cfg 123//parse_network_cfgnode *n = sections-&amp;gt;front;   if(!n) error(&quot;Config file has no sections&quot;); 我么先要了解一下list结构 12345678910typedef struct list&amp;#123">
 <meta name="keywords" content="c,python,YOLO,darknet">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YOLOv2代码分析（二）">
 <meta property="og:url" content="http://coordinate.wang/2017/12/17/2017-12-17-YOLOv2代码分析（二）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="#0x01 parse_network_cfg 我们继续前面没有说完的parse_network_cfg 123//parse_network_cfgnode *n = sections-&amp;gt;front;   if(!n) error(&quot;Config file has no sections&quot;); 我么先要了解一下list结构 12345678910typedef struct list&amp;#1">
+<meta property="og:description" content="0x01 parse_network_cfg我们继续前面没有说完的parse_network_cfg 123//parse_network_cfgnode *n = sections-&amp;gt;front;   if(!n) error(&quot;Config file has no sections&quot;); 我么先要了解一下list结构 12345678910typedef struct list&amp;#123">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-18T03:29:07.623Z">
+<meta property="og:updated_time" content="2018-02-18T05:04:59.119Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YOLOv2代码分析（二）">
-<meta name="twitter:description" content="#0x01 parse_network_cfg 我们继续前面没有说完的parse_network_cfg 123//parse_network_cfgnode *n = sections-&amp;gt;front;   if(!n) error(&quot;Config file has no sections&quot;); 我么先要了解一下list结构 12345678910typedef struct list&amp;#1">
+<meta name="twitter:description" content="0x01 parse_network_cfg我们继续前面没有说完的parse_network_cfg 123//parse_network_cfgnode *n = sections-&amp;gt;front;   if(!n) error(&quot;Config file has no sections&quot;); 我么先要了解一下list结构 12345678910typedef struct list&amp;#123">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -137,8 +137,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>#0x01 parse_network_cfg</p>
-<p>我们继续前面没有说完的<code>parse_network_cfg</code></p>
+        <h1 id="0x01-parse-network-cfg"><a href="#0x01-parse-network-cfg" class="headerlink" title="0x01 parse_network_cfg"></a>0x01 parse_network_cfg</h1><p>我们继续前面没有说完的<code>parse_network_cfg</code></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//parse_network_cfg</span></span><br><span class="line">node *n = sections-&gt;front;</span><br><span class="line">   <span class="keyword">if</span>(!n) error(<span class="string">"Config file has no sections"</span>);</span><br></pre></td></tr></table></figure>
 <p>我么先要了解一下<code>list</code>结构</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">list</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> size;</span><br><span class="line">    node *front;</span><br><span class="line">    node *back;</span><br><span class="line">&#125; <span class="built_in">list</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span> *val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">next</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">prev</span>;</span></span><br><span class="line">&#125; node;</span><br></pre></td></tr></table></figure>
@@ -293,7 +292,7 @@
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
     
-      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-parse-net-options"><span class="nav-number">1.</span> <span class="nav-text">0x0101 parse_net_options</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0102-学习率策略"><span class="nav-number">2.</span> <span class="nav-text">0x0102 学习率策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0103-parse-convolutional"><span class="nav-number">3.</span> <span class="nav-text">0x0103 parse_convolutional</span></a></li></ol>
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-parse-network-cfg"><span class="nav-number">1.</span> <span class="nav-text">0x01 parse_network_cfg</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-parse-net-options"><span class="nav-number">1.1.</span> <span class="nav-text">0x0101 parse_net_options</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0102-学习率策略"><span class="nav-number">1.2.</span> <span class="nav-text">0x0102 学习率策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0103-parse-convolutional"><span class="nav-number">1.3.</span> <span class="nav-text">0x0103 parse_convolutional</span></a></li></ol></li></ol>
     
     </div>
   </aside>
