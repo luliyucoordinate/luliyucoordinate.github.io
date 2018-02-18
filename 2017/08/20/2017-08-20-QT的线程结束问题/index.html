@@ -6,13 +6,13 @@
   <title>QT的线程结束问题 | coordinate</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="QTthreadquitwait" />
+  <meta name="keywords" content="threadQTquitwait" />
   
   
   
   
   <meta name="description" content="在QT中，线程退出主要有三种方式：  void quit()   相当于exit(0) void exit(int returnCode  = 0)    调用exit后，thread将退出event loop，并从exec返回，exec的返回值就是returnCode。通常returnCode返回成功，其他值返回失败。 void terminate()   强行终止线程  主要用法：  thre">
-<meta name="keywords" content="QT,thread,quit,wait">
+<meta name="keywords" content="thread,QT,quit,wait">
 <meta property="og:type" content="article">
 <meta property="og:title" content="QT的线程结束问题">
 <meta property="og:url" content="http://coordinate.wang/2017/08/20/2017-08-20-QT的线程结束问题/index.html">
@@ -59,32 +59,10 @@
 
 
   
-  
-  <div class="site-header-image">
-    <img id="originBg" width="100%" alt="Hike News" src="">
-  </div>
-
-  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
-    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
-  </div>
-
-  <script>
-        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
-        var random = Math.floor((Math.random() * imgUrls.length ));
-        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
-          document.getElementById("originBg").src=imgUrls[random];
-          document.getElementById("blurBg").src=imgUrls[random];
-        } else {
-          document.getElementById("originBg").src='/' + imgUrls[random];
-          document.getElementById("blurBg").src='/' + imgUrls[random];
-        }
-    </script>
-
-
 
 
 <header id="allheader" class="site-header" role="banner" 
-   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
+   >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -297,9 +275,6 @@
 
 
     <!-- headerblur min height -->
-    
-      var headerblur = document.getElementById("header-blur");
-      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
