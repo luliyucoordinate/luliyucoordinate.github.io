@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>STL容器（7）Map和Mutimap | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="定义于头文件  123456template&amp;lt;    class Key,    class T,    class Compare = std::less&amp;lt;Key&amp;gt;,class Allocator = std::allocator&amp;lt;std::pair&amp;lt;const Key, T&amp;gt; &amp;gt;&amp;gt; class map; std::map是一个有序关联容器，包含具">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL容器（7）Map和Mutimap">
+<meta property="og:url" content="http://coordinate.wang/2017/04/29/2017-04-29-STL容器7Map和Mutimap/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="定义于头文件  123456template&amp;lt;    class Key,    class T,    class Compare = std::less&amp;lt;Key&amp;gt;,class Allocator = std::allocator&amp;lt;std::pair&amp;lt;const Key, T&amp;gt; &amp;gt;&amp;gt; class map; std::map是一个有序关联容器，包含具">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.368Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL容器（7）Map和Mutimap">
+<meta name="twitter:description" content="定义于头文件  123456template&amp;lt;    class Key,    class T,    class Compare = std::less&amp;lt;Key&amp;gt;,class Allocator = std::allocator&amp;lt;std::pair&amp;lt;const Key, T&amp;gt; &amp;gt;&amp;gt; class map; std::map是一个有序关联容器，包含具">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-29-STL容器7Map和Mutimap" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      STL容器（7）Map和Mutimap
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/29/2017-04-29-STL容器7Map和Mutimap/" class="article-date">
+	  <time datetime="2017-04-28T16:00:00.000Z" itemprop="datePublished">四月 29, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>定义于头文件 <map></map></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Compare</span> = <span class="title">std</span>:</span>:less&lt;Key&gt;,</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> Key, T&gt; &gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">map</span>;</span></span><br></pre></td></tr></table></figure>
+<p>std::map是一个有序关联容器，包含具有唯一键的键值对。键使用比较函数Compare比较来进行排序。搜索，删除和插入操作具有对数复杂性。map通常实现为红黑树。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Compare</span> = <span class="title">std</span>:</span>:less&lt;Key&gt;,</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> Key, T&gt; &gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">multimap</span>;</span></span><br></pre></td></tr></table></figure>
+<p>multimap是一个关联容器，它包含一个有序的键值对列表。键值按照Compare比较函数来排序。搜索、插入和删除操作具有对数的复杂性。<br> 相等的键值对在比较中的排序是保持插入时的顺序。 (C++11 起)</p>
+<h2 id="Map和Multimap的能力"><a href="#Map和Multimap的能力" class="headerlink" title="Map和Multimap的能力"></a>Map和Multimap的能力</h2><p>Map和multimap后根据元素的key自动对元素排序。这么一来，根据已知的key查找某个元素时就能够有很好的效率，而根据已知value查找元素时，效率就会很糟糕。map和multimap身上有一个重要的限制：你不可以直接改变元素的key，因为这会破坏正确顺序。要修改元素的key，必须先移除该key的元素，然后插入key/value的元素。</p>
+<h2 id="Map和Multimap的操作函数"><a href="#Map和Multimap的操作函数" class="headerlink" title="Map和Multimap的操作函数"></a>Map和Multimap的操作函数</h2><p>成员函数find用来查找第一个“拥有某key”的元素，并返回一个迭代器指向该位置。如果没有这样的元素，就返回容器的end。你不能以find查找拥有某特定value的元素。你可以使用下面的方法查找value：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">multimap</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">multimap</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt;::iterator pos;</span><br><span class="line"><span class="keyword">for</span>(pos = coll.begin(); pos != coll.end(); ++pos)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(pos-&gt;second == value)</span><br><span class="line">	&#123;</span><br><span class="line">		do_something();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还可以使用find_if:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pos = find_if(coll.begin(),coll.end(),</span><br><span class="line">					[](<span class="keyword">const</span> pair&lt;<span class="keyword">float</span>,<span class="keyword">float</span>&gt;&amp; elem)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="keyword">return</span> elem.second == value;</span><br><span class="line">					&#125;);</span><br></pre></td></tr></table></figure>
+<p>Map和multimap只支持“所有容器都提供的基本赋值操作”，赋值动作的两端容器必须拥有相同类型，尽管“比较准则”本身可能不同，但其类型必须相同。如果准则不同，准则本身也会随着容器被赋值或交换。但只要注意的是，元素比较函数只能用于类型相同的容器身上，换言之，两个容器的key、value、排序准则都必须相同的类型。<br>如果你一定要修改元素的key，只有一条路：以一个“value相同”的新元素替换掉旧元素。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> MyLib &#123;</span><br><span class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Cont&gt;</span><br><span class="line">    <span class="keyword">inline</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">replace_key</span> <span class="params">(Cont&amp; c,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">const</span> <span class="keyword">typename</span> Cont::key_type&amp; old_key,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">const</span> <span class="keyword">typename</span> Cont::key_type&amp; new_key)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">typename</span> Cont::iterator pos;</span><br><span class="line">        pos = c.find(old_key);</span><br><span class="line">        <span class="keyword">if</span> (pos != c.end()) &#123;</span><br><span class="line">            <span class="comment">// insert new element with value of old element</span></span><br><span class="line">            c.insert(<span class="keyword">typename</span> Cont::value_type(new_key,</span><br><span class="line">                                               pos-&gt;second));</span><br><span class="line">            <span class="comment">// remove old element</span></span><br><span class="line">            c.erase(pos);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// key not found</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是map提供一个非常方便的手法，然你改变元素的key。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//insert new element with value of old element</span></span><br><span class="line">coll[<span class="string">"new_key"</span>] = coll[<span class="string">"old_key"</span>];</span><br><span class="line"><span class="comment">//remove old key</span></span><br><span class="line">coll.erase(<span class="string">"old_key"</span>);</span><br></pre></td></tr></table></figure>
+<p>有三种方法可以将value传入map或multimap</p>
+<ol>
+<li>运用value_type</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll.insert(<span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt;::value_type(<span class="string">"ot"</span>,<span class="number">12</span>));</span><br></pre></td></tr></table></figure>
+<p>或</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll.insert(<span class="keyword">decltype</span>(coll)::value_type(<span class="string">"oit"</span>,<span class="number">12</span>));</span><br></pre></td></tr></table></figure>
+<ol>
+<li>运用pair&lt;&gt;</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll.insert(<span class="built_in">std</span>::pair&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt;(<span class="string">"ot"</span>,<span class="number">12</span>));</span><br><span class="line">coll.insert(<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt;(<span class="string">"ot"</span>,<span class="number">12</span>));</span><br></pre></td></tr></table></figure>
+<ol>
+<li>运用make_pair，这是C++11前最方便的做法</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll.insert(<span class="built_in">std</span>::make_pair (<span class="string">"ot"</span>,<span class="number">12</span>));</span><br></pre></td></tr></table></figure>
+<p>查看是否插入成功，可以使用和set和multiset相同的方法，也就是coll.insert().second。<br>使用emplace函数与insert的区别在于：<br>The element is constructed in-place by calling allocator_traits::construct with args forwarded.<br>A similar member function exists, insert, which either copies or moves existing objects into the container.<br>移除元素时，当心发生意外情况。移除迭代器所指对象时，有一个很大的危险。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos = coll.begin();pos != coll.end(); ++pos)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(pos-&gt;second == value)</span><br><span class="line">	&#123;</span><br><span class="line">		coll.earse(pos);<span class="comment">//RUNTIME ERROR</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对pos所指元素erase，会使pos不再成为coll的一个有效迭代器。所以后面++pos，这样做是不合理的。<br>C++11后的做法很简单，earse总是返回一个迭代器所指元素其后继元素：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos = coll.begin();pos != coll.end();)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(pos-&gt;second == value)</span><br><span class="line">	&#123;</span><br><span class="line">		coll.earse(pos);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">    	++pos;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而在C++11之前的做法是：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos = coll.begin();pos != coll.end();)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(pos-&gt;second == value)</span><br><span class="line">	&#123;</span><br><span class="line">		coll.earse(pos++);	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">    	++pos;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关联式数组的优点是你可以通过更方便的接口对map安插新元素。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll[<span class="string">"fdsa"</span>] = <span class="number">12</span>;</span><br></pre></td></tr></table></figure>
+<p>对于coll[“fdsa”]的处理：<br>如果存在key为“fdsa”的元素，上式会返回元素的reference。如果没有任何元素的key是“fdsa”，便为map插入一个新元素，令其key为“fdsa”，value以default构造函数完成，并返回一个reference指向新元素。<br>但是上面的这种做法是会存在缺点的，你很容易想到如果这样做的话：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; coll[<span class="string">"fdsaa"</span>];</span><br></pre></td></tr></table></figure>
+<p>这和我预先的做法就有出入，它的结果是输出0。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/30/2017-04-30-声明与定义/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          声明与定义
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/28/2017-04-28-STL容器6Set和Multiset/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">STL容器（6）Set和Multiset</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Map和Multimap的能力"><span class="nav-number">1.</span> <span class="nav-text">Map和Multimap的能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Map和Multimap的操作函数"><span class="nav-number">2.</span> <span class="nav-text">Map和Multimap的操作函数</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

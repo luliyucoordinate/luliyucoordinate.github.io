@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>IA-32指令类型（1） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="传送指令通用数据传送指令MOV：一般传送，包括movb、movw、movlMOVS：符号传送，如movsbw、movswlMOVZ：零扩展传送，如movzwl、movzblXCHG：数据交换PUSH/POP：入栈出栈，如pushl、pushw、popl、popw入栈sp-，出栈sp+ 地址传送指令LEA：加载有效地址，如leal (%edx,%eax),%eax的功能为R[eax]&amp;lt;-R[e">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IA-32指令类型（1）">
+<meta property="og:url" content="http://coordinate.wang/2017/05/12/2017-05-12-IA-32指令类型1/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="传送指令通用数据传送指令MOV：一般传送，包括movb、movw、movlMOVS：符号传送，如movsbw、movswlMOVZ：零扩展传送，如movzwl、movzblXCHG：数据交换PUSH/POP：入栈出栈，如pushl、pushw、popl、popw入栈sp-，出栈sp+ 地址传送指令LEA：加载有效地址，如leal (%edx,%eax),%eax的功能为R[eax]&amp;lt;-R[e">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IA-32指令类型（1）">
+<meta name="twitter:description" content="传送指令通用数据传送指令MOV：一般传送，包括movb、movw、movlMOVS：符号传送，如movsbw、movswlMOVZ：零扩展传送，如movzwl、movzblXCHG：数据交换PUSH/POP：入栈出栈，如pushl、pushw、popl、popw入栈sp-，出栈sp+ 地址传送指令LEA：加载有效地址，如leal (%edx,%eax),%eax的功能为R[eax]&amp;lt;-R[e">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-12-IA-32指令类型1" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      IA-32指令类型（1）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/12/2017-05-12-IA-32指令类型1/" class="article-date">
+	  <time datetime="2017-05-11T16:00:00.000Z" itemprop="datePublished">五月 12, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="传送指令"><a href="#传送指令" class="headerlink" title="传送指令"></a>传送指令</h1><h2 id="通用数据传送指令"><a href="#通用数据传送指令" class="headerlink" title="通用数据传送指令"></a>通用数据传送指令</h2><p>MOV：一般传送，包括movb、movw、movl<br>MOVS：符号传送，如movsbw、movswl<br>MOVZ：零扩展传送，如movzwl、movzbl<br>XCHG：数据交换<br>PUSH/POP：入栈出栈，如pushl、pushw、popl、popw<br>入栈sp-，出栈sp+</p>
+<h2 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h2><p>LEA：加载有效地址，如leal (%edx,%eax),%eax的功能为R[eax]&lt;-R[edx]+R[eax]，执行前，若R[edx]=i,R[eax]=j，则执行指令后，R[eax]=i+j</p>
+<h2 id="输入输出指令"><a href="#输入输出指令" class="headerlink" title="输入输出指令"></a>输入输出指令</h2><p>IN和OUT：I/O端口与寄存器之间的交换</p>
+<h2 id="标志传送指令"><a href="#标志传送指令" class="headerlink" title="标志传送指令"></a>标志传送指令</h2><p>PUSHF、POPF：将EFLAG压栈，或将栈顶内容送EFLAG</p>
+<h1 id="定点算术运算指令"><a href="#定点算术运算指令" class="headerlink" title="定点算术运算指令"></a>定点算术运算指令</h1><h2 id="加减运算指令（影响标志、不区分无-带符号）"><a href="#加减运算指令（影响标志、不区分无-带符号）" class="headerlink" title="加减运算指令（影响标志、不区分无/带符号）"></a>加减运算指令（影响标志、不区分无/带符号）</h2><p>ADD：加，包括addb、addw、addl<br>SUB：减，包括subb、subw、subl<br>假设R[ax]=fffah，R[bx]=fff0h，则执行指令后“addw %bx,%ax”<br>R[ax]=fffah+fff0h=ffeah，bx中内容不变<br>CF=1，OF=0，ZF=0，SF=1<br>若是无符号数运算，则CF=1说明结果溢出<br>若是带符号整数运算，则OF=0说明结果没有溢出</p>
+<h2 id="增1-减1运算（影响除CF以外的标志、不区分无-带符号）"><a href="#增1-减1运算（影响除CF以外的标志、不区分无-带符号）" class="headerlink" title="增1/减1运算（影响除CF以外的标志、不区分无/带符号）"></a>增1/减1运算（影响除CF以外的标志、不区分无/带符号）</h2><p>INC：加，包括incb、incw、incl<br>DEC：减，包括decb、decw、decl</p>
+<h2 id="取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）"><a href="#取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）" class="headerlink" title="取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）"></a>取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）</h2><p>NEG：取负，包括negb、negw、negl</p>
+<h2 id="比较运算（做减法得到标志、不区分无-带符号）"><a href="#比较运算（做减法得到标志、不区分无-带符号）" class="headerlink" title="比较运算（做减法得到标志、不区分无/带符号）"></a>比较运算（做减法得到标志、不区分无/带符号）</h2><p>CMP：比较，包括cmpb、cmpw、cmpl</p>
+<h2 id="乘-除运算（不影响标志、区分无-带符号）"><a href="#乘-除运算（不影响标志、区分无-带符号）" class="headerlink" title="乘/除运算（不影响标志、区分无/带符号）"></a>乘/除运算（不影响标志、区分无/带符号）</h2><p>MUL/IMUL：无符号乘/带符号乘<br>DIV/IDIV：无符号乘/带符号乘<br>乘法指令：可以给出一个、两个或三个操作数<br>若给出一个操作数SRC，则另一个源操作数隐含在AL/AX/EAX中，将SRC和累加器内容相乘，结果存放在AX或DX-AX或EDX-EAX中。DX-AX表示32位乘积的高、低位分别在DX和AX中。n<em>n=2n<br>若指令中给出两个操作数DST和SRC，则将DST和SRC相乘，结果在DST中。n</em>n=n<br>若指令给出三个操作数REG、SRC、IMM，则将SRC和立即数IMM相乘，结果在REG中。n<em>n=n<br>除法指令：只明显指出除数，用EDX-EAX中内容除以指定的除数<br>若为8位，则16位被除数在AX寄存器中，商送回AL，余数在AH<br>若为16位，则32位被除数在DX-AX寄存器中，商送回AX，余数在DX<br>若为32，则被除数在EDX-EAX寄存器中，商送EAX，余数在EDX<br>假设R[eax]=000000b4h，R[ebx]=00000011h，M[000000f8h]=000000a0h，执行下面指令mulb %bl功能为$$R[ax]&lt;-R[al]</em>R[bl]$$，执行结果    $$R[ax]=b4h<em>11h=0bf4h$$(无符号整数180和17相乘)<br>$$R[ax]=b4h</em>11h=faf4h$$(带符号整数-76和17相乘)<br>对于带符号数乘，若乘积只取低n位，则和无符号数相同；若取2n位，则采用布斯乘法。<br>执行$$imull -16,(\%eax,\%ebx,4),\%eax$$功能为$$R[eax]&lt;-(-16)<em>M[R[eax]+R[ebx]</em>4]$$，执行结果为<br>$$R[eax]+R[ebx]<em>4=000000b4h+00000011h&lt;&lt;2=000000f8h$$<br>$$R[eax]=-16</em>M[000000f8h]=16*(-000000a0h)=ffffff60h&lt;&lt;4=fffff600h$$  </p>
+<h1 id="按位运算指令"><a href="#按位运算指令" class="headerlink" title="按位运算指令"></a>按位运算指令</h1><h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>NOT：非，包括notb、notw、notl<br>AND：与，包括andb、andw、andl<br>OR：或，包括orb、orw、orl<br>XOR：异或，包括xorb、xorw、xorl<br>TEST：做“与”操作测试，仅影响标志<br>只有not指令不影响标志，其他指令OF=CF=0，而ZF和SF则根据结果设置：若全0，则ZF=1；若最高位为1，则SF=1<br>假设M[0x1000]=00000f89h,M[0x1004]=000001270h,R[eax]=ff000001h,R[ecx]=00001000h  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">notw %ax R[ax]=fffeh;  </span><br><span class="line">andl %eax,(%ecx)=00000f89h^ff000001h=00000001h  </span><br><span class="line">orb 4(%ecx),%al=70h | 01h=71h</span><br></pre></td></tr></table></figure>
+<h2 id="移位运算（左-右移时，最高-最低位送CF）"><a href="#移位运算（左-右移时，最高-最低位送CF）" class="headerlink" title="移位运算（左/右移时，最高/最低位送CF）"></a>移位运算（左/右移时，最高/最低位送CF）</h2><p>SHL/SHR：逻辑左/右移，包括shlb，shrw，shrl<br>SAL/SAR：算数左/右移，左移要判断溢出，右移高位补符号（移位前、后符号位发生变化，则OF=1）包括salb、sarw、sarl<br>ROL/ROR：循环左/右移，包括rolb、rorw、roll<br>RCL/RCR：带进位循环左/右移，即：将CF作为操作数一部分循环移位，包括rclb、rcrw、rcll<br>假设short型变量x被编译器分配在寄存器AX中，R[ax]=ff80h,则以下汇编代码执行后变量x的机器数和真值  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">movw %ax,%dx    R[dx]&lt;-R[ax]  </span><br><span class="line">salw $2,%ax    1111 1111 1000 0000&lt;&lt;2  </span><br><span class="line">addl %dx,%ax    1111 1110 0000 0000 +1111 1111 1000 0000  </span><br><span class="line">sarw $1,%ax    1111 1101 1000 0000&gt;&gt;1=1111 1110 1100 0000</span><br></pre></td></tr></table></figure>
+<p>\$2与\$1表示立即数2和1。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/13/2017-05-13-IA-32指令类型2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          IA-32指令类型（2）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/11/2017-05-11-IA-32指令系统概述/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">IA-32指令系统概述</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#传送指令"><span class="nav-number">1.</span> <span class="nav-text">传送指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用数据传送指令"><span class="nav-number">1.1.</span> <span class="nav-text">通用数据传送指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地址传送指令"><span class="nav-number">1.2.</span> <span class="nav-text">地址传送指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入输出指令"><span class="nav-number">1.3.</span> <span class="nav-text">输入输出指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标志传送指令"><span class="nav-number">1.4.</span> <span class="nav-text">标志传送指令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#定点算术运算指令"><span class="nav-number">2.</span> <span class="nav-text">定点算术运算指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#加减运算指令（影响标志、不区分无-带符号）"><span class="nav-number">2.1.</span> <span class="nav-text">加减运算指令（影响标志、不区分无/带符号）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增1-减1运算（影响除CF以外的标志、不区分无-带符号）"><span class="nav-number">2.2.</span> <span class="nav-text">增1/减1运算（影响除CF以外的标志、不区分无/带符号）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）"><span class="nav-number">2.3.</span> <span class="nav-text">取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比较运算（做减法得到标志、不区分无-带符号）"><span class="nav-number">2.4.</span> <span class="nav-text">比较运算（做减法得到标志、不区分无/带符号）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘-除运算（不影响标志、区分无-带符号）"><span class="nav-number">2.5.</span> <span class="nav-text">乘/除运算（不影响标志、区分无/带符号）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#按位运算指令"><span class="nav-number">3.</span> <span class="nav-text">按位运算指令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑运算"><span class="nav-number">3.1.</span> <span class="nav-text">逻辑运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移位运算（左-右移时，最高-最低位送CF）"><span class="nav-number">3.2.</span> <span class="nav-text">移位运算（左/右移时，最高/最低位送CF）</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

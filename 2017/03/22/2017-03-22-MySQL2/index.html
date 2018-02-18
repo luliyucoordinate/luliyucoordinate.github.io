@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>MySQL | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="sqlMySQL" />
+  
+  
+  
+  
+  <meta name="description" content="Sql语句多表查询，不同表之间一定要有一个字段关联表里面的列称为字段field，行成为记录record对于SELECt后面的WHERE字句中用到的字段，原则是必须建相应的索引。索引不要乱箭，精准，不能多。索引可以提高SELECT语句的速度，但代价是降低了INSERT，UPDATE和DELETE语句的速度。 修改数据1UPDATE TABLENAME SET CAL1=VAL1, CAL2=VAL2">
+<meta name="keywords" content="sql,MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL">
+<meta property="og:url" content="http://coordinate.wang/2017/03/22/2017-03-22-MySQL2/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Sql语句多表查询，不同表之间一定要有一个字段关联表里面的列称为字段field，行成为记录record对于SELECt后面的WHERE字句中用到的字段，原则是必须建相应的索引。索引不要乱箭，精准，不能多。索引可以提高SELECT语句的速度，但代价是降低了INSERT，UPDATE和DELETE语句的速度。 修改数据1UPDATE TABLENAME SET CAL1=VAL1, CAL2=VAL2">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.966Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySQL">
+<meta name="twitter:description" content="Sql语句多表查询，不同表之间一定要有一个字段关联表里面的列称为字段field，行成为记录record对于SELECt后面的WHERE字句中用到的字段，原则是必须建相应的索引。索引不要乱箭，精准，不能多。索引可以提高SELECT语句的速度，但代价是降低了INSERT，UPDATE和DELETE语句的速度。 修改数据1UPDATE TABLENAME SET CAL1=VAL1, CAL2=VAL2">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-22-MySQL2" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      MySQL
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/22/2017-03-22-MySQL2/" class="article-date">
+	  <time datetime="2017-03-21T16:00:00.000Z" itemprop="datePublished">三月 22, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Sql语句"><a href="#Sql语句" class="headerlink" title="Sql语句"></a>Sql语句</h1><p>多表查询，不同表之间一定要有一个字段关联<br>表里面的列称为字段field，行成为记录record<br>对于SELECt后面的WHERE字句中用到的字段，原则是必须建相应的索引。索引不要乱箭，精准，不能多。<br>索引可以提高SELECT语句的速度，但代价是降低了INSERT，UPDATE和DELETE语句的速度。</p>
+<h2 id="修改数据"><a href="#修改数据" class="headerlink" title="修改数据"></a>修改数据</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UPDATE TABLENAME SET CAL1=VAL1, CAL2=VAL2… WHERE CONDITIONAL</span><br></pre></td></tr></table></figure>
+<p>Set语句指定要修改的字段和所附的值，where字句指定要修改的行，如果没有where语句，代表修改所有行<br>例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update table1 set sex = '女' where name = '张三';</span><br></pre></td></tr></table></figure>
+<h2 id="删除语句"><a href="#删除语句" class="headerlink" title="删除语句"></a>删除语句</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE FROM TABLENAME WHERE CONDITIONAL</span><br></pre></td></tr></table></figure>
+<p>where语句指定要删除的行，如果没有where代表删除所有行<br>例子：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; delete from table1 where name = '张三';</span><br></pre></td></tr></table></figure>
+<p>注意一点：/usr/include是gcc查找头文件的默认路径。</p>
+<h1 id="数据库编程"><a href="#数据库编程" class="headerlink" title="数据库编程"></a>数据库编程</h1><p>mysql编程首先要做的工作<br>头文件#include &lt;mysql/mysql.h&gt;<br>makefile文件，链接的时候添加-lmysqlclient选项（意思是要链接到libmysqlclient.so这个库文件）<br>数据库client与server之间也是采用TCP协议</p>
+<h2 id="连接到mysql步骤"><a href="#连接到mysql步骤" class="headerlink" title="连接到mysql步骤"></a>连接到mysql步骤</h2><p>初始化client</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Mysql_init(MYSQL *pmysql);</span><br></pre></td></tr></table></figure>
+<p>建立连接</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">MYSQL *<span class="title">mysql_real_connect</span><span class="params">(MYSQL *pmysql, <span class="keyword">const</span> <span class="keyword">char</span> *hostname,<span class="keyword">const</span> <span class="keyword">char</span> *usename,<span class="keyword">const</span> <span class="keyword">char</span> *passed, <span class="keyword">const</span> <span class="keyword">char</span> *dbname, <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>成功返回mysql连接的指针，失败返回NULL<br>通过mysql_error获取错误<br>client向server发送SQL语句，server将执行SQL语句的结果返回给client<br>写网络程序的原则，第一次写的时候，一定要拿本机做实验，<br>“localhost” = “127.0.0.1”</p>
+<p>执行sql语句  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mysql_query</span><span class="params">(MYSQL *pmysql,<span class="keyword">const</span> <span class="keyword">char</span> *sql)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数pmysql是连接到MySql的指针<br>参数sql是要执行的sql语句<br>成功返回0，失败返回非零<br>注意一点  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(mysql_query(connection, <span class="string">"SET NAMES utf8"</span>) != <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"utf8 error %s"</span> ,mysql_error(&amp;mysql));</span><br><span class="line">	<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编写mysql程序，成功连接到server之后，以一个执行的语句是设置字符集SET NAMES utf8;<br>linux下printf函数是以\n结尾的字符串才输出到屏幕的，如果没有\n直到输出缓冲区满了以后才打印到屏幕</p>
+<p>断开连接<br>mysql_close(MYSQL *)</p>
+<h2 id="控制台程序，输入退格键不回显的方法"><a href="#控制台程序，输入退格键不回显的方法" class="headerlink" title="控制台程序，输入退格键不回显的方法"></a>控制台程序，输入退格键不回显的方法</h2><p>命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">stty erase ^H</span><br><span class="line">system(“stty erase ^H”);</span><br></pre></td></tr></table></figure>
+<p>可以实现在输入状态下，按退格键删除字符，不回显<br>调用tcsetattr修改linux基本输出输入的控制字符定义<br>//////////////////////////////去掉退格键回显的代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;termios.h&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">termios</span> <span class="title">term</span>;</span><span class="comment">//定义一个temions结构</span></span><br><span class="line"><span class="keyword">if</span>(tcgetattr(STDIN_FILENO, &amp;term) == <span class="number">-1</span>)<span class="comment">//得到系统termion的设置</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"tcgetattr error is %s\n"</span>, strerror(errno));</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line">term.c_cc[VERASE] = <span class="string">'\b'</span>;<span class="comment">//'\b'为退格键的ASCII码</span></span><br><span class="line"><span class="keyword">if</span> (tcsetattr(STDIN_FILENO, TCSANOW, &amp;term) == <span class="number">-1</span>)<span class="comment">//设置系统termion</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"tcsetattr error is %s\n"</span>, strerror(errno));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="执行select语句得到查询结果"><a href="#执行select语句得到查询结果" class="headerlink" title="执行select语句得到查询结果"></a>执行select语句得到查询结果</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">MYSQL_RES *<span class="title">mysql_store_result</span><span class="params">(MYSQL *pmysql)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>成功返回一个查询结果指针，查询无结果或者错误返回NULL  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_free_result(MYSQL_RES *res)</span><br></pre></td></tr></table></figure>
+<p>调用完mysql_store_result，一定要用mysql_free_result释放相关资源</p>
+<h2 id="查看查询结果"><a href="#查看查询结果" class="headerlink" title="查看查询结果"></a>查看查询结果</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">MYSQL_ROW <span class="title">mysql_fetch_row</span><span class="params">(MYSQL_ROW *result)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(row = mysql_fetch_row(result) != <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(“name:%s,sex:%s,age:%s,class:%s\n”,row[<span class="number">0</span>], row[<span class="number">1</span>], row[<span class="number">2</span>], row[<span class="number">3</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管在表中age是数字，但是mysql返回的只不过是以NULL结尾的字符串</p>
+<h2 id="查看查询结果中的字段信息"><a href="#查看查询结果中的字段信息" class="headerlink" title="查看查询结果中的字段信息"></a>查看查询结果中的字段信息</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">MYSQL_FIELD *<span class="title">mysql_fetch_field</span><span class="params">(MYSQL_RES *result)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>((sqlField = mysql_fetch_field(result) != <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">printf</span>(“%s\n”, sqlField-&gt;name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>mysql_fetch_row返回是记录（行）<br>mysql_fetch_field返回是字段（列）</p>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><p>关于/usr/bin/ld: cannot find –lmysqlclient错误<br>去/usr/lib文件下去寻找，所以做个软链接即可。  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cd /usr/lib</span><br><span class="line"># ln -s /usr/lib64/mysql /usr/lib</span><br></pre></td></tr></table></figure>
+<p>设置环境变量export LIBRARY_PATH=/usr/lib/mysql后，gcc -o mysql mysql.c -lmysqlclient通过</p>
+<p>ctrl+s锁屏<br>ctrl+q解锁</p>
+<ol>
+<li><p>\n 软回车：<br>在Windows 中表示换行且回到下一行的最开始位置。相当于Mac OS 里的 \r 的效果。<br>在Linux、unix 中只表示换行，但不会回到下一行的开始位置。</p>
+</li>
+<li><p>\r 软空格：<br>在Linux、unix 中表示返回到当行的最开始位置。<br>在Mac OS 中表示换行且返回到下一行的最开始位置，相当于Windows 里的 \n 的效果。</p>
+</li>
+<li><p>\t 跳格（移至下一列）。<br>它们在双引号或定界符表示的字符串中有效，在单引号表示的字符串中无效。<br>\r\n 一般一起用，用来表示键盘上的回车键，也可只用 \n。<br>\t表示键盘上的“TAB”键。<br>就像你使用 enter和shift+enter的区别</p>
+</li>
+<li><p>文件中的换行符号：<br>linux,unix: \r\n<br>windows : \n<br>Mac OS：\r</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sql/">sql</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/25/2017-03-25-再看c++/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          再看c++
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/21/2017-03-21-MySQL1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MySQL</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Sql语句"><span class="nav-number">1.</span> <span class="nav-text">Sql语句</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改数据"><span class="nav-number">1.1.</span> <span class="nav-text">修改数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除语句"><span class="nav-number">1.2.</span> <span class="nav-text">删除语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据库编程"><span class="nav-number">2.</span> <span class="nav-text">数据库编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#连接到mysql步骤"><span class="nav-number">2.1.</span> <span class="nav-text">连接到mysql步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制台程序，输入退格键不回显的方法"><span class="nav-number">2.2.</span> <span class="nav-text">控制台程序，输入退格键不回显的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行select语句得到查询结果"><span class="nav-number">2.3.</span> <span class="nav-text">执行select语句得到查询结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看查询结果"><span class="nav-number">2.4.</span> <span class="nav-text">查看查询结果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看查询结果中的字段信息"><span class="nav-number">2.5.</span> <span class="nav-text">查看查询结果中的字段信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积累"><span class="nav-number">3.</span> <span class="nav-text">积累</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

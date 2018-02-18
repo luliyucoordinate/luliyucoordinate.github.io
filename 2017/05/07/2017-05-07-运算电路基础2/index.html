@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>运算电路基础（2） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="C语言中的各类计算C语言中涉及的运算从运算符无法区分逻辑移位和算数移位，由数的类型决定。如果是无符号数，那么是逻辑左（右）移。具体规则是：高（低）位移出，低（高）位补0，左移可能溢出。如果左移时高位是1，就发生溢出。如果是带符号数，那么是算数左（右）移。具体规则如下：左移，高位移出，低位补0，可能发生溢出。如果移出的位不等于新的符号位，则发生溢出。右移，低位移出，高位补符，可能发生有效数据丢失。位">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运算电路基础（2）">
+<meta property="og:url" content="http://coordinate.wang/2017/05/07/2017-05-07-运算电路基础2/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="C语言中的各类计算C语言中涉及的运算从运算符无法区分逻辑移位和算数移位，由数的类型决定。如果是无符号数，那么是逻辑左（右）移。具体规则是：高（低）位移出，低（高）位补0，左移可能溢出。如果左移时高位是1，就发生溢出。如果是带符号数，那么是算数左（右）移。具体规则如下：左移，高位移出，低位补0，可能发生溢出。如果移出的位不等于新的符号位，则发生溢出。右移，低位移出，高位补符，可能发生有效数据丢失。位">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.437Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="运算电路基础（2）">
+<meta name="twitter:description" content="C语言中的各类计算C语言中涉及的运算从运算符无法区分逻辑移位和算数移位，由数的类型决定。如果是无符号数，那么是逻辑左（右）移。具体规则是：高（低）位移出，低（高）位补0，左移可能溢出。如果左移时高位是1，就发生溢出。如果是带符号数，那么是算数左（右）移。具体规则如下：左移，高位移出，低位补0，可能发生溢出。如果移出的位不等于新的符号位，则发生溢出。右移，低位移出，高位补符，可能发生有效数据丢失。位">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-07-运算电路基础2" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      运算电路基础（2）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/07/2017-05-07-运算电路基础2/" class="article-date">
+	  <time datetime="2017-05-06T16:00:00.000Z" itemprop="datePublished">五月 7, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="C语言中的各类计算"><a href="#C语言中的各类计算" class="headerlink" title="C语言中的各类计算"></a>C语言中的各类计算</h1><h2 id="C语言中涉及的运算"><a href="#C语言中涉及的运算" class="headerlink" title="C语言中涉及的运算"></a>C语言中涉及的运算</h2><p>从运算符无法区分逻辑移位和算数移位，由数的类型决定。<br>如果是无符号数，那么是逻辑左（右）移。具体规则是：高（低）位移出，低（高）位补0，左移可能溢出。如果左移时高位是1，就发生溢出。<br>如果是带符号数，那么是算数左（右）移。具体规则如下：左移，高位移出，低位补0，可能发生溢出。如果移出的位不等于新的符号位，则发生溢出。右移，低位移出，高位补符，可能发生有效数据丢失。<br>位扩展和位截断运算，没有专门操作运算符，根据类型转换前、后数据长短确定是扩展还是截断。扩展就是短转长，无符号数（前面补0），带符号数（前面补符号）。截断就是长转短，可能发生溢出。例子：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">short</span> si = <span class="number">-32768</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> usi = si;</span><br><span class="line"><span class="keyword">int</span> i = si;</span><br><span class="line"><span class="keyword">unsigned</span> ui = usi;</span><br></pre></td></tr></table></figure>
+<p>分析结果<br>si = -32768  8000<br>usi = 32768  8000<br>i = -32768  ffff 8000<br>ui = 32768  0000 8000<br>溢出的例子：<br>int i = 32768<br>short si = (short) i;<br>int j = si;<br>最后的结果是i与j不相等，j=-32768，原因是对i截断时发生溢出，超出了16位带符号数能表示的最大值。  </p>
+<h2 id="条件标志位"><a href="#条件标志位" class="headerlink" title="条件标志位"></a>条件标志位</h2><p>零标志ZF、溢出标志OF、进借位标志CF、符号标志SF称为条件标志。条件标志在运算电路中产生，被记录到专门的寄存器中。存放标志的寄存器通常称为程序/状态寄存器或标志寄存器。每个标志对应标志寄存器的一个标志位。<br>OF：若a与b同号但与sum不同，则1，否则0；C_n⊕C_(n-1)<br>SF：sum最高位<br>ZF：如sum为0，则1，否则0<br>CF：cout⊕sub<br>例子：<br>若n=8，计算107+46=?<br>107    0110 1011<br>46     0010 1110<br>溢出标志OF=1、零标志ZF=0、符号标志SF=1、进位标志CF=0<br>作为无符号数运算的结果是未发生溢出，看CF<br>作为带符号数运算的结果是发生溢出，看OF<br>做减法用来比较大小，规则：<br>无符号数：CF=0时，大于<br>带符号数：OF=SF时，大于<br>例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> x = <span class="number">134</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> y = <span class="number">246</span>;</span><br><span class="line"><span class="keyword">int</span> m = x;</span><br><span class="line"><span class="keyword">int</span> n = y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> z1 = x-y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> z2 = x+y;</span><br><span class="line"><span class="keyword">int</span> k1 = m-n;</span><br><span class="line"><span class="keyword">int</span> k2 = m+n;</span><br></pre></td></tr></table></figure>
+<p>x和m的机器码是一样的1000 0110，y和n的机器数一样1111 0110，z1和k1的机器数是一样的1001 0000，CF=1，OF=0，SF=1，z2和k2的机器数是一样的0111 1100，CF=1，OF=1，SF=0<br>z1的值是144，是错误的值。k1的值是-112<br>z2的值是124，是错误的值。k2的值是124，也是错误的值。  </p>
+<h2 id="判断溢出的程序"><a href="#判断溢出的程序" class="headerlink" title="判断溢出的程序"></a>判断溢出的程序</h2><p>对于无符号数<br>发生溢出时，一定满足result&lt;x  and  result&gt;y,否则，若$$x+y-2^n&gt;=x$$，则$y&gt;=2^n$，显然是错误的。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x,<span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> sum = x + y;</span><br><span class="line">	<span class="keyword">return</span> sum &gt;= x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">usub_ok</span><span class="params">(<span class="keyword">unsigned</span> x,<span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> uadd_ok(x,-y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对与带符号数<br>带符号数的溢出包括正溢出和负溢出  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sum = x + y;</span><br><span class="line">	<span class="keyword">int</span> neg_over = x&lt;<span class="number">0</span> &amp;&amp; y&lt;<span class="number">0</span> &amp;&amp; sum&gt;=<span class="number">0</span>;<span class="comment">//负溢出</span></span><br><span class="line">	<span class="keyword">int</span> pos_over = x&gt;=<span class="number">0</span> &amp;&amp; y&gt;=<span class="number">0</span> &amp;&amp; xum&lt;<span class="number">0</span>;<span class="comment">//正溢出</span></span><br><span class="line">	<span class="keyword">return</span> !neg_over &amp;&amp; !pos_over;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tsub_ok</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> tadd_ok(x,-y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当x=0，y=0x80000000时，判断减法函数是错误的</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/08/2017-05-08-乘除运算及浮点数运算1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          乘除运算及浮点数运算（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/06/2017-05-06-运算电路基础1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">运算电路基础（1）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#C语言中的各类计算"><span class="nav-number">1.</span> <span class="nav-text">C语言中的各类计算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#C语言中涉及的运算"><span class="nav-number">1.1.</span> <span class="nav-text">C语言中涉及的运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件标志位"><span class="nav-number">1.2.</span> <span class="nav-text">条件标志位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判断溢出的程序"><span class="nav-number">1.3.</span> <span class="nav-text">判断溢出的程序</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

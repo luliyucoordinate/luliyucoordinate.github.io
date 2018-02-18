@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>STL容器（1）array | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="Array为了使用array，首先必须加头文件 1#include &amp;lt;array&amp;gt; 该类型被定义为一个class template，在命名空间std中： 1234namespace std&amp;#123;	template &amp;lt;typename T, size_t N&amp;gt;	class Array;&amp;#125; 要注意的是Array并不支持分配器，也就是说不允许指定自己的alloca">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL容器（1）array">
+<meta property="og:url" content="http://coordinate.wang/2017/04/22/2017-04-22-STL容器1array/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Array为了使用array，首先必须加头文件 1#include &amp;lt;array&amp;gt; 该类型被定义为一个class template，在命名空间std中： 1234namespace std&amp;#123;	template &amp;lt;typename T, size_t N&amp;gt;	class Array;&amp;#125; 要注意的是Array并不支持分配器，也就是说不允许指定自己的alloca">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.321Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL容器（1）array">
+<meta name="twitter:description" content="Array为了使用array，首先必须加头文件 1#include &amp;lt;array&amp;gt; 该类型被定义为一个class template，在命名空间std中： 1234namespace std&amp;#123;	template &amp;lt;typename T, size_t N&amp;gt;	class Array;&amp;#125; 要注意的是Array并不支持分配器，也就是说不允许指定自己的alloca">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-22-STL容器1array" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      STL容器（1）array
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/22/2017-04-22-STL容器1array/" class="article-date">
+	  <time datetime="2017-04-21T16:00:00.000Z" itemprop="datePublished">四月 22, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h1><p>为了使用array，首先必须加头文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>该类型被定义为一个class template，在命名空间std中：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">size_t</span> N&gt;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Array</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要注意的是Array并不支持分配器，也就是说不允许指定自己的allocator</p>
+<h2 id="Array的能力"><a href="#Array的能力" class="headerlink" title="Array的能力"></a>Array的能力</h2><p>Array会把元素复制到其内的static C-style array中。这些元素总是拥有一个明确次序。Array允许随机访问，你可以在常量时间内访问任何元素。Array的迭代器属于随机访问迭代器，所以你可以使用任意的STL算法。<br>关于初始化，class array有一些独特的语法。注意，array是唯一一个“无任何东西被指定为初值时，会被与初始化”的容器。这意味着对于基础类型，初值可能不明确，而不是0。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,4&gt; x;elements of x have undefined value</span><br></pre></td></tr></table></figure>
+<p>这里要提一些什么是明确的初始化，对于明确的初始化，基础类型会被设定初值为0：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i1;<span class="comment">//undefined value</span></span><br><span class="line"><span class="keyword">int</span> i2 = <span class="keyword">int</span>();<span class="comment">//initialized with zero</span></span><br><span class="line"><span class="keyword">int</span> i3&#123;&#125;;<span class="comment">//initialized with zero</span></span><br></pre></td></tr></table></figure>
+<p>array满足聚合体要求，因此可以使用处置列来设定array，聚合体（aggregate）是一个class或array，不带用户提供的构造函数，也没有private和protected的nostatic的数据成员，也没有base class ，也没有virtual函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; c = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果初值列内的元素个数多余array的大小，这样的表达式就不对：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; c1 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;<span class="comment">//ERROR too many values</span></span><br></pre></td></tr></table></figure>
+<p>由于没有提供初值列而写的构造函数和assignment操作符，因此“在array声明期间完成初始化”是使用初值列的唯一途径。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; a(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);<span class="comment">//ERROR </span></span><br><span class="line"><span class="built_in">std</span>::vecotr&lt;<span class="keyword">int</span>&gt; v(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<p>swap拥有线性复杂度并有以下的影响：iterator和reference不会随着元素的置换而改变所指向的元素。所以置换后，iterator和reference指向那个原本容器，但指向不同元素。</p>
+<h2 id="Array的操作"><a href="#Array的操作" class="headerlink" title="Array的操作"></a>Array的操作</h2><p>如果使用操作符=和swap()，两个array必须具备相同的类型，意思是两者的元素类型和大小必须相同。<br>想要访问array内的所有元素，必须使用range-based for循环，或者特定的操作符或迭代器。通常只有使用at()会执行范围检查。如果超出范围，at()会抛出一个out_of_range异常，其它函数不会做检查。对于一个空的array调用operator[]、front和back会导致不明确的行为。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;Elem,0&gt; c;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; c.front();<span class="comment">//RUNTIME ERROR</span></span><br></pre></td></tr></table></figure>
+<h2 id="将array当做C-Style-Array"><a href="#将array当做C-Style-Array" class="headerlink" title="将array当做C-Style Array"></a>将array当做C-Style Array</h2><p>如果想要访问array的元素，你不一定使用表达式&amp;a[0]，因为成员函数data()也具备相同用途：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">char</span>,41&gt; a;</span><br><span class="line"><span class="built_in">strcpy</span>(a.data(),<span class="string">"hello"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>，a.data());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>，&amp;a[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+<p>但是你必须确保array的大小足够容纳复制进来的数据，而且如果你把其中的内容当做一个C-string来看，你必须放置一个’\0’元素于尾端。<br>注意，绝对不要用迭代器表现“第一元素的地址”。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, a.begin());<span class="comment">//ERROR</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, a.data());<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<h2 id="Tuple接口"><a href="#Tuple接口" class="headerlink" title="Tuple接口"></a>Tuple接口</h2><p>Array提供tuple接口。因此可以使用tuple_size&lt;&gt;::value去的元素个数，用tuple_element&lt;&gt;::type取得某个特定元素类型，用get取得某个特定元素。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,5&gt; FiveStrings;</span><br><span class="line">FiveStrings a = &#123; <span class="string">"hello"</span>,<span class="string">"how"</span>,<span class="string">"are"</span>,<span class="string">"you"</span>,<span class="string">"hehe"</span>&#125;;</span><br><span class="line"><span class="built_in">std</span>::tuple_size&lt;FiveStrings&gt;::value <span class="comment">//5</span></span><br><span class="line"><span class="built_in">std</span>::tuple_element&lt;<span class="number">1</span>,FiveStrings&gt;::type <span class="comment">//std::string</span></span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="number">1</span>&gt;(a) <span class="comment">//std::string("how")</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/23/2017-04-23-STL容器2vector/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          STL容器（2）vector
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/20/2017-04-20-标准模板库2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">标准模板库(2)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Array"><span class="nav-number">1.</span> <span class="nav-text">Array</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Array的能力"><span class="nav-number">1.1.</span> <span class="nav-text">Array的能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Array的操作"><span class="nav-number">1.2.</span> <span class="nav-text">Array的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将array当做C-Style-Array"><span class="nav-number">1.3.</span> <span class="nav-text">将array当做C-Style Array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tuple接口"><span class="nav-number">1.4.</span> <span class="nav-text">Tuple接口</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

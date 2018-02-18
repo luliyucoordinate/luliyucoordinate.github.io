@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>linux Day8 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linuxcpipethread" />
+  
+  
+  
+  
+  <meta name="description" content="后台程序向屏幕输出 创建fifo文件 执行以下程序12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364int signal1(int signo, void (*func)(int))&amp;#123;       st">
+<meta name="keywords" content="linux,c,pipe,thread">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux Day8">
+<meta property="og:url" content="http://coordinate.wang/2017/03/09/2017-03-09-linux-day8/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="后台程序向屏幕输出 创建fifo文件 执行以下程序12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364int signal1(int signo, void (*func)(int))&amp;#123;       st">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.905Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux Day8">
+<meta name="twitter:description" content="后台程序向屏幕输出 创建fifo文件 执行以下程序12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364int signal1(int signo, void (*func)(int))&amp;#123;       st">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-09-linux-day8" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      linux Day8
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/09/2017-03-09-linux-day8/" class="article-date">
+	  <time datetime="2017-03-08T16:00:00.000Z" itemprop="datePublished">三月 9, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="后台程序向屏幕输出"><a href="#后台程序向屏幕输出" class="headerlink" title="后台程序向屏幕输出"></a>后台程序向屏幕输出</h1><ol>
+<li>创建fifo文件</li>
+<li>执行以下程序<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">int signal1(int signo, void (*func)(int))&#123;</span><br><span class="line">       structsigaction act, oact;</span><br><span class="line">       act.sa_handler= func;</span><br><span class="line">       sigemptyset(&amp;act.sa_mask);</span><br><span class="line">       act.sa_flags= <span class="number">0</span>;</span><br><span class="line">       returnsigaction(signo, &amp;act, &amp;oact);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setdaemon</span><span class="params">()</span></span>&#123;</span><br><span class="line">       pid_tpid, sid;</span><br><span class="line">       pid= fork();</span><br><span class="line">       <span class="keyword">if</span>(pid== <span class="number">-1</span>)&#123;</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"forkerrpr %s\n"</span>,strerror(errno));</span><br><span class="line">              <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span>(pid== <span class="number">0</span>)&#123;</span><br><span class="line">              <span class="keyword">if</span>((sid= setsid()) &lt; <span class="number">0</span>)&#123;</span><br><span class="line">                     <span class="built_in">printf</span>(<span class="string">"setsiderror %s\n"</span>, strerror(errno));</span><br><span class="line">                     <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">              &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">if</span>(pid&gt; <span class="number">0</span>)&#123;</span><br><span class="line">              <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">listenfifo</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">char</span> * sfifoname = <span class="string">"fifo1"</span>;</span><br><span class="line">       intlen = <span class="number">0</span>;</span><br><span class="line">       charbuf[<span class="number">128</span>];</span><br><span class="line">       <span class="built_in">memset</span>(buf,<span class="number">0</span>, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">       intfd = open(sfifoname, O_RDONLY);</span><br><span class="line">       <span class="keyword">if</span>(fd== <span class="number">-1</span>)&#123;</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"open%s failed, %s\n"</span>, sfifoname, strerror(errno));</span><br><span class="line">       &#125;</span><br><span class="line">       len= read(fd, buf, <span class="keyword">sizeof</span>(buf));</span><br><span class="line">       <span class="keyword">if</span>(len&gt; <span class="number">0</span>)&#123;</span><br><span class="line">              <span class="keyword">if</span>(buf[<span class="built_in">strlen</span>(buf)- <span class="number">1</span>] == <span class="string">'\n'</span>)&#123;</span><br><span class="line">                     buf[<span class="built_in">strlen</span>(buf)- <span class="number">1</span>] = <span class="number">0</span>;</span><br><span class="line">              &#125;</span><br><span class="line">              close(STDOUT_FILENO);</span><br><span class="line">              open(buf,O_WRONLY);</span><br><span class="line">       &#125;</span><br><span class="line">       close(fd);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">catch_Signal</span><span class="params">(<span class="keyword">int</span> Sign)</span></span>&#123;</span><br><span class="line">       <span class="keyword">switch</span>(Sign)&#123;</span><br><span class="line">       caseSIGINT:</span><br><span class="line">              listenfifo();</span><br><span class="line">              <span class="keyword">break</span>;</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">       setdaemon();</span><br><span class="line">       signal1(SIGINT,catch_Signal);</span><br><span class="line">       <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">              <span class="built_in">puts</span>(<span class="string">"!!!helloworld!!!"</span>);</span><br><span class="line">              sleep(<span class="number">1</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       return0;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">1</span>、 关闭当前窗口，让其后台执行，打开一个新的终端，找到其PID</span><br><span class="line"><span class="number">2</span>、 执行kill –s <span class="number">2</span> PID</span><br><span class="line">tty &gt; fifo1</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="进程与线程"><a href="#进程与线程" class="headerlink" title="进程与线程"></a>进程与线程</h1><p>进程是一个实体。每个进程又自己的内存段。进程是执行中的程序。<br>每个程序至少有一个线程，同一时间只能做一件事，多线程可以同一时间做多件事情。<br>线程包含进程内执行环境必须的信息，包括线程ID，一组寄存器值，栈，调度优先级和策略，信号屏蔽字，errno变量以及线程私有数据。<br>进程内的所有信息对于线程都是共享的，包括代码，全局变量和堆内存，栈以及文件描述符。<br>线程标识<br>进程ID用pid_t表示，他是一个unsign int<br>线程ID用pthread_t表示，pthread_t不能把它当成整数处理<br>可以通过pthread_self()函数获自身的线程ID</p>
+<h1 id="线程创建"><a href="#线程创建" class="headerlink" title="线程创建"></a>线程创建</h1><p>进程中只有一个控制线程，程序开始运行的时候每个进程只有一个线程，它以单线程方式启动的，在创建多线程以前，进程的行为与传统进程没有区别。<br>gcc在连接时需要加-lpthread选项</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;pthread.h&gt;</span><br><span class="line"><span class="function">Int <span class="title">pthread_create</span><span class="params">(<span class="keyword">pthread_t</span> *thread,<span class="keyword">constpthread_attr_t</span> *attr, <span class="keyword">void</span></span></span></span><br><span class="line"> *(*start_routine)(void*),void *arg);</span><br></pre></td></tr></table></figure>
+<p>如果pthread_create成功返回，由thread指向的内存单元被设置为新创建线程的线程ID<br>Attr用于定制各种不同的线程属性<br>新创建的线程从start_rtn函数地址开始执行，该函数中有一个void <em>参数  ，如果需要向start_rtn函数传多个参数，就需要把这些参数放到一个结构中，然后把这个结构的地址作为void </em>传入。线程创建的时候不能保证那个先运行。<br>pthread<br>函数成功返回0。</p>
+<h1 id="线程调用"><a href="#线程调用" class="headerlink" title="线程调用"></a>线程调用</h1><p>进程终止<br>任意线程调用exit函数，整个进程都会终止。<br>如果信号默认动作时终止进程，那么信号发送到该进程，整个进程也会被终止。</p>
+<p>单个线程通过以下三种方式退出  </p>
+<ol>
+<li>线程只是从启动函数返回，返回值是现成的退出码</li>
+<li>线程可以被同一进程中的其他线程取消</li>
+<li>调用pthread_exit函数</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void pthread_exit(void *arg);</span><br></pre></td></tr></table></figure>
+<p>arg是一个无类型指针，该指针会被其它线程调用</p>
+<p>pthread_join捕捉</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_join</span><span class="params">(<span class="keyword">pthread_t</span> th, <span class="keyword">void</span> **thr_return)</span></span></span><br></pre></td></tr></table></figure>
+<p>pthread_join函数用于挂起当前进程，直到th指定的线程终止<br>如果另一个线程返回值不是NULL，则保存在thr_return地址中<br>一个线程所使用的内存资源在应用pthread_join调用之前不会被重新分配，所以每个线程必须调用一次pthread_join函数<br>其他线程不能对同一线程再应用pthread_join调用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_detach</span><span class="params">(<span class="keyword">pthread_t</span> th)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>pthread_detach函数使线程处于分离状态<br>对于被分离状态的线程，不需要调用pthread_join，如果其他线程调用pthread_join失败，返回EINVAL。<br>如果不等待一个线程，同时对现成的返回值不感兴趣，可以设置这个线程为被分离状态，让系统在线程退出时自动回收他所占的资源。<br>一个线程不能自己调用pthread_detach改变自己被分离状态，只有其他线程调用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cancel</span><span class="params">(<span class="keyword">pthread_t</span> th)</span></span></span><br></pre></td></tr></table></figure>
+<p>pthread_cancel函数允许一个线程取消th指定的另一个线程，函数成功返回0，否则返回非0。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_equal</span><span class="params">(<span class="keyword">pthread_t</span> th1, <span class="keyword">pthread_t</span> th2)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>判断两个线程是否相同，相同返回非零值，不同返回0。因为pthread_t不是整数类型，所以不能用符号比较。</p>
+<h1 id="线程属性"><a href="#线程属性" class="headerlink" title="线程属性"></a>线程属性</h1><p>使用pthread_attr_t结构修改线程默认属性，并把这些属性与创建线程联系起来<br>可以使用pthread_attr_init函数初始化pthread_attr_t结构。<br>调用pthread_attr_init以后，pthread_arrt_t的结构所包含的内容就是操作系统实现支持线程所有属性的默认值。<br>如果需要修改其中个别属性的值，需要调用其他函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_attr_destory</span><span class="params">(<span class="keyword">pthread_attr_t</span> *attr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_attr_init</span><span class="params">(<span class="keyword">pthread_attr_t</span> *attr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数pthread_attr_init初始化attr结构<br>函数pthread_attr_destory释放attr内存空间<br>pthread_attr_t的结构对于应用程序来讲是不透明的，应用程序不需要了解有关结构的内部组成。<br>对于pthread_detach这个函数可以在创建时设置。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_attr_setdetachstate</span><span class="params">(<span class="keyword">pthread_attr_t</span> *attr, <span class="keyword">int</span> detachstate)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>通过这个函数设置分离状态还是正常状态。</p>
+<h1 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h1><p>线程共享进程的内存空间，打开文件描述符，全局变量。<br>当有多个线程同时访问一块内存空间或者一个变量、一个文件描述符，如果不加控制，那么会有意外发生。</p>
+<h1 id="互斥（mutex）"><a href="#互斥（mutex）" class="headerlink" title="互斥（mutex）"></a>互斥（mutex）</h1><p>互斥指相互排斥，是一个锁或者信号灯。<br>互斥用来保护多个线程共享的数据和结构不会被同时修改，一个互斥锁只能有两种状态unlocked和locked。<br>任何时刻只能有一个线程来掌握某个互斥上锁。（原子操作）<br>一个线程如果试图在一个已经加锁的互斥上再加锁，这个线程会被挂起，直到加锁的线程释放互斥锁为止。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pthread_mutes_t</span> mutes = PTHREAD_MUTEX_INITIALIZER；初始化全局变量</span><br><span class="line"><span class="keyword">int</span> pthread_mutes_lock(<span class="keyword">pthread_mutex_t</span> *mutex);    上锁</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_mutex_unlock</span><span class="params">(<span class="keyword">pthread_mutex_t</span> *mutex)</span></span>;  解锁</span><br></pre></td></tr></table></figure>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><p>ps –eLf                        查看线程<br>gdb –q+执行文件core文件         调试代码</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pipe/">pipe</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thread/">thread</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/12/2017-03-12-linux-day9/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          linux Day9
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/07/2017-03-07-linux-day7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">linux Day7</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#后台程序向屏幕输出"><span class="nav-number">1.</span> <span class="nav-text">后台程序向屏幕输出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程与线程"><span class="nav-number">2.</span> <span class="nav-text">进程与线程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程创建"><span class="nav-number">3.</span> <span class="nav-text">线程创建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程调用"><span class="nav-number">4.</span> <span class="nav-text">线程调用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程属性"><span class="nav-number">5.</span> <span class="nav-text">线程属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程同步"><span class="nav-number">6.</span> <span class="nav-text">线程同步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#互斥（mutex）"><span class="nav-number">7.</span> <span class="nav-text">互斥（mutex）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积累"><span class="nav-number">8.</span> <span class="nav-text">积累</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

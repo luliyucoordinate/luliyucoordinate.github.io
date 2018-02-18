@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>目标检测中的IOU计算问题 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonIOU" />
+  
+  
+  
+  
+  <meta name="description" content="在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。   那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？   IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为">
+<meta name="keywords" content="c,python,IOU">
+<meta property="og:type" content="article">
+<meta property="og:title" content="目标检测中的IOU计算问题">
+<meta property="og:url" content="http://coordinate.wang/2017/12/15/2017-12-15-目标检测中的IOU计算问题/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。   那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？   IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmh85d281aj20lc0g0tub.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmhhfup0kyj20br07e741.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmhi58wr3uj20ga0bijr8.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.607Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="目标检测中的IOU计算问题">
+<meta name="twitter:description" content="在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。   那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？   IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmh85d281aj20lc0g0tub.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-15-目标检测中的IOU计算问题" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      目标检测中的IOU计算问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/" class="article-date">
+	  <time datetime="2017-12-14T16:00:00.000Z" itemprop="datePublished">十二月 15, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fmh85d281aj20lc0g0tub.jpg" width="350" height="300"><br></center>
+
+<p>那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmhhfup0kyj20br07e741.jpg" width="350" height="300"><br></center>
+
+<p>IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为</p>
+<ul>
+<li>$IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTruth}$</li>
+</ul>
+<p>公式里面的<code>DetectionResult</code>就表示黄框（也就是通过神经网络得到的结果），<code>GroundResult</code>表示绿框（也就是标注的结果）。</p>
+<p>好的，这看上去很容易，但是在具体实现的时候就会有一些问题了。接下来我先用YOLO2中的做法讲解其实现原理。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">overlap</span><span class="params">(<span class="keyword">float</span> x1, <span class="keyword">float</span> w1, <span class="keyword">float</span> x2, <span class="keyword">float</span> w2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> l1 = x1 - w1/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> l2 = x2 - w2/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> left = l1 &gt; l2 ? l1 : l2;</span><br><span class="line">    <span class="keyword">float</span> r1 = x1 + w1/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> r2 = x2 + w2/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">float</span> right = r1 &lt; r2 ? r1 : r2;</span><br><span class="line">    <span class="keyword">return</span> right - left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">box_intersection</span><span class="params">(box a, box b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> w = overlap(a.x, a.w, b.x, b.w);</span><br><span class="line">    <span class="keyword">float</span> h = overlap(a.y, a.h, b.y, b.h);</span><br><span class="line">    <span class="keyword">if</span>(w &lt; <span class="number">0</span> || h &lt; <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">float</span> area = w*h;</span><br><span class="line">    <span class="keyword">return</span> area;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">box_union</span><span class="params">(box a, box b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> i = box_intersection(a, b);</span><br><span class="line">    <span class="keyword">float</span> u = a.w*a.h + b.w*b.h - i;</span><br><span class="line">    <span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">box_iou</span><span class="params">(box a, box b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> box_intersection(a, b)/box_union(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在这个代码中<code>box a</code>表示结果<code>box</code>，而<code>box b</code>表示的是标注<code>box</code>，这两者都是<code>box</code>类的对象，这个类在这里我们用到了这样几个属性：</p>
+<ul>
+<li><code>x</code>:表示box中心点的x坐标</li>
+<li><code>y</code>:表示box中心点的y坐标</li>
+<li><code>w</code>:表示box的宽度</li>
+<li><code>h</code>:表示box的高度</li>
+</ul>
+<p>我么先看第一个函数<code>overlap</code>是干什么的。假设按照<code>box_intersection</code>中的第一个做法，传入这样几个参数<code>overlap(a.x, a.w, b.x, b.w)</code>，结果就是<code>l1</code>表示黄框的左边，<code>l2</code>表示绿框的左边，<code>r1</code>表示黄框的右边，<code>r2</code>表示绿框的右边。如下图</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmhi58wr3uj20ga0bijr8.jpg" width="350" height="300"><br></center>
+
+<p>接着<code>left=l2</code>，<code>right=r1</code>，最后<code>right-left=交集的宽</code>。同理传入<code>overlap(a.y, a.h, b.y, b.h)</code></p>
+<p>得到交集的高。两个一乘即为交集的大小。<code>box_iou</code>函数中的做法大家应该可以看得明白了，不再赘述。</p>
+<p>当我们训练好网络后，将待测图像输入网络得到的输出结果是一个高维矩阵。在YOLO2中最后得到的矩阵是这样的<code>[-1, H, W, B, (4 + 1 + C)]</code>。</p>
+<ul>
+<li><code>H</code>:表示纵向分割的块的数目</li>
+<li><code>W</code>:表示横向分割的块的数目</li>
+</ul>
+<p>也就是一幅图片被我们分割为了<code>H*W</code>块。</p>
+<ul>
+<li><code>B</code>:表示anchors的数目</li>
+<li><code>C</code>:表示classes的数目</li>
+</ul>
+<p>注意这里的<code>4</code>表示前面讲的<code>x,y,w,h</code>，而后面<code>1</code>表示<code>confidence</code>（参看论文中的$Pr(object)*IOU$）</p>
+<p>以下是对应的python tensorflow版本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">coords = tf.reshape(coords, [<span class="number">-1</span>, H*W, B, <span class="number">4</span>])</span><br><span class="line">wh = tf.exp(coords[:,:,:,<span class="number">2</span>:<span class="number">4</span>]) * np.reshape(anchors, [<span class="number">1</span>, <span class="number">1</span>, B, <span class="number">2</span>])</span><br><span class="line">area_pred = wh[:,:,:,<span class="number">0</span>] * wh[:,:,:,<span class="number">1</span>]<span class="comment">#得到预测框的面积</span></span><br><span class="line">centers = coords[:,:,:,<span class="number">0</span>:<span class="number">2</span>]<span class="comment">#得到预测框的xy</span></span><br><span class="line">floor = centers - (wh * <span class="number">.5</span>)</span><br><span class="line">ceil  = centers + (wh * <span class="number">.5</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># calculate the intersection areas</span></span><br><span class="line">intersect_upleft   = tf.maximum(floor, _upleft)</span><br><span class="line">intersect_botright = tf.minimum(ceil , _botright)</span><br><span class="line">intersect_wh = intersect_botright - intersect_upleft</span><br><span class="line">intersect_wh = tf.maximum(intersect_wh, <span class="number">0.0</span>)</span><br><span class="line">intersect = tf.multiply(intersect_wh[:,:,:,<span class="number">0</span>], intersect_wh[:,:,:,<span class="number">1</span>])<span class="comment">#得到交集</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># calculate the best IOU, set 0.0 confidence for worse boxes</span></span><br><span class="line">iou = tf.truediv(intersect, _areas + area_pred - intersect)<span class="comment">#_areas表示真实的面积</span></span><br></pre></td></tr></table></figure>
+<p>这里的<code>floor</code>对应于上面的<code>l1</code>、黄框的下边，<code>ceil</code>对应于上面的<code>r1</code>、黄框的上边。<code>_upleft</code>对应上面的<code>l2</code>和绿框的下边，<code>_botright</code>对应上面的<code>r2</code>和绿框的上边。<code>intersect_upleft</code>就是<code>l2</code>和黄框的下边，<code>intersect_botright</code>就是<code>r1</code>和绿框的上边，后面的代码就顺理成章了。</p>
+<p>由于本人水平有限，如有问题，恳请指出！^_^</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOU/">IOU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2代码分析（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/13/2017-12-13-tf.identity的作用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">tf.identity的作用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

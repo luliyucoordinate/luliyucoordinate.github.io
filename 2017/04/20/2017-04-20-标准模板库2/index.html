@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>标准模板库(2) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="更易型算法(Manipulating Algorithm)现实中存在某些限制和某些需要避开的事物，其中许多和元素/容器的改动相伴相生。有些算法会改变目标的区间。 移除(Removing)元素分析这个例子： 123456789101112131415161718192021222324252627#include &amp;lt;algorithm&amp;gt;#include &amp;lt;iterator&amp;gt;#">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准模板库(2)">
+<meta property="og:url" content="http://coordinate.wang/2017/04/20/2017-04-20-标准模板库2/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="更易型算法(Manipulating Algorithm)现实中存在某些限制和某些需要避开的事物，其中许多和元素/容器的改动相伴相生。有些算法会改变目标的区间。 移除(Removing)元素分析这个例子： 123456789101112131415161718192021222324252627#include &amp;lt;algorithm&amp;gt;#include &amp;lt;iterator&amp;gt;#">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.254Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准模板库(2)">
+<meta name="twitter:description" content="更易型算法(Manipulating Algorithm)现实中存在某些限制和某些需要避开的事物，其中许多和元素/容器的改动相伴相生。有些算法会改变目标的区间。 移除(Removing)元素分析这个例子： 123456789101112131415161718192021222324252627#include &amp;lt;algorithm&amp;gt;#include &amp;lt;iterator&amp;gt;#">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-20-标准模板库2" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      标准模板库(2)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/20/2017-04-20-标准模板库2/" class="article-date">
+	  <time datetime="2017-04-19T16:00:00.000Z" itemprop="datePublished">四月 20, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="更易型算法-Manipulating-Algorithm"><a href="#更易型算法-Manipulating-Algorithm" class="headerlink" title="更易型算法(Manipulating Algorithm)"></a>更易型算法(Manipulating Algorithm)</h1><p>现实中存在某些限制和某些需要避开的事物，其中许多和元素/容器的改动相伴相生。有些算法会改变目标的区间。</p>
+<h2 id="移除-Removing-元素"><a href="#移除-Removing-元素" class="headerlink" title="移除(Removing)元素"></a>移除(Removing)元素</h2><p>分析这个例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; coll;</span><br><span class="line">    <span class="comment">// insert elements from 6 to 1 and 1 to 6</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">6</span>; ++i) &#123;</span><br><span class="line">        coll.push_front(i);</span><br><span class="line">        coll.push_back(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// print all elements of the collection</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"pre:  "</span>;</span><br><span class="line">    copy (coll.cbegin(), coll.cend(),         <span class="comment">// source</span></span><br><span class="line">          ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">cout</span>,<span class="string">" "</span>));   <span class="comment">// destination</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// remove all elements with value 3</span></span><br><span class="line">    remove (coll.begin(), coll.end(),         <span class="comment">// range</span></span><br><span class="line">            <span class="number">3</span>);                               <span class="comment">// value</span></span><br><span class="line">    <span class="comment">// print all elements of the collection</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"post: "</span>;</span><br><span class="line">    copy (coll.cbegin(), coll.cend(),         <span class="comment">// source</span></span><br><span class="line">          ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">cout</span>,<span class="string">" "</span>));   <span class="comment">// destination</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这个程序的结果和我们预想的不一样：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pre:  <span class="number">6</span> <span class="number">5</span> <span class="number">4</span> <span class="number">3</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span></span><br><span class="line">post: <span class="number">6</span> <span class="number">5</span> <span class="number">4</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">4</span> <span class="number">5</span> <span class="number">6</span> <span class="number">5</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p>remove并没有改变集合中的元素数量。cend返回的是当初那个终点，size()返回的还是当初那个大小。<br>事实上，这个算法返回一个新终点。你可以利用这个新终点获得新区间。改进版本：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; coll;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// insert elements from 6 to 1 and 1 to 6</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">6</span>; ++i) &#123;</span><br><span class="line">        coll.push_front(i);</span><br><span class="line">        coll.push_back(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print all elements of the collection</span></span><br><span class="line">    copy (coll.cbegin(), coll.cend(),</span><br><span class="line">          ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">cout</span>,<span class="string">" "</span>));</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// remove all elements with value 3</span></span><br><span class="line">    <span class="comment">// - retain new end</span></span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator end = remove (coll.begin(), coll.end(),</span><br><span class="line">                                      <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print resulting elements of the collection</span></span><br><span class="line">    copy (coll.begin(), end,</span><br><span class="line">          ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">cout</span>,<span class="string">" "</span>));</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print number of removed elements</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"number of removed elements: "</span></span><br><span class="line">         &lt;&lt; distance(end,coll.end()) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// remove "removed" elements</span></span><br><span class="line">    coll.erase (end, coll.end());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print all elements of the modified collection</span></span><br><span class="line">    copy (coll.cbegin(), coll.cend(),</span><br><span class="line">          ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">cout</span>,<span class="string">" "</span>));</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果真想把那些删除的元素斩草除根，erase正适用于此目的。<br>为什么算法不自己调用erase呢？这正是STL为了获取弹性付出的代价。通过“以迭代器为接口”，STL将数据结构和算法分离出来。任何“以迭代器访问容器”的算法，都不得通过迭代器调用容器类所提供的任何成员函数。<br>算法的操作对象不一定是“容器内的全部元素”所形成的区间，而可以使那些元素的子集。<br>注意，通常并无必要删除那些“已被删除”的元素。以逻辑终点取代容器的实际终点，通常就足以应对现实情况。</p>
+<h2 id="更易Associative-关联式-和Unordered-无序-容器"><a href="#更易Associative-关联式-和Unordered-无序-容器" class="headerlink" title="更易Associative(关联式)和Unordered(无序)容器"></a>更易Associative(关联式)和Unordered(无序)容器</h2><p>更易型算法(指那些会移除，重排，修改元素的算法)若用于关联式容器或无序容器，会出问题。如果更易型算法用于关联式和无序容器身上，会改变某位置上的值，进而破会容器本身对次序的维护。<br>关联式容器和无序容器的所有迭代器均被申明为指向常量的value或key，如果你更动关联式容器或无序容器的元素会导致编译出错。</p>
+<h2 id="算法VS成员函数"><a href="#算法VS成员函数" class="headerlink" title="算法VS成员函数"></a>算法VS成员函数</h2><p>如果高效能是你的首要目标，你应该总是优先选用成员函数。</p>
+<h1 id="以函数作为算法的实参"><a href="#以函数作为算法的实参" class="headerlink" title="以函数作为算法的实参"></a>以函数作为算法的实参</h1><p>有些算法可以接受用户自定义的辅助函数，提高弹性和能力。</p>
+<h2 id="判断式-Predicate"><a href="#判断式-Predicate" class="headerlink" title="判断式(Predicate)"></a>判断式(Predicate)</h2><p>Predicate是一种特殊的辅助函数。所谓的predicate，它会返回布尔值。<br>单参数判断式(Unary Predicate)会检查唯一实参的某项特性。<br>双参判断式(Binary Predicate)<br>Binary Predicate的典型用途是，比较两个实参的特定属性。</p>
+<h1 id="使用Lambda"><a href="#使用Lambda" class="headerlink" title="使用Lambda"></a>使用Lambda</h1><p>可以定义对象，用于描述函数行为，并将这些对象以“inline实参”形式给算法作为predicate。</p>
+<h1 id="函数对象-Function-Object"><a href="#函数对象-Function-Object" class="headerlink" title="函数对象(Function Object)"></a>函数对象(Function Object)</h1><h2 id="定义一个函数对象"><a href="#定义一个函数对象" class="headerlink" title="定义一个函数对象"></a>定义一个函数对象</h2><p>函数对象是一种带状态的函数。事实上，在同一时间点，相同类型的两个不同的函数对象所表述的相同机能，可具备不同状态。这是寻常函数中不可能的。另一个好处是，你可以在运行期初始化他们—当然必须在他们被调用之前。<br>每个函数对象有其自己的类型。寻常函数，唯有在其signature不同时，才算类型不同。而函数对象即使signature相同，也可以有不同的类型。<br>函数对象通常比寻常函数速度快。由于更多细节在编译器就已确定，所以通常可能进行更好的优化。</p>
+<h2 id="预定义的函数对象"><a href="#预定义的函数对象" class="headerlink" title="预定义的函数对象"></a>预定义的函数对象</h2><p>C++标准库内含若干预定义的函数对象，含盖了许多基础运算。一个典型的例子是作为基础排序的函数对象。operator &lt; 默认排序准则是调用less&lt;&gt;，所以，如果你声明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; coll;</span><br></pre></td></tr></table></figure>
+<p>会被扩展为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ser&lt;<span class="keyword">int</span>,less&lt;<span class="keyword">int</span>&gt;&gt; coll;</span><br></pre></td></tr></table></figure>
+<h2 id="binder"><a href="#binder" class="headerlink" title="binder"></a>binder</h2><p>你可以使用特殊的函数适配器，所谓的binder，将于定义的函数对象和其他数值结合为一体。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"print.hpp"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::placeholders;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>,greater&lt;<span class="keyword">int</span>&gt;&gt; coll1 = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;</span><br><span class="line">    <span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; coll2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Note: due to the sorting criterion greater&lt;&gt;() elements have reverse order:</span></span><br><span class="line">    PRINT_ELEMENTS(coll1,<span class="string">"initialized: "</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// transform all elements into coll2 by multiplying them with 10</span></span><br><span class="line">    transform (coll1.cbegin(),coll1.cend(),      <span class="comment">// source</span></span><br><span class="line">               back_inserter(coll2),             <span class="comment">// destination</span></span><br><span class="line">               bind(multiplies&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">10</span>));   <span class="comment">// operation</span></span><br><span class="line">    PRINT_ELEMENTS(coll2,<span class="string">"transformed: "</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// replace value equal to 70 with 42</span></span><br><span class="line">    replace_if (coll2.begin(),coll2.end(),       <span class="comment">// range</span></span><br><span class="line">                bind(equal_to&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">70</span>),     <span class="comment">// replace criterion</span></span><br><span class="line">                <span class="number">42</span>);                             <span class="comment">// new value</span></span><br><span class="line">    PRINT_ELEMENTS(coll2,<span class="string">"replaced:    "</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// remove all elements with values between 50 and 80</span></span><br><span class="line">    coll2.erase(remove_if(coll2.begin(),coll2.end(),</span><br><span class="line">                          bind(logical_and&lt;<span class="keyword">bool</span>&gt;(),</span><br><span class="line">                               bind(greater_equal&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">50</span>),</span><br><span class="line">                               bind(less_equal&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">80</span>))),</span><br><span class="line">                coll2.end());</span><br><span class="line">    PRINT_ELEMENTS(coll2,<span class="string">"removed:     "</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过指定：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bind(multiplies&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+<p>变定义一个函数对象，将传入的第一个实参乘以10。<br>最后一例用的是binder的组合：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bind(logical_and&lt;<span class="keyword">bool</span>&gt;(),</span><br><span class="line">     bind(greater_equal&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">50</span>),</span><br><span class="line">     bind(less_equal&lt;<span class="keyword">int</span>&gt;(),_1,<span class="number">80</span>))</span><br></pre></td></tr></table></figure>
+<p>表现出的是个unary predicate，拥有参数x，操作意义是x&gt;=50&amp;&amp;x&lt;=80。</p>
+<h1 id="STL内部的错误和异常"><a href="#STL内部的错误和异常" class="headerlink" title="STL内部的错误和异常"></a>STL内部的错误和异常</h1><h2 id="错误处理-Error-Handling"><a href="#错误处理-Error-Handling" class="headerlink" title="错误处理(Error Handling)"></a>错误处理(Error Handling)</h2><p>C++标准库指出，对于STL的任何运用，如果违反规则，将导致不明确的行为。通常会导致不明确的内存访问，这肯能导致难缠的副作用。具体地说，使用STL，必须满足以下条件：<br>迭代器必须合法有效。例如你必须在使用他们之前先将他们初始化。<br>迭代器如果指向past-the-end位置，它并不指向任何对象。因此不能对他调用operator*和operator-&gt;。<br>区间(range)必须合法：<br>用以“指出某个区间”的前后迭代器必须指向同一个容器。<br>从第一个迭代器出发必须可以到达第二个迭代器位置。<br>如果涉及的区间不止一个，第二区间及后继各区间必须拥有“至少和第一区间一样多的”元素。<br>腹泻操作中的“标的区间”必须拥有足够多的元素，否则必须采用insert iterator<br>以下例子展示若干可能发生的错误：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; coll1;    <span class="comment">// empty collection</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; coll2;    <span class="comment">// empty collection</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// RUNTIME ERROR:</span></span><br><span class="line">    <span class="comment">// - beginning is behind the end of the range</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::iterator pos = coll1.begin();</span><br><span class="line">    reverse (++pos, coll1.end());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// insert elements from 1 to 9 into coll1</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">9</span>; ++i) &#123;</span><br><span class="line">        coll1.push_back (i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// RUNTIME ERROR:</span></span><br><span class="line">    <span class="comment">// - overwriting nonexisting elements</span></span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),  <span class="comment">// source</span></span><br><span class="line">          coll2.begin());                <span class="comment">// destination</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// RUNTIME ERROR:</span></span><br><span class="line">    <span class="comment">// - collections mistaken</span></span><br><span class="line">    <span class="comment">// - cbegin() and cend() refer to different collections</span></span><br><span class="line">    copy (coll1.cbegin(), coll2.cend(),  <span class="comment">// source</span></span><br><span class="line">          coll1.end());                  <span class="comment">// destination</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/22/2017-04-22-STL容器1array/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          STL容器（1）array
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/19/2017-04-19-标准模板库1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">标准模板库(1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#更易型算法-Manipulating-Algorithm"><span class="nav-number">1.</span> <span class="nav-text">更易型算法(Manipulating Algorithm)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#移除-Removing-元素"><span class="nav-number">1.1.</span> <span class="nav-text">移除(Removing)元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更易Associative-关联式-和Unordered-无序-容器"><span class="nav-number">1.2.</span> <span class="nav-text">更易Associative(关联式)和Unordered(无序)容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法VS成员函数"><span class="nav-number">1.3.</span> <span class="nav-text">算法VS成员函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#以函数作为算法的实参"><span class="nav-number">2.</span> <span class="nav-text">以函数作为算法的实参</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#判断式-Predicate"><span class="nav-number">2.1.</span> <span class="nav-text">判断式(Predicate)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用Lambda"><span class="nav-number">3.</span> <span class="nav-text">使用Lambda</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数对象-Function-Object"><span class="nav-number">4.</span> <span class="nav-text">函数对象(Function Object)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义一个函数对象"><span class="nav-number">4.1.</span> <span class="nav-text">定义一个函数对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预定义的函数对象"><span class="nav-number">4.2.</span> <span class="nav-text">预定义的函数对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#binder"><span class="nav-number">4.3.</span> <span class="nav-text">binder</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#STL内部的错误和异常"><span class="nav-number">5.</span> <span class="nav-text">STL内部的错误和异常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#错误处理-Error-Handling"><span class="nav-number">5.1.</span> <span class="nav-text">错误处理(Error Handling)</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

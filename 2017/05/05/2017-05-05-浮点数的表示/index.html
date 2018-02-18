@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>浮点数的表示 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="第0位符号S；第1-8位为8位移码表示阶码E；第9-31位为24位二进制原码小数表示的尾数M。规格化尾数的小数点后第一位是1，故规定的第一位默认的“1”不明显表示出来。这样可用23个数位表示24位尾数。移码 定点整数，用来表示浮点数的阶，移码和补码差别仅仅是符号位差别相反。也可以这样计算 偏致常数+目标数=移码最大正数：$$0.11…1  2^{(11…1)}= (1 - 2^{(-24)})">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浮点数的表示">
+<meta property="og:url" content="http://coordinate.wang/2017/05/05/2017-05-05-浮点数的表示/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="第0位符号S；第1-8位为8位移码表示阶码E；第9-31位为24位二进制原码小数表示的尾数M。规格化尾数的小数点后第一位是1，故规定的第一位默认的“1”不明显表示出来。这样可用23个数位表示24位尾数。移码 定点整数，用来表示浮点数的阶，移码和补码差别仅仅是符号位差别相反。也可以这样计算 偏致常数+目标数=移码最大正数：$$0.11…1  2^{(11…1)}= (1 - 2^{(-24)})">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浮点数的表示">
+<meta name="twitter:description" content="第0位符号S；第1-8位为8位移码表示阶码E；第9-31位为24位二进制原码小数表示的尾数M。规格化尾数的小数点后第一位是1，故规定的第一位默认的“1”不明显表示出来。这样可用23个数位表示24位尾数。移码 定点整数，用来表示浮点数的阶，移码和补码差别仅仅是符号位差别相反。也可以这样计算 偏致常数+目标数=移码最大正数：$$0.11…1  2^{(11…1)}= (1 - 2^{(-24)})">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-05-浮点数的表示" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      浮点数的表示
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/05/2017-05-05-浮点数的表示/" class="article-date">
+	  <time datetime="2017-05-04T16:00:00.000Z" itemprop="datePublished">五月 5, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>第0位符号S；第1-8位为8位移码表示阶码E；第9-31位为24位二进制原码小数表示的尾数M。规格化尾数的小数点后第一位是1，故规定的第一位默认的“1”不明显表示出来。这样可用23个数位表示24位尾数。<br>移码 定点整数，用来表示浮点数的阶，移码和补码差别仅仅是符号位差别相反。也可以这样计算 偏致常数+目标数=移码<br>最大正数：$$0.11…1 <em> 2^{(11…1)}= (1 - 2^{(-24)}) </em> 2^{127}$$<br>最小正数：$$0.10…0 <em> 2^{(00…0)} = (1/2) </em> 2^{(-128)}$$<br>机器0：尾数为0或落在下溢区中的数<br>浮点数范围比定点数大，但数的个数没有变多，数之间更稀疏，不均匀。<br>为了表示更多的有效数字，通常规定规格化数的小数点前为1。<br>在IEEE 754标准中<br>Sign bit：1表示negative；0表示positive<br>Exponent（阶码）：<br>SP规格化阶码范围为0000 0001（-126）~1111 1110（127）（全0或全1表示特殊值）<br>Bias为127（single），1023（double）<br>要注意的是双精度数的Exponent是11位，Significand为52位<br>SP:$$ (-1)^S <em> (1 + Significand) </em> 2^{(Exponent-127)}$$<br>DP: $$(-1)^S <em> (1 + Significand) </em> 2^{(Exponent-1023)}$$</p>
+<h2 id="How-to-represent-0"><a href="#How-to-represent-0" class="headerlink" title="How to represent 0?"></a>How to represent 0?</h2><p>Exponent: all zeros<br>Significand: all zeros<br>What about sign? Both cases calid.<br>浮点数除0的结果是+/-∞，而不是溢出异常（整数除0异常）<br>这样做的原因是：可以利用+∞/-∞作比较。</p>
+<h2 id="How-to-represent-∞-∞"><a href="#How-to-represent-∞-∞" class="headerlink" title="How to represent +∞/-∞?"></a>How to represent +∞/-∞?</h2><p>Exponent: all ones<br>Significand: all zeros<br>相关操作：<br>5.0 / 0 = +∞</p>
+<h2 id="“非数”的表示"><a href="#“非数”的表示" class="headerlink" title="“非数”的表示"></a>“非数”的表示</h2><p>Sqrt(-4.0) = ?  0/0 = ?<br>称为Not a Number(NaN) – “非数”<br>How to represent NaN?<br>Exponent = 255<br>Significand：nonzero<br>NaNs可以帮助调试程序<br>相关操作：<br>sqrt(-4.0) = NaN</p>
+<h2 id="非规格化数"><a href="#非规格化数" class="headerlink" title="非规格化数"></a>非规格化数</h2><p>Exponent: all ones<br>Significand: nonzero<br>并且它的首位数字不再是1而是0</p>
+<h2 id="非数值数据的编码"><a href="#非数值数据的编码" class="headerlink" title="非数值数据的编码"></a>非数值数据的编码</h2><p>逻辑数据的编码表示<br>计算机中何时会用到逻辑及数据？<br>用一位表示，N位二进制可表示N个逻辑数据，运算时按位进行，逻辑数据和数值数据在形式上并无差异，也是一串0/1序列，计算机靠指令来识别。</p>
+<h2 id="西文字符的编码表示"><a href="#西文字符的编码表示" class="headerlink" title="西文字符的编码表示"></a>西文字符的编码表示</h2><p>特点：只是一种拼音文字，用有限的几个字母拼写出所有的单词。只需要对有限的字母和数学符号、标点符号等辅助字符编码。所有的字符总数不超过256，使用7或8个二进制可表示。<br>表示：常用7位ASCII码表示<br>操作：字符串操作</p>
+<h2 id="汉字及国际字符的编码"><a href="#汉字及国际字符的编码" class="headerlink" title="汉字及国际字符的编码"></a>汉字及国际字符的编码</h2><p>汉字特点：汉字是一种图形文字，汉字数据量非常大<br>编码形式：输入码：对汉字用相应按键进行编码表示，用于输入<br>内码：用于系统中进行存储、查找、传送等处理<br>字模点阵或轮廓描述：描述汉字字模点阵或轮廓，用于显示/打印<br>西文字符没有输入码，内码就是ASCII，有字模点阵<br>至少需要两个字节才可以表示汉字内码，有汉字的总数（超过6万字）决定。<br>可在GB2312国标码的基础上产生汉字内码<br>为了与ASCII区别，将国标码的两个字节的第一位置“1”后得到一种汉字内码。例如<br>汉字“大”在码表中位于20行，83列。因此区位码为0010100 1010011，在区位码上加32得到两个字节的编码，即00110100 01110011=3473H。前面的34H和字符“4”的ASCII码相同，后面的73H和字符“S”的ASCII码相同，但是，将每个字节的最高位各设为“1”后，就得到其内码：10110100 11110011=B4F3H，因此不会和ASCII码混淆。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/06/2017-05-06-运算电路基础1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          运算电路基础（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/04/2017-05-04-数据的宽度和存储容量的单位/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">数据的宽度和存储容量的单位</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-represent-0"><span class="nav-number">1.</span> <span class="nav-text">How to represent 0?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#How-to-represent-∞-∞"><span class="nav-number">2.</span> <span class="nav-text">How to represent +∞/-∞?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#“非数”的表示"><span class="nav-number">3.</span> <span class="nav-text">“非数”的表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非规格化数"><span class="nav-number">4.</span> <span class="nav-text">非规格化数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非数值数据的编码"><span class="nav-number">5.</span> <span class="nav-text">非数值数据的编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#西文字符的编码表示"><span class="nav-number">6.</span> <span class="nav-text">西文字符的编码表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#汉字及国际字符的编码"><span class="nav-number">7.</span> <span class="nav-text">汉字及国际字符的编码</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

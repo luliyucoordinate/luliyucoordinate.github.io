@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C语言语句的机器级表示 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="过程调用的机器级表示1234567891011int add(int x,int y)&amp;#123;	return x+y;&amp;#125;int main()&amp;#123;	int t1 = 125;	int t2 = 80;	int sum = add(t1, t2);	return sum;&amp;#125; 过程调用执行步骤（P为调用者，Q为被调用者）    P将入口参数放到Q能访问到的地方   P保存">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言语句的机器级表示">
+<meta property="og:url" content="http://coordinate.wang/2017/05/14/2017-05-14-C语言语句的机器级表示/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="过程调用的机器级表示1234567891011int add(int x,int y)&amp;#123;	return x+y;&amp;#125;int main()&amp;#123;	int t1 = 125;	int t2 = 80;	int sum = add(t1, t2);	return sum;&amp;#125; 过程调用执行步骤（P为调用者，Q为被调用者）    P将入口参数放到Q能访问到的地方   P保存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.553Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言语句的机器级表示">
+<meta name="twitter:description" content="过程调用的机器级表示1234567891011int add(int x,int y)&amp;#123;	return x+y;&amp;#125;int main()&amp;#123;	int t1 = 125;	int t2 = 80;	int sum = add(t1, t2);	return sum;&amp;#125; 过程调用执行步骤（P为调用者，Q为被调用者）    P将入口参数放到Q能访问到的地方   P保存">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-14-C语言语句的机器级表示" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      C语言语句的机器级表示
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/14/2017-05-14-C语言语句的机器级表示/" class="article-date">
+	  <time datetime="2017-05-13T16:00:00.000Z" itemprop="datePublished">五月 14, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="过程调用的机器级表示"><a href="#过程调用的机器级表示" class="headerlink" title="过程调用的机器级表示"></a>过程调用的机器级表示</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t1 = <span class="number">125</span>;</span><br><span class="line">	<span class="keyword">int</span> t2 = <span class="number">80</span>;</span><br><span class="line">	<span class="keyword">int</span> sum = add(t1, t2);</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>过程调用执行步骤（P为调用者，Q为被调用者）  </p>
+<ol>
+<li>P将入口参数放到Q能访问到的地方  </li>
+<li>P保存返回地址，然后将控制转移到Q；call指令  </li>
+<li>Q保存P的现场，并为自己的非静态局部变量分配空间  </li>
+<li>回复Q的过程体；  </li>
+<li>Q恢复P的现场，释放局部变量空间；  </li>
+<li>Q取出返回地址，将控制转移到P；RET指令  </li>
+</ol>
+<p>IA-32的寄存器使用约定：调用者P保存寄存器（EAX、EDX、ECX），Q可直接使用这三个寄存器。若P在从Q返回后还要用的话，P应在转到Q之前先保存，并在从Q返回后先恢复它们的值再使用。被调用者Q保存寄存器（EBX、ESI、EDI）。Q必须先将它们的值保存在栈中在使用它们，并在返回P之前恢复它们的值。<br>EBP和ESP分别是帧指针寄存器和栈指针寄存器，分别用来指向当前栈帧的底部和顶部。  </p>
+<h2 id="入口参数位置"><a href="#入口参数位置" class="headerlink" title="入口参数位置"></a>入口参数位置</h2><p>movl 参数3,8(%esp)<br>movl 参数2,4(%esp)<br>movl 参数1,(%esp)<br>call add<br>call:<br>R[esp]&lt;-R[esp]-4<br>M[R[esp]] 返回地址（call指令的下一条指令的地址）<br>R[eip] add函数首地址<br>每个过程开始两条指令<br>pushl %ebp<br>movl %esp,%ebp  </p>
+<p>例子：应始终返回d[0]中的3.14，但是并非如此  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">double</span> d[<span class="number">1</span>] = &#123;<span class="number">3.14</span>&#125;;</span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">long</span> <span class="keyword">int</span> a[<span class="number">2</span>];</span><br><span class="line">	a[i] = <span class="number">1073741824</span>;</span><br><span class="line">	<span class="keyword">return</span> d[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在vs2015执行中出现了报错Run-Time Check Failure #2 - Stack around the variable ‘a’ was corrupted.原因在于如果i超出了范围，数组中的数据会破坏栈里面的数据。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="number">01161710</span>  push        ebp  </span><br><span class="line"><span class="number">01161711</span>  mov         ebp,esp  </span><br><span class="line"><span class="number">01161713</span>  sub         esp,<span class="number">0E0</span>h  </span><br><span class="line"><span class="number">01161719</span>  push        ebx  </span><br><span class="line"><span class="number">0116171</span>A  push        esi  </span><br><span class="line"><span class="number">0116171B</span>  push        edi  </span><br><span class="line"><span class="number">0116171</span>C  lea         edi,[ebp<span class="number">-0E0</span>h]  </span><br><span class="line"><span class="number">01161722</span>  mov         ecx,<span class="number">38</span>h  </span><br><span class="line"><span class="number">01161727</span>  mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">0116172</span>C  rep stos    dword ptr es:[edi]  </span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">double</span> d[<span class="number">1</span>] = &#123; <span class="number">3.14</span> &#125;;</span><br><span class="line"><span class="number">0116172</span>E  movsd       xmm0,mmword ptr [__real@<span class="number">40091</span>eb851eb851f (<span class="number">01166B</span>38h)]  </span><br><span class="line"><span class="number">01161736</span>  movsd       mmword ptr [d],xmm0  </span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">long</span> <span class="keyword">int</span> a[<span class="number">2</span>];</span><br><span class="line">	a[i] = <span class="number">1073741824</span>;</span><br><span class="line"><span class="number">0116173B</span>  mov         eax,dword ptr [i]  </span><br><span class="line">	<span class="keyword">volatile</span> <span class="keyword">long</span> <span class="keyword">int</span> a[<span class="number">2</span>];</span><br><span class="line">	a[i] = <span class="number">1073741824</span>;<span class="comment">//400000000h</span></span><br><span class="line"><span class="number">0116173</span>E  mov         dword ptr a[eax*<span class="number">4</span>],<span class="number">40000000</span>h  </span><br><span class="line">	<span class="keyword">return</span> d[<span class="number">0</span>];</span><br><span class="line"><span class="number">01161746</span>  mov         eax,<span class="number">8</span>  </span><br><span class="line"><span class="number">0116174B</span>  imul        ecx,eax,<span class="number">0</span>  </span><br><span class="line"><span class="number">0116174</span>E  fld         qword ptr d[ecx]  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="选择和循环结构"><a href="#选择和循环结构" class="headerlink" title="选择和循环结构"></a>选择和循环结构</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(cond_expr)</span><br><span class="line">	then_statement</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	else_statement</span><br></pre></td></tr></table></figure>
+<p>机器级表示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	c = cond_expr;</span><br><span class="line">	if(!c)</span><br><span class="line">		goto false_label;</span><br><span class="line">	then_statement</span><br><span class="line">	goto done;</span><br><span class="line">false_label:</span><br><span class="line">	else_statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<p>例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_cont</span><span class="params">(<span class="keyword">int</span> *p1, <span class="keyword">int</span> *p2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="number">00831790</span>  push        ebp  </span><br><span class="line"><span class="number">00831791</span>  mov         ebp,esp  </span><br><span class="line"><span class="number">00831793</span>  sub         esp,<span class="number">0</span>C0h  </span><br><span class="line"><span class="number">00831799</span>  push        ebx  </span><br><span class="line"><span class="number">0083179</span>A  push        esi  </span><br><span class="line"><span class="number">0083179B</span>  push        edi  </span><br><span class="line"><span class="number">0083179</span>C  lea         edi,[ebp<span class="number">-0</span>C0h]  </span><br><span class="line"><span class="number">008317</span>A2  mov         ecx,<span class="number">30</span>h  </span><br><span class="line"><span class="number">008317</span>A7  mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">008317</span>AC  rep stos    dword ptr es:[edi]  </span><br><span class="line">	<span class="keyword">if</span> (p1 &gt; p2)</span><br><span class="line"><span class="number">008317</span>AE  mov         eax,dword ptr [p1]  </span><br><span class="line"><span class="number">008317B</span>1  cmp         eax,dword ptr [p2]  <span class="comment">//比较</span></span><br><span class="line"><span class="number">008317B</span>4  jbe         get_cont+<span class="number">2F</span>h (<span class="number">08317B</span>Fh)  </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> *p2;</span><br><span class="line"><span class="number">008317B</span>6  mov         eax,dword ptr [p2]  </span><br><span class="line"><span class="number">008317B</span>9  mov         eax,dword ptr [eax]  </span><br><span class="line"><span class="number">008317B</span>B  jmp         get_cont+<span class="number">34</span>h (<span class="number">08317</span>C4h)  </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line"><span class="number">008317B</span>D  jmp         get_cont+<span class="number">34</span>h (<span class="number">08317</span>C4h)  <span class="comment">//这条指令看上去执行不到啊</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> *p1;</span><br><span class="line"><span class="number">008317B</span>F  mov         eax,dword ptr [p1]  </span><br><span class="line"><span class="number">008317</span>C2  mov         eax,dword ptr [eax]  </span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">008317</span>C4  pop         edi  </span><br><span class="line"><span class="number">008317</span>C5  pop         esi  </span><br><span class="line"><span class="number">008317</span>C6  pop         ebx  </span><br><span class="line"><span class="number">008317</span>C7  mov         esp,ebp  </span><br><span class="line"><span class="number">008317</span>C9  pop         ebp  </span><br><span class="line"><span class="number">008317</span>CA  ret</span><br></pre></td></tr></table></figure>
+<p>关于switch语句</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sw_test</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="number">00</span>A11810  push        ebp  </span><br><span class="line"><span class="number">00</span>A11811  mov         ebp,esp  </span><br><span class="line"><span class="number">00</span>A11813  sub         esp,<span class="number">0</span>D0h  </span><br><span class="line"><span class="number">00</span>A11819  push        ebx  </span><br><span class="line"><span class="number">00</span>A1181A  push        esi  </span><br><span class="line"><span class="number">00</span>A1181B  push        edi  </span><br><span class="line"><span class="number">00</span>A1181C  lea         edi,[ebp<span class="number">-0</span>D0h]  </span><br><span class="line"><span class="number">00</span>A11822  mov         ecx,<span class="number">34</span>h  </span><br><span class="line"><span class="number">00</span>A11827  mov         eax,<span class="number">0</span>CCCCCCCCh  </span><br><span class="line"><span class="number">00</span>A1182C  rep stos    dword ptr es:[edi]  </span><br><span class="line">	<span class="keyword">int</span> result;</span><br><span class="line">	<span class="keyword">switch</span> (a)</span><br><span class="line"><span class="number">00</span>A1182E  mov         eax,dword ptr [a]  <span class="comment">//参数a</span></span><br><span class="line"><span class="number">00</span>A11831  mov         dword ptr [ebp<span class="number">-0</span>D0h],eax  </span><br><span class="line"><span class="number">00</span>A11837  mov         ecx,dword ptr [ebp<span class="number">-0</span>D0h]  </span><br><span class="line"><span class="number">00</span>A1183D  sub         ecx,<span class="number">0</span>Ah  <span class="comment">//i=i-10</span></span><br><span class="line">	<span class="keyword">int</span> result;</span><br><span class="line">	<span class="keyword">switch</span> (a)</span><br><span class="line"><span class="number">00</span>A11840  mov         dword ptr [ebp<span class="number">-0</span>D0h],ecx  </span><br><span class="line"><span class="number">00</span>A11846  cmp         dword ptr [ebp<span class="number">-0</span>D0h],<span class="number">7</span>  <span class="comment">//i与7比较</span></span><br><span class="line"><span class="number">00</span>A1184D  ja          $LN6+<span class="number">0B</span>h (<span class="number">0</span>A1187Bh)  <span class="comment">//&gt;7则跳转到输出default</span></span><br><span class="line"><span class="number">00</span>A1184F  mov         edx,dword ptr [ebp<span class="number">-0</span>D0h]  <span class="comment">//edx=i</span></span><br><span class="line"><span class="number">00</span>A11855  jmp         dword ptr [edx*<span class="number">4</span>+<span class="number">0</span>A1188Ch]  <span class="comment">//跳到跳转表的位置</span></span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="number">15</span>:</span><br><span class="line">		c = b &amp; <span class="number">0x0f</span>;</span><br><span class="line"><span class="number">00</span>A1185C  mov         eax,dword ptr [b]  </span><br><span class="line"><span class="number">00</span>A1185F  <span class="keyword">and</span>         eax,<span class="number">0F</span>h  </span><br><span class="line"><span class="number">00</span>A11862  mov         dword ptr [c],eax  </span><br><span class="line">	<span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">		result = c + <span class="number">50</span>;</span><br><span class="line"><span class="number">00</span>A11865  mov         eax,dword ptr [c]  </span><br><span class="line"><span class="number">00</span>A11868  add         eax,<span class="number">32</span>h  </span><br><span class="line"><span class="number">00</span>A1186B  mov         dword ptr [result],eax  </span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"><span class="number">00</span>A1186E  jmp         $LN6+<span class="number">11</span>h (<span class="number">0</span>A11881h)  </span><br><span class="line">	<span class="keyword">case</span> <span class="number">12</span>:</span><br><span class="line">	<span class="keyword">case</span> <span class="number">17</span>:</span><br><span class="line">		result = b + <span class="number">50</span>;</span><br><span class="line"><span class="number">00</span>A11870  mov         eax,dword ptr [b]  </span><br><span class="line"><span class="number">00</span>A11873  add         eax,<span class="number">32</span>h  </span><br><span class="line"><span class="number">00</span>A11876  mov         dword ptr [result],eax  </span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"><span class="number">00</span>A11879  jmp         $LN6+<span class="number">11</span>h (<span class="number">0</span>A11881h)  </span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		result = a;</span><br><span class="line"><span class="number">00</span>A1187B  mov         eax,dword ptr [a]  </span><br><span class="line"><span class="number">00</span>A1187E  mov         dword ptr [result],eax  </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line"><span class="number">00</span>A11881  mov         eax,dword ptr [result]  </span><br><span class="line">&#125;</span><br><span class="line"><span class="number">00</span>A11884  pop         edi  </span><br><span class="line">&#125;</span><br><span class="line"><span class="number">00</span>A11885  pop         esi  </span><br><span class="line"><span class="number">00</span>A11886  pop         ebx  </span><br><span class="line"><span class="number">00</span>A11887  mov         esp,ebp  </span><br><span class="line"><span class="number">00</span>A11889  pop         ebp  </span><br><span class="line"><span class="number">00</span>A1188A  ret  </span><br><span class="line"><span class="number">00</span>A1188B  nop  </span><br><span class="line"><span class="number">00</span>A1188C  sbb         byte ptr gs:[ecx<span class="number">-5</span>EE78500h],ah  </span><br><span class="line"><span class="number">00</span>A11893  add         byte ptr [eax+<span class="number">18</span>h],dh  </span><br><span class="line"><span class="number">00</span>A11896  mov         eax,dword ptr ds:[A1187B00h]  </span><br><span class="line"><span class="number">00</span>A1189B  add         byte ptr [ebx+<span class="number">18</span>h],bh  </span><br><span class="line"><span class="number">00</span>A1189E  mov         eax,dword ptr ds:[A1185C00h]  </span><br><span class="line"><span class="number">00</span>A118A3  add         byte ptr [ebx+<span class="number">18</span>h],bh  </span><br><span class="line"><span class="number">00</span>A118A6  mov         eax,dword ptr ds:[A1187000h]  </span><br><span class="line"><span class="number">00</span>A118AB  add         ah,cl</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/16/2017-05-16-复杂数据类型的机器级表示1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          复杂数据类型的机器级表示（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/13/2017-05-13-IA-32指令类型2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">IA-32指令类型（2）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#过程调用的机器级表示"><span class="nav-number">1.</span> <span class="nav-text">过程调用的机器级表示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#入口参数位置"><span class="nav-number">1.1.</span> <span class="nav-text">入口参数位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#选择和循环结构"><span class="nav-number">1.2.</span> <span class="nav-text">选择和循环结构</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

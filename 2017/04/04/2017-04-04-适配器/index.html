@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>适配器 adapters | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl适配器" />
+  
+  
+  
+  
+  <meta name="description" content="容器的适配器：stack，queue12345678910111213141516171819template &amp;lt;class T, class Sequence=deque&amp;lt;T&amp;gt;&amp;gt;class stack&amp;#123;...public:	typedef typename Sequence::value_type value_type;	typedef typename Seq">
+<meta name="keywords" content="cpp,stl,适配器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="适配器 adapters">
+<meta property="og:url" content="http://coordinate.wang/2017/04/04/2017-04-04-适配器/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="容器的适配器：stack，queue12345678910111213141516171819template &amp;lt;class T, class Sequence=deque&amp;lt;T&amp;gt;&amp;gt;class stack&amp;#123;...public:	typedef typename Sequence::value_type value_type;	typedef typename Seq">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.047Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="适配器 adapters">
+<meta name="twitter:description" content="容器的适配器：stack，queue12345678910111213141516171819template &amp;lt;class T, class Sequence=deque&amp;lt;T&amp;gt;&amp;gt;class stack&amp;#123;...public:	typedef typename Sequence::value_type value_type;	typedef typename Seq">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-04-适配器" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      适配器 adapters
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/04/2017-04-04-适配器/" class="article-date">
+	  <time datetime="2017-04-03T16:00:00.000Z" itemprop="datePublished">四月 4, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="容器的适配器：stack，queue"><a href="#容器的适配器：stack，queue" class="headerlink" title="容器的适配器：stack，queue"></a>容器的适配器：stack，queue</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Sequence</span>=<span class="title">deque</span>&lt;T&gt;&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">stack</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> Sequence::value_type value_type;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> Sequence::size_type size_type;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> Sequence::reference reference;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> Sequence::const_reference const_reference;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	Sequence c;<span class="comment">//底层容器deque</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> c.empty(); &#125;</span><br><span class="line">	<span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> c.size(); &#125;</span><br><span class="line">	<span class="function">reference <span class="title">top</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> c.back(); &#125;</span><br><span class="line">	<span class="function">const_reference <span class="title">top</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> c.back(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">const</span> value_type&amp; x)</span> </span>&#123; c.push_back(x); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pop</span><span class="params">()</span> </span>&#123; c.pop_back(); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="函数适配器binder2nd"><a href="#函数适配器binder2nd" class="headerlink" title="函数适配器binder2nd"></a>函数适配器binder2nd</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Operation</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">binder2nd</span>&lt;Operation&gt; <span class="title">bind2nd</span> (<span class="title">const</span> <span class="title">Operation</span>&amp; <span class="title">op</span>, <span class="title">const</span> <span class="title">T</span>&amp; <span class="title">x</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="comment">//辅助函数，让user更方便的使用binder2nd</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> Operation::second_argument_type arg2_type;</span><br><span class="line"><span class="comment">//typename 原因在于不知道后面的类型，所以要告诉编译器他是一个typename</span></span><br><span class="line">	<span class="keyword">return</span> binder2nd&lt;Operation&gt;(op, arg2_type(x));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Operation</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">bind2nd</span> :</span><span class="keyword">public</span> unary_function&lt;<span class="keyword">typename</span> Operation::first_argument_type,</span><br><span class="line">									<span class="keyword">typename</span> Operation::result_type&gt;</span><br><span class="line"><span class="comment">//注意这里的继承，如果这个functor还可以被别人使用的话</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	Operation op;<span class="comment">//内部成员</span></span><br><span class="line">	<span class="keyword">typename</span> Operation::second_argument_type value;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	binder2nd(<span class="keyword">const</span> Operation&amp; x, <span class="keyword">const</span> <span class="keyword">typename</span> Operation::second_argument_type)</span><br><span class="line">	: op(x), value(y) &#123;&#125;</span><br><span class="line">	<span class="keyword">typename</span> Operation::result_type</span><br><span class="line">	<span class="keyword">operator</span>()(<span class="keyword">const</span> <span class="keyword">typename</span> Operation::first_argument_type&amp; x) <span class="keyword">const</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> op(x, value);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="函数适配器not1"><a href="#函数适配器not1" class="headerlink" title="函数适配器not1"></a>函数适配器not1</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Predicate</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">unary_negate</span>&lt;Predicate&gt;<span class="title">not1</span>(<span class="title">const</span> <span class="title">Predicate</span>&amp; <span class="title">pred</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">return</span> unary_negate&lt;Predicate&gt;(pred);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Predicate</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">unary_negate</span></span></span><br><span class="line"><span class="class">:</span><span class="keyword">public</span> unary_function&lt;<span class="keyword">typename</span> Predicate::argument_type, <span class="keyword">bool</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	Predicate pred;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="comment">//explicit关键字的作用就是防止类构造函数的隐式自动转换</span></span><br><span class="line">	explicit unary_negate(const Predicate&amp; x) : pred(x) &#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> <span class="keyword">typename</span> Predicate::argument_type&amp; x)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123; <span class="keyword">return</span> !pred(x); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="新型适配器bind"><a href="#新型适配器bind" class="headerlink" title="新型适配器bind"></a>新型适配器bind</h2><p>Since c++11  </p>
+<p><functional>bind —–&gt;<functional>binder1st  </functional></functional></p>
+<p><functional>bind —–&gt;<functional>binder2nd  </functional></functional></p>
+<p><functional>bind —–&gt;<functional>bind1st  </functional></functional></p>
+<p><functional>bind —–&gt;<functional>bind2nd</functional></functional></p>
+<p>可以绑定</p>
+<ol>
+<li>functions </li>
+<li>functions objects </li>
+<li>member functions ，_1必须是某个object的地址</li>
+<li>data members，_1必须是某个object的地址</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// bind example</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;     // std::cout</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;   // std::bind</span></span></span><br><span class="line"><span class="comment">// a function: (also works with function object: std::divides&lt;double&gt; my_divide;)</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">my_divide</span> <span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span> </span>&#123;<span class="keyword">return</span> x/y;&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyPair</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">double</span> a,b;</span><br><span class="line">  <span class="function"><span class="keyword">double</span> <span class="title">multiply</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> a*b;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::placeholders;    <span class="comment">// adds visibility of _1, _2, _3,...占位符</span></span><br><span class="line">  <span class="comment">// binding functions:</span></span><br><span class="line">  <span class="keyword">auto</span> fn_five = <span class="built_in">std</span>::bind (my_divide,<span class="number">10</span>,<span class="number">2</span>);               <span class="comment">// returns 10/2</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fn_five() &lt;&lt; <span class="string">'\n'</span>;                          <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> fn_half = <span class="built_in">std</span>::bind (my_divide,_1,<span class="number">2</span>);               <span class="comment">// returns x/2</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fn_half(<span class="number">10</span>) &lt;&lt; <span class="string">'\n'</span>;                        <span class="comment">// 5</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> fn_invert = <span class="built_in">std</span>::bind (my_divide,_2,_1);            <span class="comment">// returns y/x</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fn_invert(<span class="number">10</span>,<span class="number">2</span>) &lt;&lt; <span class="string">'\n'</span>;                    <span class="comment">// 0.2</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> fn_rounding = <span class="built_in">std</span>::bind&lt;<span class="keyword">int</span>&gt; (my_divide,_1,_2);     <span class="comment">// returns int(x/y)</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; fn_rounding(<span class="number">10</span>,<span class="number">3</span>) &lt;&lt; <span class="string">'\n'</span>;                  <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">  MyPair ten_two &#123;<span class="number">10</span>,<span class="number">2</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// binding members:</span></span><br><span class="line">  <span class="keyword">auto</span> bound_member_fn = <span class="built_in">std</span>::bind (&amp;MyPair::multiply,_1); <span class="comment">// returns x.multiply()</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; bound_member_fn(ten_two) &lt;&lt; <span class="string">'\n'</span>;           <span class="comment">// 20</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> bound_member_data = <span class="built_in">std</span>::bind (&amp;MyPair::a,ten_two); <span class="comment">// returns ten_two.a</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; bound_member_data() &lt;&lt; <span class="string">'\n'</span>;                <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/适配器/">适配器</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/06/2017-04-06-分配器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          分配器 allocators
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/03/2017-04-03-仿函数/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">仿函数 functors</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#容器的适配器：stack，queue"><span class="nav-number">1.</span> <span class="nav-text">容器的适配器：stack，queue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数适配器binder2nd"><span class="nav-number">2.</span> <span class="nav-text">函数适配器binder2nd</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数适配器not1"><span class="nav-number">3.</span> <span class="nav-text">函数适配器not1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新型适配器bind"><span class="nav-number">3.1.</span> <span class="nav-text">新型适配器bind</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

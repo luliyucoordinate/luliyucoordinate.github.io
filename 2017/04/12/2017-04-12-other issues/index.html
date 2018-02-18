@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>other issues | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl" />
+  
+  
+  
+  
+  <meta name="description" content="当将元素加入容器中，容器必须分配更多的内存以足够保存这些元素，于是他们向他的模板参数allocator发出申请，该模板参数往往被另一个名为 allocator_type。甚至将chars添加到string class也是如此，因为string也算是一个正规的STL容器。每个元素类型为T的容器的Allocator模板默认为allocator。其接口只有大约20个public申明，包括嵌套的typed">
+<meta name="keywords" content="cpp,stl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="other issues">
+<meta property="og:url" content="http://coordinate.wang/2017/04/12/2017-04-12-other issues/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="当将元素加入容器中，容器必须分配更多的内存以足够保存这些元素，于是他们向他的模板参数allocator发出申请，该模板参数往往被另一个名为 allocator_type。甚至将chars添加到string class也是如此，因为string也算是一个正规的STL容器。每个元素类型为T的容器的Allocator模板默认为allocator。其接口只有大约20个public申明，包括嵌套的typed">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.121Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="other issues">
+<meta name="twitter:description" content="当将元素加入容器中，容器必须分配更多的内存以足够保存这些元素，于是他们向他的模板参数allocator发出申请，该模板参数往往被另一个名为 allocator_type。甚至将chars添加到string class也是如此，因为string也算是一个正规的STL容器。每个元素类型为T的容器的Allocator模板默认为allocator。其接口只有大约20个public申明，包括嵌套的typed">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-12-other issues" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      other issues
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/12/2017-04-12-other issues/" class="article-date">
+	  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">四月 12, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当将元素加入容器中，容器必须分配更多的内存以足够保存这些元素，于是他们向他的模板参数allocator发出申请，该模板参数往往被另一个名为 allocator_type。甚至将chars添加到string class也是如此，因为string也算是一个正规的STL容器。每个元素类型为T的容器的Allocator模板默认为allocator<t>。其接口只有大约20个public申明，包括嵌套的typedefs和成员函数。最重要的两个成员函数是：</t></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">T* <span class="title">allocate</span><span class="params">(size_type n, <span class="keyword">const</span> <span class="keyword">void</span>* hint = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function">Void <span class="title">deallocate</span><span class="params">(T* p, size_type n)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>N指的是客户申请的元素个数，不是指空间总量。这些空间是通过调用::operator new获得，但何时需要并无具体指定。  </p>
+<p>最容易满足需求的做法就是每当容器需要内存就调用operator new，每当容器释放内存就调用operator delete。这种做法比起分配大块内存并缓存然后小块小块的使用当然较慢，优势则是可以在极大范围的硬件和操作系统有效运作。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::new_allocator</span><br></pre></td></tr></table></figure>
+<p>实现出简洁的operator new 和operator delete。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::malloc_allocator</span><br></pre></td></tr></table></figure>
+<p>实现上例唯一不同的是，它使用c函数std::malloc和std::free  </p>
+<p>另外一种做法就是使用智能型allocator，将分配所得的内存加以缓存。这种额外机制可以数种形式呈现：可以是个bitmap index，用以索引至一个以2的指数倍成长的篮子。也可以是个相较之下比较简易的fixed-size pooling cache这里所说的cache被程序内的所有容器共享，而operators new和operator delete不经常<br>被调用，这可带来速度上的优势。使用这个技巧的allocators包括：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::bitmap_allocator</span><br></pre></td></tr></table></figure>
+<p>一个高效能的allocator，使用bit-map追踪被使用和未使用的内存块。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::pool_allocator</span><br><span class="line">__gnu_cxx::__mt_alloc</span><br></pre></td></tr></table></figure>
+<p>Class allocator 只拥有typedef,constructor,和rebind等成员。它继承自一个high-speed extension allocators。也因此，所有分配器和归还都取决于该base class，而这个base class也许是终端用户无法碰触和操控的。很难挑选出某个分配策略说他可以提供最大共同利益而不至于令某些行为过度优势。事实上，就算要挑选何种典型动作以测量速度，都是一种困难。<br>GNU C++提供三项综合测试用以C++allocators之间的速度比较：<br>Insertion进过多次iterations后各种STL容器将拥有某个极大量。分别测试sequence和associative容器。多线程环境中的insertion and erasure 。这个测试展示allocator归还内存，测量线程之间对内存的竞争。A threaded producer/consumer model分别测试sequence和associative容器。</p>
+<p>另外两个智能allocator：<br><strong>gnu_cxx::debug_allocator<br>这个是一个外覆器(wrapper)，可包含于任何allocator之上。他把客户的申请量添加一些，然后由allocator回应，并以那个一小块额外内存放置size信息。一旦deallocate()收到一个pointer，就会检查size并以assert()保证吻合。  
+</strong>gnu_cxx::array_allocator<br>允许分配一个已知固定大小的内存块，内存来自std::array objects。用上这个allocator，大小固定的容器就无需在调用::operator new 和::operator delete。这就允许我们使用STL abstractions而无需再运行期添加额外开销。甚至在program startup情况下也可使用。注意他是静态的，所以他不需要调用delete。</p>
+<h2 id="Array-allocator"><a href="#Array-allocator" class="headerlink" title="Array allocator"></a>Array allocator</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//array内的第二个参数表示array的大小</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Tp,<span class="keyword">typename</span> _Array = <span class="built_in">std</span>::tr1::<span class="built_in">array</span>&lt;_Tp,<span class="number">1</span>&gt;&gt;</span><br><span class="line">class array_allocator:<span class="keyword">public</span> array_allocator_base&lt;_Tp&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Tp value_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Array array_type;</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	array_type* _M_array;</span><br><span class="line">	size_type _M_used;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	array_allocator(array_type* __array = <span class="literal">NULL</span>)<span class="keyword">throw</span>()</span><br><span class="line">		:_M_array(__array), _M_used(size_type())&#123;&#125;</span><br><span class="line">		...</span><br><span class="line">	pointer</span><br><span class="line">	allocate(size_type __n,<span class="keyword">const</span> <span class="keyword">void</span>* =<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(_M_array == <span class="number">0</span>|| _M_used + __n&gt;_M_array &gt; size())</span><br><span class="line">			<span class="built_in">std</span>::__throw_bad_alloc();</span><br><span class="line">		pointer __ret = _M_array-&gt;begin() + _M_used();</span><br><span class="line">		_M_used += __n;</span><br><span class="line">		<span class="keyword">return</span> __ret;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">debug_allocator</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Alloc&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">debug_allocator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	size_type _M_extra;<span class="comment">//额外的空间，记录整个区块的大小</span></span><br><span class="line">	_Alloc _M_allocator;</span><br><span class="line">	</span><br><span class="line">	size_type _S_extra()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">size_t</span> __obj_size = <span class="keyword">sizeof</span>(value_type);</span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">sizeof</span>(size_type) + __obj_size - <span class="number">1</span>)/__obj_size;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	debug_allocator(<span class="keyword">const</span> _Alloc&amp; __a)</span><br><span class="line">		:_M_allocator(__a), _M_extra(_S_extra())&#123;&#125;</span><br><span class="line">	<span class="function">pointer <span class="title">allocate</span><span class="params">(size_type __n)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		pointer __res = _M_allocator.allocate(__n + __m_extra);</span><br><span class="line">		size_type *__ps = <span class="keyword">reinterpret_cast</span>&lt;size_type*&gt;(__res);</span><br><span class="line">		*__ps = __n;</span><br><span class="line">		<span class="keyword">return</span> __res + _M_extra;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">(pointer __p,size_type __n)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">using</span> <span class="built_in">std</span>::__throw_runtine_error;</span><br><span class="line">		<span class="keyword">if</span>(__p)</span><br><span class="line">		&#123;</span><br><span class="line">			pointer __real_p = __p + _m_extra;</span><br><span class="line">			<span class="keyword">if</span>(*<span class="keyword">reinterpret_cast</span>&lt;size_type*&gt;(__real_p) != __n)</span><br><span class="line">				__throw_runtime_error</span><br><span class="line">					(<span class="string">"debug_allocator::deallocate wrong size"</span>);</span><br><span class="line">			_M_allocator.deallocate(__ + _M_extra);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			__throw_runtime_error</span><br><span class="line">				(<span class="string">"debug_allocator::deallocate wrong size"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="bitmap-allocator"><a href="#bitmap-allocator" class="headerlink" title="bitmap_allocator"></a>bitmap_allocator</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Tp&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">bitmap_allocator</span>:</span><span class="keyword">private</span> free_list</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">pointer <span class="title">allocate</span><span class="params">(size_type __n)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(__n &gt; <span class="keyword">this</span>-&gt;max_size())</span><br><span class="line">			<span class="built_in">std</span>::__throw_bad_alloc();</span><br><span class="line">		<span class="keyword">if</span>(__builtin_expect(__n == <span class="number">1</span>,<span class="literal">true</span>))</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>-&gt;_M_allocate_single_object();</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">const</span> size_type __b = __n * <span class="keyword">sizeof</span>(value_type);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;pointer&gt;(::<span class="keyword">operator</span> <span class="keyword">new</span>(__b));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">(pointer __p,size_type __n)</span><span class="title">throw</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(__builtin_expect(__p !=<span class="number">0</span>,<span class="literal">true</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(__builtin_expect(__n == <span class="number">1</span>,tue))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">this</span>-&gt;_M_delaoocate_single_object(__p);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				::<span class="keyword">operator</span> <span class="keyword">delete</span>(_p);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Vector的元素排列将以super block size为依据，新进者若大于最末者，便直接delete新进者，否则delete最末者后再insert新进者，若没有到达64则insert到适当位置。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/13/2017-04-13-cpp2.0新特性1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cpp2.0新特性(1)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/12/2017-04-12-loki's allocator/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">loki::allocator</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Array-allocator"><span class="nav-number">1.</span> <span class="nav-text">Array allocator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bitmap-allocator"><span class="nav-number">2.</span> <span class="nav-text">bitmap_allocator</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

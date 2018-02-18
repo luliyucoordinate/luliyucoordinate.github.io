@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>linux Day10 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linuxcnetwork" />
+  
+  
+  
+  
+  <meta name="description" content="阻塞socket阻塞调用是指调用结果返回以前，当前线程会被挂起。函数只有在得到结果之后才会返回。对于文件操作read，fread函数调用会将线程阻塞。对于socket，accpet与recv，recvfrom函数调用会将线程阻塞。为了避免整个进程阻塞后挂起，所以在阻塞模式下，往往需要采用多线程技术。一个进程可以并发的线程数量是有限的，在处理客户端连接时，通过线程并发处理socket并不方便，效率也">
+<meta name="keywords" content="linux,c,network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux Day10">
+<meta property="og:url" content="http://coordinate.wang/2017/03/14/2017-03-14-linux-day10/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="阻塞socket阻塞调用是指调用结果返回以前，当前线程会被挂起。函数只有在得到结果之后才会返回。对于文件操作read，fread函数调用会将线程阻塞。对于socket，accpet与recv，recvfrom函数调用会将线程阻塞。为了避免整个进程阻塞后挂起，所以在阻塞模式下，往往需要采用多线程技术。一个进程可以并发的线程数量是有限的，在处理客户端连接时，通过线程并发处理socket并不方便，效率也">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.921Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux Day10">
+<meta name="twitter:description" content="阻塞socket阻塞调用是指调用结果返回以前，当前线程会被挂起。函数只有在得到结果之后才会返回。对于文件操作read，fread函数调用会将线程阻塞。对于socket，accpet与recv，recvfrom函数调用会将线程阻塞。为了避免整个进程阻塞后挂起，所以在阻塞模式下，往往需要采用多线程技术。一个进程可以并发的线程数量是有限的，在处理客户端连接时，通过线程并发处理socket并不方便，效率也">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-14-linux-day10" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      linux Day10
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/14/2017-03-14-linux-day10/" class="article-date">
+	  <time datetime="2017-03-13T16:00:00.000Z" itemprop="datePublished">三月 14, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="阻塞socket"><a href="#阻塞socket" class="headerlink" title="阻塞socket"></a>阻塞socket</h1><p>阻塞调用是指调用结果返回以前，当前线程会被挂起。函数只有在得到结果之后才会返回。<br>对于文件操作read，fread函数调用会将线程阻塞。<br>对于socket，accpet与recv，recvfrom函数调用会将线程阻塞。<br>为了避免整个进程阻塞后挂起，所以在阻塞模式下，往往需要采用多线程技术。<br>一个进程可以并发的线程数量是有限的，在处理客户端连接时，通过线程并发处理socket并不方便，效率也不高。</p>
+<h1 id="非阻塞socket"><a href="#非阻塞socket" class="headerlink" title="非阻塞socket"></a>非阻塞socket</h1><p>非阻塞是调用立即返回<br>在非阻塞模式下，accept与recv，recvfrom函数调用会立即返回。<br>在nonblocking状态下调用accept函数，如果没有客户端socket连接请求，那么accept函数返回-1，同时errno值为EAGAIN或者EWOULDBOCK，这两个宏定义都为整数11。<br>在nonblocking状态下调用recv，recvfrom函数，如果没有数据，函数返回-1，同时errno值为11。<br>如果socket已经关闭，函数返回0。<br>在nonblocking状态下对一个已经关闭的socket调用send函数，将引发一个SIPPIPE信号，进程必须捕捉这个信号，因为SIGPIPE系统默认的处理方式是关闭进程。</p>
+<p>fcntl函数<br>fcntl函数可以将文件或者socket描述符设置为阻塞或者非阻塞状态  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fcntl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> cmd, … <span class="comment">/*arg*/</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数fd为要设置的文件描述符或者socket<br>参数cmd，F_GETFL为得到目前状态，F_SETFL为设置状态。<br>宏定义O_NONBLOCK代表非阻塞，0代表阻塞<br>返回值为描述符当前状态</p>
+<h1 id="epoll的系统调用函数"><a href="#epoll的系统调用函数" class="headerlink" title="epoll的系统调用函数"></a>epoll的系统调用函数</h1><p>epoll_create用来创建一个epoll文件描述符<br>epoll_ctl用来添加修改删除需要侦听的文件描述符及其事件<br>epoll_wait接收发生在被监听的描述符上，用户感兴趣的IO事件<br>epoll文件描述符用完后，需要用close关闭<br>每次添加修改删除文件描述符都需要调用epoll_ctl</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_create</span><span class="params">(<span class="keyword">int</span> size)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>epoll_create创建一个epoll的句柄<br>参数size指定epoll所支持的最大句柄数<br>函数将返回一个新的epoll句柄，之后的所有操作将通过这个句柄操作<br>用完这个句柄后，需要用close来关闭</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_ctl</span><span class="params">(<span class="keyword">int</span> epfd, <span class="keyword">int</span> op, <span class="keyword">int</span> fd, struct epoll_event *event)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数epfd是epoll_create()的返回值<br>参数op表示动作，用三个宏表示<br>EPOLL_CTL_ADD:注册新的fd到epfd中<br>EPOLL_CTL_MOD:修改已经注册的fd的监听事件<br>EPOLL_CTL_DEL:从epfd中删除一个fd<br>参数fd是需要监听的socket描述符<br>参数event通知内核需要监听什么事件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">union</span> epoll_data&#123;</span><br><span class="line">        <span class="keyword">void</span> *ptr;</span><br><span class="line">        <span class="keyword">int</span> fd;</span><br><span class="line">        <span class="keyword">__uint32_t</span> u32;</span><br><span class="line">        <span class="keyword">__uint64_t</span> u64;</span><br><span class="line">&#125;<span class="keyword">epoll_data_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">epoll_event</span>&#123;</span></span><br><span class="line">        <span class="keyword">__uint32_t</span> events;</span><br><span class="line">        <span class="keyword">epoll_data_t</span> data;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">epoll_wait</span><span class="params">(<span class="keyword">int</span> epfd, struct eppoll_event *events, <span class="keyword">int</span> maxevents, <span class="keyword">int</span> timeout)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数epfd是epoll_create的返回值<br>参数events是一个epoll_event*的指针，当函数操作成功时，epoll_events里面将存储所有的读写事件<br>参数maxevents是当前需要坚挺的所有socket句柄数<br>参数timeout是epoll_wait的超时，为0的时候表示马上返回，为-1的时候表示一直等下去，知道有时间发生，正整数表示等这么长的时间<br>一般如果网络主循环是单独的线程的话，可以用-1来等，这样可以保证一些效率，如果是和主逻辑在同一个线程的话，则可以用0来保证主循环的效率<br>epoll_wait范围之后应该是一个循环，遍历所有的事件<br>关于ET、LT两种工作模式<br>LT是缺省的工作方式，并且同时支持block和no-block socket<br>在LT模式下，内核通知一个文件描述符是否就绪了，然后可以对这个就绪的fd进行IO操作<br>如果你不做任何操作，内核还是会通知你，所以这种模式出错可能性很小<br>ET是高速工作方式只支持non-blocking socket<br>在ET模式下，当描述符从未就绪变成就绪，内核通过epoll告诉你。<br>ET模式会假设你指导文件描述符已经就绪，并且不会再为那个文件描述符发送跟多的通知，直到你做了一些操作导致文件操作符不在未就绪状态。<br>如果一直不对这个fd作IO操作，内核不会发跟多的通知<br>两者区别：<br>LT事件不会丢弃，而是只要读buffer里面有数据可以让用户读，则不断通知你。<br>ET则只在事件发生时通知。</p>
+<h1 id="select函数"><a href="#select函数" class="headerlink" title="select函数"></a>select函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> select（<span class="keyword">int</span> nfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds, <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span></span></span><br><span class="line"><span class="class"> *<span class="title">timeout</span>）;</span></span><br></pre></td></tr></table></figure>
+<p>selet可以用来作为精确地时间计量，比sleep更加的精确</p>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><p>Windows gcc连接选项<br>-lWs2_32   代表要用Ws2_32.lib这个库<br>-static    代表使用静态库<br>gcc编译选项，-DWIN 代表定义一个宏，等同于在c语言当中定义 #defind WIN<br>在windows下，使用socket之前，必须使用WSAStartup初始化socket，程序运行结束以后必须调用WSACleanup释放相关资源<br>windown下，关闭socket使用closesocket函数<br>fopen函数调用后要调用fclose，fopen是把文件写入内存缓冲区，如果指望操作系统的话，系统会丢失一部分数据。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/16/2017-03-16-linux-day11/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          linux Day11
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/12/2017-03-12-linux-day9/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">linux Day9</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#阻塞socket"><span class="nav-number">1.</span> <span class="nav-text">阻塞socket</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#非阻塞socket"><span class="nav-number">2.</span> <span class="nav-text">非阻塞socket</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#epoll的系统调用函数"><span class="nav-number">3.</span> <span class="nav-text">epoll的系统调用函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#select函数"><span class="nav-number">4.</span> <span class="nav-text">select函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积累"><span class="nav-number">5.</span> <span class="nav-text">积累</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

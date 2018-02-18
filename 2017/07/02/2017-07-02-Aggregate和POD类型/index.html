@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Aggregate和POD类型 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppAggregatePOD" />
+  
+  
+  
+  
+  <meta name="description" content="A plain old data structure (POD) is a data structure that is represented only as passive collections of field values, without using encapsulation or other object-oriented features.POD是这样的数据结构：用组个field">
+<meta name="keywords" content="cpp,Aggregate,POD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Aggregate和POD类型">
+<meta property="og:url" content="http://coordinate.wang/2017/07/02/2017-07-02-Aggregate和POD类型/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="A plain old data structure (POD) is a data structure that is represented only as passive collections of field values, without using encapsulation or other object-oriented features.POD是这样的数据结构：用组个field">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Aggregate和POD类型">
+<meta name="twitter:description" content="A plain old data structure (POD) is a data structure that is represented only as passive collections of field values, without using encapsulation or other object-oriented features.POD是这样的数据结构：用组个field">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-07-02-Aggregate和POD类型" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Aggregate和POD类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/07/02/2017-07-02-Aggregate和POD类型/" class="article-date">
+	  <time datetime="2017-07-01T16:00:00.000Z" itemprop="datePublished">七月 2, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>A plain old data structure (POD) is a data structure that is represented only as passive collections of field values, without using encapsulation or other object-oriented features.<br>POD是这样的数据结构：用组个field的集合来表示，没有使用封装或者其他面向对象的features。<br>A POD type in C++ is defined as either a scalar type or a POD class. A POD class has no user-defined copy assignment operator, no user-defined destructor, and no non-static data members that are not themselves PODs. Moreover, a POD class must be an aggregate, meaning it has no user-declared constructors, no private nor protected non-static data, no base classes and no virtual functions. The standard includes statements about how PODs must behave in C++.<br>In certain contexts, C++ allows only POD types to be used. For example, a union in C++98 cannot contain a class that has virtual functions or nontrivial constructors or destructors. This restriction is imposed because the compiler cannot determine which constructor or destructor should be called for a union. POD types can also be used for interfacing with C, which supports only PODs.<br>在C++中，我们把传统的C风格的struct叫做POD（Plain Old Data）对象。一般来说，POD对象应该满足如下特性。<br>对于POD类型T的对象，不管这个对象是否拥有类型T的有效值，如果将该对象的底层字节序列复制到一个字符数组（或者无符号字符数组）中，再将其复制回对象，那么该对象的值与原始值一样。考试就到对于任意的POD类型T，如果两个T指针分别指向两个不同的对象obj1和obj2，如果用memcpy库函数把obj1的值复制到obj2，那么obj2将拥有与obj1相同的值。<br>简言之，针对POD对象，其二进制内容是可以随便复制的，在任何地方，只要其二进制内容在，就能还原出正确无误的POD对象。对于任何POD对象，都可以使用memset()函数或者其他类似的内存初始化函数。  </p>
+<p>下面是转自<a href="https://stackoverflow.com/questions/4178175/what-are-aggregates-and-pods-and-how-why-are-they-special" target="_blank" rel="noopener">stackoverflow的一篇文章的译文</a>，比较详细介绍了aggregate 和 POD：<br>这篇文章很长，如果Aggregates和PODs都想了解，就静下心来完整的把这篇文章读完，如果你仅仅对Aggregates感兴趣，读第一部分就可以了。如果你仅对PODs感兴趣，那你必须先读懂Aggregates的定义、含义和例子，然后再跳去读PODs，但是我依然推荐你完整的读完第一部分。Aggragates的概念是定义PODs的基础。  </p>
+<h2 id="什么是Aggragates，为什么他们这么特别？"><a href="#什么是Aggragates，为什么他们这么特别？" class="headerlink" title="什么是Aggragates，为什么他们这么特别？"></a>什么是Aggragates，为什么他们这么特别？</h2><p>C++标准（C++ 03 8.5.1 §1）中的正式定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一个Aggregate是一个数组或者一个没有用户声明构造函数，没有私有或保护类型的非静态数据成员，没有父类和虚函数的类型</span><br></pre></td></tr></table></figure>
+<p>现在我们来分析这个定义。首先，数组是Aggregate。class也可以成为Aggregate如果满足…等等！我们还没有说struct和unions，它们可以成为Aggregate吗？是的，他们可以。在C++中，术语class是指所有的classes、structs和unios。所以，class（struct，union）只要满足上面定义中的条件就可以成为Aggregate。这些条件有什么含义呢？  </p>
+<ol>
+<li>这并不是说Aggregate类型就不能有构造函数，事实上，它可以拥有一个默认构造函数或者一个复制构造函数，只要他们是被编译器声明的，而不是被用户自己声明的。  </li>
+<li>不能拥有私有或者保护类型的非静态数据成员。你可以定义任意多的私有或者保护类型的成员方法（不包括构造函数）和静态类型的数据成员和方法，这都不违背Aggregate类型的规则。  </li>
+<li>Aggregate类型可以拥有用户声明的/用户定义的 赋值操作符或者析构函数</li>
+<li>数组是Aggregate类型，即便是非Aggregate类型元素的数组。</li>
+</ol>
+<p>来看几个例子：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotAggregate1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>&#123;&#125; <span class="comment">//remember? no virtual functions</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotAggregate2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> 	<span class="keyword">int</span> x; <span class="comment">//x is private by default and non-static </span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotAggregate3</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    NotAggregate3(<span class="keyword">int</span>) &#123;&#125; <span class="comment">//oops, user-defined constructor</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Aggregate1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    NotAggregate1 member1;   <span class="comment">//ok, public member</span></span><br><span class="line">    Aggregate1&amp; <span class="keyword">operator</span> = (Aggregate1 <span class="keyword">const</span> &amp; rhs) &#123;<span class="comment">/* */</span>&#125; <span class="comment">//ok, copy-assignment  </span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">   <span class="keyword">void</span> f() &#123;&#125; <span class="comment">// ok, just a private function</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>你已经理解了Aggregates含义了，现在我们来看为什么它这么特别。他们和非Aggregates类型不同，可以使用“{ }”初始化。这种初始化语法，在数组上很常见，而且，我们刚刚了解到数据就是Aggregates类型，所以，我们从数组开始：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Type array_name[n] = &#123;a1, a2, ..., am&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(m == n)</span><br></pre></td></tr></table></figure>
+<p>数组的第i个元素被初始化为ai  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(m &lt; n)</span><br></pre></td></tr></table></figure>
+<p>数组前边的m个元素被初始化为a1, a2, …, am，剩余的n-m个元素，如果可能，将按值初始化（下面有关于这个名词的解释）  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span>(m &gt; n)</span><br></pre></td></tr></table></figure>
+<p>会引起编译错误</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span>（有可能为这种形式a[] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;）</span><br></pre></td></tr></table></figure>
+<p>数组的长度将被推测为m，所以int a[] = {1,2,3}等于a[3] = {1,2,3}<br>标量类型的(bool,int,char,double,指针)对象是按值初始化（value-initialized）的，意思是指它被初始化为 0 （bool类型被初始化为false， double被初始化为0.0，等等）。有用户声明的默认构造函数的Class类型的对象按值初始化时，他的默认构造函数就会被调用。如果默认构造函数是被隐式定义的，那么所有的非静态类型成员变量将会递归地按值初始化。虽然这个定义并不精确，也不完全正确，但是可以让你有个基本的认识。最近我将会写一篇关于zero-initialization，value-initialization和default-initialization之间区别的文章。引用不能按值初始化。对于非Aggregate类型的class进行按值初始化有可能失败，比如在没有合适的默认构造函数的情形下。<br>数组初始化的例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">class <span class="title">A</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  	 A(<span class="keyword">int</span>)&#123;&#125; <span class="comment">//no default constructor</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">class <span class="title">B</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   	B() &#123;&#125; <span class="comment">//default constructor available</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a1[<span class="number">3</span>] = &#123;A(<span class="number">2</span>), A(<span class="number">1</span>), A(<span class="number">14</span>)&#125;; <span class="comment">//OK n == m</span></span><br><span class="line">    A a2[<span class="number">3</span>] = &#123;A(<span class="number">2</span>)&#125;; <span class="comment">//ERROR A没有默认构造函数. 不能按值初始化a2[1] 和 a2[2]</span></span><br><span class="line">    B b1[<span class="number">3</span>] = &#123;B()&#125;; <span class="comment">//OK b1[1]和b1[2]使用默认构造函数按值初始化</span></span><br><span class="line">    <span class="keyword">int</span> Array1[<span class="number">1000</span>] = &#123;<span class="number">0</span>&#125;; <span class="comment">//所有元素被初始化为0</span></span><br><span class="line">    <span class="keyword">int</span> Array2[<span class="number">1000</span>] = &#123;<span class="number">1</span>&#125;; <span class="comment">//注意: 只有第一个元素被初始化为1，其他为0;</span></span><br><span class="line">    <span class="keyword">bool</span> Array3[<span class="number">1000</span>] = &#123;&#125;; <span class="comment">//大括号里可以为空，所有元素被初始化为false；</span></span><br><span class="line">    <span class="keyword">int</span> Array4[<span class="number">1000</span>]; <span class="comment">//没有被初始化. 这和空&#123;&#125;初始化不同；</span></span><br><span class="line">    <span class="comment">//这种情形下的元素没有按值初始化，他们的值是未知的，不确定的; </span></span><br><span class="line">    <span class="comment">//(除非Array4是全局数据)</span></span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;; <span class="comment">//ERROR, 太多初始值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我们来看Aggregates类型是如何使用{ }初始化的。和上面非常类似，按照在类内部声明的顺序（按照定义都必须是public类型）初始化非静态类型的成员变量。如果初始值比成员少，那么其他的成员将按值初始化。如果有一个成员无法进行按值初始化，我们将会得到一个编译期错误。如果初始值比成员多，我们同样得到一个编译期错误。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">X</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> i1;</span><br><span class="line"> 	<span class="keyword">int</span> i2;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Y</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span> c;</span><br><span class="line"> 	X x;</span><br><span class="line"> 	<span class="keyword">int</span> i[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">float</span> f; </span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line"> 	<span class="keyword">static</span> <span class="keyword">double</span> d;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>&#123;&#125;      </span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line">Y y = &#123;<span class="string">'a'</span>, &#123;<span class="number">10</span>,<span class="number">20</span>&#125;, &#123;<span class="number">20</span>,<span class="number">30</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<p>上面的例子中，y.c被初始化为’a’，y.x.i1被初始化为10，y.x.i2被初始化为20，y.i[0]为20，y.i[1]为30，y.f被按值初始化，也即是说，被初始化为0.0，保护类型的静态成员变量d不会被初始化，因为它是静态类型的。<br>Aggregate类型的unions有所不同，使用{ }你可能只能初始化它们的第一个成员，我想如果你使用C++高级到考虑使用unions（使用他们非常危险，必须小心谨慎），你一定可以自己在C++标准中找到unions的规则。<br>我们知道了Aggregates的特别之处，现在让我们来尝试理解一下它对类型的限制，也就是说为什么会有这些限制。我们应当理解使用{ }进行成员逐一初始化意味着这一类型只是成员的集合。如果有一个用户定义的构造函数，那意味着用户需要做一些额外的工作来初始化成员，因此使用{ }初始化是不正确的。如果出现了虚函数，那意味着这个类型（大多数实现）有一个指向vtable的指针，需要在构造函数内设置，所以使用{ }初始化是不够的。作为练习，你可以按照这种方式自己理解其他限制的含义。<br>关于Aggregates的就这么多，现在我们可以更严格定义一个子类型PODs   </p>
+<h2 id="什么是PODs，为什么他们这么特别"><a href="#什么是PODs，为什么他们这么特别" class="headerlink" title="什么是PODs，为什么他们这么特别  "></a>什么是PODs，为什么他们这么特别  </h2><p>C++标准（C++ 03 9 §4）中正式的定义为：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POD-struct类型是没有非静态类型的non-POD-struct，non-POD-union （或者这些类型的数组）和引用类型的数据成员，也没有用户定义的赋值操作符和析构函数的Aggregate类型的类。类似地，POD-union是没有非静态类型的non-POD-struct，non-POD-union （或者这些类型的数组）和引用类型的数据成员，也没有用户定义的赋值操作符和析构函数的Aggregate类型的联合。POD类型就是POD-struct和 a POD-union中的一种。</span><br></pre></td></tr></table></figure>
+<p>Wow，这个定义更难解读，不是吗？让我们吧unions剥离出去，更清晰的复述为：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POD类型就是没有非静态类型的non-POD类型 （或者这些类型的数组）和引用类型的数据成员，也没有用户定义的赋值操作符和析构函数的Aggregate类型。</span><br></pre></td></tr></table></figure>
+<p>这个定义的有什么含义呢？（POD就是Plain Old Data）  </p>
+<ol>
+<li>所有的POD类型都是Aggregates类型，换句话说，如果不是aggregate类型，那么它一定不是POD类型。  </li>
+<li>类，和结构体一样可以为POD类型，因为标准中POD-struct这个术语包含了这两种情形。  </li>
+<li>和Aggregates类型一样，静态成员是什么类型则无关紧要  </li>
+</ol>
+<p>例子：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">POD</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">char</span> y;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">//no harm if there's a function</span></span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; v; <span class="comment">//static members do not matter</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">AggregateButNotPOD1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    ~AggregateButNotPOD1()&#123;&#125; <span class="comment">//user-defined destructor</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">AggregateButNotPOD2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"> 	AggregateButNotPOD1 arrOfNonPod[<span class="number">3</span>]; <span class="comment">//array of non-POD class</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>POD-classes，POD-unions，标量类型和这些类型的数组合成为POD类型，POD类型在很多方面都很特别，我来举几个例子：  </li>
+<li>POD类型是最接近于C语言中的结构体类型的。他们都没有改变对象的内存布局，但是，POD类型却可以有自己的成员函数和任意类型的静态成员。所以，如果你想写一个可在C甚至.net平台使用的可移植的动态库，你应该让暴露的所有的方法的返回值和参数都会POD类型。  </li>
+<li>非POD类型的对象的生命周期起始于构造函数，结束于析构函数调用完成。而POD类型对象的生命周期却起始于存储对象的空间被占用，结束于空间被释放或被重复利用。  </li>
+<li><p>对于POD类型的对象，C++标准保证当你使用memcpy将对象的内容拷贝到一个char类型或者unsigned char类型的数组中，在使用memcpy拷贝回来的时候，对象会保持不变。特别注意，非POD类型是无法保证这一点的。当然，你也可以安全的在对象之间拷贝POD类型。下面的这个例子假设T为POD类型  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N sizeof(T)</span></span><br><span class="line"><span class="keyword">char</span> buf[N];</span><br><span class="line">T obj; <span class="comment">// obj initialized to its original value</span></span><br><span class="line"><span class="built_in">memcpy</span>(buf, &amp;obj, N); <span class="comment">// between these two calls to memcpy,</span></span><br><span class="line"><span class="comment">// obj might be modified</span></span><br><span class="line"><span class="built_in">memcpy</span>(&amp;obj, buf, N); <span class="comment">// at this point, each subobject of obj of scalar type</span></span><br><span class="line"><span class="comment">// holds its original value</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>goto 语句。你知道，使用goto从一个变量没有声明的点跳转到一个变量已经被声明的点是不合法的（编译器应该会有报错）。这个限制仅仅对非POD类型有效，下面这个例子f()是不合法的，而g()则是合法的。注意到微软的编译器对这条规则过于慷慨了，仅仅给出警告而已。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">NonPOD</span> &#123;</span> NonPOD()&#123;&#125;&#125;;</span><br><span class="line">    <span class="keyword">goto</span> label;</span><br><span class="line">    NonPOD x;</span><br><span class="line">label:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">POD</span> &#123;</span><span class="keyword">int</span> i;  <span class="keyword">char</span> c;&#125;;</span><br><span class="line">    <span class="keyword">goto</span> label;</span><br><span class="line">    POD x;</span><br><span class="line">label:</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>C++标准保证POD类型的对象在内存起始处没有便宜。也就是说如果一个POD类型A的第一个成员为T，你可以安全的调用reinterpret_cast  从A<em>转换为T</em>,得到第一个成员的指针，反过来也成立。  </p>
+</li>
+</ol>
+<p>这个列表还很长很长…  </p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>理解POD类型非常重要，因为很多C++语言特性，就像你看到的，针对于他们都会有所不同。希望这篇文章对你有用。  </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Aggregate/">Aggregate</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/POD/">POD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/03/2017-07-03-回文字符串/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          回文字符串
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/22/2017-06-22-理解move和forward/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">理解std::move和std::forward</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Aggragates，为什么他们这么特别？"><span class="nav-number">1.</span> <span class="nav-text">什么是Aggragates，为什么他们这么特别？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是PODs，为什么他们这么特别"><span class="nav-number">2.</span> <span class="nav-text">什么是PODs，为什么他们这么特别  </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">3.</span> <span class="nav-text">结论</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

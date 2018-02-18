@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C++类对象的内存模型和占用空间 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp转载内存模型" />
+  
+  
+  
+  
+  <meta name="description" content="转自chinabinlang的专栏 很多C++书籍中都介绍过，一个Class对象需要占用多大的内存空间。最权威的结论是：    非静态成员变量总合。 加上编译器为了CPU计算，作出的数据对齐处理。 加上为了支持虚函数，产生的额外负担。  介绍完了理论知识后，再看看再找一个例子看看（注：一下所有结果都是在VC6.0 开发环境中得出的结论）   空类的Size123456789101112class">
+<meta name="keywords" content="cpp,转载,内存模型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++类对象的内存模型和占用空间">
+<meta property="og:url" content="http://coordinate.wang/2017/06/01/2017-06-01-C++内存模型/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="转自chinabinlang的专栏 很多C++书籍中都介绍过，一个Class对象需要占用多大的内存空间。最权威的结论是：    非静态成员变量总合。 加上编译器为了CPU计算，作出的数据对齐处理。 加上为了支持虚函数，产生的额外负担。  介绍完了理论知识后，再看看再找一个例子看看（注：一下所有结果都是在VC6.0 开发环境中得出的结论）   空类的Size123456789101112class">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fg73ltk1rfj204605da9u.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fg73luk3jij203u0583ya.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fg73luwx31j205i05aweb.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.721Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++类对象的内存模型和占用空间">
+<meta name="twitter:description" content="转自chinabinlang的专栏 很多C++书籍中都介绍过，一个Class对象需要占用多大的内存空间。最权威的结论是：    非静态成员变量总合。 加上编译器为了CPU计算，作出的数据对齐处理。 加上为了支持虚函数，产生的额外负担。  介绍完了理论知识后，再看看再找一个例子看看（注：一下所有结果都是在VC6.0 开发环境中得出的结论）   空类的Size123456789101112class">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fg73ltk1rfj204605da9u.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-06-01-C++内存模型" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      C++类对象的内存模型和占用空间
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/06/01/2017-06-01-C++内存模型/" class="article-date">
+	  <time datetime="2017-05-31T16:00:00.000Z" itemprop="datePublished">六月 1, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转自<a href="http://blog.csdn.net/chinabinlang/article/details/8614649" target="_blank" rel="noopener">chinabinlang的专栏</a></p>
+<p>很多C++书籍中都介绍过，一个Class对象需要占用多大的内存空间。最权威的结论是：  </p>
+<ol>
+<li>非静态成员变量总合。</li>
+<li>加上编译器为了CPU计算，作出的数据对齐处理。</li>
+<li>加上为了支持虚函数，产生的额外负担。</li>
+</ol>
+<p>介绍完了理论知识后，再看看再找一个例子看看（注：一下所有结果都是在VC6.0 开发环境中得出的结论）  </p>
+<h2 id="空类的Size"><a href="#空类的Size" class="headerlink" title="空类的Size"></a>空类的Size</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:1</p>
+<p>这是为何呢？我想对于这个问题，不仅是刚入行不久的开发新手，就算有过几年以上C++开发经验的开发人员也未必能说清楚这个。<br>编译器在执行Car objCar;这行代码后需要，作出一个Class Car的Object。并且这个Object的地址还是独一无二的，于是编译器就会给空类创建一个隐含的一个字节的空间。  </p>
+<h2 id="只有成员变量的Size"><a href="#只有成员变量的Size" class="headerlink" title="只有成员变量的Size"></a>只有成员变量的Size</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> nLength;</span><br><span class="line">    <span class="keyword">int</span> nWidth;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:8  </p>
+<p>这个结果很多开发人员都清楚。在32位系统中，整型变量占4个字节。这里Class Car中含有两个整型类型的成员变量，所以Class Size是8。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> nLength;</span><br><span class="line">    <span class="keyword">int</span> nWidth;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> sHigh;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:8  </p>
+<p>我们这次在Class Car中添加了一个静态成员变量，但是Class Size仍然是8个字节。这正好符合了，结论中的第一条：非静态成员变量总合。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">char</span> chLogo</span><br><span class="line">    <span class="keyword">int</span> nLength;</span><br><span class="line">    <span class="keyword">int</span> nWidth;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> sHigh;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:12  </p>
+<p>在类中又插入了一个字符型变量，结果Class Size变成了12。这个就是编译器额外添加3个字符变量，做数据对齐处理，为了是提高CPU的计算速度。编译器额外添加的东西我们是无法看见的。这也符合了结论中的第二条：加上编译器为了CPU计算，作出的数据对齐处理。  </p>
+<p>既然，我们这样定义类成员数据编译器会额外的增加空。那么，我们何不在定义类的时候就考虑到数据对齐的问题，可以多定义出3个字符类型变量作为预留变量，既能满足数据对齐的要求，也给自己的程序添加了一些可扩展的空间。  </p>
+<h2 id="只有成员函数的Size"><a href="#只有成员函数的Size" class="headerlink" title="只有成员函数的Size"></a>只有成员函数的Size</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Car()&#123;&#125;;</span><br><span class="line">    ~Car()&#123;&#125;;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Fun</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:1  </p>
+<p>噢，这是怎么回事儿呢？再做一个实验看看。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Car()&#123;&#125;;</span><br><span class="line">    ~Car()&#123;&#125;;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Fun</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> nLength;</span><br><span class="line">    <span class="keyword">int</span> nWidth;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:8  </p>
+<p>这次应该很清楚的了。函数是不占用类空间的。第一个例子中的Size为1个字节，正是编译器为类创建一个隐含的一个字节的空间  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Car()&#123;&#125;;</span><br><span class="line">    <span class="keyword">virtual</span> ~Car()&#123;&#125;;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Fun</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    Car objCar;</span><br><span class="line">    size = <span class="keyword">sizeof</span>(objCar);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s %d /r"</span>, <span class="string">"Class Car Size:"</span>, size);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：Class Car Size:4  </p>
+<p>这次，让析构函数为虚函数，看到了Class Size为4。<strong>这正是指向Virtual Table的指针vptr的Size。</strong>这正好符合了，结论中的第三条：加上为了支持虚函数，产生的额外负担。<br>到此为止，一个Class Object究竟占用多少内存空间，已经完全说清楚了。但是，这只是针对单独类，或者说是基类适用。对于子类，却不一样了。有兴趣的朋友可以做一些实验。  </p>
+<h1 id="other-example"><a href="#other-example" class="headerlink" title="other example"></a>other example</h1><p>先看两段代码：<br>代码段1：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">print</span><span class="params">()</span></span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">"This is A"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">inr <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Size of A = "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Size of A =<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>代码段2：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">print1</span><span class="params">()</span></span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">"This is A"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">print2</span><span class="params">()</span></span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">"This is A"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">print3</span><span class="params">()</span></span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">"This is A"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">inr <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"Size of A = "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Size of A =<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>对象的大小是它的数据成员所占存储空间之和，就和结构体一样。类中的函数是所有该类对象通用的方法，不算作对象的成员，因此也不算在对象的存储空间内。  </p>
+<p>问题：类里面不管有多少个函数，这个类的对象只占1个字节的内存。这个字节的内存的内容是什么？是指针吗？指针不是占4个字节吗？<br>当类中类有定义任何变量的时候，类的对象都是1个字节的，当类中没有任何变量的时候，这个类里没有任何真正的成员变量，所以大小应该是0，但0大小不好在内存中定位一个地址，所以，就规定它大小为0的对象要占一字节空间，以便让它拥有一个合法的地址。如果是有派生类的，还有考虑到内存对齐的问题的。  </p>
+<p>另外涉及到虚函数的话又不一样了。如  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">int</span> <span class="title">print</span><span class="params">()</span></span>&#123; <span class="built_in">cout</span>&lt;&lt;<span class="string">"This is A"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果sizeof(A)的话，得出的是4。<br>原因是涉及到虚函数的实现问题。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    m_data1;</span><br><span class="line">    m_data2;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="title">vfunc1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="title">vfunc2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="title">vfunc3</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Class1对象实例<br>通过vptr指针找到虚函数表  </p>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fg73ltk1rfj204605da9u.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fg73ltk1rfj204605da9u.jpg" class="img-fluid"><br></a></p>
+<p>Vtable(虚函数表)  </p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659ly1fg73luk3jij203u0583ya.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fg73luk3jij203u0583ya.jpg" class="img-fluid"><br></a></p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fg73luwx31j205i05aweb.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fg73luwx31j205i05aweb.jpg" class="img-fluid"><br></a></p>
+<p>所以回到原来的问题，A中只有一个或者几个虚函数的话，没有成员变量，那么类A相当于含有一个vptr指向虚函数表的指针，所以sizeof(A)=4。  </p>
+<p>还有一点，如<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span><span class="keyword">public</span> B</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>:</span><span class="keyword">public</span> <span class="keyword">virtual</span> B</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">E</span>:</span><span class="keyword">public</span> B,<span class="keyword">public</span> B2</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sizeof</span>(B) = <span class="number">1</span>;   <span class="keyword">sizeof</span>(B2) = <span class="number">1</span>;  <span class="keyword">sizeof</span>(C) = <span class="number">1</span>;  <span class="keyword">sizeof</span>(D) = <span class="number">4</span>;  <span class="keyword">sizeof</span>(E) = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>空类所占空间为一(上文以解释)，单一继承的空类空间也是1，多重继承的空类空间还是1，但是虚继承涉及到虚表(虚指针)，所以sizeof(D)=4。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/内存模型/">内存模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/02/2017-06-02-Upcasting and Downcasting/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Upcasting and Downcasting
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/31/2017-05-31-C++多态问题小结/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">C++多态性</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#空类的Size"><span class="nav-number">1.</span> <span class="nav-text">空类的Size</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#只有成员变量的Size"><span class="nav-number">2.</span> <span class="nav-text">只有成员变量的Size</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#只有成员函数的Size"><span class="nav-number">3.</span> <span class="nav-text">只有成员函数的Size</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#other-example"><span class="nav-number"></span> <span class="nav-text">other example</span></a>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

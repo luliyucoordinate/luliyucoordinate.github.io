@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>乘除运算及浮点数运算（1） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="整数的乘法运算整数的乘法运算通常，高级语言中两个n位整数相乘得到的结果通常也是一个n位整数，也即结果只取2n位乘积中的低n位。在计算机内部，一定有$$x^2&amp;gt;=0$$吗？若x是带符号整数，则不一定；若x为浮点数，则不一定。原因就是只取低n位元素。如何判断返回的值z是正确的值？当$$!x || z/x==y$$为真编译器是如何判断结果是不是真确的？当$$-2^{(n-1)}≤x*y≤2^{(n">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="乘除运算及浮点数运算（1）">
+<meta property="og:url" content="http://coordinate.wang/2017/05/08/2017-05-08-乘除运算及浮点数运算1/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="整数的乘法运算整数的乘法运算通常，高级语言中两个n位整数相乘得到的结果通常也是一个n位整数，也即结果只取2n位乘积中的低n位。在计算机内部，一定有$$x^2&amp;gt;=0$$吗？若x是带符号整数，则不一定；若x为浮点数，则不一定。原因就是只取低n位元素。如何判断返回的值z是正确的值？当$$!x || z/x==y$$为真编译器是如何判断结果是不是真确的？当$$-2^{(n-1)}≤x*y≤2^{(n">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="乘除运算及浮点数运算（1）">
+<meta name="twitter:description" content="整数的乘法运算整数的乘法运算通常，高级语言中两个n位整数相乘得到的结果通常也是一个n位整数，也即结果只取2n位乘积中的低n位。在计算机内部，一定有$$x^2&amp;gt;=0$$吗？若x是带符号整数，则不一定；若x为浮点数，则不一定。原因就是只取低n位元素。如何判断返回的值z是正确的值？当$$!x || z/x==y$$为真编译器是如何判断结果是不是真确的？当$$-2^{(n-1)}≤x*y≤2^{(n">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-08-乘除运算及浮点数运算1" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      乘除运算及浮点数运算（1）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/08/2017-05-08-乘除运算及浮点数运算1/" class="article-date">
+	  <time datetime="2017-05-07T16:00:00.000Z" itemprop="datePublished">五月 8, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="整数的乘法运算"><a href="#整数的乘法运算" class="headerlink" title="整数的乘法运算"></a>整数的乘法运算</h1><h2 id="整数的乘法运算-1"><a href="#整数的乘法运算-1" class="headerlink" title="整数的乘法运算"></a>整数的乘法运算</h2><p>通常，高级语言中两个n位整数相乘得到的结果通常也是一个n位整数，也即结果只取2n位乘积中的低n位。<br>在计算机内部，一定有$$x^2&gt;=0$$吗？<br>若x是带符号整数，则不一定；若x为浮点数，则不一定。原因就是只取低n位元素。<br>如何判断返回的值z是正确的值？<br>当$$!x || z/x==y$$为真<br>编译器是如何判断结果是不是真确的？<br>当$$-2^{(n-1)}≤x*y≤2^{(n-1)}$$（不溢出），即乘积的高n位为全0或全1，并等于低n位的最高位。即乘积的高n+1位全0或全1<br>若x和y都是unsigned类型，则判断方式是乘积的高n位全0，则不溢出。<br>要注意的是硬件不判断溢出，所以如果程序不采用防止溢出的措施，且编译器也不生成用于溢出处理的代码，就会发生一些由于整数溢出而带来的问题。</p>
+<h2 id="整数乘法溢出漏洞"><a href="#整数乘法溢出漏洞" class="headerlink" title="整数乘法溢出漏洞"></a>整数乘法溢出漏洞</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">copy_array</span><span class="params">(<span class="keyword">int</span> *<span class="built_in">array</span>,<span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">int</span> *myarray = (<span class="keyword">int</span>*) <span class="built_in">malloc</span>(count*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	<span class="keyword">if</span>(myarray == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; count; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		myarray[i] = <span class="built_in">array</span>[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果count很大的时候，如$$count=2^{32}+1$$时，count*sizeof(int)=4.攻击者可以构造特殊参数来触发整数溢出，以一段预设信息覆盖一个已分配的对缓冲区，造成远程服务器崩溃或者改变内存数据并执行任意代码。  </p>
+<h2 id="变量与常数之间的乘运算"><a href="#变量与常数之间的乘运算" class="headerlink" title="变量与常数之间的乘运算"></a>变量与常数之间的乘运算</h2><p>编译器在处理变量与常数相乘时，往往以移位、加法、和减法的组合运算来代替乘法运算。因为乘法运算就是重复的加若干次实现的，所以非常耗时间。<br>例如，对于表达式$$x<em>20$$，编译器可以利用$$20=16+4=2^4+2^2$$，将$x</em>20$转换为$$(x&lt;&lt;4)+(x&lt;&lt;2)$$，这样，一次乘法转换成了两次移位和一次加法。<br>不管是无符号数还是带符号数得乘法，即使乘积溢出时，利用移位和加减运算组合的方式得到的结果都是和采用直接项城的结果是一样的。  </p>
+<h1 id="整数的除法运算"><a href="#整数的除法运算" class="headerlink" title="整数的除法运算"></a>整数的除法运算</h1><h2 id="整数的除法运算-1"><a href="#整数的除法运算-1" class="headerlink" title="整数的除法运算"></a>整数的除法运算</h2><p>对于带符号整数来说，n位整数除以n位整数，除$$-2^{(n-1)}/(-1)=2^{(n-1)}$$会发生溢出外，其他情况不会发生。因为$$2^{(n-1)}$$无法表示。<br>因为整数除法，其商也是整数，所以，再不能整除的时候需要进行舍入，通常按照朝0方向舍入，即正数商取比自身小的最接近整数，负数商取比自身大的最接近整数。<br>整除0的结果无法使用一个、机器数表示。整数除法时，除数不能为0，否则会发生异常，此时，需要调出操作系统中的异常处理程序。<br>代码段一：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0x80000000</span>;</span><br><span class="line"><span class="keyword">int</span> b = a/<span class="number">-1</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, b);<span class="comment">//-2147483648</span></span><br></pre></td></tr></table></figure>
+<p>原因在于编译器对于除-1优化为neg<br>代码段二：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0x80000000</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> c = a/b;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, b);<span class="comment">//floating point execption</span></span><br></pre></td></tr></table></figure>
+<h2 id="变量与常数之间的除运算"><a href="#变量与常数之间的除运算" class="headerlink" title="变量与常数之间的除运算"></a>变量与常数之间的除运算</h2><p>除法运算是非常耗时间的，所以最好少使用除法运算。为了缩短除法运算的时间，编译器在处理一个变量与一个2的幂次形式的整数相除时，常采用右移运算实现。<br>无符号数：逻辑右移<br>带符号数：算术右移<br>能整除时，直接右移得到结果，移出的全为0；不能整除时，右移移除的位中有非0，需要进行相应处理。<br>例如：<br>$$12/4 = 3:0000 1100&gt;&gt;2=0000 0011$$<br>不能整除时，采用朝0舍入，即截断的方式。无符号数、带符号正整数，移出的低位直接丢弃。带符号负整数，加偏移量$$（2^k-1）$$，然后在右移k位，低位截断（这里k是右移位数）<br>例如：<br>无符号数 $$14/4=3:0000 1110&gt;&gt;2 = 0000 0011$$<br>带符号负整数$$ -14/4=(-14+2^2-1)/4=(1111 0010+0000 0011)&gt;&gt;2=1111 0101&gt;&gt;2=1111 1101$$</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">div32</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> b = (x &gt;&gt; <span class="number">31</span>)&amp;<span class="number">0x1f</span>;<span class="comment">//偏移量</span></span><br><span class="line">	<span class="keyword">return</span> (x+b) &gt;&gt; <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/09/2017-05-09-乘除运算及浮点数运算2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          乘除运算及浮点数运算（2）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/07/2017-05-07-运算电路基础2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">运算电路基础（2）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#整数的乘法运算"><span class="nav-number">1.</span> <span class="nav-text">整数的乘法运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数的乘法运算-1"><span class="nav-number">1.1.</span> <span class="nav-text">整数的乘法运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整数乘法溢出漏洞"><span class="nav-number">1.2.</span> <span class="nav-text">整数乘法溢出漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量与常数之间的乘运算"><span class="nav-number">1.3.</span> <span class="nav-text">变量与常数之间的乘运算</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整数的除法运算"><span class="nav-number">2.</span> <span class="nav-text">整数的除法运算</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#整数的除法运算-1"><span class="nav-number">2.1.</span> <span class="nav-text">整数的除法运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量与常数之间的除运算"><span class="nav-number">2.2.</span> <span class="nav-text">变量与常数之间的除运算</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度探索c++对象模型(7) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp" />
+  
+  
+  
+  
+  <meta name="description" content="dynamic_cast深入我在之前的文章里面有介绍过dynamic_cast ，但是对于它背后的实现原理一直没有探究，所以我会在本文中深入探究他背后的东西。 之所以要使用dynamic_cast，主要就是解决downcast不安全的问题。 1234567891011class node&amp;#123;&amp;#125;;class type:public node &amp;#123;&amp;#125;;class f">
+<meta name="keywords" content="cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度探索c++对象模型(7)">
+<meta property="og:url" content="http://coordinate.wang/2017/09/23/2017-09-23-深度探索c++对象模型(7)/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="dynamic_cast深入我在之前的文章里面有介绍过dynamic_cast ，但是对于它背后的实现原理一直没有探究，所以我会在本文中深入探究他背后的东西。 之所以要使用dynamic_cast，主要就是解决downcast不安全的问题。 1234567891011class node&amp;#123;&amp;#125;;class type:public node &amp;#123;&amp;#125;;class f">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fjtn38c0akj20je0f04f9.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.262Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度探索c++对象模型(7)">
+<meta name="twitter:description" content="dynamic_cast深入我在之前的文章里面有介绍过dynamic_cast ，但是对于它背后的实现原理一直没有探究，所以我会在本文中深入探究他背后的东西。 之所以要使用dynamic_cast，主要就是解决downcast不安全的问题。 1234567891011class node&amp;#123;&amp;#125;;class type:public node &amp;#123;&amp;#125;;class f">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fjtn38c0akj20je0f04f9.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-09-23-深度探索c++对象模型(7)" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度探索c++对象模型(7)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/09/23/2017-09-23-深度探索c++对象模型(7)/" class="article-date">
+	  <time datetime="2017-09-22T16:00:00.000Z" itemprop="datePublished">九月 23, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="dynamic-cast深入"><a href="#dynamic-cast深入" class="headerlink" title="dynamic_cast深入"></a>dynamic_cast深入</h2><p>我在之前的文章里面有介绍过<a href="http://www.coordinate.wang/cpp/2017/04/08/cast.html" target="_blank" rel="noopener">dynamic_cast</a> ，但是对于它背后的实现原理一直没有探究，所以我会在本文中深入探究他背后的东西。</p>
+<p>之所以要使用dynamic_cast，主要就是解决downcast不安全的问题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">node</span>&#123;</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">type</span>:</span><span class="keyword">public</span> node &#123;&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">fct</span>:</span> <span class="keyword">public</span> type&#123;&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gen</span>:</span> <span class="keyword">public</span> type&#123;&#125;;</span><br><span class="line"><span class="keyword">typedef</span> type* ptype;</span><br><span class="line"><span class="keyword">typedef</span> fct* pfct;</span><br><span class="line">simplify_conv_op(ptype pt)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(pfct pf = <span class="keyword">dynamic_cast</span>&lt;pfct&gt;(pt))&#123;&#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>pt指向的class object类型描述器必须在执行期通过vptr取得，下面是一种可能的编译器转换形式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((type_info*)(pt-&gt;vptr[<span class="number">0</span>]))-&gt;_type_descriptor;</span><br></pre></td></tr></table></figure>
+<p>type_info是c++ standard所定义的类型描述器的class名称，virtual的第一个slot内含type_info object的地址。你可能对于这里有疑问了，我在之前有写过<a href="http://www.coordinate.wang/cpp/2017/08/07/%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B(4" target="_blank" rel="noopener">深度探索c++对象模型(4)</a>.html) ，我在最后留有一个还没有解决的问题？对，之前那个没有解决的问题 <code>_meta</code>  ，就是type_info，而且最后画的那张图应该就要变成这样</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fjtn38c0akj20je0f04f9.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fjtn38c0akj20je0f04f9.jpg" class="img-fluid"><br></a></p>
+<p>当然这里我又再次忘记了左边的两个后面补0  ): 。</p>
+<h2 id="references和pointers并不同"><a href="#references和pointers并不同" class="headerlink" title="references和pointers并不同"></a>references和pointers并不同</h2><p>如果你对这个标题感到非常的疑惑，你认为这两个就是不同的。好吧，接下去的内容你都可以忽略了。因为如果你是一个菜鸟，你当然理解不了他们之间何其相似；如果你对c++很熟悉的话，那你一定知道这两个之间的区别。</p>
+<p>程序执行中对一个 class 指针类型施以 dynamic_cast 运算符,会获得 true 或 false:</p>
+<ul>
+<li>如果传回真正的地址，表示这个object的动态类型被确认了，一些与类型有关的操作现在可以作用于其上。</li>
+<li>如果传回0，表示没有指向任何object，意味着应该以另一种逻辑施行于这个动态类型未确定的object上。</li>
+</ul>
+<p>很多时候我也是觉得reference和pointer没有区别，确实，这两者确实在一般的情况下可以看成等同。但是，dynamic_cast运算符用在reference上面就会出一些问题。为什么？一个reference不可以像pointer那样把0当作no object看待。如果把一个reference设为0，会引起一个临时对象，如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> point&lt;<span class="keyword">float</span>&gt; &amp;ref = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+<p>它会instantiate一个point的float的实体。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">point&lt;<span class="keyword">float</span>&gt; temporary(<span class="keyword">float</span>(<span class="number">0</span>));</span><br><span class="line"><span class="keyword">const</span> point&lt;<span class="keyword">float</span>&gt; &amp;ref = temporary;</span><br></pre></td></tr></table></figure>
+<p>因为reference并不是no object的代名词。0被视为整数，必须别转换为一下类型的对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">point&lt;<span class="keyword">float</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>因此当dynamic_cast运算符运用一个reference时，不能够提供对等于指针情况下的那一组true/false。取而代之会发生下面的事：</p>
+<ul>
+<li>如果reference真正参考到适当的derived class，downcast会被执行。</li>
+<li>如果reference并不是真正的是某种derived class，那么，由于不能传回0，所以丢出一个bad_cast execption</li>
+</ul>
+<p>如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">simplify_conv_op(<span class="keyword">const</span> type &amp;rt)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        fct &amp;rf = <span class="keyword">dynamic_cast</span>&lt;fct&amp;&gt;(rt);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(bad_cast)</span><br><span class="line">    &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果也是很显然的表现出某种execption failure</p>
+<p>那我么要怎么才可以使用reference呢？</p>
+<h2 id="Typeid运算符"><a href="#Typeid运算符" class="headerlink" title="Typeid运算符"></a>Typeid运算符</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">simplify_conv_op(<span class="keyword">const</span> type &amp;rt)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeid</span>(rt) == <span class="keyword">typeid</span>(fct))</span><br><span class="line">    &#123;</span><br><span class="line">		fct &amp;rf = <span class="keyword">dynamic_cast</span>&lt;fct&amp;&gt;(rt);</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样做就可以了。</p>
+<p>typeid运算符返回一个const reference，类型是<em>type_info</em>。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/24/2017-09-24-三个点确定一个圆/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          三个点确定一个圆
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/22/2017-09-22-深度探索c++对象模型(6)/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度探索c++对象模型(6)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dynamic-cast深入"><span class="nav-number">1.</span> <span class="nav-text">dynamic_cast深入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#references和pointers并不同"><span class="nav-number">2.</span> <span class="nav-text">references和pointers并不同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Typeid运算符"><span class="nav-number">3.</span> <span class="nav-text">Typeid运算符</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

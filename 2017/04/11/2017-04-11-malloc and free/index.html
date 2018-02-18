@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>malloc/free | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl" />
+  
+  
+  
+  
+  <meta name="description" content="SBH(small block heap)_heap_init() 和__sbh_heap_init()CRT为自己建立一个__crtheap，然后从中配置SBH所需的headers，regions作为管理用。 123456789101112131415161718192021222324252627282930int _cdecl_heap_init(int mtflag)&amp;#123;	if((">
+<meta name="keywords" content="cpp,stl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="malloc&#x2F;free">
+<meta property="og:url" content="http://coordinate.wang/2017/04/11/2017-04-11-malloc and free/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="SBH(small block heap)_heap_init() 和__sbh_heap_init()CRT为自己建立一个__crtheap，然后从中配置SBH所需的headers，regions作为管理用。 123456789101112131415161718192021222324252627282930int _cdecl_heap_init(int mtflag)&amp;#123;	if((">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.106Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="malloc&#x2F;free">
+<meta name="twitter:description" content="SBH(small block heap)_heap_init() 和__sbh_heap_init()CRT为自己建立一个__crtheap，然后从中配置SBH所需的headers，regions作为管理用。 123456789101112131415161718192021222324252627282930int _cdecl_heap_init(int mtflag)&amp;#123;	if((">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-11-malloc and free" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      malloc/free
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/11/2017-04-11-malloc and free/" class="article-date">
+	  <time datetime="2017-04-10T16:00:00.000Z" itemprop="datePublished">四月 11, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SBH-small-block-heap"><a href="#SBH-small-block-heap" class="headerlink" title="SBH(small block heap)"></a>SBH(small block heap)</h1><h2 id="heap-init-和-sbh-heap-init"><a href="#heap-init-和-sbh-heap-init" class="headerlink" title="_heap_init() 和__sbh_heap_init()"></a>_heap_init() 和__sbh_heap_init()</h2><p>CRT为自己建立一个__crtheap，然后从中配置SBH所需的headers，regions作为管理用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> _cdecl_heap_init(<span class="keyword">int</span> mtflag)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(( _crtheap = HeapCreate( mtflag?<span class="number">0</span>: HEAP_NO_SERIALIZE,</span><br><span class="line">					BYTES_PER_PAGE, <span class="number">0</span> )) == <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>( __sbh_heap_init() == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		HeapDestory(_crtheap);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> nNoMansLandSize 4</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">CrtMemBlockHeader</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> _<span class="title">CrtMemBlockHeader</span> *<span class="title">pBlockHeaderNext</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> _<span class="title">CrtMemBlockHeader</span> *<span class="title">pBlockHeaderPrev</span>;</span></span><br><span class="line">	<span class="keyword">char</span> *szFilename;<span class="comment">//指向的文件名ioinit.c</span></span><br><span class="line">	<span class="keyword">int</span> nLine;<span class="comment">//上面文件的第几行,81行</span></span><br><span class="line">	<span class="keyword">size_t</span> nDataSize;<span class="comment">//客户要的内存大小</span></span><br><span class="line">	<span class="keyword">int</span> nBlockUse;<span class="comment">//memory block</span></span><br><span class="line">	<span class="keyword">long</span> IRequest;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> gap[nNoMansLandSize];</span><br><span class="line">	<span class="comment">/*followed by:</span></span><br><span class="line"><span class="comment">	*unsigned char data[nDataSize];</span></span><br><span class="line"><span class="comment">	*unsigned char anothergap[nNoMansLandSize];</span></span><br><span class="line"><span class="comment">	*/</span></span><br><span class="line">&#125;_CrtMemBlockHeader;</span><br></pre></td></tr></table></figure>
+<p>至此我们终于知道了，在debug模式下，分配的内存块中多出来的部分</p>
+<h2 id="关于第一块内存的分配"><a href="#关于第一块内存的分配" class="headerlink" title="关于第一块内存的分配"></a>关于第一块内存的分配</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagRegion</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> indGroupUse;<span class="comment">//0xffffffff，用于分割</span></span><br><span class="line">	<span class="keyword">char</span> cntRegionSize[<span class="number">64</span>];</span><br><span class="line">	BITVEC bitvGroupHi[<span class="number">32</span>];</span><br><span class="line">	BITVEC bitvGroupLo[<span class="number">32</span>];</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tagGroup</span> <span class="title">grpHeadList</span>[32];</span></span><br><span class="line">&#125;REGION, *PREGION;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagGroup</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> cntEntries; <span class="comment">//记录分配次数，每分配一次加一，回收减一</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tagListHead</span> <span class="title">listHead</span>[64];</span></span><br><span class="line">&#125;GROUP, *PGROUP;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagListHead</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tagEntry</span> *<span class="title">pEntryNext</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tagEntry</span> *<span class="title">pEntryPrev</span>;</span></span><br><span class="line">&#125;LISTHEAD, *PLISTHEAD;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagEntry</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> sizeFront;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tagEntry</span> *<span class="title">pEntryNext</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">tagEntry</span> *<span class="title">pEntryPrev</span>;</span></span><br><span class="line">&#125;ENTRY, *PENTRY;</span><br></pre></td></tr></table></figure>
+<h2 id="归还操作系统"><a href="#归还操作系统" class="headerlink" title="归还操作系统"></a>归还操作系统</h2><p><strong>sbh_pHeaderDefer是一个指针，指向一个全回收group所属的Header。这个group原本应被释放，但暂时保留。当再有第二个全回收group出现时，SBH才释放Defer group，并将新出现的全回收group设为defer。如果尚未出现第二个group而又从Defer group取出block完成分配，Defer指针会被取消(设为NULL);  
+</strong>sbh_indGroupDefer是个索引，指出Region中哪个group是Defer。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> __cdecl__sbh_heap_init(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(! (__sbh_pHeaderList = HeapAlloc(crtheap,<span class="number">0</span>,<span class="number">16</span>*<span class="keyword">sizeof</span>(HEADER)))</span><br><span class="line">		<span class="keyword">return</span> FALSE;</span><br><span class="line">	__sbh_pHeaderScan = __sbh_pHeaderList;</span><br><span class="line">	__sbh_pHeaderDefer = <span class="literal">NULL</span>;</span><br><span class="line">	__sbh_cntHeaderList = <span class="number">0</span>;</span><br><span class="line">	__sbh_sizeHeaderList = <span class="number">16</span>;</span><br><span class="line"> 	</span><br><span class="line">    <span class="keyword">return</span> TRUE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/12/2017-04-12-loki's allocator/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          loki::allocator
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/10/2017-04-10-std_allocator/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">std::allocator</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SBH-small-block-heap"><span class="nav-number">1.</span> <span class="nav-text">SBH(small block heap)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#heap-init-和-sbh-heap-init"><span class="nav-number">1.1.</span> <span class="nav-text">_heap_init() 和__sbh_heap_init()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于第一块内存的分配"><span class="nav-number">1.2.</span> <span class="nav-text">关于第一块内存的分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归还操作系统"><span class="nav-number">1.3.</span> <span class="nav-text">归还操作系统</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

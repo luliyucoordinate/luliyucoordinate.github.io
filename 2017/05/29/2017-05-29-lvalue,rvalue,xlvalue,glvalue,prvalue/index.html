@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>lvalue,rvalue,xlvalue,glvalue,prvalue | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpplvaluervaluexlvalueglvalueprvalue" />
+  
+  
+  
+  
+  <meta name="description" content="Value categoriesEach C++ expression (an operator with its operands, a literal, a variable name, etc.) is characterized by two independent properties: a type and a value category. Each expression has s">
+<meta name="keywords" content="cpp,lvalue,rvalue,xlvalue,glvalue,prvalue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lvalue,rvalue,xlvalue,glvalue,prvalue">
+<meta property="og:url" content="http://coordinate.wang/2017/05/29/2017-05-29-lvalue,rvalue,xlvalue,glvalue,prvalue/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Value categoriesEach C++ expression (an operator with its operands, a literal, a variable name, etc.) is characterized by two independent properties: a type and a value category. Each expression has s">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.668Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lvalue,rvalue,xlvalue,glvalue,prvalue">
+<meta name="twitter:description" content="Value categoriesEach C++ expression (an operator with its operands, a literal, a variable name, etc.) is characterized by two independent properties: a type and a value category. Each expression has s">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-29-lvalue,rvalue,xlvalue,glvalue,prvalue" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      lvalue,rvalue,xlvalue,glvalue,prvalue
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/29/2017-05-29-lvalue,rvalue,xlvalue,glvalue,prvalue/" class="article-date">
+	  <time datetime="2017-05-28T16:00:00.000Z" itemprop="datePublished">五月 29, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Value-categories"><a href="#Value-categories" class="headerlink" title="Value categories"></a>Value categories</h1><p>Each C++ expression (an operator with its operands, a literal, a variable name, etc.) is characterized by two independent properties: a type and a value category. Each expression has some non-reference type, and each expression belongs to exactly one of the three primary value categories: prvalue, xvalue, lvalue, defined as follows:</p>
+<ol>
+<li>a glvalue is an expression whose evaluation determines the identity of an object, bit-field, or function;</li>
+<li>a prvalue is an expression whose evaluation either<ol>
+<li>computes the value of the operand of an operator (such prvalue has no result object), or</li>
+<li>initializes an object or a bit-field (such prvalue is said to have a result object). All class and array prvalues have a result object even if it is discarded. In certain contexts, temporary materialization occurs to create a temporary as the result object;</li>
+</ol>
+</li>
+<li>an xvalue is a glvalue that denotes an object or bit-field whose resources can be reused;</li>
+<li>an lvalue is a glvalue that is not an xvalue;</li>
+<li>an rvalue is a prvalue or an xvalue.</li>
+</ol>
+<p>Note: this taxonomy went through significant changes with past C++ standard revisions, see History below for details.</p>
+<h1 id="Primary-categories"><a href="#Primary-categories" class="headerlink" title="Primary categories"></a>Primary categories</h1><h2 id="lvalue"><a href="#lvalue" class="headerlink" title="lvalue"></a>lvalue</h2><p>The following expressions are lvalue expressions:</p>
+<ol>
+<li>the name of a variable or a function in scope, regardless of type, such as std::cin or std::endl. Even if the variable’s type is rvalue reference, the expression consisting of its name is an lvalue expression;</li>
+<li>a function call or an overloaded operator expression of lvalue reference return type, such as std::getline(std::cin, str), std::cout &lt;&lt; 1, str1 = str2, or ++it;</li>
+<li>a = b, a += b, a %= b, and all other built-in assignment and compound assignment expressions;</li>
+<li>++a and –a, the built-in pre-increment and pre-decrement expressions;</li>
+<li>*p, the built-in indirection expression;</li>
+<li>a[n] and p[n], the built-in subscript expressions, except where a is an array rvalue (since C++11);</li>
+<li>a.m, the member of object expression, except where m is a member enumerator or a non-static member function, or where a is an rvalue and m is a non-static data member of non-reference type;</li>
+<li>p-&gt;m, the built-in member of pointer expression, except where m is a member enumerator or a non-static member function;</li>
+<li>a.*mp, the pointer to member of object expression, where a is an lvalue and mp is a pointer to data member;</li>
+<li>p-&gt;*mp, the built-in pointer to member of pointer expression, where mp is a pointer to data member;</li>
+<li>a, b, the built-in comma expression, where b is an lvalue;</li>
+<li>a ? b : c, the ternary conditional expression for some a, b, and c;</li>
+<li>a string literal, such as “Hello, world!”;</li>
+<li>a cast expression to lvalue reference type, such as static_cast&lt;int&amp;&gt;(x);</li>
+<li>a function call or an overloaded operator expression of rvalue reference to function return type;</li>
+<li>a cast expression to rvalue reference to function type, such as static_cast<void (&&)(int)="">(x).<br>(since C++11)</void></li>
+</ol>
+<p>Properties:</p>
+<ol>
+<li>Same as glvalue (below).</li>
+<li>Address of an lvalue may be taken: &amp;++i[1] and &amp;std::endl are valid expressions.</li>
+<li>A modifiable lvalue may be used as the left-hand operand of the built-in assignment and compound assignment operators.</li>
+<li>An lvalue may be used to initialize an lvalue reference; this associates a new name with the object identified by the expression.</li>
+</ol>
+<h2 id="prvalue"><a href="#prvalue" class="headerlink" title="prvalue"></a>prvalue</h2><p>The following expressions are prvalue expressions:</p>
+<ol>
+<li>a literal (except for string literal), such as 42, true or nullptr;</li>
+<li>a function call or an overloaded operator expression of non-reference return type, such as str.substr(1, 2), str1 + str2, or it++;</li>
+<li>a++ and a–, the built-in post-increment and post-decrement expressions;</li>
+<li>a + b, a % b, a &amp; b, a &lt;&lt; b, and all other built-in arithmetic expressions;</li>
+<li>a &amp;&amp; b, a || b, !a, the built-in logical expressions;</li>
+<li>a &lt; b, a == b, a &gt;= b, and all other built-in comparison expressions;</li>
+<li>&amp;a, the built-in address-of expression;</li>
+<li>a.m, the member of object expression, where m is a member enumerator or a non-static member function[2], or where a is an rvalue and m is a non-static data member of non-reference type (until C++11);</li>
+<li>p-&gt;m, the built-in member of pointer expression, where m is a member enumerator or a non-static member function[2];</li>
+<li>a.*mp, the pointer to member of object expression, where mp is a pointer to member function[2], or where a is an rvalue and mp is a pointer to data member (until C++11);</li>
+<li>p-&gt;*mp, the built-in pointer to member of pointer expression, where mp is a pointer to member function[2];</li>
+<li>a, b, the built-in comma expression, where b is an rvalue;</li>
+<li>a ? b : c, the ternary conditional expression for some a, b, and c;</li>
+<li>a cast expression to non-reference type, such as static_cast<double>(x), std::string{}, or (int)42;</double></li>
+<li>the this pointer;</li>
+<li>a lambda expression, such as <a href="int x"></a>{ return x * x; }.(since C++11)</li>
+</ol>
+<p>Properties:</p>
+<ol>
+<li>Same as rvalue (below).</li>
+<li>A prvalue cannot be polymorphic: the dynamic type of the object it identifies is always the type of the expression.</li>
+<li>A non-class non-array prvalue cannot be cv-qualified. (Note: a function call or cast expression may result in a prvalue of non-class cv-qualified type, but the cv-qualifier is immediately stripped out.)</li>
+<li>A prvalue cannot have incomplete type (except for type void, see below, or when used in decltype specifier).</li>
+</ol>
+<h2 id="xvalue"><a href="#xvalue" class="headerlink" title="xvalue"></a>xvalue</h2><p>The following expressions are xvalue expressions:</p>
+<ol>
+<li>a function call or an overloaded operator expression of rvalue reference to object return type, such as std::move(x);</li>
+<li>a[n], the built-in subscript expression, where one operand is an array rvalue ;</li>
+<li>a.m, the member of object expression, where a is an rvalue and m is a non-static data member of non-reference type;</li>
+<li>a.*mp, the pointer to member of object expression, where a is an rvalue and mp is a pointer to data member;</li>
+<li>a ? b : c, the ternary conditional expression for some a, b, and c;</li>
+<li>a cast expression to rvalue reference to object type, such as static_cast&lt;char&amp;&amp;&gt;(x);</li>
+<li>any expression that designates a temporary object, after temporary materialization.(since C++17)</li>
+</ol>
+<p>Properties:</p>
+<ol>
+<li>Same as rvalue (below).</li>
+<li>Same as glvalue (below).</li>
+</ol>
+<p>In particular, like all rvalues, xvalues bind to rvalue references, and like all glvalues, xvalues may be polymorphic, and non-class xvalues may be cv-qualified.</p>
+<h1 id="Mixed-categories"><a href="#Mixed-categories" class="headerlink" title="Mixed categories"></a>Mixed categories</h1><h2 id="glvalue"><a href="#glvalue" class="headerlink" title="glvalue"></a>glvalue</h2><p>A glvalue expression is either lvalue or xvalue.<br>Properties:</p>
+<ol>
+<li>A glvalue may be implicitly converted to a prvalue with lvalue-to-rvalue, array-to-pointer, or function-to-pointer implicit conversion.</li>
+<li>A glvalue may be polymorphic: the dynamic type of the object it identifies is not necessarily the static type of the expression.</li>
+<li>A glvalue can have incomplete type, where permitted by the expression.</li>
+</ol>
+<h2 id="rvalue"><a href="#rvalue" class="headerlink" title="rvalue"></a>rvalue</h2><p>An rvalue expression is either prvalue or xvalue.<br>Properties:</p>
+<ol>
+<li>Address of an rvalue may not be taken: &amp;int(), &amp;i++[3], &amp;42, and &amp;std::move(x) are invalid.</li>
+<li>An rvalue can’t be used as the left-hand operand of the built-in assignment or compound assignment operators.</li>
+<li>An rvalue may be used to initialize a const lvalue reference, in which case the lifetime of the object identified by the rvalue is extended until the scope of the reference ends.</li>
+<li>An rvalue may be used to initialize an rvalue reference, in which case the lifetime of the object identified by the rvalue is extended until the scope of the reference ends.</li>
+<li>When used as a function argument and when two overloads of the function are available, one taking rvalue reference parameter and the other taking lvalue reference to const parameter, an rvalue binds to the rvalue reference overload (thus, if both copy and move constructors are available, an rvalue argument invokes the move constructor, and likewise with copy and move assignment operators).</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span> &#123;</span></span><br><span class="line">    S () = <span class="keyword">default</span> ;</span><br><span class="line">    S (<span class="keyword">const</span> S &amp;) = <span class="keyword">delete</span> ;</span><br><span class="line">    S &amp;<span class="keyword">operator</span>= (<span class="keyword">const</span> S &amp;) = <span class="keyword">delete</span> ;</span><br><span class="line">    S (S &amp;&amp;) = <span class="keyword">default</span> ;</span><br><span class="line">    S &amp;<span class="keyword">operator</span>= (S &amp;&amp;) = <span class="keyword">default</span> ;</span><br><span class="line">&#125; ;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">A</span> &#123;</span></span><br><span class="line">    S p0 ;</span><br><span class="line">    S p1[<span class="number">2</span>] ;</span><br><span class="line">&#125; ;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">    S p0 = A ().p0 ;</span><br><span class="line">    S p1 = A ().p1[<span class="number">0</span>] ;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>p1哪里是编译不通过的，A ().p1[0]不是右值<br>好像不满足xvalue的描述  </p>
+<p>A().p1[0] 的意思是（实际上也是这么运作的）先计算A().p1（这是一个lvalue，而不是xvalue，因为 3）的要求是m为非引用，当然也就是非指针了。 ）， 再取它的第1个元素（根据lvalue的性质，这当然也是一个左值了）。<br>一言以蔽之，A().p1[0] 的运算顺序是(A().p1)[0]，是一个lvalue，而不是xvalue（在C++11中）。<br>PS： ‘.’的优先级和[]一样，因此，从左到右计算。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/glvalue/">glvalue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lvalue/">lvalue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/prvalue/">prvalue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rvalue/">rvalue</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xlvalue/">xlvalue</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/30/2017-05-30-C++类静态成员与类静态成员函数详解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          C++类静态成员与类静态成员函数详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/27/2017-05-27-迭代器相关的辅助函数/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">迭代器相关的辅助函数</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Value-categories"><span class="nav-number">1.</span> <span class="nav-text">Value categories</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Primary-categories"><span class="nav-number">2.</span> <span class="nav-text">Primary categories</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lvalue"><span class="nav-number">2.1.</span> <span class="nav-text">lvalue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prvalue"><span class="nav-number">2.2.</span> <span class="nav-text">prvalue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xvalue"><span class="nav-number">2.3.</span> <span class="nav-text">xvalue</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Mixed-categories"><span class="nav-number">3.</span> <span class="nav-text">Mixed categories</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#glvalue"><span class="nav-number">3.1.</span> <span class="nav-text">glvalue</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rvalue"><span class="nav-number">3.2.</span> <span class="nav-text">rvalue</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

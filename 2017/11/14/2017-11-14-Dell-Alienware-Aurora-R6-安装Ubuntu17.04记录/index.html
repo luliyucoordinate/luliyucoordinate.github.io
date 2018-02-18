@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="DellUbuntu" />
+  
+  
+  
+  
+  <meta name="description" content="写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。 首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。secure boot选项要设置为disabled，至">
+<meta name="keywords" content="Dell,Ubuntu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录">
+<meta property="og:url" content="http://coordinate.wang/2017/11/14/2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。 首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。secure boot选项要设置为disabled，至">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.385Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录">
+<meta name="twitter:description" content="写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。 首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。secure boot选项要设置为disabled，至">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/14/2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录/" class="article-date">
+	  <time datetime="2017-11-13T16:00:00.000Z" itemprop="datePublished">十一月 14, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。</p>
+<p>首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！</p>
+<h2 id="bios的设置"><a href="#bios的设置" class="headerlink" title="bios的设置"></a>bios的设置</h2><p>先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。<code>secure boot</code>选项要设置为<code>disabled</code>，至少我是这样做的，我后来也没有测试设置成<code>enabled</code>会有什么问题。这一点我保留意见，大家可以自己尝试一下。</p>
+<p>接下来是关于<code>uefi</code>和<code>legacy</code>的问题，很多教程中都是使用<code>legacy</code>，但是经过我的尝试，我这里选择<code>uefi</code>，<code>uefi</code>是一种新的装机手法，而<code>legacy</code>是老的。所以对于那些10年之后的电脑，我强烈推荐你使用<code>uefi</code>。</p>
+<p>接着是<code>AHCI</code>和<code>RAID</code>的问题，对于双硬盘的主机都可能会面对的问题。如果你要安装<code>ubuntu</code>的话，必须使用<code>AHCI</code>。</p>
+<p>别的都不变，save and reset。</p>
+<h2 id="做ubuntu系统盘"><a href="#做ubuntu系统盘" class="headerlink" title="做ubuntu系统盘"></a>做<code>ubuntu</code>系统盘</h2><p>因为我在bios中设置了<code>uefi</code>，所以我这里使用<a href="http://rufus.akeo.ie/" target="_blank" rel="noopener">rufus</a>这个工具。如果你使用<code>legacy</code>（我不推荐你这样去做），可以使用软碟通这个工具。</p>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fliw4p6r5lj20cs0hztbb.jpg" class="img-fluid"><br></a></p>
+<p>这里主要的问题之第二个选项，按照图上去选就可以了。为什么？这里我要说一说<code>GPT</code>分区和<code>MBR</code>分区，如果你前面选择的是<code>uefi</code>，那么这里就是用<code>GPT</code>。具体区别看<a href="http://www.chinaz.com/server/2016/1017/595444.shtml" target="_blank" rel="noopener">这篇</a>。</p>
+<p>我这里是使用<code>winPE</code>工具把两个硬盘都设置为<code>GPT</code>分区（如果使用<code>winPE</code>的话，你要先把<code>uefi</code>改为<code>legacy</code>。然后<code>save and reset</code>后，在bios中就可以看到启动顺序，将u盘设置为第一启动）</p>
+<p>接着再改回<code>uefi</code> 并且<code>save and reset</code>，进bios设置u盘第一启动。如果这个时候你看不到u盘选项的话，我这里是按F12打开一个类似于bios的东西（不同电脑不同），它里面有bios选项，也有u盘选项，选中u盘，然后回车装机。</p>
+<h2 id="安装ubuntu17-04"><a href="#安装ubuntu17-04" class="headerlink" title="安装ubuntu17.04"></a>安装ubuntu17.04</h2><p>我推荐你使用新版本的<code>Ubuntu</code>，因为在硬件驱动方面，它会好很多。</p>
+<p>首先你要把下你的独立显卡，一定要这样做，当然网上有用<code>nomodeset</code>这种方式的，我也尝试了，但是由于某些问题，一开始没弄好，所以如果你的电脑是有<code>核心显卡</code>的或者有亮机卡，我推荐你就我的方法这样做吧。</p>
+<p>先将显示器插在<code>核心显卡</code>上，接着装系统。这个时候我们面对一个问题，系统是装在机械硬盘上还是固态硬盘上。我一开始把系统装在固态上，但是开机总是出现<code>boot failure</code>的问题。为什么？<code>PCIe M.2</code>固态硬盘目前驱动方面会有问题，我查到有人在这种固态上成功了安装<code>ubuntu17.04</code>（装<a href="https://community.dell.com/thread/24162-alienware-aurora-r6-booting-linux-on-pcie-m2" target="_blank" rel="noopener">NVME drive is by Liteon</a>，但我不知道怎么去做），但是当时我整个人都很不好，所以没有去尝试。所以你也不想尝试的话，就装在机械上吧。</p>
+<p>装<code>Linux</code>系统，如果不清楚各个分区的作用的话，你就选择默认安装选项吧，不要自己去设置各个分区了。接着很顺利的装好了<code>Ubuntu17.04</code>。</p>
+<p>进入系统后，你应该先在系统选项中，选择更新中设置更新源是中国服务器，我选择了<code>aliyun</code>。我不推荐你，通过编辑文件的方式修改源（当然你可以这样做），还是让问题更加的简单吧！！！</p>
+<p>我推荐你先安装<code>vim</code>，因为我觉得<code>vi</code>不怎么好用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure>
+<p>接着去禁用nouveau驱动（这是一个开源的驱动，对nvidia显卡不支持）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/blacklist-nouveau.conf</span><br></pre></td></tr></table></figure>
+<p>在后面添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br></pre></td></tr></table></figure>
+<p>接着更新一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+<p><strong>修改之后需要重启系统</strong>。</p>
+<p>重启后可以使用以下命令： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+<p>如果什么都没有的话，禁用成功。我这里要说的是，大家都这样做了，所以我这样做了，但是如果不禁用会不会有问题，我不知道（有人说没问题）。</p>
+<p>先进入文本模式（Ctrl+Alt+F1），接着使用这条指令，添加一个源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:graphics-drivers/ppa</span><br></pre></td></tr></table></figure>
+<p>关闭图形化窗口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br></pre></td></tr></table></figure>
+<p>先更新一下，因为我们添加了一个源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p>使用这个命令下载安装驱动（我的显卡是1080ti所以使用384，具体数字自己去查查）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nvidia-384</span><br></pre></td></tr></table></figure>
+<p>安装过程中，可能下载会出现一些问题（突然中断），这个时候，你要等他结束，然后根据错误提示操作（我这里不记得当时的操作是什么了），然后再次使用上面的指令<code>sudo apt-get install nvidia-384</code>。如果没有发生，那就更好了。</p>
+<p>装好后，恢复图形环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
+<p>Ctrl+Alt+F7进入图形界面，关机。</p>
+<p>将独立显卡插上，将视屏线插在独显上，开机，这个时候你会发现，系统可以打开了，不再是黑屏。</p>
+<p>进入系统后，输入下面指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+<p>如果没有出现报错，那么恭喜你ubuntu装好了。</p>
+<p>我这里还有一个小问题，就是在关机的时候，会卡死在关机界面，关不了机，只能长按电源键关机。怎么解决这个问题，等我搞定了再写。</p>
+<p>下一篇讲介绍<a href="">深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3</a></p>
+<p>如果有任何问题，请及时指出，我不想我的文章对大家造成误导，谢谢！！！^_^</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dell/">Dell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/13/2017-11-13-解决office-word-2016-、2013等一直正在启动的问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">解决office word 2016 、2013等一直正在启动的问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#bios的设置"><span class="nav-number">1.</span> <span class="nav-text">bios的设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#做ubuntu系统盘"><span class="nav-number">2.</span> <span class="nav-text">做ubuntu系统盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装ubuntu17-04"><span class="nav-number">3.</span> <span class="nav-text">安装ubuntu17.04</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

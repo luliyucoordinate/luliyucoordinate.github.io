@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>QT5.9.1与opencv3.3读取图片（2） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppopencvqt" />
+  
+  
+  
+  
+  <meta name="description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。  我们看到MDI Area的边界和MainWindow的">
+<meta name="keywords" content="cpp,opencv,qt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT5.9.1与opencv3.3读取图片（2）">
+<meta property="og:url" content="http://coordinate.wang/2017/11/30/2017-11-30-QT5.9.1与opencv3.3读取图片（2）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。  我们看到MDI Area的边界和MainWindow的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm08birinoj20fv0qtwf8.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm08jm9ejlj20ma0fi0ss.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0yy0g0i8j20kd0h4149.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.454Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QT5.9.1与opencv3.3读取图片（2）">
+<meta name="twitter:description" content="我之前写过一篇QT5.9.1与opencv3.3读取图片，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。 关于如何新建一个项目，请看上一篇。 我们想要有一个小窗口去显示图片，那我们就要用到QMdiArea。从左边拖一个MDI Area到窗口中，点击MainWindow然后选择栅格布局。  我们看到MDI Area的边界和MainWindow的">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-11-30-QT5.9.1与opencv3.3读取图片（2）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      QT5.9.1与opencv3.3读取图片（2）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/30/2017-11-30-QT5.9.1与opencv3.3读取图片（2）/" class="article-date">
+	  <time datetime="2017-11-29T16:00:00.000Z" itemprop="datePublished">十一月 30, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我之前写过一篇<a href="http://blog.csdn.net/qq_17550379/article/details/78303667" target="_blank" rel="noopener">QT5.9.1与opencv3.3读取图片</a>，但是我们对于这种读取操作不是很满意，一般我们打开文件都是有一个对话框，并且图片是在一个小窗口中显示的。</p>
+<p>关于如何新建一个项目，请看上一篇。</p>
+<p>我们想要有一个小窗口去显示图片，那我们就要用到<code>QMdiArea</code>。从左边拖一个<code>MDI Area</code>到窗口中，点击<code>MainWindow</code>然后选择栅格布局。</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0805m2j6j20u60hjgmy.jpg" class="img-fluid"><br></a></p>
+<p>我们看到<code>MDI Area</code>的边界和<code>MainWindow</code>的边界有一些距离，这很难看，所以我们要调整这个间隔。选中<code>centralWidget</code>，然后修改<code>LayoutLeftMargin</code>、<code>LayoutTopMargin</code>、 <code>LayoutRightMargin</code>、<code>LayoutBottomMargin</code> 都设置为0。</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm08birinoj20fv0qtwf8.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm08birinoj20fv0qtwf8.jpg" class="img-fluid"><br></a></p>
+<p>接着我们要对小窗口进行设计，由于我们要显示一个图片，最简单的做法就是新建一个<code>ChildWindow</code>类，让这类继承<code>QLabel</code>类就可以了。</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm08jm9ejlj20ma0fi0ss.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm08jm9ejlj20ma0fi0ss.jpg" class="img-fluid"><br></a></p>
+<p>我们现在来处理<code>ChildWindow</code>类，其中用到了我们之前写的一个转换函数<a href="http://blog.csdn.net/qq_17550379/article/details/78683153" target="_blank" rel="noopener">QT中的QImage、QPixmap和opencv 中的mat转化</a>，我这里新建一个头文件<code>qimageandmat.h</code>，将上面文章中给的代码copy过去。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//childwindow.cpp</span></span><br><span class="line"><span class="comment">//读取图片</span></span><br><span class="line"><span class="keyword">bool</span> ChildWindow::loadFile(<span class="keyword">const</span> QString &amp;fileName)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//读取一幅图片，这里我们要将QString转换为String使用toLocal8Bit()函数，避免乱码问题</span></span><br><span class="line">    cv::Mat image = cv::imread(fileName.toLocal8Bit().data());</span><br><span class="line">    <span class="keyword">if</span>(!image.data)</span><br><span class="line">    &#123;</span><br><span class="line">        QMessageBox::warning(<span class="keyword">this</span>, tr(<span class="string">"CVS"</span>),</span><br><span class="line">                                 tr(<span class="string">"Cannot read file %1\n"</span>)</span><br><span class="line">                                 .arg(fileName));<span class="comment">//添加头文件#include &lt;QMessageBox&gt;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//将Mat转化为QPixmap，使用了我们写的一个函数</span></span><br><span class="line">        QPixmap img = CVS::cvMatToQPixmap(image);</span><br><span class="line">        <span class="comment">//显示在label中</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;setPixmap(img);</span><br><span class="line">        <span class="comment">//改变label的大小用于自适应图像大小</span></span><br><span class="line">        <span class="keyword">this</span>-&gt;setScaledContents(<span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    setCurrentFile(fileName);<span class="comment">//设置小窗口的标题</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着编写<code>setCurrentFile</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//childwindow.cpp</span></span><br><span class="line"><span class="comment">//设置小窗口的标题</span></span><br><span class="line"><span class="keyword">void</span> ChildWindow::setCurrentFile(<span class="keyword">const</span> QString &amp;fileName)</span><br><span class="line">&#123;</span><br><span class="line">    curFile = QFileInfo(fileName).canonicalFilePath();<span class="comment">//获取文件绝对路径，添加头文件#include &lt;QFileInfo&gt;</span></span><br><span class="line">    setWindowTitle(userFriendlyCurrentFile() + <span class="string">"[*]"</span>);</span><br><span class="line">&#125;</span><br><span class="line">QString ChildWindow::userFriendlyCurrentFile()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> strippedName(curFile);</span><br><span class="line">&#125;</span><br><span class="line">QString ChildWindow::strippedName(<span class="keyword">const</span> QString &amp;fullFileName)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> QFileInfo(fullFileName).fileName();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后<code>ChildWindow</code>的头文件片段</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QImage&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"qimageandmat.h"</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChildWindow</span> :</span> <span class="keyword">public</span> QLabel</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ChildWindow();</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">loadFile</span><span class="params">(<span class="keyword">const</span> QString &amp;fileName)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">QString <span class="title">userFriendlyCurrentFile</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">QString <span class="title">currentFile</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> curFile; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setCurrentFile</span><span class="params">(<span class="keyword">const</span> QString &amp;fileName)</span></span>;</span><br><span class="line">    <span class="function">QString <span class="title">strippedName</span><span class="params">(<span class="keyword">const</span> QString &amp;fullFileName)</span></span>;</span><br><span class="line"></span><br><span class="line">    QString curFile;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接着我们处理<code>MainWindow</code></p>
+<p>原来的<code>mainwindow</code>中的<code>actionOpenFile</code>槽函数这个时候变为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mainwindow.cpp</span></span><br><span class="line"><span class="keyword">void</span> MainWindow::on_actionOpenFile_triggered()</span><br><span class="line">&#123;</span><br><span class="line">    fileName = QFileDialog::getOpenFileName(<span class="keyword">this</span>);  <span class="comment">//文件打开窗口，添加头文件#include &lt;QFileDialog&gt;</span></span><br><span class="line">    <span class="keyword">if</span> (!fileName.isEmpty())</span><br><span class="line">        openFile(fileName);<span class="comment">//打开文件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着编写<code>openFile</code>函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mainwindow.cpp</span></span><br><span class="line"><span class="comment">//打开文件窗口</span></span><br><span class="line"><span class="keyword">bool</span> MainWindow::openFile(<span class="keyword">const</span> QString &amp;fileName)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">bool</span> succeeded = loadFile(fileName);	<span class="comment">//读取文件</span></span><br><span class="line">    <span class="keyword">return</span> succeeded;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着编写<code>loadFile</code>文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mainwindow.cpp</span></span><br><span class="line"><span class="comment">//读取图片</span></span><br><span class="line"><span class="keyword">bool</span> MainWindow::loadFile(<span class="keyword">const</span> QString &amp;fileName)</span><br><span class="line">&#123;</span><br><span class="line">    ChildWindow *child = createChildWindow();		<span class="comment">//创建一个子窗口</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">bool</span> succeeded = child-&gt;loadFile(fileName);<span class="comment">//子窗口读取图片</span></span><br><span class="line">    <span class="keyword">if</span> (succeeded)								  <span class="comment">//如果读取成功，显示图片；否则，关闭</span></span><br><span class="line">        child-&gt;show();</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        child-&gt;close();</span><br><span class="line">    <span class="keyword">return</span> succeeded;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着编写<code>createChildWindow</code>函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mainwindow.cpp</span></span><br><span class="line"><span class="comment">//创建子窗口</span></span><br><span class="line">ChildWindow *MainWindow::createChildWindow()</span><br><span class="line">&#123;</span><br><span class="line">    ChildWindow *child = <span class="keyword">new</span> ChildWindow;</span><br><span class="line">    ui-&gt;mdiArea-&gt;addSubWindow(child);</span><br><span class="line">    <span class="keyword">return</span> child;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后<code>MainWindow</code>的头文件片段</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QMainWindow&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QMdiSubWindow&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"childwindow.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> Ui &#123;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainWindow</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainWindow</span> :</span> <span class="keyword">public</span> QMainWindow</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">MainWindow</span><span class="params">(QWidget *parent = <span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">openFile</span><span class="params">(<span class="keyword">const</span> QString &amp;fileName)</span></span>;</span><br><span class="line">    ~MainWindow();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">on_actionOpenFile_triggered</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">loadFile</span><span class="params">(<span class="keyword">const</span> QString &amp;fileName)</span></span>;</span><br><span class="line">    <span class="function">ChildWindow *<span class="title">createChildWindow</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    QMdiArea *mdiArea;</span><br><span class="line">    QString fileName;</span><br><span class="line">    Ui::MainWindow *ui;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>接着运行</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0yy0g0i8j20kd0h4149.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm0yy0g0i8j20kd0h4149.jpg" class="img-fluid"><br></a></p>
+<p>ok！^_^</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/qt/">qt</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/01/2017-12-01-QT中的QImage、QPixmap和opencv 中的mat转化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          QT中的QImage、QPixmap和opencv 中的mat转化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

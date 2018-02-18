@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cpp通用工具(2) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="Class unique_ptr可确保一个对象和其相应资源同一时间之辈一个pointer占有。unique_ptr是“其所指对象”的唯一拥有者。当unique_ptr被销毁，其所指的对象也就自动销毁。unique_ptr的必要条件是，他指的对象只有一个拥有者。 12345#include&amp;lt;memory&amp;gt;void f()&amp;#123;	std::unqiue_ptr&amp;lt;ClassA&amp;g">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp通用工具(2)">
+<meta property="og:url" content="http://coordinate.wang/2017/04/17/2017-04-17-cpp通用工具2/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Class unique_ptr可确保一个对象和其相应资源同一时间之辈一个pointer占有。unique_ptr是“其所指对象”的唯一拥有者。当unique_ptr被销毁，其所指的对象也就自动销毁。unique_ptr的必要条件是，他指的对象只有一个拥有者。 12345#include&amp;lt;memory&amp;gt;void f()&amp;#123;	std::unqiue_ptr&amp;lt;ClassA&amp;g">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.205Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpp通用工具(2)">
+<meta name="twitter:description" content="Class unique_ptr可确保一个对象和其相应资源同一时间之辈一个pointer占有。unique_ptr是“其所指对象”的唯一拥有者。当unique_ptr被销毁，其所指的对象也就自动销毁。unique_ptr的必要条件是，他指的对象只有一个拥有者。 12345#include&amp;lt;memory&amp;gt;void f()&amp;#123;	std::unqiue_ptr&amp;lt;ClassA&amp;g">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-17-cpp通用工具2" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      cpp通用工具(2)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/17/2017-04-17-cpp通用工具2/" class="article-date">
+	  <time datetime="2017-04-16T16:00:00.000Z" itemprop="datePublished">四月 17, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Class-unique-ptr"><a href="#Class-unique-ptr" class="headerlink" title="Class unique_ptr"></a>Class unique_ptr</h1><p>可确保一个对象和其相应资源同一时间之辈一个pointer占有。<br>unique_ptr是“其所指对象”的唯一拥有者。当unique_ptr被销毁，其所指的对象也就自动销毁。unique_ptr的必要条件是，他指的对象只有一个拥有者。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::unqiue_ptr&lt;ClassA&gt; ptr(<span class="keyword">new</span> ClassA);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就够了，不需要delete语句和catch语句。如果是普通的指针的话，会出现这样的问题，可能会忘记delete对象，特别是如果你在函数中有个return语句。</p>
+<h2 id="使用unique-ptr"><a href="#使用unique-ptr" class="headerlink" title="使用unique_ptr"></a>使用unique_ptr</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//create and initialize string</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"nico"</span>);</span><br><span class="line">(*up)[<span class="number">0</span>] = <span class="string">'N'</span>;<span class="comment">//replace first character</span></span><br><span class="line">up-&gt;append(<span class="string">"fjdk"</span>);<span class="comment">//append some characters</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *up &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>此外你可以调用release,获得unique_ptr拥有的对象并放弃拥有权，于是调用者对该对象有了使用权：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"nico"</span>);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span>* sp = up.release();</span><br></pre></td></tr></table></figure>
+<h2 id="转移unique-ptr的拥有权"><a href="#转移unique-ptr的拥有权" class="headerlink" title="转移unique_ptr的拥有权"></a>转移unique_ptr的拥有权</h2><p>不可以对unique_ptr执行copy和assign，如果你要的是寻常的copy语句。然而你可以使用move。这种情况下上述的copy构造函数或assignment操作符拥有权交给另一个unique_ptr。<br>举个例子:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up1(<span class="keyword">new</span> ClassA);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up2(up1);<span class="comment">//ERROR</span></span><br><span class="line"><span class="comment">//transfer ownership  of the unique_ptr</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up3(<span class="built_in">std</span>::move(up1));<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<p>assignment操作符的行为和上面所说的类似:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up1(<span class="keyword">new</span> ClassA);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up2;</span><br><span class="line">up2 = up1;<span class="comment">//ERROR </span></span><br><span class="line">up2 = <span class="built_in">std</span>::move(up1);<span class="comment">//assign the unique_ptr</span></span><br></pre></td></tr></table></figure>
+<p>如果上述的复制动作之前up2原本拥有对象，会有一个delete动作被调用。删除该对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up1(<span class="keyword">new</span> ClassA);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up2(<span class="keyword">new</span> ClassA);</span><br><span class="line">up2 = <span class="built_in">std</span>::move(up1);<span class="comment">//assign the unique_ptr</span></span><br><span class="line"><span class="comment">//delete object owned by up2</span></span><br></pre></td></tr></table></figure>
+<h2 id="对于array"><a href="#对于array" class="headerlink" title="对于array"></a>对于array</h2><p>对于array应该是用delete[]而不是delete，所以下面的做法是错误的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[<span class="number">10</span>]);</span><br></pre></td></tr></table></figure>
+<p>很幸运，C++标准可提供了一个派诺特话版本用来处理array，对该对象调用delete[]。<br>你只要这样申明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>[]&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[<span class="number">10</span>]);</span><br></pre></td></tr></table></figure>
+<p>然而要注意的是，他不提供操作符*和-&gt;，提供[]，用于访问其所执行的array中的某个对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>[]&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[<span class="number">10</span>]);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *up &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;<span class="comment">//ERROR</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; up[<span class="number">0</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他相应资源的deleter"><a href="#其他相应资源的deleter" class="headerlink" title="其他相应资源的deleter"></a>其他相应资源的deleter</h2><p>当你所指向的对象要求的不只是delete或delete[]，你就只好自己制定deleter。但是与shared_ptr不同的是，你必须指定deleter的类型作为第二个template实参。该类型可以是reference to function，或是个function pointer或function object。如果是function object的话，其function call操作符()应该接受一个“指向对象”的pointer。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassADeleter</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(ClassA* p)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">delete</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA,ClassADeleter&gt; up(<span class="keyword">new</span> ClassA());</span><br></pre></td></tr></table></figure>
+<p>如果你给的是个函数或lambda，你必须声明deleter的类型位void(<em>)(T</em>)或std::function&lt;void(T*)&gt;，要不就是使用decltype</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="keyword">void</span>(*)(<span class="keyword">int</span>*)&gt; up(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">					[](<span class="keyword">int</span>* p)</span><br><span class="line">					&#123;</span><br><span class="line">						...</span><br><span class="line">						<span class="keyword">delete</span> [] p;</span><br><span class="line">					&#125;);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="built_in">std</span>::function&lt;<span class="keyword">void</span>(<span class="keyword">int</span>*)&gt; up(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">						[](<span class="keyword">int</span>* p)</span><br><span class="line">						&#123;</span><br><span class="line">							...</span><br><span class="line">							<span class="keyword">delete</span> [] p;</span><br><span class="line">						&#125;);</span><br><span class="line"><span class="keyword">auto</span> l = [](<span class="keyword">int</span> *p)</span><br><span class="line">	&#123;</span><br><span class="line">		...</span><br><span class="line">		<span class="keyword">delete</span> [] p;</span><br><span class="line">	&#125;);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="keyword">decltype</span>(l)&gt; up(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],l);</span><br></pre></td></tr></table></figure>
+<h1 id="Type-Trait-和Type-Utility"><a href="#Type-Trait-和Type-Utility" class="headerlink" title="Type Trait 和Type Utility"></a>Type Trait 和Type Utility</h1><h2 id="Type-trait-的目的"><a href="#Type-trait-的目的" class="headerlink" title="Type trait 的目的"></a>Type trait 的目的</h2><p>所谓的type trait，提供一种用来处理type属性的办法。他是个template，可以在编译期根据一个或多个template实参产生一个type或value。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">const</span> T&amp; val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">std</span>::ispointer&lt;T&gt;::value)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"foo() called for a pointer "</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"foo() called for a value "</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>针对整数类型的重载</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo_impl</span><span class="params">(T val,true_type)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo_impl</span><span class="params">(T val, false_type)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(T val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	foo_impl(val, <span class="built_in">std</span>::is_integral&lt;T&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="细究Type-Trait"><a href="#细究Type-Trait" class="headerlink" title="细究Type Trait"></a>细究Type Trait</h1><p>Type trait定义于&lt;type_traits&gt;</p>
+<h2 id="unary-Type-Predicate"><a href="#unary-Type-Predicate" class="headerlink" title="(unary) Type Predicate"></a>(unary) Type Predicate</h2><p>Trait中的大部分都是unary，也就是说他们使用一个template实参。例如is_const&lt;&gt;，它用来检查传入的类型是否为const：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">is_const&lt;<span class="keyword">int</span>&gt;::value <span class="comment">//false</span></span><br><span class="line">is_const&lt;<span class="keyword">const</span> <span class="keyword">volatile</span> <span class="keyword">int</span>&gt; ::value <span class="comment">//true</span></span><br><span class="line">is_const&lt;<span class="keyword">int</span>* <span class="keyword">const</span>&gt;::value <span class="comment">//true</span></span><br><span class="line">is_const&lt;<span class="keyword">const</span> <span class="keyword">int</span>*&gt;;:value <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+<p>用于检验type relation的trait</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">is_assignable&lt;T,T2&gt; <span class="comment">//可以将类型T2复制给类型T</span></span><br></pre></td></tr></table></figure>
+<p>is_assignable&lt;&gt;的第一个类型若是nonclass，永远获得false_type。但是对于class，ordinary type作为第一类型是可以的<br>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">is_assignable&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;::value <span class="comment">//false</span></span><br><span class="line">is_assignable&lt;<span class="keyword">int</span>&amp;，<span class="keyword">void</span>*&gt;::value <span class="comment">//false</span></span><br><span class="line">is_assignable&lt;<span class="keyword">void</span>*,<span class="keyword">int</span>&amp;&gt;::value <span class="comment">//false</span></span><br><span class="line">is_assignable&lt;<span class="keyword">int</span>&amp;,<span class="keyword">int</span>&gt;::value <span class="comment">//true</span></span><br><span class="line">is_constructible&lt;T,Args...&gt; <span class="comment">//可以运用类型Args初始化T</span></span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">is_constructiable&lt;<span class="keyword">int</span>&gt;::value <span class="comment">//true</span></span><br><span class="line">is_constructiable&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;::value <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<h2 id="Type-Modifier"><a href="#Type-Modifier" class="headerlink" title="Type Modifier"></a>Type Modifier</h2><p>所有这一类trait为类型添加一个属性，前提是该属性尚未存在，或移除一个属性，前提是这个属性已经存在。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> T;</span><br><span class="line">add_const&lt;T&gt;::type <span class="comment">//const int</span></span><br><span class="line">remove_const&lt;T&gt;::type <span class="comment">//int</span></span><br></pre></td></tr></table></figure>
+<p>而类型const int&amp;可被降级或扩展</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">const</span> <span class="keyword">int</span>&amp; T;</span><br><span class="line">add_rvalue_reference&lt;T&gt;::type <span class="comment">//const int&amp;</span></span><br><span class="line">remoce_const&lt;T&gt;::type <span class="comment">//const int&amp;</span></span><br><span class="line">remoce_reference&lt;T&gt;::type <span class="comment">//const int</span></span><br></pre></td></tr></table></figure>
+<p>要注意的是，一个“指向某常量类型”的reference本身并不是常量。add_lvalue_reference&lt;&gt;把一个rvalue reference转换为一个lvalue reference,然而add_rvalue_reference并不会把lvalue reference转化为rvalue reference。必须使用下面的做法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add_rvalue_reference&lt;remove_reference&lt;T&gt;::type&gt;::type</span><br></pre></td></tr></table></figure>
+<h2 id="Function-Type-Wrapper"><a href="#Function-Type-Wrapper" class="headerlink" title="Function Type Wrapper"></a>Function Type Wrapper</h2><p>使用member function时，“借以调用他们”的那个对象必须被当作第一参数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">memfunc</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">std</span>::function&lt;<span class="keyword">void</span> (<span class="keyword">const</span> C&amp;,<span class="keyword">int</span>,<span class="keyword">int</span>)&gt; mf;</span><br><span class="line">mf = &amp;C::memfunc;</span><br><span class="line">mf(C(), <span class="number">42</span>,<span class="number">77</span>);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/18/2017-04-18-理解C++语言的声明语法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          理解C/C++语言的声明语法-声明子
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/16/2017-04-16-cpp通用工具1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cpp通用工具(1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Class-unique-ptr"><span class="nav-number">1.</span> <span class="nav-text">Class unique_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用unique-ptr"><span class="nav-number">1.1.</span> <span class="nav-text">使用unique_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转移unique-ptr的拥有权"><span class="nav-number">1.2.</span> <span class="nav-text">转移unique_ptr的拥有权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对于array"><span class="nav-number">1.3.</span> <span class="nav-text">对于array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他相应资源的deleter"><span class="nav-number">1.4.</span> <span class="nav-text">其他相应资源的deleter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Type-Trait-和Type-Utility"><span class="nav-number">2.</span> <span class="nav-text">Type Trait 和Type Utility</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Type-trait-的目的"><span class="nav-number">2.1.</span> <span class="nav-text">Type trait 的目的</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#细究Type-Trait"><span class="nav-number">3.</span> <span class="nav-text">细究Type Trait</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#unary-Type-Predicate"><span class="nav-number">3.1.</span> <span class="nav-text">(unary) Type Predicate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Type-Modifier"><span class="nav-number">3.2.</span> <span class="nav-text">Type Modifier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function-Type-Wrapper"><span class="nav-number">3.3.</span> <span class="nav-text">Function Type Wrapper</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C++类静态成员与类静态成员函数详解 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp转载" />
+  
+  
+  
+  
+  <meta name="description" content="转载自脚本之家当将类的某个数据成员声明为static时，该静态数据成员只能被定义一次，而且要被同类的所有对象共享。各个对象都拥有类中每一个普通数据成员的副本，但静态数据成员只有一个实例存在，与定义了多少类对象无关。静态方法就是与该类相关的，是类的一种行为，而不是与该类的实例对象相关。静态数据成员的用途之一是统计有多少个对象实际存在。静态数据成员不能在类中初始化，实际上类定义只是在描述对象的蓝图，在">
+<meta name="keywords" content="cpp,转载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++类静态成员与类静态成员函数详解">
+<meta property="og:url" content="http://coordinate.wang/2017/05/30/2017-05-30-C++类静态成员与类静态成员函数详解/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="转载自脚本之家当将类的某个数据成员声明为static时，该静态数据成员只能被定义一次，而且要被同类的所有对象共享。各个对象都拥有类中每一个普通数据成员的副本，但静态数据成员只有一个实例存在，与定义了多少类对象无关。静态方法就是与该类相关的，是类的一种行为，而不是与该类的实例对象相关。静态数据成员的用途之一是统计有多少个对象实际存在。静态数据成员不能在类中初始化，实际上类定义只是在描述对象的蓝图，在">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++类静态成员与类静态成员函数详解">
+<meta name="twitter:description" content="转载自脚本之家当将类的某个数据成员声明为static时，该静态数据成员只能被定义一次，而且要被同类的所有对象共享。各个对象都拥有类中每一个普通数据成员的副本，但静态数据成员只有一个实例存在，与定义了多少类对象无关。静态方法就是与该类相关的，是类的一种行为，而不是与该类的实例对象相关。静态数据成员的用途之一是统计有多少个对象实际存在。静态数据成员不能在类中初始化，实际上类定义只是在描述对象的蓝图，在">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-30-C++类静态成员与类静态成员函数详解" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      C++类静态成员与类静态成员函数详解
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/30/2017-05-30-C++类静态成员与类静态成员函数详解/" class="article-date">
+	  <time datetime="2017-05-29T16:00:00.000Z" itemprop="datePublished">五月 30, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自<a href="http://www.jb51.net/article/41775.htm" target="_blank" rel="noopener">脚本之家</a><br>当将类的某个数据成员声明为static时，该静态数据成员只能被定义一次，而且要被同类的所有对象共享。各个对象都拥有类中每一个普通数据成员的副本，但静态数据成员只有一个实例存在，与定义了多少类对象无关。静态方法就是与该类相关的，是类的一种行为，而不是与该类的实例对象相关。<br>静态数据成员的用途之一是统计有多少个对象实际存在。<br>静态数据成员不能在类中初始化，实际上类定义只是在描述对象的蓝图，在其中指定初值是不允许的。也不能在类的构造函数中初始化该成员，因为静态数据成员为类的各个对象共享，否则每次创建一个类的对象则静态数据成员都要被重新初始化。<br>静态成员不可在类体内进行赋值，因为它是被所有该类的对象所共享的。你在一个对象里给它赋值，其他对象里的该成员也会发生变化。为了避免混乱，所以不可在类体内进行赋值。<br>静态成员的值对所有的对象是一样的。静态成员可以被初始化，但只能在类体外进行初始化。<br>一般形式：<br>数据类型类名：：静态数据成员名＝初值<br>注意：不能用参数初始化表对静态成员初始化。一般系统缺省初始为0。<br>静态成员是类所有的对象的共享的成员，而不是某个对象的成员。它在对象中不占用存储空间，这个属性为整个类所共有，不属于任何一个具体对象。所以静态成员不能在类的内部初始化，比如声明一个学生类，其中一个成员为学生总数，则这个变量就应当声明为静态变量，应该根据实际需求来设置成员变量。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"iostream"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">     <span class="keyword">int</span> x;</span><br><span class="line">     <span class="keyword">int</span> y;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">     <span class="keyword">static</span> <span class="keyword">int</span> num;</span><br><span class="line">     <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">Getnum</span><span class="params">()</span></span></span><br><span class="line"><span class="function">     </span>&#123;</span><br><span class="line">          x+=<span class="number">5</span>;   <span class="comment">// 这行代码是错误的，静态成员函数不能调用非静态数据成员，要通过类的对象来调用。</span></span><br><span class="line">          num+=<span class="number">15</span>;</span><br><span class="line">          <span class="keyword">return</span> num;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> test::num = <span class="number">10</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     test a;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;test::num&lt;&lt;<span class="built_in">endl</span>;        <span class="comment">//10</span></span><br><span class="line">     test::num = <span class="number">20</span>;</span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;test::num&lt;&lt;<span class="built_in">endl</span>;        <span class="comment">//20</span></span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;test::Getnum()&lt;&lt;<span class="built_in">endl</span>;   <span class="comment">//35</span></span><br><span class="line">     <span class="built_in">cout</span>&lt;&lt;a.Getnum()&lt;&lt;<span class="built_in">endl</span>;       <span class="comment">//50</span></span><br><span class="line">     system(<span class="string">"pause"</span>);</span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上例可知：  x+=5;   // 这行代码是错误的<br><a href="http://www.jb51.net/article/41941.htm" target="_blank" rel="noopener"><strong>静态函数成员必须通过对象名来访问非静态数据成员</strong></a>。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="title">FunctionA</span><span class="params">()</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">     menber = <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> menber;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译上述代码，出错。原因很简单大家都知道，静态成员函数不能访问非静态成员，这是因为静态函数属于类而不是属于整个对象，静态函数中的 member可能都没有分配内存。静态成员函数没有隐含的this自变量。所以，它就无法访问自己类的非静态成员。<br>那要想访问怎么办呢？地球人都知道只要将：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> menber;</span><br><span class="line"><span class="comment">//change the line above to:</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> menber;</span><br></pre></td></tr></table></figure>
+<p>但是这个方法让我们不得不将static function内用到的成员变量都变成static的了，而且static的成员还要显式初始化，有没有更好的方法？答案是肯定的。代码说话：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="title">FunctionA</span><span class="params">(a* _a)</span></span></span><br><span class="line"><span class="function">    	</span>&#123;</span><br><span class="line">      	_a-&gt; menber = <span class="number">1</span>;</span><br><span class="line">      	<span class="built_in">cout</span>&lt;&lt;_a-&gt; menber&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">      	_a-&gt;f();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;<span class="string">"f被调用了"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> menber;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>前提是这个类要分配了内存空间。其实这里我做的就是将一个对象指针作为静态成员函数的“this”指针，意在模仿传递非静态成员函数里this变量(在非静态成员函数中都有this指针(push在ECX中似乎))  </p>
+<p>另外，静态成员函数在类外实现时候无须加static关键字，否则是错误的。<br>若在类的体外来实现上述的那个静态成员函数，不能加static关键字，这样写就可以了:  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> test::Getnum()</span><br><span class="line">&#123;</span><br><span class="line">	.........</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>static成员的所有者是类本身和对象，但是多有对象拥有一样的静态成员。从而在定义对象是不能通过构造函数对其进行初始化。</li>
+<li>静态成员不能在类定义里边初始化，只能在class body外初始化。</li>
+<li>静态成员仍然遵循public，private，protected访问准则。</li>
+<li>静态成员函数没有this指针，它不能返回非静态成员，因为除了对象会调用它外，类本身也可以调用。</li>
+</ol>
+<p>静态成员函数可以直接访问该类的静态数据和函数成员，而访问非静态数据成员必须通过参数传递的方式得到一个对象名，然后通过对象名来访问。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Myclass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> a,b,c;</span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">int</span> Sum;    <span class="comment">//声明静态数据成员</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">        Myclass(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c);</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">GetSum</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> Myclass::Sum=<span class="number">0</span>;       <span class="comment">//定义并初始化静态数据成员</span></span><br><span class="line">Myclass::Myclass(<span class="keyword">int</span> a,<span class="keyword">int</span> b,<span class="keyword">int</span> c)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;a=a;</span><br><span class="line">        <span class="keyword">this</span>-&gt;b=b;</span><br><span class="line">        <span class="keyword">this</span>-&gt;c=c;</span><br><span class="line">        Sum+=a+b+c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> Myclass::GetSum()</span><br><span class="line">&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt;<span class="string">"Sum="</span> &lt;&lt;Sum &lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        <span class="function">Myclass <span class="title">me</span><span class="params">(<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>)</span></span>;</span><br><span class="line">        me.GetSum();</span><br><span class="line">        system(<span class="string">"pause"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由上例可知，非静态成员函数可以任意地访问静态成员函数和静态数据成员。<br>非静态成员函数Myclass(int a,int b,int c)和GetSum()都访问了静态数据成员Sum。<br>静态成员函数不能访问非静态成员函数和非静态数据成员。<br>关于静态成员函数，可以总结为以下几点：</p>
+<ol>
+<li>出现在类体外的函数定义不能指定关键字static；</li>
+<li>静态成员之间可以相互访问，包括静态成员函数访问静态数据成员和访问静态成员函数；</li>
+<li>非静态成员函数可以任意地访问静态成员函数和静态数据成员；</li>
+<li>静态成员函数不能访问非静态成员函数和非静态数据成员；</li>
+<li>由于没有this指针的额外开销，因此静态成员函数与类的全局函数相比速度上会有少许的增长；</li>
+</ol>
+<p>调用静态成员函数，可以用成员访问操作符(.)和(-&gt;)为一个类的对象或指向类对象的指针调用静态成员函数，当同一类的所有对象使用一个量时，对于这个共用的量，可以用静态数据成员变量，这个变量对于同一类的所有的对象都取相同的值。静态成员变量只能被静态成员函数调用。静态成员函数也是由同一类中的所有对象共用。只能调用静态成员变量和静态成员函数。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/31/2017-05-31-C++多态问题小结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          C++多态性
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/29/2017-05-29-lvalue,rvalue,xlvalue,glvalue,prvalue/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">lvalue,rvalue,xlvalue,glvalue,prvalue</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

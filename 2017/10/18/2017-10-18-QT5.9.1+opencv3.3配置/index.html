@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>QT5.9.1和opencv3.3配置(win10) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppopencvqt" />
+  
+  
+  
+  
+  <meta name="description" content="环境配置首先你要安装好CMake、QT、opencv，并且配置好相应的环境变量 接着我们要对opencv进行编译，我这里使用QT自带的MinGW。这里要注意的是，如果之前有安装过MinGW，并且配置过相应的环境变量的话，记得要把环境变量里面的值删除，否则会与QT自带的MinGW冲突。 这个是我安装opencv的位置  然后在where is the source code 和 where to b">
+<meta name="keywords" content="cpp,opencv,qt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT5.9.1和opencv3.3配置(win10)">
+<meta property="og:url" content="http://coordinate.wang/2017/10/18/2017-10-18-QT5.9.1+opencv3.3配置/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="环境配置首先你要安装好CMake、QT、opencv，并且配置好相应的环境变量 接着我们要对opencv进行编译，我这里使用QT自带的MinGW。这里要注意的是，如果之前有安装过MinGW，并且配置过相应的环境变量的话，记得要把环境变量里面的值删除，否则会与QT自带的MinGW冲突。 这个是我安装opencv的位置  然后在where is the source code 和 where to b">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6ifhi6j20t60icq4s.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6it6yrj20k30ig74f.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdgyxngj20dy0a1748.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmkdeofyoj20k30k5t9h.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdggmzuj21f60u0gnt.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdf232ij20k30k5mye.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmkdfyhexj21f60u0acc.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmlesur5jj21f60u0jtn.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.338Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QT5.9.1和opencv3.3配置(win10)">
+<meta name="twitter:description" content="环境配置首先你要安装好CMake、QT、opencv，并且配置好相应的环境变量 接着我们要对opencv进行编译，我这里使用QT自带的MinGW。这里要注意的是，如果之前有安装过MinGW，并且配置过相应的环境变量的话，记得要把环境变量里面的值删除，否则会与QT自带的MinGW冲突。 这个是我安装opencv的位置  然后在where is the source code 和 where to b">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6ifhi6j20t60icq4s.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-10-18-QT5.9.1+opencv3.3配置" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      QT5.9.1和opencv3.3配置(win10)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/18/2017-10-18-QT5.9.1+opencv3.3配置/" class="article-date">
+	  <time datetime="2017-10-17T16:00:00.000Z" itemprop="datePublished">十月 18, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>首先你要安装好<a href="https://cmake.org/download/" target="_blank" rel="noopener">CMake</a>、<a href="https://www1.qt.io/developers/" target="_blank" rel="noopener">QT</a>、<a href="https://opencv.org/" target="_blank" rel="noopener">opencv</a>，并且配置好相应的环境变量</p>
+<p>接着我们要对opencv进行编译，我这里使用QT自带的MinGW。这里要注意的是，如果之前有安装过MinGW，并且配置过相应的环境变量的话，记得要把环境变量里面的值删除，否则会与QT自带的MinGW冲突。</p>
+<p>这个是我安装opencv的位置</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6ifhi6j20t60icq4s.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6ifhi6j20t60icq4s.jpg" class="img-fluid"><br></a></p>
+<p>然后在where is the source code 和 where to bulid the binaries中分别添加opencv的路径和要编译的位置，这里我的编译文件夹设置为QT_bulid</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6it6yrj20k30ig74f.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkme6it6yrj20k30ig74f.jpg" class="img-fluid"><br></a></p>
+<p>下面这一步很关键，点击configure，然后选择默认选项Use default native compliers，如果这里出现了错误，请仔细检查环境变量中是否有其他的MinGW。</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdgyxngj20dy0a1748.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdgyxngj20dy0a1748.jpg" class="img-fluid"><br></a></p>
+<p>然后将WITH_QT和WITH_OPENGL选上，将OPENCV_EXTRA_MODULES_PATH设置，我这里设为<code>F:\opencv\opencv3\opencv-3.3.0\modules</code>再，根据你的opencv解压路径变化，再次Configure。</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmkdeofyoj20k30k5t9h.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmkdeofyoj20k30k5t9h.jpg" class="img-fluid"><br></a></p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdggmzuj21f60u0gnt.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdggmzuj21f60u0gnt.jpg" class="img-fluid"><br></a></p>
+<p>接着会报一系列错误</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdf232ij20k30k5mye.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkmkdf232ij20k30k5mye.jpg" class="img-fluid"><br></a></p>
+<p>将上图中的红色部分的Value变为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">F:\qt5.9\5.9.1\mingw53_32\bin\qmake.exe</span><br><span class="line">F:\qt5.9\5.9.1\mingw53_32\lib\cmake\Qt5Concurrent</span><br><span class="line">F:\qt5.9\5.9.1\mingw53_32\lib\cmake\Qt5Core</span><br><span class="line">F:\qt5.9\5.9.1\mingw53_32\lib\cmake\Qt5Gui</span><br><span class="line">F:\qt5.9\5.9.1\mingw53_32\lib\cmake\Qt5Test</span><br><span class="line">F:\qt5.9\5.9.1\mingw53_32\lib\cmake\Qt5Widgets</span><br></pre></td></tr></table></figure>
+<p>然后又再次报错，道路总是这么的曲折！^_^这次的问题出在了<code>Qt5OpenGL_DIR</code>（当然可能会有别的红色部分，我们只关心gl相关的错误）</p>
+<p>将他设置为<code>F:\qt5.9\5.9.1\mingw53_32\lib\cmake\Qt5OpenGL</code>，最后所有都设置好后，如下图（当然你可能和我的图不一样，不用担心，只要设置好就ok）</p>
+<p>注意到这里，我们要记得将之前设置的OPENCV_EXTRA_MODULES_PATH置为空，也就是开始时什么都没有的状态，否则会出问题。另外在<code>F:\opencv\opencv3\opencv-3.3.0\cmake</code>文件夹下找到<code>OpenCVCompilerOptions.cmake</code>文件，将<code>add_extra_compiler_option(-Werror=non-virtual-dtor)</code>前面加一个#，再次Configure。</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmkdfyhexj21f60u0acc.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmkdfyhexj21f60u0acc.jpg" class="img-fluid"><br></a></p>
+<p>这次没出现问题了，谢天谢地！！！点击Generate</p>
+<p>在我们之前设置的文件夹QT_bulid中，建立这样一个批处理文件<code>run.bat</code>，内容如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mingw32-make</span><br><span class="line">mingw32-make install</span><br></pre></td></tr></table></figure>
+<p>双击批处理即可。</p>
+<p>在编译过程中会出现这样的一个问题，果然是命途多舛，哎！！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">windres.exe: unknown option -- W</span><br></pre></td></tr></table></figure>
+<p>问题的原因出在cmake的版本，如果使用的是3.8就没有问题，别的版本就不清楚了，我使用的是3.10版本，爆了这样的错误。</p>
+<p>不幸的是，你要按照之前的步骤重新来过，再来过之前，先把原来的相关文件夹清空，避免再次出现一些不相关的问题。</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmlesur5jj21f60u0jtn.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkmlesur5jj21f60u0jtn.jpg" class="img-fluid"><br></a></p>
+<p>又回到了那个熟悉的界面，我发誓我真的不想再见到它了！！！将<code>ENABLE_PRECOMPILED_HEADERS</code>的钩去掉。再次configure，ok没报错，接着generate。</p>
+<p>通过之前写的批处理，此时你应该把它删除了，所以再次建立一个批处理，双击它。</p>
+<p>不过居然又报错了，呵呵！！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">modules\videoio\CMakeFiles\opencv_videoio.dir\build.make:187: recipe for target &apos;modules/videoio/CMakeFiles/opencv_videoio.dir/src/cap_dshow.cpp.obj&apos; failed</span><br><span class="line">mingw32-make[2]: *** [modules/videoio/CMakeFiles/opencv_videoio.dir/src/cap_dshow.cpp.obj] Error 1</span><br><span class="line">CMakeFiles\Makefile2:2912: recipe for target &apos;modules/videoio/CMakeFiles/opencv_videoio.dir/all&apos; failed</span><br><span class="line">mingw32-make[1]: *** [modules/videoio/CMakeFiles/opencv_videoio.dir/all] Error 2</span><br><span class="line">Makefile:161: recipe for target &apos;all&apos; failed</span><br><span class="line">mingw32-make: *** [all] Error 2</span><br></pre></td></tr></table></figure>
+<p>在<code>F:\opencv\opencv3\opencv-3.3.0\modules\videoio\src</code>文件夹中的cap_dshow.cpp中添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define STRSAFE_NO_DEPRECATE</span><br></pre></td></tr></table></figure>
+<p>然后再按上面的步骤重新来一遍，我呵呵了！！！记得不要漏了步骤，否则你懂的！！！！</p>
+<p>我的笔记本配置比较老是i7-4910的cpu，所以花费了很长的时间编译，不过让我感到欣慰的是，总算配置好了。^_^!!!</p>
+<p>最后一步就是新建一个文件夹，例如<code>F:\opencv\opencv3\QT_opencv</code>，<del>将opencv的安装文件夹<code>F:\opencv\opencv3\opencv-3.3.0</code>下的include文件夹copy过来，再将之前建立的目录<code>F:\opencv\opencv3\QT_bulid</code>下的bin和lib文件夹copy过来。最后将<code>F:\opencv\opencv3\QT_bulid\bin</code>添加到环境变量。</del>将之前install opencv的目录下的所有文件copy过来，注意这里的install opencv目录是指后来编译安装目录，不是之前的opencv目录，我这里是<code>F:\opencv\opencv3\QT_bulid\install</code>。</p>
+<p>ok，所有工作完成。</p>
+<p>最后为了节省大家的时间，我把编译后的opencv3.3传到了CSDN上，由于上传大小限制，所以分成了两个文件，我真的不是为了骗积分（好吧，其实有一点╮(╯-╰)╭）！<a href="http://download.csdn.net/download/qq_17550379/10028618" target="_blank" rel="noopener">opencv3.3编译文件</a><a href="http://download.csdn.net/download/qq_17550379/10028622" target="_blank" rel="noopener">opencv3.3编译文件2</a></p>
+<p>下一节正式开始我们的编程之旅^_^！！</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/qt/">qt</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/20/2017-10-20-QT5.9.1和opencv3.3运行时crashed的问题解决/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          QT5.9.1和opencv3.3运行时crashed的问题解决
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/17/2017-10-17-opencv读取图片和视屏/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">opencv读取图片和视屏</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">1.</span> <span class="nav-text">环境配置</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>判断两个线段相交，求交点 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp算法" />
+  
+  
+  
+  
+  <meta name="description" content="我们首先将问题分成如下几个小问题讨论  首先要解决的第一个问题是判断直线是否平行 ，我们首先假设四个点的坐标为 前两个点为a(x1, y1), b(x2, y2) 后两个点为 c(x3, y3), d(x4, y4)，求出两个直线的方向向量$\vec{e1}=(x1 - x2, y1 - y2)$, $\vec{e2} = (x3 - x4, y3 - y4)$。 通过$\vec{e1}$, $\">
+<meta name="keywords" content="cpp,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="判断两个线段相交，求交点">
+<meta property="og:url" content="http://coordinate.wang/2017/09/29/2017-09-29-判断两个线段相交/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我们首先将问题分成如下几个小问题讨论  首先要解决的第一个问题是判断直线是否平行 ，我们首先假设四个点的坐标为 前两个点为a(x1, y1), b(x2, y2) 后两个点为 c(x3, y3), d(x4, y4)，求出两个直线的方向向量$\vec{e1}=(x1 - x2, y1 - y2)$, $\vec{e2} = (x3 - x4, y3 - y4)$。 通过$\vec{e1}$, $\">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fk04alqyrtj20bm0a9gli.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fk05ay65s6j20bo090dfo.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.293Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="判断两个线段相交，求交点">
+<meta name="twitter:description" content="我们首先将问题分成如下几个小问题讨论  首先要解决的第一个问题是判断直线是否平行 ，我们首先假设四个点的坐标为 前两个点为a(x1, y1), b(x2, y2) 后两个点为 c(x3, y3), d(x4, y4)，求出两个直线的方向向量$\vec{e1}=(x1 - x2, y1 - y2)$, $\vec{e2} = (x3 - x4, y3 - y4)$。 通过$\vec{e1}$, $\">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fk04alqyrtj20bm0a9gli.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-09-29-判断两个线段相交" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      判断两个线段相交，求交点
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/09/29/2017-09-29-判断两个线段相交/" class="article-date">
+	  <time datetime="2017-09-28T16:00:00.000Z" itemprop="datePublished">九月 29, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们首先将问题分成如下几个小问题讨论</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fk04alqyrtj20bm0a9gli.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fk04alqyrtj20bm0a9gli.jpg" class="img-fluid"><br></a></p>
+<p>首先要解决的第一个问题是<strong>判断直线是否平行</strong> ，我们首先假设四个点的坐标为</p>
+<p>前两个点为a(x1, y1), b(x2, y2) 后两个点为 c(x3, y3), d(x4, y4)，求出两个直线的方向向量$\vec{e1}=(x1 - x2, y1 - y2)$, $\vec{e2} = (x3 - x4, y3 - y4)$。</p>
+<p>通过$\vec{e1}$, $\vec{e2}$求得$\vec{e1}\times\vec{e2}=theta=(e1_xe2_y - e1_ye2_x)$  ，如果theta为0则表示平行。接着我们要判断是否共线，很简单，我们求出这两之间的任意向量，如$\vec{e3}$=(x1 - x3, y1 - y3)，求$\vec{e1}\times\vec{e3} = beta = (e1_xe3_y - e1_ye3_x)$ ，如果beta=0，则表示两个线段共线，否则不共线即不相交。接着判断是否重合，很简单的一个方法就是，我们可以先将这些点按从低到高排好顺序，去比较几何位置即可。</p>
+<p>如果两个线段不平行的话，等于分成了3种情况。首先我们判断是否跨交。也就是判断a,b是不是在c,d两边，c,d同时是不是也在a,b的两边。我们可以求$\vec{m}=(x1 - x3, y1 - y3)$,$\vec{n}=(x1 - x4, y1 - y4)$,$\vec{k}=(x2 - x4, y2 - y4)$</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fk05ay65s6j20bo090dfo.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fk05ay65s6j20bo090dfo.jpg" class="img-fluid"><br></a></p>
+<p>通过判断$\vec{m}\times\vec{e1}$与$\vec{n}\times\vec{e1}$是否异号就可以判断出c,d是否在a,b两侧，如果异号说明在两边，如果同号则不在。另外判断a,b是否在c,d两侧同理可得。</p>
+<p>如果跨交的话求交点。</p>
+<p>设交点为(x0, y0)，则下列方程组必然成立：</p>
+<ul>
+<li>x0-x1=k1(x2-x1)</li>
+<li>y0-y1=k1(y2-y1)</li>
+<li>x0-x3=k2(x4-x3)</li>
+<li>y0-y3=k2(y4-y3)</li>
+</ul>
+<p>其中k1和k2为任意不为0的常数（若为0，则说明有重合的端点，这种情况在上面已经被排除了）。1式与2式联系，3式与4式联立，消去k1和k2可得：</p>
+<ul>
+<li>x0(y2-y1)-x1(y2-y1)=y0(x2-x1)-y1(x2-x1)</li>
+<li>x0(y4-y3)-x3(y4-y3)=y0(x4-x3)-y3(x4-x3)</li>
+</ul>
+<p>将含有未知数x0和y0的项移到左边，常数项移动到右边，得：</p>
+<ul>
+<li>(y2-y1)x0+(x1-x2)y0=(y2-y1)x1+(x1-x2)y1</li>
+<li>(y4-y3)x0+(x3-x4)y0=(y4-y3)x3+(x3-x4)y3</li>
+</ul>
+<p>设两个常数项分别为b1和b2：</p>
+<ul>
+<li>a1=(y2-y1)x1+(x1-x2)y1</li>
+<li>a2=(y4-y3)x3+(x3-x4)y3</li>
+</ul>
+<p>系数行列式的值为theta，用a1和a2替换x0的系数所得系数行列式的值为theta1，替换y0的系数所得系数行列式的值为D2，则有：</p>
+<ul>
+<li>theta=(x2-x1)(y4-y3)-(x4-x3)(y2-y1)</li>
+<li>theta1=a2(x2-x1)-a1(x4-x3)</li>
+<li>theta2=a2(y2-y1)-a1(y4-y3)</li>
+</ul>
+<p>由此，可求得交点坐标为：</p>
+<ul>
+<li>x0=|theta1|/|theta|, y0=|theta2|/|theta|</li>
+</ul>
+<p>如果是交于端点的话通过判断集合位置关系就可以判断出来了。</p>
+<p>下面是代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//判断两个像素是否相等</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">equal</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">std</span>::<span class="built_in">abs</span>(x - y) &lt; <span class="number">1e-7</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">point</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	point(<span class="keyword">double</span> x = <span class="number">0.0</span>, <span class="keyword">double</span> y = <span class="number">0.0</span>) :x(x), y(y) &#123;&#125;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> point&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>!=(<span class="keyword">const</span> point&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(<span class="keyword">const</span> point&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">	<span class="keyword">bool</span> <span class="keyword">operator</span>&gt;(<span class="keyword">const</span> point&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">	point <span class="keyword">operator</span>-(<span class="keyword">const</span> point&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">	point <span class="keyword">operator</span>+(<span class="keyword">const</span> point&amp; rhs) <span class="keyword">const</span>;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">double</span> <span class="title">cross_product</span><span class="params">(<span class="keyword">const</span> point&amp; p1, <span class="keyword">const</span> point&amp; p2)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">pointX</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;x; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">double</span> <span class="title">pointY</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="keyword">this</span>-&gt;y; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">double</span> x, y;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">bool</span> point::<span class="keyword">operator</span>==(<span class="keyword">const</span> point &amp; rhs) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> equal(x, rhs.x) &amp;&amp; equal(y, rhs.y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> point::<span class="keyword">operator</span>!=(<span class="keyword">const</span> point &amp; rhs) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> (x != rhs.x)&amp;&amp;(y != rhs.y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> point::<span class="keyword">operator</span>&lt;(<span class="keyword">const</span> point &amp; rhs) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> point::<span class="keyword">operator</span>&gt;(<span class="keyword">const</span> point &amp; rhs) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">point point::<span class="keyword">operator</span>-(<span class="keyword">const</span> point &amp; rhs) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> point(x - rhs.x, y - rhs.y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">point point::<span class="keyword">operator</span>+(<span class="keyword">const</span> point &amp; rhs) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> point(x + rhs.x, y + rhs.y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> point::cross_product(<span class="keyword">const</span> point &amp; p1, <span class="keyword">const</span> point &amp; p2)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> (p1.x*p2.y - p2.x*p1.y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//判断两个线段是否相交</span></span><br><span class="line"><span class="comment">//相交返回1，重合返回2，不相交返回3</span></span><br><span class="line"><span class="comment">//出错返回-1</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">cross</span><span class="params">(point&amp; a, point&amp; b, point&amp; c, point&amp; d, point&amp; f)</span><span class="comment">//a,b表示一个线段;c,d表示一个线段， f表示交点坐标</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//如果线段长度为0，则退出</span></span><br><span class="line">	<span class="keyword">if</span> (a == b || c == d)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//判断两个是否平行</span></span><br><span class="line"><span class="comment">//得到线段的向量x, y</span></span><br><span class="line">	point x = a - b;</span><br><span class="line">	point y = c - d;</span><br><span class="line">	<span class="comment">//计算差乘</span></span><br><span class="line">	<span class="keyword">double</span> theta = point::cross_product(x, y);</span><br><span class="line">	<span class="keyword">if</span> (a &gt; b)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::swap(a, b);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (c &gt; d)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::swap(c, d);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (equal(theta, <span class="number">0</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//平行时</span></span><br><span class="line">		point m = a - c;</span><br><span class="line">		point n = b - a;</span><br><span class="line">		<span class="keyword">double</span> beta = point::cross_product(m, n);<span class="comment">//计算是否共线</span></span><br><span class="line">		<span class="keyword">if</span> (equal(beta, <span class="number">0</span>))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//平行共线</span></span><br><span class="line">			<span class="comment">//通过判断坐标关系确定是否重合</span></span><br><span class="line">			<span class="keyword">if</span> ((a &lt; c &amp;&amp; c &lt; d) || (d &lt; b &amp;&amp; a &lt; d))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">//重合</span></span><br><span class="line">				<span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (b == c)</span><br><span class="line">			&#123;</span><br><span class="line">				f = b;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (a == d)</span><br><span class="line">			&#123;</span><br><span class="line">				f = a;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">//不重合</span></span><br><span class="line">				<span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//平行不共线且无交点</span></span><br><span class="line">			<span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;<span class="comment">//不平行时</span></span><br><span class="line">		point m = a - c;</span><br><span class="line">		point n = b - c;</span><br><span class="line">		point k = b - d;</span><br><span class="line">		<span class="keyword">double</span> gama1 = point::cross_product(m, y);</span><br><span class="line">		<span class="keyword">double</span> gama2 = point::cross_product(n, y);</span><br><span class="line">		<span class="keyword">double</span> gama3 = point::cross_product(n, x);</span><br><span class="line">		<span class="keyword">double</span> gama4 = point::cross_product(k, x);</span><br><span class="line">		<span class="comment">//不平行且相交</span></span><br><span class="line">		<span class="keyword">if</span> (((gama1 &gt; <span class="number">0</span> &amp;&amp; gama2 &lt; <span class="number">0</span>) || (gama1 &lt; <span class="number">0</span> &amp;&amp; gama2 &gt; <span class="number">0</span>)) &amp;&amp;</span><br><span class="line">			((gama3 &gt; <span class="number">0</span> &amp;&amp; gama4 &lt; <span class="number">0</span>) || (gama3 &lt; <span class="number">0</span> &amp;&amp; gama4 &gt; <span class="number">0</span>)))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">double</span> a1 = (b.pointY() - a.pointY())*a.pointX() + (a.pointX() - b.pointX())*a.pointY();</span><br><span class="line">			<span class="keyword">double</span> a2 = (d.pointY() - c.pointY())*c.pointX() + (c.pointX() - d.pointX())*c.pointY();</span><br><span class="line">			<span class="keyword">double</span> theta1 = (b.pointX() - a.pointX())*a2 - (d.pointX() - c.pointX())*a1;</span><br><span class="line">			<span class="keyword">double</span> theta2 = (b.pointY() - a.pointY())*a2 - (d.pointY() - c.pointY())*a1;</span><br><span class="line">			<span class="keyword">double</span> px = <span class="built_in">std</span>::<span class="built_in">abs</span>(theta1) / <span class="built_in">std</span>::<span class="built_in">abs</span>(theta);</span><br><span class="line">			<span class="keyword">double</span> py = <span class="built_in">std</span>::<span class="built_in">abs</span>(theta2) / <span class="built_in">std</span>::<span class="built_in">abs</span>(theta);</span><br><span class="line">			f = point(px, py);</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (b == c)<span class="comment">//不平行交于端点</span></span><br><span class="line">		&#123;</span><br><span class="line">			f = b;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (a == d)</span><br><span class="line">		&#123;</span><br><span class="line">			f = a;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//不平行不相交</span></span><br><span class="line">			<span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">		&#125;		</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	point p1(0, 0), p2(2, 2), p3(1, 1), p4(3, 3), f;</span><br><span class="line">	<span class="keyword">int</span> n = cross(p1, p2, p3, p4, f);</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/02/2017-10-02-后缀表达式问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          后缀表达式计算四则运算
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/28/2017-09-28-纯虚函数的调用/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">抽象类中的数据</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

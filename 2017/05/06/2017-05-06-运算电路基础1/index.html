@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>运算电路基础（1） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="数字逻辑电路基础组合逻辑部件根据电路是否具有存储功能，将逻辑电路划分为两种类型组合逻辑电路：没有存储功能，其输出仅依赖于输入时序逻辑电路：具有存储功能，其输出不仅依赖于当前输入，还依赖于存储单元的当前状态 多路选择器K路选择器应该有k路输入，因而控制端S的位数应该是$log_2 K$ 一位加法器一位加法器称为全加器。两个加数A和B，低位进位为cin和为F,向高位的位为cout化简后逻辑表达式为F">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运算电路基础（1）">
+<meta property="og:url" content="http://coordinate.wang/2017/05/06/2017-05-06-运算电路基础1/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="数字逻辑电路基础组合逻辑部件根据电路是否具有存储功能，将逻辑电路划分为两种类型组合逻辑电路：没有存储功能，其输出仅依赖于输入时序逻辑电路：具有存储功能，其输出不仅依赖于当前输入，还依赖于存储单元的当前状态 多路选择器K路选择器应该有k路输入，因而控制端S的位数应该是$log_2 K$ 一位加法器一位加法器称为全加器。两个加数A和B，低位进位为cin和为F,向高位的位为cout化简后逻辑表达式为F">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.421Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="运算电路基础（1）">
+<meta name="twitter:description" content="数字逻辑电路基础组合逻辑部件根据电路是否具有存储功能，将逻辑电路划分为两种类型组合逻辑电路：没有存储功能，其输出仅依赖于输入时序逻辑电路：具有存储功能，其输出不仅依赖于当前输入，还依赖于存储单元的当前状态 多路选择器K路选择器应该有k路输入，因而控制端S的位数应该是$log_2 K$ 一位加法器一位加法器称为全加器。两个加数A和B，低位进位为cin和为F,向高位的位为cout化简后逻辑表达式为F">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-06-运算电路基础1" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      运算电路基础（1）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/06/2017-05-06-运算电路基础1/" class="article-date">
+	  <time datetime="2017-05-05T16:00:00.000Z" itemprop="datePublished">五月 6, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数字逻辑电路基础"><a href="#数字逻辑电路基础" class="headerlink" title="数字逻辑电路基础"></a>数字逻辑电路基础</h1><h2 id="组合逻辑部件"><a href="#组合逻辑部件" class="headerlink" title="组合逻辑部件"></a>组合逻辑部件</h2><p>根据电路是否具有存储功能，将逻辑电路划分为两种类型<br>组合逻辑电路：没有存储功能，其输出仅依赖于输入<br>时序逻辑电路：具有存储功能，其输出不仅依赖于当前输入，还依赖于存储单元的当前状态</p>
+<h2 id="多路选择器"><a href="#多路选择器" class="headerlink" title="多路选择器"></a>多路选择器</h2><p>K路选择器应该有k路输入，因而控制端S的位数应该是$log_2 K$</p>
+<h2 id="一位加法器"><a href="#一位加法器" class="headerlink" title="一位加法器"></a>一位加法器</h2><p>一位加法器称为全加器。两个加数A和B，低位进位为cin和为F,向高位的位为cout<br>化简后逻辑表达式为<br>F = A⊕B⊕cin<br>cout = A•B + A•cin + B•cin</p>
+<h2 id="n位带符号数加法器"><a href="#n位带符号数加法器" class="headerlink" title="n位带符号数加法器"></a>n位带符号数加法器</h2><p>程序中经常比较大小，通过做减法得到的标识信息实现</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg" class="img-fluid"><br></a></p>
+<p>溢出标志OF:<br>OF = C_n⊕C_(n-1)<br>符号标志SF:<br>SF = F_(n-1)<br>0标志ZF=1当且仅当F=0；<br>进位借位标志CF:<br>CF = cout⊕cin</p>
+<h2 id="算数逻辑单元"><a href="#算数逻辑单元" class="headerlink" title="算数逻辑单元"></a>算数逻辑单元</h2><p>进行基本的算术运算和逻辑运算：无符号整数加减、带符号整数加减、与或非异或等逻辑运算<br>核心电路是带标志加法器<br>有一个操作控制端（ALUop），用来决定ALU所执行的处理功能。ALUop的位数k决定了操作的种类，例如，当位数k为3时，ALU最多只有2^3=8种操作。</p>
+<p><table border="1" align="left"><br>    <tr><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>    </tr><br>    <tr><br>        <td>000       a+b</td><br>        <td>010       a&amp;b</td><br>        <td>100       ~a</td><br>        <td>110       a </td><br>    </tr><br>    <tr><br>        <td>001       a-b</td><br>        <td>011       a|b</td><br>        <td>101       a⊕b</td><br>        <td>      未用    </td><br>    </tr><br></table><br><br><br><br><br><br></p>
+<p><a href="https://link.zhihu.com/?target=http://fanfeilong.github.io/exceltk0.0.4.7z" target="_blank" rel="noopener">好用的md表格轮子</a></p>
+<h1 id="从c表达式到逻辑电路"><a href="#从c表达式到逻辑电路" class="headerlink" title="从c表达式到逻辑电路"></a>从c表达式到逻辑电路</h1><h2 id="从c表达式到运算类指令"><a href="#从c表达式到运算类指令" class="headerlink" title="从c表达式到运算类指令"></a>从c表达式到运算类指令</h2><p>基本数据类型：无符号数（二进制）、带符号整数（补码）、浮点数（IEEE 754）、字符串（ASCII）<br>基本算术运算符中的算术运算符在底层都是减法实现。<br>对于c赋值语句y = (x&gt;&gt;2)+k;是通过转换为指令序列，通过执行运算类指令实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sarw $2,%ax;//将操作数“2”和“R[ax]”送移位器运算</span><br><span class="line">addw %bx,%ax;//将R[ax]和R[bx]送整数加减运算器中运算</span><br></pre></td></tr></table></figure>
+<h2 id="数据的运算"><a href="#数据的运算" class="headerlink" title="数据的运算"></a>数据的运算</h2><p>指令集中涉及到的运算<br>涉及到的定点运算：带符号整数（取负、符号扩展、加、减、乘、除、算术移位）、无符号整数（0扩展、加、减、乘、除、逻辑移位）、逻辑操作（与、或、非）<br>涉及到的浮点数运算：加、减、乘、除</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/07/2017-05-07-运算电路基础2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          运算电路基础（2）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/05/2017-05-05-浮点数的表示/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">浮点数的表示</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数字逻辑电路基础"><span class="nav-number">1.</span> <span class="nav-text">数字逻辑电路基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#组合逻辑部件"><span class="nav-number">1.1.</span> <span class="nav-text">组合逻辑部件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多路选择器"><span class="nav-number">1.2.</span> <span class="nav-text">多路选择器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一位加法器"><span class="nav-number">1.3.</span> <span class="nav-text">一位加法器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#n位带符号数加法器"><span class="nav-number">1.4.</span> <span class="nav-text">n位带符号数加法器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算数逻辑单元"><span class="nav-number">1.5.</span> <span class="nav-text">算数逻辑单元</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从c表达式到逻辑电路"><span class="nav-number">2.</span> <span class="nav-text">从c表达式到逻辑电路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#从c表达式到运算类指令"><span class="nav-number">2.1.</span> <span class="nav-text">从c表达式到运算类指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据的运算"><span class="nav-number">2.2.</span> <span class="nav-text">数据的运算</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

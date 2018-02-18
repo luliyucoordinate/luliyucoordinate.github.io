@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>内存管理 primitives | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl" />
+  
+  
+  
+  
+  <meta name="description" content="1234567891011121314151617181920212223242526272829303132void *p1 = malloc(512);free(p1);complex&amp;lt;int&amp;gt; *p2 = new complex&amp;lt;int&amp;gt;;delete p2;void *p3 = ::operator new(512);::operator delete(p3);#i">
+<meta name="keywords" content="cpp,stl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存管理 primitives">
+<meta property="og:url" content="http://coordinate.wang/2017/04/09/2017-04-09-内存管理primitives/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="1234567891011121314151617181920212223242526272829303132void *p1 = malloc(512);free(p1);complex&amp;lt;int&amp;gt; *p2 = new complex&amp;lt;int&amp;gt;;delete p2;void *p3 = ::operator new(512);::operator delete(p3);#i">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1feijde9fnuj20860hxdmk.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1feijdeoxfpj20830hjgrh.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.073Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="内存管理 primitives">
+<meta name="twitter:description" content="1234567891011121314151617181920212223242526272829303132void *p1 = malloc(512);free(p1);complex&amp;lt;int&amp;gt; *p2 = new complex&amp;lt;int&amp;gt;;delete p2;void *p3 = ::operator new(512);::operator delete(p3);#i">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1feijde9fnuj20860hxdmk.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-09-内存管理primitives" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      内存管理 primitives
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/09/2017-04-09-内存管理primitives/" class="article-date">
+	  <time datetime="2017-04-08T16:00:00.000Z" itemprop="datePublished">四月 9, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *p1 = <span class="built_in">malloc</span>(<span class="number">512</span>);</span><br><span class="line"><span class="built_in">free</span>(p1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">complex</span>&lt;<span class="keyword">int</span>&gt; *p2 = <span class="keyword">new</span> <span class="keyword">complex</span>&lt;<span class="keyword">int</span>&gt;;</span><br><span class="line"><span class="keyword">delete</span> p2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> *p3 = ::<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="number">512</span>);</span><br><span class="line">::<span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(p3)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _MSR_VER</span></span><br><span class="line"><span class="comment">//以下两个函数都是non-static，一定要通过object调用</span></span><br><span class="line"><span class="keyword">int</span> *p4 = allocator&lt;<span class="keyword">int</span>&gt;().allocate(<span class="number">3</span>, (<span class="keyword">int</span>*)<span class="number">0</span>);</span><br><span class="line">allocator&lt;<span class="keyword">int</span>&gt;().deallocate(p4, <span class="number">3</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __BORLANDC__</span></span><br><span class="line"><span class="comment">//以下两个函数都是non-static，一定要通过object调用</span></span><br><span class="line"><span class="keyword">int</span> *p4 = allocator&lt;<span class="keyword">int</span>&gt;().allocate(<span class="number">5</span>);</span><br><span class="line">allocator&lt;<span class="keyword">int</span>&gt;().deallocate(p4, <span class="number">5</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __GNUC__</span></span><br><span class="line"><span class="comment">//以下两个函数都是static，可以通过全名调用，2.9ver</span></span><br><span class="line"><span class="keyword">void</span> *p4 = alloc::allocate(<span class="number">512</span>);</span><br><span class="line">alloc::deallocate(p4, <span class="number">512</span>);</span><br><span class="line"><span class="comment">//4.9ver 以下两个函数都是non-static，一定要通过object调用</span></span><br><span class="line"><span class="keyword">void</span> *p4 = allocator&lt;<span class="keyword">int</span>&gt;().allocate(<span class="number">7</span>);</span><br><span class="line">allocator&lt;<span class="keyword">int</span>&gt;().deallocate((<span class="keyword">int</span>*)p4, <span class="number">7</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> *p5 = __gnu_cxx::__pool_alloc&lt;<span class="keyword">int</span>&gt;().allocate(<span class="number">9</span>);</span><br><span class="line">__gnu_cxx::__pool_alloc&lt;<span class="keyword">int</span>&gt;.deallocate((<span class="keyword">int</span>*)p5, <span class="number">9</span>);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="New-expression"><a href="#New-expression" class="headerlink" title="New expression"></a>New expression</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *mem = <span class="keyword">operator</span> <span class="keyword">new</span>(<span class="keyword">sizeof</span>(Complex));</span><br><span class="line">pc = <span class="keyword">static_cast</span>&lt;Complex*&gt;(mem);</span><br><span class="line">pc-&gt;Complex::Complex(<span class="number">1</span>,<span class="number">2</span>);<span class="comment">//只有编译器可以这样调用ctor</span></span><br><span class="line"><span class="comment">//想要直接调用ctor，可以运用placement new；</span></span><br><span class="line"><span class="comment">//new(p)Complex(1,2);</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> size, <span class="keyword">const</span> <span class="built_in">std</span>::nothrow <span class="keyword">_t</span>&amp;)</span> _<span class="title">THROW0</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//nothrow struct is used as a function parameter to operator new to </span></span></span><br><span class="line"><span class="function"><span class="comment">//indicate that the function should return a null pointer to report</span></span></span><br><span class="line"><span class="function"><span class="comment">//an allocation failure ,rather than throw an exception</span></span></span><br><span class="line"><span class="function"></span>&#123;       <span class="comment">// try to allocate size bytes</span></span><br><span class="line">	<span class="keyword">void</span> *p;</span><br><span class="line">	<span class="keyword">while</span> ((p = <span class="built_in">malloc</span>(size)) == <span class="number">0</span>)</span><br><span class="line">	    <span class="keyword">if</span> (_callnewh(size) == <span class="number">0</span>)</span><br><span class="line">	    &#123;       <span class="comment">// report no memory</span></span><br><span class="line">	            _THROW_NCEE(_XSTD bad_alloc, );</span><br><span class="line">	    &#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> (p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">delete</span> expression</span><br><span class="line">Complex* pc = <span class="keyword">new</span> Complex(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line">...</span><br><span class="line"><span class="keyword">delete</span> pc;</span><br><span class="line">pc-&gt;~Complex();</span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(pc)</span></span>;</span><br><span class="line"><span class="keyword">void</span> __<span class="function">cdecl <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *p)</span>_<span class="title">THROW0</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">free</span>(p);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Array-new-array-delete"><a href="#Array-new-array-delete" class="headerlink" title="Array new,array delete"></a>Array new,array delete</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Complex *pca = <span class="keyword">new</span> Complex[<span class="number">3</span>];</span><br><span class="line"><span class="comment">//唤起3次ctor</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">delete</span>[] pca;<span class="comment">//唤起3次dtor</span></span><br><span class="line"><span class="comment">//一下做法会造成内存泄漏，string的内部有指针</span></span><br><span class="line"><span class="built_in">string</span> *psa = <span class="keyword">new</span> <span class="built_in">string</span>[<span class="number">3</span>];</span><br><span class="line">...</span><br><span class="line"><span class="keyword">delete</span> psa;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *pi = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">delete</span> pi;</span><br></pre></td></tr></table></figure>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1feijde9fnuj20860hxdmk.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1feijde9fnuj20860hxdmk.jpg" class="img-fluid"><br></a></p>
+<p>61h为cookie，用来记录空间的大小，最后一个字节用来记录内存是在使用，还是未使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Demo *p = <span class="keyword">new</span> Demo[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">delete</span> [] p;</span><br></pre></td></tr></table></figure>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1feijdeoxfpj20830hjgrh.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1feijdeoxfpj20830hjgrh.jpg" class="img-fluid"><br></a></p>
+<p>第一个p指向的地址是00481c30，第二个p指向的地址是00481c34，如果写成delete p;的话，那么会从第一个p开始而不是第二个，就会出问题，多出一个3，这个3表示调用几次析构。如果Demo没有nontrivial dtor ,就不会记录3，也就是说，和上面的int类似，可以不加[]。<br>关于内存空间，必须要调节16的倍数，所以增加了pad这个东西。</p>
+<h1 id="Placement-new"><a href="#Placement-new" class="headerlink" title="Placement new"></a>Placement new</h1><p>Placement new 允许我们将object建立于 allocated memory中没有所谓的placement delete，因为placement new根本没有分配memory亦或称呼placement new 对应的operator delete为placement delete</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;new&gt;</span></span></span><br><span class="line"><span class="keyword">char</span> *buf = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="keyword">sizeof</span>(Complex)*<span class="number">3</span>];</span><br><span class="line">Complex *pc = <span class="keyword">new</span>(buf)Complex(<span class="number">1</span>,<span class="number">2</span>);<span class="comment">//等同于调用构造函数</span></span><br><span class="line"><span class="keyword">void</span> *mem = <span class="keyword">operator</span> <span class="keyword">new</span>(<span class="keyword">sizeof</span>(Complex));<span class="comment">//没有做任何事</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="keyword">size_t</span> ,<span class="keyword">void</span> *loc)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">return</span> loc; &#125;</span><br><span class="line">pc = <span class="keyword">static_cast</span>&lt;Complex*&gt;(mem);</span><br><span class="line">pc-&gt;Complex::Complex(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">delete</span>[] buf;</span><br></pre></td></tr></table></figure>
+<p>关于placement new，或指为new(p)，或指为::operator new(size, void*)</p>
+<h1 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h1><h2 id="重载-operator-new-operator-delete"><a href="#重载-operator-new-operator-delete" class="headerlink" title="重载::operator new/::operator delete"></a>重载::operator new/::operator delete</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">myAlloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">return</span> <span class="built_in">malloc</span>(size); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myAlloc</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">return</span> <span class="built_in">free</span>(ptr); &#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span>* <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> size)</span> </span>&#123;&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span>* <span class="keyword">operator</span> <span class="keyword">new</span>[](<span class="keyword">size_t</span> size) &#123;&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keyword">size_t</span> size) &#123;&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keyword">size_t</span> size) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="重载operator-new-operator-delete"><a href="#重载operator-new-operator-delete" class="headerlink" title="重载operator new/operator delete"></a>重载operator new/operator delete</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Foo *p = <span class="keyword">new</span> Foo;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">delete</span> p;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="keyword">size_t</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span>*, <span class="keyword">size_t</span>)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="重载operator-new-operator-delete-1"><a href="#重载operator-new-operator-delete-1" class="headerlink" title="重载operator new[]/operator delete[]"></a>重载operator new[]/operator delete[]</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Foo *p = <span class="keyword">new</span> Foo[n];</span><br><span class="line">...</span><br><span class="line">Delete[] p;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">void</span> *<span class="keyword">operator</span> <span class="keyword">new</span>[] (<span class="keyword">size_t</span>);</span><br><span class="line">	<span class="keyword">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>[](<span class="keyword">void</span>*, <span class="keyword">size_t</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="重载new-delete"><a href="#重载new-delete" class="headerlink" title="重载new()/delete()"></a>重载new()/delete()</h2><p>我们重载class member operator new(),前提是每一个版本的声明都必须是独特的参数列，其中第一个参数必须是size_t，其余参数以new所指定的placement arguments为初值.出现new()小括号内的便是所谓的placement argument</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Foo *pf = <span class="keyword">new</span> (<span class="number">300</span>,<span class="string">'c'</span>) Foo;<span class="comment">//第一个参数表所示Foo的大小</span></span><br><span class="line"><span class="comment">//一般重载</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">return</span> <span class="built_in">malloc</span>(size); &#125;</span><br><span class="line"><span class="comment">//placement new()的标准写法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> size, <span class="keyword">void</span> *start)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">return</span> start; &#125;</span><br></pre></td></tr></table></figure>
+<p>我们也可以重载class member operator delete(),但是他们不会被delete调用。只有当new所调用的ctor抛出异常，才会带调用这些重载版的operator delete()。他只能这样被调用，主要用来clean未完成创建的object所占的memory。即使operator delete() 未能一一对应operator new() ,编译器也不会报错，这样做的意思是放弃处理ctor发出的异常。  </p>
+<p>Basic_string使用new(extra)<br>平时使用的string就是typdef  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;...&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">basic_string</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Rep</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">release</span><span class="params">()</span> </span>&#123; <span class="keyword">if</span>( --ref == <span class="number">0</span>) <span class="keyword">delete</span> <span class="keyword">this</span>;&#125;</span><br><span class="line">		<span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">void</span>* <span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span>, <span class="keyword">size_t</span>)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> <span class="keyword">void</span>* <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *)</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">inline</span> <span class="keyword">static</span> Rep* <span class="title">create</span><span class="params">(<span class="keyword">size_t</span>)</span></span>;</span><br><span class="line">		...</span><br><span class="line">	&#125;;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">charT</span>, <span class="title">class</span> <span class="title">traits</span>, <span class="title">class</span> <span class="title">Allocator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">basic_string</span>&lt;charT, traits, Allocator&gt;:</span>:Rep*</span><br><span class="line">basic_string&lt;charT, traits, Allocator&gt;::Rep::</span><br><span class="line">create(<span class="keyword">size_t</span> extra)</span><br><span class="line">&#123;</span><br><span class="line">	extra = frob_size(extra + <span class="number">1</span>);</span><br><span class="line">	Rep *p = <span class="keyword">new</span>(extra) Rep;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">charT</span>, <span class="title">class</span> <span class="title">traits</span>, <span class="title">class</span> <span class="title">Allocator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> *<span class="title">basic_string</span>&lt;charT, traits, Allocator&gt;:</span>:Rep::</span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="keyword">size_t</span> s,<span class="keyword">size_t</span> extra)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> Allocator::allocate(s + extra * <span class="keyword">sizeof</span>();<span class="comment">//placement new的重载</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;class charT, class traits, class Allocator&gt;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> basic_string&lt;charT, traits, Allocator&gt;::Rep::</span><br><span class="line">opreraotr <span class="keyword">delete</span>(<span class="keyword">void</span> *ptr)</span><br><span class="line">&#123;</span><br><span class="line">	Allocator::deallocate(ptr...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Pre-class allocator，<span class="number">1</span></span><br><span class="line">#include &lt;cstddef&gt;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line">class Screen</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Screen(<span class="keyword">int</span> x) :i(x) &#123;&#125;;</span><br><span class="line">	<span class="keyword">int</span> get() &#123; <span class="keyword">return</span> i; &#125;</span><br><span class="line">	<span class="keyword">void</span> *<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="keyword">size_t</span>);</span><br><span class="line">	<span class="keyword">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keyword">void</span>*, <span class="keyword">size_t</span>);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	Screen *next;</span><br><span class="line">	<span class="keyword">static</span> Screen *freeStore;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> screenChunk;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line">Screen *Screen::freeSore = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Screen::screenChunk = <span class="number">24</span>;</span><br><span class="line"><span class="keyword">void</span> *Screen::<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="keyword">size_t</span> size)</span><br><span class="line">&#123;</span><br><span class="line">	Screen *p;<span class="comment">//这种设计多用了一个指针</span></span><br><span class="line">	<span class="keyword">if</span>(!freeStore)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">size_t</span> chunk = screenChunk *size;</span><br><span class="line">		freeStore = p = <span class="keyword">reinterpret_cast</span>&lt;Screen*&gt;(<span class="keyword">new</span> <span class="keyword">char</span> [chunk]);</span><br><span class="line"><span class="comment">//将一大块分割后，用链表穿起来</span></span><br><span class="line">		<span class="keyword">for</span>(; p!= &amp;freeStore[screenChunk<span class="number">-1</span>]; ++p)</span><br><span class="line">			p-&gt;next = p +<span class="number">1</span>;</span><br><span class="line">		p-&gt;next = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	p = freeStore;</span><br><span class="line">	freeStore = freeStore-&gt;next;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> Screen::<span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keyword">void</span> *p,<span class="keyword">size_t</span>)</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//将delete object插回</span></span><br><span class="line">	(<span class="keyword">static_cast</span> &lt;Screen*&gt;(p))-&gt;next = freeStore;</span><br><span class="line">	freeStore = <span class="keyword">static_cast</span>&lt;Screen*&gt;(p);</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">Pre-class allocator，<span class="number">2</span></span><br><span class="line">class Airplane</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	struct AirplaneRep</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">unsigned</span> <span class="keyword">long</span> miles;</span><br><span class="line">		<span class="keyword">char</span> type;</span><br><span class="line">	&#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">union</span></span><br><span class="line">	&#123;</span><br><span class="line">		AirplaneRep rep;</span><br><span class="line">		Airplane *next;<span class="comment">//嵌入式指针，相对于前面的来说非常不错</span></span><br><span class="line">	&#125;;</span><br><span class="line"><span class="comment">//一个union 只配置一个足够大的空间以来容纳最大长度的数据成员，以上例而言，最大长</span></span><br><span class="line"><span class="comment">//度是AirplaneRep型态。</span></span><br><span class="line"><span class="comment">//在C++里，union 的成员默认属性页为public。union 主要用来压缩空间。如果一些数</span></span><br><span class="line"><span class="comment">//据不可能在同一时间同时被用到，则可以使用union。</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">long</span> getMiles() &#123; <span class="keyword">return</span> rep.miles;&#125;</span><br><span class="line">	<span class="keyword">char</span> getType() &#123; <span class="keyword">return</span> rep.type; &#125;</span><br><span class="line">	<span class="keyword">void</span> <span class="built_in">set</span>(<span class="keyword">unsigned</span> <span class="keyword">long</span> m, <span class="keyword">char</span> t)</span><br><span class="line">	&#123;</span><br><span class="line">		rep.miles = m;</span><br><span class="line">		rep.type = t;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">void</span> *opertor <span class="keyword">new</span>(<span class="keyword">size_t</span> size);</span><br><span class="line"><span class="comment">//注意这里static，编译器默认也是static，原因在于，要在对象创建时调用，</span></span><br><span class="line"><span class="comment">//如果不是static，对象创建时，可能这个东西还在创建的过程中</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">void</span> <span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keyword">void</span> *deadObject, <span class="keyword">size_t</span> size);</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> BLOCK_SIZE;	<span class="keyword">static</span> Airplane *headOfFreeList;</span><br><span class="line">&#125;;</span><br><span class="line">Airplane *Airplane::headOfFreeList;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> Airplane::BLOCK_SIZE=<span class="number">512</span>;</span><br><span class="line"><span class="keyword">void</span> *Airplane::<span class="keyword">operator</span> <span class="keyword">new</span>(<span class="keyword">size_t</span> size)</span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//当继承发生时</span></span><br><span class="line">	<span class="keyword">if</span>(size != <span class="keyword">sizeof</span>(Airplane))</span><br><span class="line">		<span class="keyword">return</span> ::<span class="keyword">operator</span> <span class="keyword">new</span>(size);</span><br><span class="line">	Airplane *p = headOfFreeList;</span><br><span class="line">	<span class="keyword">if</span>(p)</span><br><span class="line">		headOfFreeList = p-&gt;next;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		Airplane *newBlock = <span class="keyword">static_cast</span>&lt;Airplane*&gt;</span><br><span class="line">		(::<span class="keyword">operator</span> <span class="keyword">new</span>(BLOCK_SIZE * <span class="keyword">sizeof</span>(Airplane));</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;BLOCK_SIZE - <span class="number">1</span>;++i)</span><br><span class="line">			newBlock[i].next = &amp;newBlock[i+<span class="number">1</span>];</span><br><span class="line">		newBlock[BLOCK_SIZE<span class="number">-1</span>].next = <span class="number">0</span>;</span><br><span class="line">		p = newBlock;</span><br><span class="line">		headOfFreeList = &amp;newBlock[<span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> Airplane::<span class="keyword">operator</span> <span class="keyword">delete</span>(<span class="keyword">void</span> *deadObject, <span class="keyword">size_t</span> size)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(deadObject == <span class="number">0</span>) <span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">if</span>(size != <span class="keyword">sizeof</span>(Airplane))</span><br><span class="line">	&#123;</span><br><span class="line">		::<span class="keyword">operator</span> <span class="keyword">delete</span>(deadObject);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	Airplane *carcass = <span class="keyword">static_cast</span>&lt;Airplane*&gt;(deadObject);</span><br><span class="line">	carcass-&gt;next = headOfFreeList;</span><br><span class="line">	headOfFreeList = carcass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="static-allocator"><a href="#static-allocator" class="headerlink" title="static allocator"></a>static allocator</h1><p>不同的class重写一遍几乎相同member operator new和member operator delete时，应该有方法将他们统一在一起，是他可以重用。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">allocator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">obj</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="class"><span class="keyword">struct</span> <span class="title">obj</span>* <span class="title">next</span>;</span><span class="comment">//与linux里的链表做法一样</span></span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> *<span class="title">allocate</span><span class="params">(<span class="keyword">size_t</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">(<span class="keyword">void</span>*, <span class="keyword">size_t</span>)</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	obj* freeStore = <span class="literal">nullptr</span>;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">int</span> CHUNK = <span class="number">5</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">void</span> *allocator::allocate(<span class="keyword">size_t</span> size)</span><br><span class="line">&#123;</span><br><span class="line">	obj *p;</span><br><span class="line">	<span class="keyword">if</span>(!freeStore)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">size_t</span> chunk = CHUNK *size;</span><br><span class="line">		freeStore = p = (obj*)<span class="built_in">malloc</span>(chunk);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span>  i = <span class="number">0</span>; i &lt; (CHUNK<span class="number">-1</span>); +i)</span><br><span class="line">		&#123;</span><br><span class="line">			p-&gt;next = (obj*)((<span class="keyword">char</span>*)p+size);</span><br><span class="line">			p = p-&gt;next;</span><br><span class="line">		&#125;</span><br><span class="line">		p-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	p = freeStore;</span><br><span class="line">	freeStore = freeStore-&gt;next;</span><br><span class="line">	<span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">(<span class="keyword">void</span> *p, <span class="keyword">size_t</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	((obj*)p)-&gt;next = freeStore;</span><br><span class="line">	freeStore = (obj*)p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时Foo可以这样写了</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">static</span> allocator myAlloc;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function">    </span>&#123; <span class="keyword">return</span> myAlloc.allocate(size); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span>* pHead, <span class="keyword">size_t</span> size)</span></span>;</span><br><span class="line">    &#123; <span class="keyword">return</span> myAlloc.deallocate(pHead, size); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样做就方便了很多</p>
+<h1 id="Macro-for-static-allocator"><a href="#Macro-for-static-allocator" class="headerlink" title="Macro for static allocator"></a>Macro for static allocator</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">\表示续行符</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DECLARE_POOL_ALLOC()\</span></span><br><span class="line"><span class="keyword">public</span>:\</span><br><span class="line">	<span class="function"><span class="keyword">void</span> *<span class="keyword">operator</span> <span class="title">new</span><span class="params">(<span class="keyword">size_t</span> size)</span> </span>&#123; <span class="keyword">return</span> myAlloc.allocate(size); &#125;\</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="keyword">operator</span> <span class="title">delete</span><span class="params">(<span class="keyword">void</span> *p)</span> </span>&#123; myAlloc.deallocate(p, <span class="number">0</span>); &#125;\</span><br><span class="line"><span class="keyword">protected</span>:\</span><br><span class="line">	<span class="keyword">static</span> allocator myAlloc;</span><br><span class="line">	</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IMPLEMENT_POOL_ALLOC(class_name)\</span></span><br><span class="line">allocator class_name::myAlloc;</span><br></pre></td></tr></table></figure>
+<p>原来的变成如下形式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	DECLARE_POOL_ALLOC()</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">long</span> L;</span><br><span class="line">	<span class="built_in">string</span> str;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Foo(<span class="keyword">long</span> l) : L(l) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">IMPLEMENT_POOL_ALLOC(Foo)</span><br></pre></td></tr></table></figure>
+<h1 id="New-handler"><a href="#New-handler" class="headerlink" title="New handler"></a>New handler</h1><p>当operator new 没有能力分配申请的memory，会抛出异常std::bad_alloc execption以仍然可以让编译器new(nothrow) Foo;<br>抛出异常之前会调用一个可由client指定的handler，以下是new handler的形式和设定方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span><span class="params">(*new_handler)</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function">new_handler <span class="title">set_new_handler</span><span class="params">(new_handler p)</span> <span class="title">throw</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>设计良好的new handler只有俩个选择：<br>让更多的memory可用 调用abort()和exit()</p>
+<h1 id="default-delete"><a href="#default-delete" class="headerlink" title="=default,=delete"></a>=default,=delete</h1><p>It is not only for ctor and assignments,but also apllies to operator new/new[],operator delete/delete[] and their overloads</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Foo() = <span class="keyword">default</span>;<span class="comment">//表示使用默认版本，如果没有的话使用编译器合成版</span></span><br><span class="line">	Foo(<span class="keyword">const</span> Foo&amp;)=<span class="keyword">delete</span>;<span class="comment">//表示不使用这个函数 </span></span><br><span class="line">	Foo&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Foo&amp;)=<span class="keyword">delete</span>;</span><br><span class="line">	~Foo()=defalut;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/10/2017-04-10-std_allocator/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          std::allocator
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/08/2017-04-08-cast/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">static_cast,dynamic_cast,reinterpret_cast和const_cast</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#New-expression"><span class="nav-number">1.</span> <span class="nav-text">New expression</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Array-new-array-delete"><span class="nav-number">2.</span> <span class="nav-text">Array new,array delete</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Placement-new"><span class="nav-number">3.</span> <span class="nav-text">Placement new</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重载"><span class="nav-number">4.</span> <span class="nav-text">重载</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#重载-operator-new-operator-delete"><span class="nav-number">4.1.</span> <span class="nav-text">重载::operator new/::operator delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重载operator-new-operator-delete"><span class="nav-number">4.2.</span> <span class="nav-text">重载operator new/operator delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重载operator-new-operator-delete-1"><span class="nav-number">4.3.</span> <span class="nav-text">重载operator new[]/operator delete[]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重载new-delete"><span class="nav-number">4.4.</span> <span class="nav-text">重载new()/delete()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#static-allocator"><span class="nav-number">5.</span> <span class="nav-text">static allocator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Macro-for-static-allocator"><span class="nav-number">6.</span> <span class="nav-text">Macro for static allocator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#New-handler"><span class="nav-number">7.</span> <span class="nav-text">New handler</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#default-delete"><span class="nav-number">8.</span> <span class="nav-text">=default,=delete</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

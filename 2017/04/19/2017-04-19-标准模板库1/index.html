@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>标准模板库(1) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="容器(Container)序列式容器(Sequence container):array,vector,deque,list and forward_list关联式容器(Associative container):set,multiset,map and multimap无序容器:(Unordered(associative)container):unordered_set,unordered_">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="标准模板库(1)">
+<meta property="og:url" content="http://coordinate.wang/2017/04/19/2017-04-19-标准模板库1/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="容器(Container)序列式容器(Sequence container):array,vector,deque,list and forward_list关联式容器(Associative container):set,multiset,map and multimap无序容器:(Unordered(associative)container):unordered_set,unordered_">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.237Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="标准模板库(1)">
+<meta name="twitter:description" content="容器(Container)序列式容器(Sequence container):array,vector,deque,list and forward_list关联式容器(Associative container):set,multiset,map and multimap无序容器:(Unordered(associative)container):unordered_set,unordered_">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-19-标准模板库1" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      标准模板库(1)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/19/2017-04-19-标准模板库1/" class="article-date">
+	  <time datetime="2017-04-18T16:00:00.000Z" itemprop="datePublished">四月 19, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="容器-Container"><a href="#容器-Container" class="headerlink" title="容器(Container)"></a>容器(Container)</h1><p>序列式容器(Sequence container):array,vector,deque,list and forward_list<br>关联式容器(Associative container):set,multiset,map and multimap<br>无序容器:(Unordered(associative)container):unordered_set,unordered_multiset,unordered_map,unordered_multimap</p>
+<h2 id="序列式容器-Sequence-container"><a href="#序列式容器-Sequence-container" class="headerlink" title="序列式容器(Sequence container)"></a>序列式容器(Sequence container)</h2><p>自c++11开始，c++标准库提供另一个list容器：forward list。forward list是一个单向链表。<br>因此，forward list原则上就是一个受限的list，你无法查找某个元素然后删除它，或是在他的前面安插另一个元素。因此，为了删除某个元素，你必须位于其前一个元素的位置上，因为正是那个元素，才决定一个新的后继元素。也因此，forward list对此提供了一个特殊的成员函数erase_after()<br>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;forward_list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// create forward-list container for some prime numbers</span></span><br><span class="line">    forward_list&lt;<span class="keyword">long</span>&gt; coll = &#123; <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span> &#125;;</span><br><span class="line">    <span class="comment">// resize two times</span></span><br><span class="line">    <span class="comment">// - note: poor performance</span></span><br><span class="line">    coll.resize(<span class="number">9</span>);</span><br><span class="line">    coll.resize(<span class="number">10</span>,<span class="number">99</span>);</span><br><span class="line">    <span class="comment">// print all elements:</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span> elem : coll) &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; elem &lt;&lt; <span class="string">' '</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关联式数组-Associative-Array"><a href="#关联式数组-Associative-Array" class="headerlink" title="关联式数组(Associative Array)"></a>关联式数组(Associative Array)</h2><p>不论map或unordered map，都是key/value pair形成的集合，每个元素都带着独一无二的key。这样的集合也可以被视为一个关联式数组，也就是“索引并非整数”的array。也因此，刚才说的两个容器，都可以使用[]操作符。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// type of the container:</span></span><br><span class="line">    <span class="comment">// - unordered_map: elements are key/value pairs</span></span><br><span class="line">    <span class="comment">// - string: keys have type string</span></span><br><span class="line">    <span class="comment">// - float: values have type float</span></span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// insert some elements into the collection</span></span><br><span class="line">    <span class="comment">// - using the syntax of an associative array</span></span><br><span class="line">    coll[<span class="string">"VAT1"</span>] = <span class="number">0.16</span>;</span><br><span class="line">    coll[<span class="string">"VAT2"</span>] = <span class="number">0.07</span>;</span><br><span class="line">    coll[<span class="string">"Pi"</span>] = <span class="number">3.1415</span>;</span><br><span class="line">    coll[<span class="string">"an arbitrary number"</span>] = <span class="number">4983.223</span>;</span><br><span class="line">    coll[<span class="string">"Null"</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// change value</span></span><br><span class="line">    coll[<span class="string">"VAT1"</span>] += <span class="number">0.03</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print difference of VAT values</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"VAT difference: "</span> &lt;&lt; coll[<span class="string">"VAT1"</span>] - coll[<span class="string">"VAT2"</span>] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>自C++11开始，你也可以使用at()访问元素的value，只要传给他key就行。这种情况下如果容器内找不到给定的key，会导致out_of_range异常:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll.at(<span class="string">"VAT1"</span>) = <span class="number">0.1</span>;</span><br></pre></td></tr></table></figure>
+<p>使用map与使用unordered_map的差异在于，元素在unordered_map的次序有各种可能，但元素在map内一定是排序过的。但由于unordered_map的操作属于“amortized constant”复杂度，map提供的是“对数复杂度”，所以通常宁可使用unordered_map而放弃map，除非你需要排序。<br>容器适配器(Container Adapter)<br>Stack 名字足以说明。Stack容器对元素采取的是LIFO(后进先出)管理策略。<br>Queue 对元素采取FIFO(先进先出)管理策略。也就是说，他就是一个寻常的缓冲区(buffer)。<br>Priority queue 其内的元素拥有各种优先权。所谓的优先权是基于程序员提供的排序准则(默认为操作符&lt;)而定义。<br>迭代器(Iterator)<br>任何容器都定义两种迭代器类型：  </p>
+<ol>
+<li>container::iterator以“读/写”模式遍历元素。</li>
+<li>container::const_iterator以“只读”模式遍历元素。</li>
+</ol>
+<p>我们可以使用关键字auto代替迭代器的精确类型。因此我们直接以begin初始化迭代器，就可以使用auto声明其类型：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos = coll.begin(); pos != coll.end(); ++pos)</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; *pos &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>采用这种写法，万一容器类型发生变化，程序整体仍能保持较佳的健壮性。然而其缺点是，迭代器丧失常量性，可能引发“计划外的赋值”风险。因为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> pos = coll.begin();</span><br></pre></td></tr></table></figure>
+<p>会使pos是一个非常量迭代器，因为begin()返回的是个类型为cont::iterator的对象。为确保仍可使用常量迭代器，自C++11起容器提供cbegin和cend，他们放回一个cont::const_iterator的对象。</p>
+<h1 id="算法-Algorithm"><a href="#算法-Algorithm" class="headerlink" title="算法(Algorithm)"></a>算法(Algorithm)</h1><h2 id="区间-Range"><a href="#区间-Range" class="headerlink" title="区间(Range)"></a>区间(Range)</h2><p>所有算法处理的都是半开区间(half-open range)—包括其实元素的位置但并不包括末尾元素的位置。<br>半开区间的有点主要是单纯，可免除对空集做特殊处理。当然，金无足赤，世上没有完美的设计。<br>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; coll;</span><br><span class="line">    <span class="comment">// insert elements from 20 to 40</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">20</span>; i&lt;=<span class="number">40</span>; ++i) &#123;</span><br><span class="line">        coll.push_back(i);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// find position of element with value 3</span></span><br><span class="line">    <span class="comment">// - there is none, so pos3 gets coll.end()</span></span><br><span class="line">    <span class="keyword">auto</span> pos3 = find (coll.begin(), coll.end(),    <span class="comment">// range</span></span><br><span class="line">                      <span class="number">3</span>);                          <span class="comment">// value</span></span><br><span class="line">       <span class="comment">// reverse the order of elements between found element and the end</span></span><br><span class="line">    <span class="comment">// - because pos3 is coll.end() it reverses an empty range</span></span><br><span class="line">    reverse (pos3, coll.end());</span><br><span class="line">    <span class="comment">// find positions of values 25 and 35</span></span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;::iterator pos25, pos35;</span><br><span class="line">    pos25 = find (coll.begin(), coll.end(),  <span class="comment">// range</span></span><br><span class="line">                  <span class="number">25</span>);                       <span class="comment">// value</span></span><br><span class="line">    pos35 = find (coll.begin(), coll.end(),  <span class="comment">// range</span></span><br><span class="line">                  <span class="number">35</span>);                       <span class="comment">// value</span></span><br><span class="line">    <span class="comment">// print the maximum of the corresponding range</span></span><br><span class="line">    <span class="comment">// - note: including pos25 but excluding pos35</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"max: "</span> &lt;&lt; *max_element (pos25, pos35) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// process the elements including the last position</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"max: "</span> &lt;&lt; *max_element (pos25, ++pos35) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查找元素3的任务失败后，find()返回区间的结束位置并赋值给pos3。所以reverse()的结果就是相当于：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reverse(coll.end(), coll.end());</span><br></pre></td></tr></table></figure>
+<h2 id="处理多重区间-Multiple-Ranges"><a href="#处理多重区间-Multiple-Ranges" class="headerlink" title="处理多重区间(Multiple Ranges)"></a>处理多重区间(Multiple Ranges)</h2><p>有数个算法可以同时处理多重区间。通常你必须设定第一区间的起点和终点，至于其他区间，只需设定起点即可，终点通常可由第一区间的元素数量推导出来。例如，equal从头开始比较coll1和coll2的所有元素：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>( equal(coll1.begin(), coll1,end(),</span><br><span class="line">			coll.begin())&#123;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>于是，coll2之中参与比较的元素数量，间接取决于coll1内的数量。<br>这使得我们获得一个重要的心得：如果某个算法用来处理多重区间，那么当你调用它时，务必确保第二区间所拥有的元素个数至少和第一区间内的元素个数相同。<br>注意下面这个例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;   coll1 = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; coll2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// RUNTIME ERROR:</span></span><br><span class="line">    <span class="comment">// - overwrites nonexisting elements in the destination</span></span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),   <span class="comment">// source</span></span><br><span class="line">          coll2.begin());                 <span class="comment">// destination</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>想要避免上面的错误，你可以确定目标区间内有足够的元素空间，或是采用insert iterator。<br>为了是目标区间足够大，你可以一开始给他一个正确的大小，也可以显示的变更他的大小。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt;   coll1 = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; coll2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// resize destination to have enough room for the overwriting algorithm</span></span><br><span class="line">    coll2.resize (coll1.size());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// copy elements from first into second collection</span></span><br><span class="line">    <span class="comment">// - overwrites existing elements in destination</span></span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),   <span class="comment">// source</span></span><br><span class="line">          coll2.begin());                 <span class="comment">// destination</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// create third collection with enough room</span></span><br><span class="line">    <span class="comment">// - initial size is passed as parameter</span></span><br><span class="line">    <span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; coll3(coll1.size());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// copy elements from first into third collection</span></span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),   <span class="comment">// source</span></span><br><span class="line">          coll3.begin());                 <span class="comment">// destination</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意这两种做法都会产生新元素并赋初值。这些元素由default构造函数初始化，没有任何实参。你可以传递额外的实参给构造函数和resize()，这样就可以按你的意思将新元素初始化。</p>
+<h1 id="迭代器之适配器-Iterator-Adapter"><a href="#迭代器之适配器-Iterator-Adapter" class="headerlink" title="迭代器之适配器(Iterator Adapter)"></a>迭代器之适配器(Iterator Adapter)</h1><p>C++11标准库提供了数个预定义的特殊迭代器，亦即所谓迭代器适配器(iterator adapter)。</p>
+<h2 id="Insert-Iterator-安插型迭代器"><a href="#Insert-Iterator-安插型迭代器" class="headerlink" title="Insert Iterator(安插型迭代器)"></a>Insert Iterator(安插型迭代器)</h2><p>它可以使算法以安插方式而非覆写方式运作。使用它可以解决算法的“目标空间不足”问题。她会促使目标区间的大小按需求成长。<br>Insert iterator内部将接口做了新的定义：<br>如果你将某个元素赋值，会引发“对其所属集合的按插动作”。至于插入位置是在容器的最前或最后，或某特定位置上，要视三种不同的insert iterator而定。<br>单步前行不会构成任何动静。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;set&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span>&lt;<span class="keyword">int</span>&gt; coll1 = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span> &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// copy the elements of coll1 into coll2 by appending them</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; coll2;</span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),    <span class="comment">// source</span></span><br><span class="line">          back_inserter(coll2));           <span class="comment">// destination</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// copy the elements of coll1 into coll3 by inserting them at the front</span></span><br><span class="line">    <span class="comment">// - reverses the order of the elements</span></span><br><span class="line">    <span class="built_in">deque</span>&lt;<span class="keyword">int</span>&gt; coll3;</span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),    <span class="comment">// source</span></span><br><span class="line">          front_inserter(coll3));          <span class="comment">// destination</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// copy elements of coll1 into coll4</span></span><br><span class="line">    <span class="comment">// - only inserter that works for associative collections</span></span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; coll4;</span><br><span class="line">    copy (coll1.cbegin(), coll1.cend(),    <span class="comment">// source</span></span><br><span class="line">          inserter(coll4,coll4.begin()));  <span class="comment">// destination</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个例子运用了三个预定义的insert iterator<br>Back inserter其内部调用push_back()，在容器末尾插入元素。<br>Front inserter其内部调用push_front()，将元素安插于容器最前端。<br>General inserter这种一般性的inserter，简称inserter，它的作用是在“初始化时接受第二实参”所指位置的前方插入元素。其内部调用成员函数insert()，因此这是唯一可用于关联式容器身上的一种预定义inserter。</p>
+<h2 id="Stream-Iterator-串流迭代器"><a href="#Stream-Iterator-串流迭代器" class="headerlink" title="Stream Iterator(串流迭代器)"></a>Stream Iterator(串流迭代器)</h2><p>Stream Iterator被用来读写stream。他们提供了必要的抽象性，使得来自键盘的输入像是个集合，你能够从中读取内容。同样道理，你也可以把一个算法输出结果重新导向到某个文件或屏幕上。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; coll;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// read all words from the standard input</span></span><br><span class="line">    <span class="comment">// - source: all strings until end-of-file (or error)</span></span><br><span class="line">    <span class="comment">// - destination: coll (inserting)</span></span><br><span class="line">    copy (istream_iterator&lt;<span class="built_in">string</span>&gt;(<span class="built_in">cin</span>),    <span class="comment">// start of source</span></span><br><span class="line">          istream_iterator&lt;<span class="built_in">string</span>&gt;(),       <span class="comment">// end of source</span></span><br><span class="line">          back_inserter(coll));             <span class="comment">// destination</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// sort elements</span></span><br><span class="line">    sort (coll.begin(), coll.end());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print all elements without duplicates</span></span><br><span class="line">    <span class="comment">// - source: coll</span></span><br><span class="line">    <span class="comment">// - destination: standard output (with newline between elements)</span></span><br><span class="line">    unique_copy (coll.cbegin(), coll.cend(),           <span class="comment">// source</span></span><br><span class="line">                 ostream_iterator&lt;<span class="built_in">string</span>&gt;(<span class="built_in">cout</span>,<span class="string">"\n"</span>)); <span class="comment">// destination</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>istream_iterator<string>(cin)会产生一个可从“标准输入串流cin”读取数据的stream iterator。其中的template实参string表示这个stream iterator专门读取这个类型的元素。这些元素通过一般的operator &gt;&gt; 被读取出来。</string></p>
+<h2 id="Reverse-Iterator-反向迭代器"><a href="#Reverse-Iterator-反向迭代器" class="headerlink" title="Reverse Iterator(反向迭代器)"></a>Reverse Iterator(反向迭代器)</h2><p>Reverse iterator会造成算法逆向操作。所有提供双向迭代器或随机访问迭代器的容器都可以通过他们的成员函数rbegin和rend产生一个反向迭代器。自C++11开始还提供一组对应成员函数crbegin和crend，它们会返回只读反向迭代器。<br>Forward_list和所有无序容器都没有提供回向迭代接口，即rbegin和rend等等。原因是那些容器内部实现只是使用singly linked list传奇所有元素。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; coll;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// insert elements from 1 to 9</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=<span class="number">9</span>; ++i) &#123;</span><br><span class="line">        coll.push_back(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// print all element in reverse order</span></span><br><span class="line">    copy (coll.crbegin(), coll.crend(),      <span class="comment">// source</span></span><br><span class="line">          ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">cout</span>,<span class="string">" "</span>));  <span class="comment">// destination</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>采用reverse iterator，所有算法便可以不需特殊处理就以相反方向操作容器，这自然是美事一桩。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/20/2017-04-20-标准模板库2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          标准模板库(2)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/18/2017-04-18-理解C++语言的声明语法/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">理解C/C++语言的声明语法-声明子</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#容器-Container"><span class="nav-number">1.</span> <span class="nav-text">容器(Container)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列式容器-Sequence-container"><span class="nav-number">1.1.</span> <span class="nav-text">序列式容器(Sequence container)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联式数组-Associative-Array"><span class="nav-number">1.2.</span> <span class="nav-text">关联式数组(Associative Array)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法-Algorithm"><span class="nav-number">2.</span> <span class="nav-text">算法(Algorithm)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#区间-Range"><span class="nav-number">2.1.</span> <span class="nav-text">区间(Range)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理多重区间-Multiple-Ranges"><span class="nav-number">2.2.</span> <span class="nav-text">处理多重区间(Multiple Ranges)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#迭代器之适配器-Iterator-Adapter"><span class="nav-number">3.</span> <span class="nav-text">迭代器之适配器(Iterator Adapter)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Insert-Iterator-安插型迭代器"><span class="nav-number">3.1.</span> <span class="nav-text">Insert Iterator(安插型迭代器)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stream-Iterator-串流迭代器"><span class="nav-number">3.2.</span> <span class="nav-text">Stream Iterator(串流迭代器)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reverse-Iterator-反向迭代器"><span class="nav-number">3.3.</span> <span class="nav-text">Reverse Iterator(反向迭代器)</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

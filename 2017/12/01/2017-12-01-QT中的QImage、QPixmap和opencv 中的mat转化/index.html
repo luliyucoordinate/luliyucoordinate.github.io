@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>QT中的QImage、QPixmap和opencv 中的mat转化 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppopencvqt" />
+  
+  
+  
+  
+  <meta name="description" content="我们使用QT和opencv的过程中经常会碰到这样的问题：Mat怎么转化位QImage？Mat怎么转化为QPixmap？今天我来告诉大家一个比较好的解决方案（以下代码参考了别人的，增加了一些修改） 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+<meta name="keywords" content="cpp,opencv,qt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT中的QImage、QPixmap和opencv 中的mat转化">
+<meta property="og:url" content="http://coordinate.wang/2017/12/01/2017-12-01-QT中的QImage、QPixmap和opencv 中的mat转化/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我们使用QT和opencv的过程中经常会碰到这样的问题：Mat怎么转化位QImage？Mat怎么转化为QPixmap？今天我来告诉大家一个比较好的解决方案（以下代码参考了别人的，增加了一些修改） 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.538Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QT中的QImage、QPixmap和opencv 中的mat转化">
+<meta name="twitter:description" content="我们使用QT和opencv的过程中经常会碰到这样的问题：Mat怎么转化位QImage？Mat怎么转化为QPixmap？今天我来告诉大家一个比较好的解决方案（以下代码参考了别人的，增加了一些修改） 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-01-QT中的QImage、QPixmap和opencv 中的mat转化" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      QT中的QImage、QPixmap和opencv 中的mat转化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/01/2017-12-01-QT中的QImage、QPixmap和opencv 中的mat转化/" class="article-date">
+	  <time datetime="2017-11-30T16:00:00.000Z" itemprop="datePublished">十二月 1, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们使用QT和opencv的过程中经常会碰到这样的问题：Mat怎么转化位QImage？Mat怎么转化为QPixmap？今天我来告诉大家一个比较好的解决方案（以下代码参考了别人的，增加了一些修改）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QImage&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QPixmap&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"opencv2/imgproc/imgproc.hpp"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"opencv2/imgproc/types_c.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> CVS </span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// 将Mat转化位QImage</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> QImage  <span class="title">cvMatToQImage</span><span class="params">( <span class="keyword">const</span> cv::Mat &amp;inMat )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> ( inMat.type() )</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="comment">// 8-bit, 4 channel</span></span><br><span class="line">    <span class="keyword">case</span> CV_8UC4:</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">QImage <span class="title">image</span><span class="params">( inMat.data,</span></span></span><br><span class="line"><span class="function"><span class="params">                      inMat.cols, inMat.rows,</span></span></span><br><span class="line">                      static_cast&lt;int&gt;(inMat.step),</span><br><span class="line">                      QImage::Format_ARGB32 );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> image;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 8-bit, 3 channel</span></span><br><span class="line">    <span class="keyword">case</span> CV_8UC3:</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function">QImage <span class="title">image</span><span class="params">( inMat.data,</span></span></span><br><span class="line"><span class="function"><span class="params">                      inMat.cols, inMat.rows,</span></span></span><br><span class="line">                      static_cast&lt;int&gt;(inMat.step),</span><br><span class="line">                      QImage::Format_RGB888 );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> image.rgbSwapped();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 8-bit, 1 channel</span></span><br><span class="line">    <span class="keyword">case</span> CV_8UC1:</span><br><span class="line">    &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> QT_VERSION &gt;= QT_VERSION_CHECK(5, 5, 0)</span></span><br><span class="line">        <span class="function">QImage <span class="title">image</span><span class="params">( inMat.data,</span></span></span><br><span class="line"><span class="function"><span class="params">                      inMat.cols, inMat.rows,</span></span></span><br><span class="line">                      static_cast&lt;int&gt;(inMat.step),</span><br><span class="line">                      QImage::Format_Grayscale8 );<span class="comment">//Format_Alpha8 and Format_Grayscale8 were added in Qt 5.5</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span><span class="comment">//这里还有一种写法，最后给出</span></span></span><br><span class="line">        <span class="keyword">static</span> QVector&lt;QRgb&gt;  sColorTable;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// only create our color table the first time</span></span><br><span class="line">        <span class="keyword">if</span> ( sColorTable.isEmpty() )</span><br><span class="line">        &#123;</span><br><span class="line">            sColorTable.resize( <span class="number">256</span> );</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i )</span><br><span class="line">            &#123;</span><br><span class="line">                sColorTable[i] = qRgb( i, i, i );</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function">QImage <span class="title">image</span><span class="params">( inMat.data,</span></span></span><br><span class="line"><span class="function"><span class="params">                      inMat.cols, inMat.rows,</span></span></span><br><span class="line">                      static_cast&lt;int&gt;(inMat.step),</span><br><span class="line">                      QImage::Format_Indexed8 );</span><br><span class="line"></span><br><span class="line">        image.setColorTable( sColorTable );</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> image;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        qWarning() &lt;&lt; <span class="string">"CVS::cvMatToQImage() - cv::Mat image type not handled in switch:"</span> &lt;&lt; inMat.type();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> QImage();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将Mat转化为QPixmap</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> QPixmap <span class="title">cvMatToQPixmap</span><span class="params">( <span class="keyword">const</span> cv::Mat &amp;inMat )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> QPixmap::fromImage( cvMatToQImage( inMat ) );</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将QImage转化为Mat</span></span><br><span class="line"><span class="keyword">inline</span> cv::<span class="function">Mat <span class="title">QImageToCvMat</span><span class="params">( <span class="keyword">const</span> QImage &amp;inImage, <span class="keyword">bool</span> inCloneImageData = <span class="literal">true</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> ( inImage.format() )</span><br><span class="line">    &#123;</span><br><span class="line">    <span class="comment">// 8-bit, 4 channel</span></span><br><span class="line">    <span class="keyword">case</span> QImage::Format_ARGB32:</span><br><span class="line">    <span class="keyword">case</span> QImage::Format_ARGB32_Premultiplied:</span><br><span class="line">    &#123;</span><br><span class="line">        cv::Mat  mat( inImage.height(), inImage.width(),</span><br><span class="line">                      CV_8UC4,</span><br><span class="line">                      <span class="keyword">const_cast</span>&lt;uchar*&gt;(inImage.bits()),</span><br><span class="line">                      <span class="keyword">static_cast</span>&lt;<span class="keyword">size_t</span>&gt;(inImage.bytesPerLine())</span><br><span class="line">                      );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (inCloneImageData ? mat.clone() : mat);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 8-bit, 3 channel</span></span><br><span class="line">    <span class="keyword">case</span> QImage::Format_RGB32:</span><br><span class="line">    <span class="keyword">case</span> QImage::Format_RGB888:</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> ( !inCloneImageData )</span><br><span class="line">        &#123;</span><br><span class="line">            qWarning() &lt;&lt; <span class="string">"CVS::QImageToCvMat() - Conversion requires cloning because we use a temporary QImage"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        QImage   swapped = inImage;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ( inImage.format() == QImage::Format_RGB32 )</span><br><span class="line">        &#123;</span><br><span class="line">            swapped = swapped.convertToFormat( QImage::Format_RGB888 );</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        swapped = swapped.rgbSwapped();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> cv::Mat( swapped.height(), swapped.width(),</span><br><span class="line">                        CV_8UC3,</span><br><span class="line">                        <span class="keyword">const_cast</span>&lt;uchar*&gt;(swapped.bits()),</span><br><span class="line">                        <span class="keyword">static_cast</span>&lt;<span class="keyword">size_t</span>&gt;(swapped.bytesPerLine())</span><br><span class="line">                        ).clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 8-bit, 1 channel</span></span><br><span class="line">    <span class="keyword">case</span> QImage::Format_Indexed8:</span><br><span class="line">    &#123;</span><br><span class="line">        cv::Mat  mat( inImage.height(), inImage.width(),</span><br><span class="line">                      CV_8UC1,</span><br><span class="line">                      <span class="keyword">const_cast</span>&lt;uchar*&gt;(inImage.bits()),</span><br><span class="line">                      <span class="keyword">static_cast</span>&lt;<span class="keyword">size_t</span>&gt;(inImage.bytesPerLine())</span><br><span class="line">                      );</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> (inCloneImageData ? mat.clone() : mat);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        qWarning() &lt;&lt; <span class="string">"CVS::QImageToCvMat() - QImage format not handled in switch:"</span> &lt;&lt; inImage.format();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cv::Mat();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将QPixmap转化为Mat</span></span><br><span class="line"><span class="keyword">inline</span> cv::<span class="function">Mat <span class="title">QPixmapToCvMat</span><span class="params">( <span class="keyword">const</span> QPixmap &amp;inPixmap, <span class="keyword">bool</span> inCloneImageData = <span class="literal">true</span> )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> QImageToCvMat( inPixmap.toImage(), inCloneImageData );</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//CV_8UC1另一种写法，不过我觉得上面的一种写法更优雅^_^</span></span><br><span class="line"><span class="function">QImage <span class="title">image</span><span class="params">(mat.cols, mat.rows, QImage::Format_Indexed8)</span></span>;  </span><br><span class="line"><span class="comment">// Set the color table (used to translate colour indexes to qRgb values)  </span></span><br><span class="line">image.setColorCount(<span class="number">256</span>);  </span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">256</span>; i++)  </span><br><span class="line">&#123;  </span><br><span class="line">    image.setColor(i, qRgb(i, i, i));  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// Copy input Mat  </span></span><br><span class="line">uchar *pSrc = mat.data;  </span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> row = <span class="number">0</span>; row &lt; mat.rows; row ++)  </span><br><span class="line">&#123;  </span><br><span class="line">    uchar *pDest = image.scanLine(row);  </span><br><span class="line">    <span class="built_in">memcpy</span>(pDest, pSrc, mat.cols);  </span><br><span class="line">    pSrc += mat.step;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">return</span> image;</span><br></pre></td></tr></table></figure>
+<p>新建一个头文件，将代码（CV_8UC1你自己挑一个吧）添加进去。</p>
+<p>如何调用函数？在你要调函数的<code>.cpp</code>文件中添加<code>using namespace CVS;</code>即可。我推荐你这样去做<code>CVS::函数</code>。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/qt/">qt</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/02/2017-12-02-MNIST对于机器学习的初学者/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Tensorflow学习始于MNIST
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/30/2017-11-30-QT5.9.1与opencv3.3读取图片（2）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">QT5.9.1与opencv3.3读取图片（2）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

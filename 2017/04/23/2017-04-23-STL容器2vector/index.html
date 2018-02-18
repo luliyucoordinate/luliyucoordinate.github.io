@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>STL容器（2）vector | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="Vector定义于头文件\&amp;lt;vector&amp;gt; 1234template&amp;lt;    class T,class Allocator = std::allocator&amp;lt;T&amp;gt;&amp;gt; class vector; Vector的能力Vector支持随机访问，因此只要知道位置，就可以在常亮时间内访问任意元素。vector提供随机访问迭代器，所以适用于任意STL算法。capacity函数返">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL容器（2）vector">
+<meta property="og:url" content="http://coordinate.wang/2017/04/23/2017-04-23-STL容器2vector/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Vector定义于头文件\&amp;lt;vector&amp;gt; 1234template&amp;lt;    class T,class Allocator = std::allocator&amp;lt;T&amp;gt;&amp;gt; class vector; Vector的能力Vector支持随机访问，因此只要知道位置，就可以在常亮时间内访问任意元素。vector提供随机访问迭代器，所以适用于任意STL算法。capacity函数返">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.321Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL容器（2）vector">
+<meta name="twitter:description" content="Vector定义于头文件\&amp;lt;vector&amp;gt; 1234template&amp;lt;    class T,class Allocator = std::allocator&amp;lt;T&amp;gt;&amp;gt; class vector; Vector的能力Vector支持随机访问，因此只要知道位置，就可以在常亮时间内访问任意元素。vector提供随机访问迭代器，所以适用于任意STL算法。capacity函数返">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-23-STL容器2vector" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      STL容器（2）vector
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/23/2017-04-23-STL容器2vector/" class="article-date">
+	  <time datetime="2017-04-22T16:00:00.000Z" itemprop="datePublished">四月 23, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h1><p>定义于头文件\&lt;vector></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;T&gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vector</span>;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Vector的能力"><a href="#Vector的能力" class="headerlink" title="Vector的能力"></a>Vector的能力</h2><p>Vector支持随机访问，因此只要知道位置，就可以在常亮时间内访问任意元素。vector提供随机访问迭代器，所以适用于任意STL算法。capacity函数返回vector实际容纳量，如果超过这个量，vector必须重新分配内部内存。一旦内存重新分配，vector元素相关的所有reference、pointer和iterator都会失效，内存重新分配很耗时间。<br>你可以使用reserve函数保存适当容量，避免重新分配：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">v.reserve(<span class="number">80</span>);<span class="comment">//reserve mempry for 80 elements</span></span><br></pre></td></tr></table></figure>
+<p>vector不能使用reserve缩减容量，调用reverse所给的实参如果小于当前vector的容量，不会引发任何效果。，既然vector的容量不会缩减，我们就可以知道，及时删除元素，其reference、pointer和iterator也会继续有效，继续指向动作发生前的位置。然而安插动作可能会使reference、pointer和iterator实效，因为会使vector重排。<br>C++11引入一个新的函数shrink_to_fit：这个函数不具有强制力的要求，可以缩减容量以符合当前的元素个数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v.shrink_to_fit();<span class="comment">//注意不具有强制性</span></span><br></pre></td></tr></table></figure>
+<p>在c++11之前有一个小技巧实现这个功能。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shrinkCapacity</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;&amp; v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; tmp(v);</span><br><span class="line">	v.swap(tmp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你甚至可以像这样使用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;(v).swap(v);</span><br></pre></td></tr></table></figure>
+<p>但是要注意的是，这些做法都会使reference、pointer和iterator换了只想对象。</p>
+<h2 id="Vector的操作"><a href="#Vector的操作" class="headerlink" title="Vector的操作"></a>Vector的操作</h2><p>元素访问<br>at 访问指定的元素，同时进行越界检查<br>operator[] 访问指定的元素<br>front 访问第一个元素<br>back 访问最后一个元素<br>data 返回指向内存中数组第一个元素的指针<br>当pop_back调用时，确保容器不为空是程序员的责任。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt;coll;</span><br><span class="line"><span class="keyword">if</span>(!coll.empty())</span><br><span class="line">&#123;</span><br><span class="line">	coll.pop_back();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于效能，以下几种情况你可以预期安插动作和移除动作会快一些：  </p>
+<ol>
+<li>在容器的尾部安插或移除元素</li>
+<li>容器的容量一开始就很大</li>
+<li>安插多个元素调用一次肯定是最快的  </li>
+</ol>
+<p>Vector并能没有提供任何函数可以直接移除“与某个值相等”的所有元素。但是可以通过以下做法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt; coll;</span><br><span class="line">coll.erase(remove(coll.begin(),coll.end(),</span><br><span class="line">					val),</span><br><span class="line">			coll.end());</span><br></pre></td></tr></table></figure>
+<p>如果只要一出第一个元素，可以这么做：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt; coll;</span><br><span class="line">pos = find(coll.begin(),coll.end(),</span><br><span class="line">			val);</span><br><span class="line"><span class="keyword">if</span>(pos != coll.end())</span><br><span class="line">&#123;</span><br><span class="line">	coll.erase();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="将vector当做C-Style-Array使用"><a href="#将vector当做C-Style-Array使用" class="headerlink" title="将vector当做C-Style Array使用"></a>将vector当做C-Style Array使用</h2><p>reserve是容器预留空间，但并不真正创建元素对象，在创建对象之前，不能引用容器内的元素，因此当加入新的元素时，需要用push_back()/insert()函数。<br>resize是改变容器的大小，并且创建对象，因此，调用这个函数之后，就可以引用容器内的对象了，因此当加入新的元素时，用operator[]操作符，或者用迭代器来引用元素对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; v;</span><br><span class="line">v.resize(<span class="number">41</span>);</span><br><span class="line"><span class="built_in">strcpy</span>(&amp;v[<span class="number">0</span>],<span class="string">"hello world"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, &amp;v[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+<p>初次接触这两个接口也许会混淆，其实接口的命名就是对功能的绝佳描述，resize就是重新分配大小，reserve就是预留一定的空间。这两个接口即存在差别，也有共同点。下面就它们的细节进行分析。<br>为实现resize的语义，resize接口做了两个保证：<br>一是保证区间[0, new_size)范围内数据有效，如果下标index在此区间内，vector[indext]是合法的。<br>二是保证区间[0, new_size)范围以外数据无效，如果下标index在区间外，vector[indext]是非法的。<br>reserve只是保证vector的空间大小(capacity)最少达到它的参数所指定的大小n。在区间[0, n)范围内，如果下标是index，vector[index]这种访问有可能是合法的，也有可能是非法的，视具体情况而定。<br>resize和reserve接口的共同点是它们都保证了vector的空间大小(capacity)最少达到它的参数所指定的大小。</p>
+<h2 id="Class-vector"><a href="#Class-vector" class="headerlink" title="Class vector"></a>Class vector<bool></bool></h2><p>vector<bool>特化版的内部只是用1bit存放元素，空间节省8倍。C++的最小可定址值是以byte为单位的，所以reference和iterator做特殊处理<br>vector<bool>无法满足其他vector的所有规定，例如vector<bool>::reference并不是一个lvalue，vector<bool>::iterator也不是一个随机访问迭代器，而且它的操作速度会比一般的vector慢因为他是bit操作。<br>flip函数用来取补数（complement）。注意，你可以对vector内的所有bit或单一bit调用filp，后者很值得注意，因为你也许会以为subscript操作符返回bool在对此基础类型调用filp是不可能的。然而vector<bool>运用了一个名为proxy的技巧：面对一个vector<bool>，subscript操作符的返回类型实际上是个辅助类，一旦你要求返回值为bool，便会触发一个自动类型转换函数。<br>所有用于元素访问的函数，返回的都是reference类型。所以可以这么写：</bool></bool></bool></bool></bool></bool></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c.front().filp();</span><br><span class="line">c[<span class="number">5</span>] = c.back();</span><br></pre></td></tr></table></figure>
+<p>只有vector<bool>的non-const容器才会用到内部的proxy类型reference。而用来处理那些const成员函数，返回类型都是const reference，那就是bool。</bool></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/24/2017-04-24-STL容器3deque/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          STL容器（3）deque
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/22/2017-04-22-STL容器1array/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">STL容器（1）array</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vector"><span class="nav-number">1.</span> <span class="nav-text">Vector</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector的能力"><span class="nav-number">1.1.</span> <span class="nav-text">Vector的能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vector的操作"><span class="nav-number">1.2.</span> <span class="nav-text">Vector的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将vector当做C-Style-Array使用"><span class="nav-number">1.3.</span> <span class="nav-text">将vector当做C-Style Array使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-vector"><span class="nav-number">1.4.</span> <span class="nav-text">Class vector</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

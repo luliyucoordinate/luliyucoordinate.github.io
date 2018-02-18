@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>linux的dd命令 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linuxdd" />
+  
+  
+  
+  
+  <meta name="description" content="dd命令 语法格式  dd   [option]  dd指令选项详解  if=file：输入文件名，缺省为标准输入of=file：输出文件名，缺省为标准输出ibs=bytes：一次读入 bytes 个字节（即一个块大小为 bytes 个字节）obs=bytes：一次写 bytes 个字节（即一个块大小为 bytes 个字节）bs=bytes：同时设置读写块的大小为 bytes ，可代替 ibs 和">
+<meta name="keywords" content="linux,dd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux的dd命令">
+<meta property="og:url" content="http://coordinate.wang/2017/08/14/2017-08-14-linux的dd命令/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="dd命令 语法格式  dd   [option]  dd指令选项详解  if=file：输入文件名，缺省为标准输入of=file：输出文件名，缺省为标准输出ibs=bytes：一次读入 bytes 个字节（即一个块大小为 bytes 个字节）obs=bytes：一次写 bytes 个字节（即一个块大小为 bytes 个字节）bs=bytes：同时设置读写块的大小为 bytes ，可代替 ibs 和">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.160Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux的dd命令">
+<meta name="twitter:description" content="dd命令 语法格式  dd   [option]  dd指令选项详解  if=file：输入文件名，缺省为标准输入of=file：输出文件名，缺省为标准输出ibs=bytes：一次读入 bytes 个字节（即一个块大小为 bytes 个字节）obs=bytes：一次写 bytes 个字节（即一个块大小为 bytes 个字节）bs=bytes：同时设置读写块的大小为 bytes ，可代替 ibs 和">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-08-14-linux的dd命令" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      linux的dd命令
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/14/2017-08-14-linux的dd命令/" class="article-date">
+	  <time datetime="2017-08-13T16:00:00.000Z" itemprop="datePublished">八月 14, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><ul>
+<li>语法格式</li>
+</ul>
+<p><code>dd   [option]</code></p>
+<ul>
+<li>dd指令选项详解</li>
+</ul>
+<p><code>if=file</code>：输入文件名，缺省为标准输入<br><code>of=file</code>：输出文件名，缺省为标准输出<br><code>ibs=bytes</code>：一次读入 bytes 个字节（即一个块大小为 bytes 个字节）<br><code>obs=bytes</code>：一次写 bytes 个字节（即一个块大小为 bytes 个字节）<br><code>bs=bytes</code>：同时设置读写块的大小为 bytes ，可代替 ibs 和 obs<br><code>cbs=bytes</code>：一次转换 bytes 个字节，即转换缓冲区大小<br><code>skip=blocks</code>：从输入文件开头跳过 blocks 个块后再开始复制<br><code>seek=blocks</code>：从输出文件开头跳过 blocks 个块后再开始复制。（通常只有当输出文件是磁盘或磁带时才有效）<br><code>count=blocks</code>：仅拷贝 blocks 个块，块大小等于 ibs 指定的字节数<br><code>conv=ASCII</code>：把EBCDIC码转换为ASCIl码。<br><code>conv=ebcdic</code>：把ASCIl码转换为EBCDIC码。<br><code>conv=ibm</code>：把ASCIl码转换为alternate EBCDIC码。<br><code>conv=block</code>：把变动位转换成固定字符。<br><code>conv=ublock</code>：把固定位转换成变动位。<br><code>conv=ucase</code>：把字母由小写转换为大写。<br><code>conv=lcase</code>：把字母由大写转换为小写。<br><code>conv=notrunc</code>：不截短输出文件。<br><code>conv=swab</code>：交换每一对输入字节。<br><code>conv=noerror</code>：出错时不停止处理。<br><code>conv=sync</code>：把每个输入记录的大小都调到ibs的大小（用NUL填充）。<br><code>iflag=FLAGS</code>：指定读的方式FLAGS，参见“FLAGS参数说明”<br><code>oflag=FLAGS</code>：指定写的方式FLAGS，参见“FLAGS参数说明”  </p>
+<ul>
+<li>FLAGS参数说明：</li>
+</ul>
+<p>append -append  mode  (makes  sense  only  for output; conv=notrunc sug-gested)<br><code>direct</code>：读写数据采用直接IO方式；<br><code>directory</code>：读写失败除非是directory；<br><code>dsync</code>：读写数据采用同步IO；<br><code>sync</code>：同上，但是针对是元数据<br><code>fullblock</code>：堆积满block（accumulate full blocks of input ）(iflag only)；<br><code>nonblock</code>：读写数据采用非阻塞IO方式<br><code>noatime</code>：读写数据不更新访问时间  </p>
+<h2 id="应用实例"><a href="#应用实例" class="headerlink" title="应用实例"></a>应用实例</h2><ul>
+<li><p>将本地的<code>/dev/hdb</code>整盘备份到<code>/dev/hdd</code></p>
+<p>dd if=/dev/hdb of=/dev/hdd</p>
+</li>
+<li><p>将<code>/dev/hdb</code>全盘数据备份到指定路径的<code>image</code>文件</p>
+<p>dd if=/dev/hdb of=/root/image</p>
+</li>
+<li><p>将备份文件恢复到指定盘</p>
+<p>dd if=/root/image of=/dev/hdb</p>
+</li>
+<li><p>备份<code>/dev/hdb</code>全盘数据，并利用gzip工具进行压缩，保存到指定路径</p>
+</li>
+</ul>
+<p>dd if=/dev/hdb | gzip &gt; /root/image.gz</p>
+<ul>
+<li><p>将压缩的备份文件恢复到指定盘</p>
+<p>gzip -dc /root/image.gz | dd of=/dev/hdb</p>
+</li>
+<li><p>备份与恢复<code>MBR</code></p>
+</li>
+</ul>
+<p>备份磁盘开始的512个字节大小的<code>MBR</code>信息到指定文件：</p>
+<p>dd if=/dev/hda of=/root/image count=1 bs=512</p>
+<p>count=1指仅拷贝一个块；bs=512指块大小为512个字节。</p>
+<p>恢复：</p>
+<p> dd if=/root/image of=/dev/had</p>
+<p>将备份的<code>MBR</code>信息写到磁盘开始部分</p>
+<ul>
+<li>备份软盘</li>
+</ul>
+<p>dd if=/dev/fd0 of=disk.img count=1 bs=1440k (即块大小为1.44M)</p>
+<ul>
+<li>拷贝内存内容到硬盘</li>
+</ul>
+<p>dd if=/dev/mem of=/root/mem.bin bs=1024 (指定块大小为1k)</p>
+<p>9.拷贝光盘内容到指定文件夹，并保存为<code>cd.iso</code>文件</p>
+<p>dd if=/dev/cdrom(hdc) of=/root/cd.iso</p>
+<ul>
+<li>增加<code>swap</code>分区文件大小</li>
+</ul>
+<p>第一步：创建一个大小为256M的文件：</p>
+<p> dd if=/dev/zero of=/swapfile bs=1024 count=262144</p>
+<p>第二步：把这个文件变成<code>swap</code>文件：</p>
+<p> mkswap /swapfile</p>
+<p>第三步：启用这个<code>swap</code>文件：</p>
+<p> swapon /swapfile</p>
+<p>第四步：编辑<code>/etc/fstab</code>文件，使在每次开机时自动加载<code>swap</code>文件：</p>
+<p>/swapfile swap swap default 0 0</p>
+<ul>
+<li>销毁磁盘数据</li>
+</ul>
+<p>dd if=/dev/urandom of=/dev/hda1</p>
+<p>注意：利用随机的数据填充硬盘，在某些必要的场合可以用来销毁数据。</p>
+<ul>
+<li><p>测试硬盘的读写速度</p>
+<p>dd if=/dev/zero bs=1024 count=1000000 of=/root/1Gb.file</p>
+<p>dd if=/root/1Gb.file bs=64k | dd of=/dev/null</p>
+</li>
+</ul>
+<p>通过以上两个命令输出的命令执行时间，可以计算出硬盘的读、写速度。</p>
+<ul>
+<li>确定硬盘的最佳块大小：</li>
+</ul>
+<p>dd if=/dev/zero bs=1024 count=1000000 of=/root/1Gb.file</p>
+<p>dd if=/dev/zero bs=2048 count=500000 of=/root/1Gb.file</p>
+<p>dd if=/dev/zero bs=4096 count=250000 of=/root/1Gb.file</p>
+<p>dd if=/dev/zero bs=8192 count=125000 of=/root/1Gb.file</p>
+<p>通过比较以上命令输出中所显示的命令执行时间，即可确定系统最佳的块大小。</p>
+<ul>
+<li>修复硬盘：</li>
+</ul>
+<p>dd if=/dev/sda of=/dev/sda 或dd if=/dev/hda of=/dev/hda</p>
+<p>当硬盘较长时间(一年以上)放置不使用后，磁盘上会产生<code>magnetic flux point</code>，当磁头读到这些区域时会遇到困难，并可能导致I/O错误。当这种情况影响到硬盘的第一个扇区时，可能导致硬盘报废。上边的命令有可能使这些数 据起死回生。并且这个过程是安全、高效的。</p>
+<ul>
+<li>利用<code>netcat</code>远程备份</li>
+</ul>
+<p>dd if=/dev/hda bs=16065b | netcat &lt; targethost-IP &gt; 1234</p>
+<p>在源主机上执行此命令备份<code>/dev/hda</code></p>
+<p>netcat -l -p 1234 | dd of=/dev/hdc bs=16065b</p>
+<p>在目的主机上执行此命令来接收数据并写入<code>/dev/hdc</code></p>
+<p>netcat -l -p 1234 | bzip2 &gt; partition.img</p>
+<p>netcat -l -p 1234 | gzip &gt; partition.img</p>
+<p>以上两条指令是目的主机指令的变化分别采用<code>bzip2</code>、<code>gzip</code>对数据进行压缩，并将备份文件保存在当前目录。</p>
+<ul>
+<li>将一个很大的视频文件中的第i个字节的值改成0x41（也就是大写字母A的ASCII值）</li>
+</ul>
+<p>echo A | dd of=bigfile seek=$i bs=1 count=1 conv=notrunc</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dd/">dd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/16/2017-08-16-深度探索c++对象模型(5)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深度探索c++对象模型(5)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/13/2017-08-13-advance与next的区别/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">advance与next的区别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dd命令"><span class="nav-number">1.</span> <span class="nav-text">dd命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用实例"><span class="nav-number">2.</span> <span class="nav-text">应用实例</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

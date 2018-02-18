@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2代码分析（四） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+  
+  
+  <meta name="description" content="#0x01 backward_convolutional_layer 12345678void backward_convolutional_layer(convolutional_layer l, network net)&amp;#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2代码分析（四）">
+<meta property="og:url" content="http://coordinate.wang/2017/12/20/2017-12-20-YOLOv2代码分析（四）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="#0x01 backward_convolutional_layer 12345678void backward_convolutional_layer(convolutional_layer l, network net)&amp;#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fmogsxbpjvj20sd0943yh.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmogsxrz62j20rw0bldft.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.654Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2代码分析（四）">
+<meta name="twitter:description" content="#0x01 backward_convolutional_layer 12345678void backward_convolutional_layer(convolutional_layer l, network net)&amp;#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fmogsxbpjvj20sd0943yh.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-20-YOLOv2代码分析（四）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2代码分析（四）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/" class="article-date">
+	  <time datetime="2017-12-19T16:00:00.000Z" itemprop="datePublished">十二月 20, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#0x01 backward_convolutional_layer</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_convolutional_layer</span><span class="params">(convolutional_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">int</span> m = l.n/l.groups;				<span class="comment">//每组卷积核的个数</span></span><br><span class="line">    <span class="keyword">int</span> n = l.size*l.size*l.c/l.groups;	<span class="comment">//每组卷积核的元素个数</span></span><br><span class="line">    <span class="keyword">int</span> k = l.out_w*l.out_h;			<span class="comment">//输出图像的元素个数</span></span><br><span class="line"></span><br><span class="line">    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);</span><br></pre></td></tr></table></figure>
+<p>这里出现了一个<code>gradient_array</code>函数，我们看看这个函数有什么作用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">gradient</span><span class="params">(<span class="keyword">float</span> x, ACTIVATION a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span>(a)&#123;</span><br><span class="line">        <span class="keyword">case</span> LINEAR:</span><br><span class="line">            <span class="keyword">return</span> linear_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LOGISTIC:</span><br><span class="line">            <span class="keyword">return</span> logistic_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LOGGY:</span><br><span class="line">            <span class="keyword">return</span> loggy_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> RELU:</span><br><span class="line">            <span class="keyword">return</span> relu_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> ELU:</span><br><span class="line">            <span class="keyword">return</span> elu_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> RELIE:</span><br><span class="line">            <span class="keyword">return</span> relie_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> RAMP:</span><br><span class="line">            <span class="keyword">return</span> ramp_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LEAKY:</span><br><span class="line">            <span class="keyword">return</span> leaky_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> TANH:</span><br><span class="line">            <span class="keyword">return</span> tanh_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> PLSE:</span><br><span class="line">            <span class="keyword">return</span> plse_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> STAIR:</span><br><span class="line">            <span class="keyword">return</span> stair_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> HARDTAN:</span><br><span class="line">            <span class="keyword">return</span> hardtan_gradient(x);</span><br><span class="line">        <span class="keyword">case</span> LHTAN:</span><br><span class="line">            <span class="keyword">return</span> lhtan_gradient(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gradient_array</span><span class="params">(<span class="keyword">const</span> <span class="keyword">float</span> *x, <span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> ACTIVATION a, <span class="keyword">float</span> *delta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">        delta[i] *= gradient(x[i], a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">linear_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> <span class="number">1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">logistic_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (<span class="number">1</span>-x)*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">relu_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">elu_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x &gt;= <span class="number">0</span>) + (x &lt; <span class="number">0</span>)*(x + <span class="number">1</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">relie_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>) ? <span class="number">1</span> : <span class="number">.01</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">ramp_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>)+<span class="number">.1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">leaky_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>) ? <span class="number">1</span> : <span class="number">.1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">tanh_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> <span class="number">1</span>-x*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">plse_gradient</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x &lt; <span class="number">0</span> || x &gt; <span class="number">1</span>) ? <span class="number">.01</span> : <span class="number">.125</span>;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的作用很明显，就是将<code>layer</code>的输出图像，输入到相应的梯度下降算法（计算每一个元素对应激活函数的导数），最后将<code>delta</code>的每个元素乘以激活函数的导数，结果送到<code>delta</code>指向的内存中。</p>
+<p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">m=2 n=3x3=9 k=3x3=9</span><br><span class="line">x [95 107 107 95]</span><br><span class="line">relu激活</span><br><span class="line">delta[0]=95 delta[1]=107 delta[2]=107 delta[3]=105</span><br></pre></td></tr></table></figure>
+<p>接着往后</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">       backward_batchnorm_layer(l, net);</span><br></pre></td></tr></table></figure>
+<p>出现这个<code>backward_batchnorm_layer</code>函数</p>
+<h2 id="0x0101-backward-batchnorm-layer"><a href="#0x0101-backward-batchnorm-layer" class="headerlink" title="0x0101 backward_batchnorm_layer"></a>0x0101 backward_batchnorm_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_batchnorm_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!net.train)&#123;</span><br><span class="line">        l.mean = l.rolling_mean;</span><br><span class="line">        l.variance = l.rolling_variance;</span><br><span class="line">    &#125;</span><br><span class="line">    backward_bias(l.bias_updates, l.delta, l.batch, l.out_c, l.out_w*l.out_h);</span><br><span class="line">    backward_scale_cpu(l.x_norm, l.delta, l.batch, l.out_c, l.out_w*l.out_h, l.scale_updates);</span><br><span class="line"></span><br><span class="line">    scale_bias(l.delta, l.scales, l.batch, l.out_c, l.out_h*l.out_w);</span><br><span class="line"></span><br><span class="line">    mean_delta_cpu(l.delta, l.variance, l.batch, l.out_c, l.out_w*l.out_h, l.mean_delta);</span><br><span class="line">    variance_delta_cpu(l.x, l.delta, l.mean, l.variance, l.batch, l.out_c, l.out_w*l.out_h, l.variance_delta);</span><br><span class="line">    normalize_delta_cpu(l.x, l.mean, l.variance, l.mean_delta, l.variance_delta, l.batch, l.out_c, l.out_w*l.out_h, l.delta);</span><br><span class="line">    <span class="keyword">if</span>(l.type == BATCHNORM) copy_cpu(l.outputs*l.batch, l.delta, <span class="number">1</span>, net.delta, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面也有很多函数，我们一一分析</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_bias</span><span class="params">(<span class="keyword">float</span> *bias_updates, <span class="keyword">float</span> *delta, <span class="keyword">int</span> batch, <span class="keyword">int</span> n, <span class="keyword">int</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,b;</span><br><span class="line">    <span class="keyword">for</span>(b = <span class="number">0</span>; b &lt; batch; ++b)&#123;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">            bias_updates[i] += sum_array(delta+size*(i+b*n), size);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">sum_array</span><span class="params">(<span class="keyword">float</span> *a, <span class="keyword">int</span> n)</span><span class="comment">//计算输入数组的和</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">float</span> sum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i) sum += a[i];</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>bias_updates</code>:指向权重更新的指针</li>
+<li><code>delta</code>:指向前面梯度下降得到的累乘值</li>
+<li><code>batch</code>:<code>batch</code>大小</li>
+<li><code>n</code>:<code>layer</code>的输出通道数目</li>
+<li><code>size</code>:输出图像的元素个数</li>
+</ul>
+<p>这个函数就是计算偏置的更新值（误差函数对偏置的导数），将<code>delta</code>对应同一个卷积核的项相加。</p>
+<p>这个函数想要描述的就是这个公式</p>
+<ul>
+<li>$\frac{∂L}{∂\beta}=\sum_0^m\frac{∂L}{∂y_i}$</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">backward_scale_cpu</span><span class="params">(<span class="keyword">float</span> *x_norm, <span class="keyword">float</span> *delta, <span class="keyword">int</span> batch, <span class="keyword">int</span> n, <span class="keyword">int</span> size, <span class="keyword">float</span> *scale_updates)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,b,f;</span><br><span class="line">    <span class="keyword">for</span>(f = <span class="number">0</span>; f &lt; n; ++f)&#123;</span><br><span class="line">        <span class="keyword">float</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(b = <span class="number">0</span>; b &lt; batch; ++b)&#123;</span><br><span class="line">            <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; size; ++i)&#123;</span><br><span class="line">                <span class="keyword">int</span> index = i + size*(f + n*b);</span><br><span class="line">                sum += delta[index] * x_norm[index];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        scale_updates[f] += sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数想要描述的就是这个公式</p>
+<ul>
+<li>$\frac{∂L}{∂\gamma}=\sum_0^m\frac{∂l}{∂y_i}\hat{x_i}$</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mean_delta_cpu</span><span class="params">(<span class="keyword">float</span> *delta, <span class="keyword">float</span> *variance, <span class="keyword">int</span> batch, <span class="keyword">int</span> filters, <span class="keyword">int</span> spatial, <span class="keyword">float</span> *mean_delta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; filters; ++i)&#123;</span><br><span class="line">        mean_delta[i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; batch; ++j) &#123;</span><br><span class="line">            <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; spatial; ++k) &#123;</span><br><span class="line">                <span class="keyword">int</span> index = j*filters*spatial + i*spatial + k;</span><br><span class="line">                mean_delta[i] += delta[index];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        mean_delta[i] *= (<span class="number">-1.</span>/<span class="built_in">sqrt</span>(variance[i] + <span class="number">.00001</span>f));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数想要描述的就是这个公式</p>
+<ul>
+<li>$\frac{∂L}{∂mean}=\sum_0^m\frac{∂L}{∂y_i}\frac{∂y_i}{∂mean}=\sum_0^m\frac{∂L}{∂y_i}\frac{−1}{\sqrt{var+eps}}$</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span>  <span class="title">variance_delta_cpu</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">float</span> *delta, <span class="keyword">float</span> *mean, <span class="keyword">float</span> *variance, <span class="keyword">int</span> batch, <span class="keyword">int</span> filters, <span class="keyword">int</span> spatial, <span class="keyword">float</span> *variance_delta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; filters; ++i)&#123;</span><br><span class="line">        variance_delta[i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; batch; ++j)&#123;</span><br><span class="line">            <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; spatial; ++k)&#123;</span><br><span class="line">                <span class="keyword">int</span> index = j*filters*spatial + i*spatial + k;</span><br><span class="line">                variance_delta[i] += delta[index]*(x[index] - mean[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        variance_delta[i] *= <span class="number">-.5</span> * <span class="built_in">pow</span>(variance[i] + <span class="number">.00001</span>f, (<span class="keyword">float</span>)(<span class="number">-3.</span>/<span class="number">2.</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数想要描述的就是这个公式</p>
+<ul>
+<li>$\frac{∂L}{∂var}=\sum_0^m\frac{∂L}{∂y_i}(x_i−mean)(-\frac{1}{2})(var+eps)^{−\frac{3}{2}}$</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">normalize_delta_cpu</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">float</span> *mean, <span class="keyword">float</span> *variance, <span class="keyword">float</span> *mean_delta, <span class="keyword">float</span> *variance_delta, <span class="keyword">int</span> batch, <span class="keyword">int</span> filters, <span class="keyword">int</span> spatial, <span class="keyword">float</span> *delta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> f, j, k;</span><br><span class="line">    <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; batch; ++j)&#123;</span><br><span class="line">        <span class="keyword">for</span>(f = <span class="number">0</span>; f &lt; filters; ++f)&#123;</span><br><span class="line">            <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; spatial; ++k)&#123;</span><br><span class="line">                <span class="keyword">int</span> index = j*filters*spatial + f*spatial + k;</span><br><span class="line">                delta[index] = delta[index] * <span class="number">1.</span>/(<span class="built_in">sqrt</span>(variance[f] + <span class="number">.00001</span>f)) + variance_delta[f] * <span class="number">2.</span> * (x[index] - mean[f]) / (spatial * batch) + mean_delta[f]/(spatial*batch);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数想要描述的就是这个公式</p>
+<ul>
+<li>$\frac{∂L}{∂x_i}=\frac{∂L}{∂y_i}\frac{1}{\sqrt{var+eps}}+\frac{∂L}{∂var}\frac{∂var}{∂x_i}+\frac{∂L}{∂mean}\frac{∂mean}{∂x_i}=\frac{∂L}{∂y_i}\frac{1}{\sqrt{var+eps}}+\frac{∂L}{∂var}\frac{2}{m}(x_i-mean)+\frac{∂L}{∂mean}\frac{1}{m}$</li>
+</ul>
+<p>回到<code>backward_convolutional_layer</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//backward_convolutional_layer 	</span></span><br><span class="line">	<span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        backward_batchnorm_layer(l, net);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        backward_bias(l.bias_updates, l.delta, l.batch, l.n, k);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>如果没有定义<code>batch_normalize</code>的话，直接更新<code>bias</code>就完事了。</p>
+<p>接着往后</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">	<span class="comment">//backward_convolutional_layer</span></span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; l.groups; ++j)&#123;</span><br><span class="line">            <span class="keyword">float</span> *a = l.delta + (i*l.groups + j)*m*k;</span><br><span class="line">            <span class="keyword">float</span> *b = net.workspace;</span><br><span class="line">            <span class="keyword">float</span> *c = l.weight_updates + j*l.nweights/l.groups;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">float</span> *im = net.input+(i*l.groups + j)*l.c/l.groups*l.h*l.w;</span><br><span class="line"></span><br><span class="line">            im2col_cpu(im, l.c/l.groups, l.h, l.w, </span><br><span class="line">                    l.size, l.stride, l.pad, b);</span><br><span class="line">            gemm(<span class="number">0</span>,<span class="number">1</span>,m,n,k,<span class="number">1</span>,a,k,b,k,<span class="number">1</span>,c,n);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(net.delta)&#123;</span><br><span class="line">                a = l.weights + j*l.nweights/l.groups;</span><br><span class="line">                b = l.delta + (i*l.groups + j)*m*k;</span><br><span class="line">                c = net.workspace;</span><br><span class="line"></span><br><span class="line">                gemm(<span class="number">1</span>,<span class="number">0</span>,n,k,m,<span class="number">1</span>,a,n,b,k,<span class="number">0</span>,c,k);</span><br><span class="line"></span><br><span class="line">                col2im_cpu(net.workspace, l.c/l.groups, l.h, l.w, l.size, l.stride, </span><br><span class="line">                    l.pad, net.delta + (i*l.groups + j)*l.c/l.groups*l.h*l.w);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先我们这里先说明一个问题，细心的同学会发现，这里使用的是<code>gemm(0,1...)</code>，也就是我在（三）中说过的，我这里对<code>B</code>进行了转置操作。为什么要这样做呢？</p>
+<p>先看看参数是什么意思。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> m = l.n/l.groups;				<span class="comment">//每组卷积核的个数</span></span><br><span class="line"><span class="keyword">int</span> n = l.size*l.size*l.c/l.groups;	<span class="comment">//每组卷积核的元素个数</span></span><br><span class="line"><span class="keyword">int</span> k = l.out_w*l.out_h;			<span class="comment">//输出图像的元素个数</span></span><br></pre></td></tr></table></figure>
+<p><code>a</code>指向一个<code>group</code>的<code>l.delta</code>的一行，元素个数为<code>(l.out_c)*(l.out_h*l.out_w)</code>；<code>b</code>指向保存结果的内存，大小是<code>(l.c*l.size*l.size)*(l.out_h*l.out_w)</code>；<code>c</code>指向一个<code>group</code>的<code>weight</code>的一行，大小是<code>(l.n)*(l.c*l.size*l.size)</code>。<code>gemm</code>描述的是这样一种运算<code>a*b+c</code>。所以根据矩阵运算的原理，这里的<code>b</code>要进行转置操作。</p>
+<p>那么这里的卷积作用也就非常明显了，就是就算当前层的权重更新<code>c=alpha*a*b+beta*c</code>。</p>
+<p>和之前的<code>forward_convolutional_layer</code>函数参数对比</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> m = l.n/l.groups;<span class="comment">//一个group的卷积核个数</span></span><br><span class="line"><span class="keyword">int</span> k = l.size*l.size*l.c/l.groups;<span class="comment">//一个group的卷积核元素个数</span></span><br><span class="line"><span class="keyword">int</span> n = l.out_w*l.out_h;<span class="comment">//一个输出图像的元素个数</span></span><br><span class="line"><span class="keyword">float</span> *a = l.weights + j*l.nweights/l.groups;</span><br><span class="line"><span class="keyword">float</span> *b = net.workspace;</span><br><span class="line"><span class="keyword">float</span> *c = l.output + (i*l.groups + j)*n*m;</span><br></pre></td></tr></table></figure>
+<p>接着看后面这个判断语句中的内容</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//backward_convolutional_layer</span></span><br><span class="line"><span class="keyword">if</span>(net.delta)&#123;</span><br><span class="line">    a = l.weights + j*l.nweights/l.groups;<span class="comment">//注意此时权重没有更新，我们上面算的是放在了weight_updates里面</span></span><br><span class="line">    b = l.delta + (i*l.groups + j)*m*k;</span><br><span class="line">    c = net.workspace;</span><br><span class="line"></span><br><span class="line">    gemm(<span class="number">1</span>,<span class="number">0</span>,n,k,m,<span class="number">1</span>,a,n,b,k,<span class="number">0</span>,c,k);</span><br><span class="line"></span><br><span class="line">    col2im_cpu(net.workspace, l.c/l.groups, l.h, l.w, l.size, l.stride, </span><br><span class="line">               l.pad, net.delta + (i*l.groups + j)*l.c/l.groups*l.h*l.w);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看看这里的<code>gemm</code>和前面的有什么区别，首先看参数。这里的<code>a</code>对应上面的<code>c</code>，<code>b</code>对应上面的<code>a</code>，<code>c</code>对应上面的<code>b</code>。</p>
+<p><code>a</code>指向<code>weight</code>，大小是<code>(l.n)*(l.c*l.size*l.size)</code>;<code>b</code>指向<code>delta</code>，大小是<code>(l.out_c)*(l.out_h*l*out_w)</code>；<code>c</code>指向输出存储空间，大小是<code>(l.c*l.size*l.size)*(l.out_h*l.out_w)</code>。那么这里调用<code>gemm(1,0...)</code>就很好理解了，最后完成<code>c=alpha*a*b+beta*c</code>操作，也就是更新<code>workspace</code>的工作。</p>
+<p>那么这里这个函数到底有什么意义呢？</p>
+<p>通过上面那个<code>c=alpha*a*b+beta*c</code>给我们的直观感受，就是将当前层的<code>delta</code>和上一层<code>weights</code>进行卷积操作，这个得到的结果意义不是很大，但是他经过之前说的<code>gradient_array</code>操作后就有了非常重要的意义，就是上一层的<code>delta</code>。为什么？这就要从<code>bp</code>算法开始说了</p>
+<h2 id="0x02-卷积层误差传递"><a href="#0x02-卷积层误差传递" class="headerlink" title="0x02 卷积层误差传递"></a>0x02 卷积层误差传递</h2><p>首先举个例子</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fmogsxbpjvj20sd0943yh.jpg"><br></center>
+
+<p>我们假设输入是<code>A</code>，卷积核是<code>W</code>，输出是<code>C</code>，激活函数是<code>f</code>，偏向是<code>B</code>，我们可以知道</p>
+<ul>
+<li>$out=W*A+B$</li>
+</ul>
+<ul>
+<li>$C=f(out)​$</li>
+</ul>
+<p>我们假设损失函数是<code>L</code>，那么可以计算出误差项$\Delta$</p>
+<ul>
+<li>$\Delta=\frac{∂L}{∂out}$</li>
+</ul>
+<p>好的现在我们要求解<code>l-1</code>层的$\Delta$</p>
+<ul>
+<li>$\Delta^{l-1}=\frac{∂L}{∂out^{l-1}}=\frac{∂L}{∂C^{l-1}}\frac{∂C^{l-1}}{∂out^{l-1}}=\frac{∂L}{∂C^{l-1}}f^\prime(out^{l-1})$</li>
+</ul>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fmogsxrz62j20rw0bldft.jpg"><br></center>
+
+
+<p>由上面这个图不难看出</p>
+<ul>
+<li>$\frac{∂L}{∂C^{l-1}}=\Delta^l*W$</li>
+</ul>
+<p>所以</p>
+<ul>
+<li>$\Delta^{l-1}=\Delta^l*W\circ f^\prime(out^{l-1})$</li>
+</ul>
+<p>回到<code>backward_convolutional_layer</code>这个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//backward_convolutional_layer</span></span><br><span class="line">col2im_cpu(net.workspace, l.c/l.groups, l.h, l.w, l.size, l.stride, </span><br><span class="line">              l.pad, net.delta + (i*l.groups + j)*l.c/l.groups*l.h*l.w);</span><br></pre></td></tr></table></figure>
+<p>最后这个函数<code>col2im_cpu</code>的作用就是将<code>net.workspace</code>重排，类似于（三）中的<code>im2col_cpu</code>，只是这里反过来了。</p>
+<p>#0x03 update_convolutional_layer</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">update_convolutional_layer</span><span class="params">(convolutional_layer l, update_args a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> learning_rate = a.learning_rate*l.learning_rate_scale;</span><br><span class="line">    <span class="keyword">float</span> momentum = a.momentum;</span><br><span class="line">    <span class="keyword">float</span> decay = a.decay;</span><br><span class="line">    <span class="keyword">int</span> batch = a.batch;</span><br><span class="line"></span><br><span class="line">    axpy_cpu(l.n, learning_rate/batch, l.bias_updates, <span class="number">1</span>, l.biases, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(l.n, momentum, l.bias_updates, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(l.scales)&#123;</span><br><span class="line">        axpy_cpu(l.n, learning_rate/batch, l.scale_updates, <span class="number">1</span>, l.scales, <span class="number">1</span>);</span><br><span class="line">        scal_cpu(l.n, momentum, l.scale_updates, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    axpy_cpu(l.nweights, -decay*batch, l.weights, <span class="number">1</span>, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">    axpy_cpu(l.nweights, learning_rate/batch, l.weight_updates, <span class="number">1</span>, l.weights, <span class="number">1</span>);</span><br><span class="line">    scal_cpu(l.nweights, momentum, l.weight_updates, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数很容易理解了，就是用来更新网络参数的。其中<code>axpy_cpu</code>和<code>scal_cpu</code>这两个函数我在（三）中也讲过。</p>
+<p>至此这三个重要的函数就分析完了，下一章我们会回到<code>make_convolutional_layer</code>函数</p>
+<p>文章全部<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<p>由于本人水平有限，文中有不对之处，希望大家指出，谢谢^_^!</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2代码分析（三）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-backward-batchnorm-layer"><span class="nav-number">1.</span> <span class="nav-text">0x0101 backward_batchnorm_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-卷积层误差传递"><span class="nav-number">2.</span> <span class="nav-text">0x02 卷积层误差传递</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

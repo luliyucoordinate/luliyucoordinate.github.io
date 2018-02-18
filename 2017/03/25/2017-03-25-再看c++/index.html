@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>再看c++ | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp" />
+  
+  
+  
+  
+  <meta name="description" content="Object Based基于对象延伸文件名(extension file name )不一定是.h或.cpp，也可以是.hpp或者其他 头文件的声明123456789101112131415#ifndef __COMPLEX__#define __COMPLEX__//forward declarations#include &amp;lt;cmath&amp;gt;class ostream;class com">
+<meta name="keywords" content="cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再看c++">
+<meta property="og:url" content="http://coordinate.wang/2017/03/25/2017-03-25-再看c++/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Object Based基于对象延伸文件名(extension file name )不一定是.h或.cpp，也可以是.hpp或者其他 头文件的声明123456789101112131415#ifndef __COMPLEX__#define __COMPLEX__//forward declarations#include &amp;lt;cmath&amp;gt;class ostream;class com">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.967Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="再看c++">
+<meta name="twitter:description" content="Object Based基于对象延伸文件名(extension file name )不一定是.h或.cpp，也可以是.hpp或者其他 头文件的声明123456789101112131415#ifndef __COMPLEX__#define __COMPLEX__//forward declarations#include &amp;lt;cmath&amp;gt;class ostream;class com">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-25-再看c++" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      再看c++
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/25/2017-03-25-再看c++/" class="article-date">
+	  <time datetime="2017-03-24T16:00:00.000Z" itemprop="datePublished">三月 25, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Object-Based基于对象"><a href="#Object-Based基于对象" class="headerlink" title="Object Based基于对象"></a>Object Based基于对象</h1><p>延伸文件名(extension file name )不一定是.h或.cpp，也可以是.hpp或者其他</p>
+<h2 id="头文件的声明"><a href="#头文件的声明" class="headerlink" title="头文件的声明"></a>头文件的声明</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __COMPLEX__</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __COMPLEX__</span></span><br><span class="line"><span class="comment">//forward declarations</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ostream</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">complex</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">complex</span> &amp;__doapl (<span class="keyword">complex</span> *<span class="keyword">this</span>, <span class="keyword">const</span> <span class="keyword">complex</span>&amp;);</span><br><span class="line"><span class="comment">//class declarations</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">complex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//class definition</span></span><br><span class="line"><span class="keyword">complex</span>::function</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>函数若在class内部实现，就会定义成inline候选人，如果他不复杂的话，编译器就会把它做成inline</p>
+<h2 id="access-level"><a href="#access-level" class="headerlink" title="access level"></a>access level</h2><p>private:<br>double re, im;<br>所有的数据都要放在private里面<br>不被外界使用的函数也要放在private里面  </p>
+<h2 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor"></a>constructor</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">complex</span>(<span class="keyword">double</span> r = <span class="number">0</span>, <span class="keyword">double</span> i =<span class="number">0</span>)    <span class="comment">//default argument</span></span><br><span class="line">:re(r), im(i)                <span class="comment">//initialization list, only constructor can use,it’s very nice</span></span><br><span class="line">&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>最好写在inlitialization list 里面，不要写在大括号里。一个是初始化阶段，一个时候后一阶段，效率会很低。<br>构造函数可以有很多个<br>名字与类相同，没有返回类型<br>构造函数放在private，表示这个函数不可以被外界调用，那就无法使用构造了<br>但是有这样一种设计模式Singleton,外界只能用一份  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">classs a</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">static</span> a&amp; <span class="title">getInstance</span><span class="params">()</span></span>;</span><br><span class="line">	setup() &#123;    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	a();</span><br><span class="line">	a(<span class="keyword">const</span> a&amp; rhs);</span><br><span class="line">&#125;;</span><br><span class="line">a&amp; a::getInstance()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">static</span> a b;</span><br><span class="line">	<span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br><span class="line">a::getInstance().setup();</span><br></pre></td></tr></table></figure>
+<h2 id="函数后面加const"><a href="#函数后面加const" class="headerlink" title="函数后面加const"></a>函数后面加const</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">real</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> re; &#125; <span class="comment">//不改变里面的数据内容</span></span><br></pre></td></tr></table></figure>
+<p>在类的设计之初要考虑好这个问题，不然后面调用的时候会出现问题<br>例如：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">complex</span> <span class="title">c1</span><span class="params">(<span class="number">2</span>,<span class="number">1</span>)</span></span>;      此处想告诉编译器c1是一个不更改内部数据的一个对象   </span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; c1.read();</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; c1.img();</span><br></pre></td></tr></table></figure></p>
+<p>但是如果设计之初没有加const的话相当于告诉编译器我这个函数内部可能会修改数据，所以在这里这样使用会出错。</p>
+<h2 id="参数的传递"><a href="#参数的传递" class="headerlink" title="参数的传递"></a>参数的传递</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pass by value</span><br><span class="line"><span class="keyword">complex</span>(<span class="keyword">double</span> r = <span class="number">0</span>, <span class="keyword">double</span> i =<span class="number">0</span>) :</span><br><span class="line">re (r), im (i)</span><br><span class="line">&#123; &#125;</span><br><span class="line"><span class="function">pass by <span class="title">reference</span><span class="params">(to <span class="keyword">const</span>)</span></span></span><br><span class="line">complex&amp; operator += (const complex&amp;);  //内部不可以修改传递的值</span><br><span class="line">ostream&amp; <span class="keyword">operator</span> &lt;&lt; (ostream&amp; os, <span class="keyword">const</span> <span class="keyword">complex</span> &amp;x);</span><br></pre></td></tr></table></figure>
+<p>这样做的原因在于效率，因为如果参数的大小太大的话，会影响传递速度<br>返回值的传递也尽量用reference  </p>
+<h2 id="friend"><a href="#friend" class="headerlink" title="friend"></a>friend</h2><p>友元函数可以使用类内部的私有变量<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">friend</span> <span class="keyword">complex</span>&amp; __doapl (<span class="keyword">complex</span>*, <span class="keyword">const</span> <span class="keyword">complex</span>&amp;);</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">complex</span>&amp; </span><br><span class="line">__doapl (<span class="keyword">complex</span>* ths, <span class="keyword">const</span> <span class="keyword">complex</span>&amp; r)</span><br><span class="line">&#123;</span><br><span class="line">	ths-&gt;re += r.re;</span><br><span class="line">	ths-&gt;im += r.im;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这种做法打破了封装，也可以使用函数取私有变量，虽然这样做速度变慢了。<br>注意这里有这样的做法，在类的内部有这样的函数  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">const</span> <span class="keyword">complex</span>* param)</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="keyword">return</span> param.re + param.im; &#125;</span><br></pre></td></tr></table></figure>
+<p>他并没有调用函数取取私有变量，而是直接拿来用，原因是同一个class的各个object互为friends。<br>使用实例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">complex</span> <span class="title">c1</span><span class="params">(<span class="number">2</span>,<span class="number">1</span>)</span></span>;</span><br><span class="line"><span class="keyword">complex</span> c2;</span><br><span class="line">c2.func(c1);</span><br></pre></td></tr></table></figure>
+<h2 id="return-by-reference"><a href="#return-by-reference" class="headerlink" title="return by reference "></a>return by reference </h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">complex</span>&amp;</span><br><span class="line">__doapl (<span class="keyword">complex</span>* ths, <span class="keyword">const</span> <span class="keyword">complex</span>&amp; r)</span><br><span class="line">&#123;</span><br><span class="line">	ths-&gt;re += r.re;</span><br><span class="line">	ths-&gt;im += r.im;</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不可以return by reference的情况，在类的内部建立空间，最后要把空间的reference传出去，这样做是错误的，因为，函数一结束，函数的空间就会被操作系统重新分配。传递者无需知道接收者使用什么形式接受，此处用的是reference，这就是c++的优势。</p>
+<h2 id="operator-overloading"><a href="#operator-overloading" class="headerlink" title="operator overloading"></a>operator overloading</h2><p>成员函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">inline complex&amp;</span><br><span class="line">complex::operator += (const complex&amp; r)</span><br><span class="line">&#123; return __doapl (this, r); &#125;</span><br></pre></td></tr></table></figure>
+<p>所有成员函数都有this，谁调用函数这个谁就是this，this只一个指针，不能够在参数列写出来。<br>此处返回类型不可为void的原因在于要考虑连续的使用<br>a+=b+=c  </p>
+<p>非成员函数  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">double</span></span><br><span class="line">imag(<span class="keyword">const</span> <span class="keyword">complex</span>&amp; x)</span><br><span class="line">&#123; <span class="keyword">return</span> x.img (); &#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">complex</span></span><br><span class="line"><span class="keyword">operator</span> + (<span class="keyword">const</span> <span class="keyword">complex</span>&amp; x, <span class="keyword">const</span> <span class="keyword">complex</span>&amp; y)</span><br><span class="line">&#123; <span class="keyword">return</span> <span class="keyword">complex</span> (real (x) +real(y),imag(x)+imag(y)); &#125;</span><br></pre></td></tr></table></figure>
+<p>这里没有使用return by reference的原因在于他们返回的必定是local object<br>这里相加的左值是在函数内部创建的<br>这里有一个特殊的地方  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line">ostream&amp;</span><br><span class="line"><span class="keyword">operator</span> &lt;&lt; (ostream&amp; os, <span class="keyword">const</span> <span class="keyword">complex</span>&amp; x)</span><br><span class="line">&#123; <span class="keyword">return</span> os &lt;&lt; <span class="string">'('</span> &lt;&lt; real (x) &lt;&lt; <span class="string">','</span> &lt;&lt; imag (x) &lt;&lt; <span class="string">')'</span> ;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个overloading只可以是非成员，原因在于cout不知道怎么去处理自定义数据，他在一开始就写死了。</p>
+<h2 id="temp-object"><a href="#temp-object" class="headerlink" title="temp object"></a>temp object</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typename();</span><br></pre></td></tr></table></figure>
+<p>他的生命周期在返回后就结束了</p>
+<h1 id="一些思考"><a href="#一些思考" class="headerlink" title="一些思考"></a>一些思考</h1><p>关于程序的实现是根据需求而定的<br>首先要考虑用reference可不可以</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/26/2017-03-26-再看c++/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          再看c++
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/22/2017-03-22-MySQL2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">MySQL</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-Based基于对象"><span class="nav-number">1.</span> <span class="nav-text">Object Based基于对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#头文件的声明"><span class="nav-number">1.1.</span> <span class="nav-text">头文件的声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#access-level"><span class="nav-number">1.2.</span> <span class="nav-text">access level</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#constructor-NaN"><span class="nav-number">1.3.</span> <span class="nav-text">constructor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数后面加const"><span class="nav-number">1.4.</span> <span class="nav-text">函数后面加const</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数的传递"><span class="nav-number">1.5.</span> <span class="nav-text">参数的传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#friend"><span class="nav-number">1.6.</span> <span class="nav-text">friend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#return-by-reference"><span class="nav-number">1.7.</span> <span class="nav-text">return by reference </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#operator-overloading"><span class="nav-number">1.8.</span> <span class="nav-text">operator overloading</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#temp-object"><span class="nav-number">1.9.</span> <span class="nav-text">temp object</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一些思考"><span class="nav-number">2.</span> <span class="nav-text">一些思考</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>loki::allocator | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl" />
+  
+  
+  
+  
+  <meta name="description" content="Chunk123pData_: unsigned char*firstAvailableBlock_: unsigned char//第一个可用的编号blocksAvailable_: unsigned char//剩余可用的数目 123456789101112131415161718192021222324252627282930313233343536void FixedAllocator::">
+<meta name="keywords" content="cpp,stl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="loki::allocator">
+<meta property="og:url" content="http://coordinate.wang/2017/04/12/2017-04-12-loki's allocator/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Chunk123pData_: unsigned char*firstAvailableBlock_: unsigned char//第一个可用的编号blocksAvailable_: unsigned char//剩余可用的数目 123456789101112131415161718192021222324252627282930313233343536void FixedAllocator::">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.106Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="loki::allocator">
+<meta name="twitter:description" content="Chunk123pData_: unsigned char*firstAvailableBlock_: unsigned char//第一个可用的编号blocksAvailable_: unsigned char//剩余可用的数目 123456789101112131415161718192021222324252627282930313233343536void FixedAllocator::">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-12-loki&#39;s allocator" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      loki::allocator
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/12/2017-04-12-loki's allocator/" class="article-date">
+	  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">四月 12, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pData_: <span class="keyword">unsigned</span> <span class="keyword">char</span>*</span><br><span class="line">firstAvailableBlock_: <span class="keyword">unsigned</span> <span class="keyword">char</span><span class="comment">//第一个可用的编号</span></span><br><span class="line">blocksAvailable_: <span class="keyword">unsigned</span> <span class="keyword">char</span><span class="comment">//剩余可用的数目</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Init(<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize,<span class="keyword">unsigned</span> <span class="keyword">char</span> blocks)</span><br><span class="line">&#123;</span><br><span class="line">	pData = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">char</span>[blockSize * blocks];</span><br><span class="line">	Reset(blockSize, blocks);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Reset(<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize,<span class="keyword">unsigned</span> <span class="keyword">char</span> blocks)</span><br><span class="line">&#123;</span><br><span class="line">	firstAvailableBlock_ = <span class="number">0</span>;</span><br><span class="line">	blocksAvailable_ = blocks;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* p = pData_;</span><br><span class="line">	<span class="keyword">for</span>(; i!=blocks; p+=blockSize)</span><br><span class="line">		*p =++i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Release()</span><br><span class="line">&#123; </span><br><span class="line">	<span class="keyword">delete</span>[] pData;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Allocate(<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(!blocksAvailable_) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* pResult = </span><br><span class="line">		pData_ + (firstAvailableBlock_ * blockSize);</span><br><span class="line">	firstAvailableBlock_ = *pResult;</span><br><span class="line">	--blocksAvailable_;</span><br><span class="line">	<span class="keyword">return</span> pResult;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Deallocate(<span class="keyword">void</span>* p,<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> * toRelease = <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>*&gt;(p);</span><br><span class="line">	*toRelease = firstAvailableBlock_;</span><br><span class="line">	firstAvailableBlock_ = <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;(</span><br><span class="line">						(toRelease - pData_)/blockSize);</span><br><span class="line">	++blocksAvailable_;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="FixedAllocator"><a href="#FixedAllocator" class="headerlink" title="FixedAllocator"></a>FixedAllocator</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chunks_:<span class="built_in">vector</span>&lt;Chunk&gt;</span><br><span class="line">allocChunk_: Chunk*</span><br><span class="line">deallocChunk_: Chunk*</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *FixedAllocator::Allocate()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(allocChunk == <span class="number">0</span> || allocChunk_-&gt;blocksAvailable_ == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Chunks::iterator i = chunks_.begin();</span><br><span class="line">		<span class="keyword">for</span>(;; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(i == chunks_.end())</span><br><span class="line">			&#123;</span><br><span class="line">				chunks_.push_back(Chunk());</span><br><span class="line">				Chunk&amp; newChunk = chunks_.back();</span><br><span class="line">				newChunk.Init(blockSize_, numBlocks_);</span><br><span class="line">				allocChunk_ = &amp;newChunk;<span class="comment">//指向上次给出去的chunk</span></span><br><span class="line">				deallocChunk_ = &amp;chunks_.front();<span class="comment">//指向上一次的回收</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(i-&gt;blocksAvailable_&gt; <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				allocChunk_ = &amp;*i;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> allocChunk_-&gt;Allocate(blockSize_);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Deallocate(<span class="keyword">void</span> *p)</span><br><span class="line">&#123;</span><br><span class="line">	deallocChunk_ = VicinityFind(p);</span><br><span class="line">	DoDealllocate(p);</span><br><span class="line">&#125;</span><br><span class="line">FixedAllocator::Chunk* FixedAllocator::VicinityFind(<span class="keyword">void</span> *p)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> chunkLength = numBlocks_ * blockSize_;</span><br><span class="line">	</span><br><span class="line">	Chunk* lo = deallocChunk_;</span><br><span class="line">	Chunk* hi = deallocChunk_ + <span class="number">1</span>;</span><br><span class="line">	Chunk* loBound = &amp;chunks_.front();</span><br><span class="line">	Chunk* hiBound = &amp;chunks_.back() + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(;;)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(lo)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(p &gt;= lo-&gt;pData_ &amp;&amp; p&lt; lo-&gt;pData_ + chunkLength)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">return</span> lo;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(lo == loBound) lo = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span> --lo;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(hi)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(p &gt;= hi-&gt;pData_&amp;&amp; p &lt;hi-&gt;pData_ + chunkLength)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">return</span> hi;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>( ++ hi == hiBound) hi = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::DoDeallocate(<span class="keyword">void</span> *p)</span><br><span class="line">&#123;</span><br><span class="line">	deallocChunk_-&gt;Deallocate(p, blockSize_);</span><br><span class="line"><span class="comment">//是否等于开始的登记值</span></span><br><span class="line">	<span class="keyword">if</span>(deallocChunk_-&gt;blocksAvailable == numBlocks)</span><br><span class="line">	&#123;</span><br><span class="line">		Chunk&amp; lastChunk == chunks_.back();</span><br><span class="line"><span class="comment">//这里的做法与vc SBH defer类似</span></span><br><span class="line"><span class="comment">//__sbh_pHeaderDefer是一个指针，指向一个全回收group所属的Header。这个group原</span></span><br><span class="line"><span class="comment">//本应被释放，但暂时保留。当再有第二个全回收group出现时，SBH才释放Defer </span></span><br><span class="line"><span class="comment">//group，并将新出现的全回收group设为defer。如果尚未出现第二个group而又从Defer </span></span><br><span class="line"><span class="comment">//group取出block完成分配，Defer指针会被取消(设为NULL);</span></span><br><span class="line"><span class="comment">//__sbh_indGroupDefer是个索引，指出Region中哪个group是Defer。</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(&amp;lastChunk == deallocChunk_)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(chunks_.size() &gt;<span class="number">1</span> &amp;&amp;</span><br><span class="line">				deallocChunk_[<span class="number">-1</span>].blocksAvailable_ == numBlocks)</span><br><span class="line">			&#123;</span><br><span class="line">				lastChunk.Release();</span><br><span class="line">				chunks_.pop_back();</span><br><span class="line">				allocChunk_ = deallocChunk_ = &amp;chunks_.front();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(lastChunk.blocksAvailable == numBlocks)</span><br><span class="line">		&#123;</span><br><span class="line">			lastChunk.Release();</span><br><span class="line">			chunks_.pop_back();</span><br><span class="line">			allocChunk_ = deallocChunk_;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::swap(*deallocChunk_, lastChunk);</span><br><span class="line">			allocChunk_ = &amp;chunks_.back();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SmallObjAllocator"><a href="#SmallObjAllocator" class="headerlink" title="SmallObjAllocator"></a>SmallObjAllocator</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pool_: <span class="built_in">vector</span>&lt;FixedAllocator&gt;</span><br><span class="line">pLastAlloc: FixedAllocator</span><br><span class="line">pLastDealloc: FixedAllocator</span><br><span class="line">chunkSize: <span class="keyword">size_t</span></span><br><span class="line">maxObjectSize: <span class="keyword">size_t</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/12/2017-04-12-other issues/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          other issues
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/11/2017-04-11-malloc and free/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">malloc/free</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Chunk"><span class="nav-number">1.</span> <span class="nav-text">Chunk</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FixedAllocator"><span class="nav-number">2.</span> <span class="nav-text">FixedAllocator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SmallObjAllocator"><span class="nav-number">3.</span> <span class="nav-text">SmallObjAllocator</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

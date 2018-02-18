@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>TensorBoard可视化学习 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythontensorflowestimator" />
+  
+  
+  
+  
+  <meta name="description" content="您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：    序列化数据Te">
+<meta name="keywords" content="python,tensorflow,estimator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorBoard可视化学习">
+<meta property="og:url" content="http://coordinate.wang/2017/12/05/2017-12-05-TensorBoard可视化学习/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：    序列化数据Te">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4jyazdrfj20pw0dy77c.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.585Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorBoard可视化学习">
+<meta name="twitter:description" content="您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：    序列化数据Te">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4jyazdrfj20pw0dy77c.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-05-TensorBoard可视化学习" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      TensorBoard可视化学习
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/05/2017-12-05-TensorBoard可视化学习/" class="article-date">
+	  <time datetime="2017-12-04T16:00:00.000Z" itemprop="datePublished">十二月 5, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4jyazdrfj20pw0dy77c.jpg"><br></center>
+
+
+<h2 id="序列化数据"><a href="#序列化数据" class="headerlink" title="序列化数据"></a>序列化数据</h2><p>TensorBoard通过读取TensorFlow事件文件进行操作，TensorFlow事件文件包含运行TensorFlow时可以生成的摘要数据。以下是TensorBoard中汇总数据的一般生命周期。</p>
+<p>首先，创建您希望从中收集摘要数据的TensorFlow图，然后决定使用摘要操作注解哪些节点。</p>
+<p>例如，假设您正在训练用于识别MNIST数字的卷积神经网络。您想记录学习率随时间的变化，以及目标函数如何变化。通过将<code>tf.summary.scalar</code> 操作分别附加到输出学习率和损失来收集这些信息。然后，给每个标量附上有意义的标签，如“学习率”或“损失函数”。</p>
+<p>也许你也想看到特定层的激活分布，或梯度或权重的分布。通过将<code>tf.summary.histogram</code>操作附加到梯度输出和保存您权重的变量来收集这些数据。</p>
+<p>有关所有可用摘要操作的详细信息，请查看有关摘要操作的文档。</p>
+<p>在运行之前，TensorFlow中不会执行任何操作，或者取决于其输出的操作。我们刚刚创建的摘要节点是图形的外围设备：您当前正在运行的操作都不依赖于它们。所以，为了生成摘要，我们需要运行所有这些汇总节点。手工管理它们会很麻烦，所以使用<code>tf.summary.merge_all</code>将它们组合成一个单独的操作来生成所有的汇总数据。</p>
+<p>然后，您可以运行合并的摘要操作，该操作将在给定的步骤中生成包含所有摘要数据的序列化的protobuf对象。最后，为了将这个总结数据写入磁盘，将总结的protobuf传递给<code>tf.summary.FileWriter</code>。</p>
+<p><code>FileWriter</code>在其构造函数中使用了一个<code>logdir</code> - 这个<code>logdir</code>非常重要，它是所有事件将被写出的目录。另外，<code>FileWriter</code>可以选择在其构造函数中使用Graph。如果它接收到一个Graph对象，那么TensorBoard会将您的图形与张量形状信息一起可视化。这将使您更好地理解图中流动的情况：请参阅张量形状信息。</p>
+<p>现在你已经修改了你的图形，并有一个<code>FileWriter</code>，你已经准备好开始运行你的网络！如果你愿意，你可以每一步都运行合并的摘要操作，并记录大量的训练数据，虽然这可能产生更多的数据。所以请考虑每n步运行合并的摘要操作。</p>
+<p>下面的代码示例是对简单MNIST教程的修改，我们在其中添加了一些汇总操作，并且每十步执行一次。如果你运行这个程序，然后启动<code>tensorboard --logdir = /tmp/tensorflow/mnist</code>，你将可以看到统计数据，例如训练过程中权重或精度的变化。下面的代码是摘录，完整的源代码在<a href="https://github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/tutorials/mnist/mnist_with_summaries.py" target="_blank" rel="noopener">这里</a>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">variable_summaries</span><span class="params">(var)</span>:</span></span><br><span class="line">  <span class="string">"""Attach a lot of summaries to a Tensor (for TensorBoard visualization)."""</span></span><br><span class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">'summaries'</span>):</span><br><span class="line">    mean = tf.reduce_mean(var)</span><br><span class="line">    tf.summary.scalar(<span class="string">'mean'</span>, mean)</span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'stddev'</span>):</span><br><span class="line">      stddev = tf.sqrt(tf.reduce_mean(tf.square(var - mean)))</span><br><span class="line">    tf.summary.scalar(<span class="string">'stddev'</span>, stddev)</span><br><span class="line">    tf.summary.scalar(<span class="string">'max'</span>, tf.reduce_max(var))</span><br><span class="line">    tf.summary.scalar(<span class="string">'min'</span>, tf.reduce_min(var))</span><br><span class="line">    tf.summary.histogram(<span class="string">'histogram'</span>, var)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nn_layer</span><span class="params">(input_tensor, input_dim, output_dim, layer_name, act=tf.nn.relu)</span>:</span></span><br><span class="line">  <span class="string">"""Reusable code for making a simple neural net layer.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  It does a matrix multiply, bias add, and then uses relu to nonlinearize.</span></span><br><span class="line"><span class="string">  It also sets up name scoping so that the resultant graph is easy to read,</span></span><br><span class="line"><span class="string">  and adds a number of summary ops.</span></span><br><span class="line"><span class="string">  """</span></span><br><span class="line">  <span class="comment"># Adding a name scope ensures logical grouping of the layers in the graph.</span></span><br><span class="line">  <span class="keyword">with</span> tf.name_scope(layer_name):</span><br><span class="line">    <span class="comment"># This Variable will hold the state of the weights for the layer</span></span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'weights'</span>):</span><br><span class="line">      weights = weight_variable([input_dim, output_dim])</span><br><span class="line">      variable_summaries(weights)</span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'biases'</span>):</span><br><span class="line">      biases = bias_variable([output_dim])</span><br><span class="line">      variable_summaries(biases)</span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">'Wx_plus_b'</span>):</span><br><span class="line">      preactivate = tf.matmul(input_tensor, weights) + biases</span><br><span class="line">      tf.summary.histogram(<span class="string">'pre_activations'</span>, preactivate)</span><br><span class="line">    activations = act(preactivate, name=<span class="string">'activation'</span>)</span><br><span class="line">    tf.summary.histogram(<span class="string">'activations'</span>, activations)</span><br><span class="line">    <span class="keyword">return</span> activations</span><br><span class="line"></span><br><span class="line">hidden1 = nn_layer(x, <span class="number">784</span>, <span class="number">500</span>, <span class="string">'layer1'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'dropout'</span>):</span><br><span class="line">  keep_prob = tf.placeholder(tf.float32)</span><br><span class="line">  tf.summary.scalar(<span class="string">'dropout_keep_probability'</span>, keep_prob)</span><br><span class="line">  dropped = tf.nn.dropout(hidden1, keep_prob)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Do not apply softmax activation yet, see below.</span></span><br><span class="line">y = nn_layer(dropped, <span class="number">500</span>, <span class="number">10</span>, <span class="string">'layer2'</span>, act=tf.identity)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'cross_entropy'</span>):</span><br><span class="line">  <span class="comment"># The raw formulation of cross-entropy,</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment"># tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(tf.softmax(y)),</span></span><br><span class="line">  <span class="comment">#                               reduction_indices=[1]))</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment"># can be numerically unstable.</span></span><br><span class="line">  <span class="comment">#</span></span><br><span class="line">  <span class="comment"># So here we use tf.nn.softmax_cross_entropy_with_logits on the</span></span><br><span class="line">  <span class="comment"># raw outputs of the nn_layer above, and then average across</span></span><br><span class="line">  <span class="comment"># the batch.</span></span><br><span class="line">  diff = tf.nn.softmax_cross_entropy_with_logits(targets=y_, logits=y)</span><br><span class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">'total'</span>):</span><br><span class="line">    cross_entropy = tf.reduce_mean(diff)</span><br><span class="line">tf.summary.scalar(<span class="string">'cross_entropy'</span>, cross_entropy)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'train'</span>):</span><br><span class="line">  train_step = tf.train.AdamOptimizer(FLAGS.learning_rate).minimize(</span><br><span class="line">      cross_entropy)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'accuracy'</span>):</span><br><span class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">'correct_prediction'</span>):</span><br><span class="line">    correct_prediction = tf.equal(tf.argmax(y, <span class="number">1</span>), tf.argmax(y_, <span class="number">1</span>))</span><br><span class="line">  <span class="keyword">with</span> tf.name_scope(<span class="string">'accuracy'</span>):</span><br><span class="line">    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</span><br><span class="line">tf.summary.scalar(<span class="string">'accuracy'</span>, accuracy)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Merge all the summaries and write them out to /tmp/mnist_logs (by default)</span></span><br><span class="line">merged = tf.summary.merge_all()</span><br><span class="line">train_writer = tf.summary.FileWriter(FLAGS.summaries_dir + <span class="string">'/train'</span>,</span><br><span class="line">                                      sess.graph)</span><br><span class="line">test_writer = tf.summary.FileWriter(FLAGS.summaries_dir + <span class="string">'/test'</span>)</span><br><span class="line">tf.global_variables_initializer().run()</span><br></pre></td></tr></table></figure>
+<p>在初始化<code>FileWriters</code>之后，我们必须在我们训练和测试模型时将摘要添加到<code>FileWriters</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Train the model, and also write summaries.</span></span><br><span class="line"><span class="comment"># Every 10th step, measure test-set accuracy, and write test summaries</span></span><br><span class="line"><span class="comment"># All other steps, run train_step on training data, &amp; add training summaries</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">feed_dict</span><span class="params">(train)</span>:</span></span><br><span class="line">  <span class="string">"""Make a TensorFlow feed_dict: maps data onto Tensor placeholders."""</span></span><br><span class="line">  <span class="keyword">if</span> train <span class="keyword">or</span> FLAGS.fake_data:</span><br><span class="line">    xs, ys = mnist.train.next_batch(<span class="number">100</span>, fake_data=FLAGS.fake_data)</span><br><span class="line">    k = FLAGS.dropout</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    xs, ys = mnist.test.images, mnist.test.labels</span><br><span class="line">    k = <span class="number">1.0</span></span><br><span class="line">  <span class="keyword">return</span> &#123;x: xs, y_: ys, keep_prob: k&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(FLAGS.max_steps):</span><br><span class="line">  <span class="keyword">if</span> i % <span class="number">10</span> == <span class="number">0</span>:  <span class="comment"># Record summaries and test-set accuracy</span></span><br><span class="line">    summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(<span class="keyword">False</span>))</span><br><span class="line">    test_writer.add_summary(summary, i)</span><br><span class="line">    print(<span class="string">'Accuracy at step %s: %s'</span> % (i, acc))</span><br><span class="line">  <span class="keyword">else</span>:  <span class="comment"># Record train set summaries, and train</span></span><br><span class="line">    summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(<span class="keyword">True</span>))</span><br><span class="line">    train_writer.add_summary(summary, i)</span><br></pre></td></tr></table></figure>
+<p>您现在已经可以使用TensorBoard将这些数据可视化了。</p>
+<h2 id="启动TensorBoard"><a href="#启动TensorBoard" class="headerlink" title="启动TensorBoard"></a>启动TensorBoard</h2><p>要运行TensorBoard，请使用以下命令（或者使用<code>python -m tensorboard.main</code>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensorboard --logdir=path/to/log-directory</span><br></pre></td></tr></table></figure>
+<p>其中<code>logdir</code>指向<code>FileWriter</code>序列化其数据的目录。 如果此<code>logdir</code>目录包含来自单独运行的序列化数据的子目录，则TensorBoard将可视化来自所有这些运行的数据。 一旦TensorBoard正在运行，浏览您的Web浏览器到<code>localhost:6006</code>以查看TensorBoard。</p>
+<p>在看TensorBoard时，您会看到右上角的导航标签。 每个选项卡代表一组可以可视化的序列化数据。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/estimator/">estimator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/06/2017-12-06-TensorBoard图形可视化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          TensorBoard计算图可视化
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/04/2017-12-04-tf.estimator-快速上手/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">tf.estimator 快速上手</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#序列化数据"><span class="nav-number">1.</span> <span class="nav-text">序列化数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动TensorBoard"><span class="nav-number">2.</span> <span class="nav-text">启动TensorBoard</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

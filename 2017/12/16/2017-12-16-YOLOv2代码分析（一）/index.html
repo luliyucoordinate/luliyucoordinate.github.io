@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2代码分析（一） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+  
+  
+  <meta name="description" content="#0x00 写在开头 写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。 #0x01 从main函数开始 12345678910int main(int argc, char **argv)&amp;#12">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2代码分析（一）">
+<meta property="og:url" content="http://coordinate.wang/2017/12/16/2017-12-16-YOLOv2代码分析（一）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="#0x00 写在开头 写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。 #0x01 从main函数开始 12345678910int main(int argc, char **argv)&amp;#12">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmkrbpakepj20v1063jrc.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.607Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2代码分析（一）">
+<meta name="twitter:description" content="#0x00 写在开头 写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。 #0x01 从main函数开始 12345678910int main(int argc, char **argv)&amp;#12">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmkrbpakepj20v1063jrc.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-16-YOLOv2代码分析（一）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2代码分析（一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/" class="article-date">
+	  <time datetime="2017-12-15T16:00:00.000Z" itemprop="datePublished">十二月 16, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#0x00 写在开头</p>
+<p>写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。</p>
+<p>#0x01 从main函数开始</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//test_resize("data/bad.jpg");</span></span><br><span class="line">    <span class="comment">//test_box();</span></span><br><span class="line">    <span class="comment">//test_convolutional_layer();</span></span><br><span class="line">    <span class="keyword">if</span>(argc &lt; <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"usage: %s &lt;function&gt;\n"</span>, argv[<span class="number">0</span>]);<span class="comment">//如果参数小于2就打印出错信息</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//出错后返回</span></span><br><span class="line">    &#125;</span><br><span class="line">    gpu_index = find_int_arg(argc, argv, <span class="string">"-i"</span>, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p>接着看到<code>find_int_arg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_int_arg</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv, <span class="keyword">char</span> *arg, <span class="keyword">int</span> def)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; argc<span class="number">-1</span>; ++i)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!argv[i]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[i], arg))&#123;</span><br><span class="line">            def = atoi(argv[i+<span class="number">1</span>]);</span><br><span class="line">            del_arg(argc, argv, i);</span><br><span class="line">            del_arg(argc, argv, i);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> def;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>find_int_arg</code>这个函数本身的目的是要找出参数中的<code>int</code>值。在这里主要任务就是判断输入参数是不是有<code>-i</code>，将<code>-i</code>后一位的数值转化为<code>int</code>，然后返回这个值。其中又出现了两次<code>del_arg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">del_arg</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv, <span class="keyword">int</span> index)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = index; i &lt; argc<span class="number">-1</span>; ++i) argv[i] = argv[i+<span class="number">1</span>];</span><br><span class="line">    argv[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数作用是删除<code>index</code>位置的参数。此处调用两次的作用是将<code>-i</code>和其后的数值去除，类似于一个列表前移操作，后面的项补0。</p>
+<p>接着看main函数后面的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(find_arg(argc, argv, <span class="string">"-nogpu"</span>)) &#123;</span><br><span class="line">        gpu_index = <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这里调用了一个<code>find_arg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">find_arg</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[], <span class="keyword">char</span> *arg)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; argc; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!argv[i]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[i], arg)) &#123;</span><br><span class="line">            del_arg(argc, argv, i);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的作用就是查看参数中是否有<code>arg</code>指向的字符串。在这里如果参数中出现了<code>-nogpu</code>则我们<code>gpu_index</code>设置为<code>-1</code>，也就是不使用<code>gpu</code></p>
+<p>接着往后</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> GPU</span></span><br><span class="line">    gpu_index = <span class="number">-1</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">if</span>(gpu_index &gt;= <span class="number">0</span>)&#123;</span><br><span class="line">        cuda_set_device(gpu_index);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>如果没有定义GPU这个宏，那么将 <code>gpu_index</code>设置为 <code>-1</code>。如果设置了，并且我们前面也没有关闭<code>gpu</code>选项的话，那么调用<code>cuda_set_device</code>这个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cuda_set_device</span><span class="params">(<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    gpu_index = n;</span><br><span class="line">    cudaError_t status = cudaSetDevice(n);<span class="comment">//这是cuda编程里面的，不详细说。设置显卡编号</span></span><br><span class="line">    check_error(status);<span class="comment">//判断返回信息，设置显卡成功了，还是失败了</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接着往后</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (<span class="number">0</span> == <span class="built_in">strcmp</span>(argv[<span class="number">1</span>], <span class="string">"yolo"</span>))&#123;</span><br><span class="line">        run_yolo(argc, argv);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这里有很多选项，我先看我最感兴趣的<code>yolo</code>选项</p>
+<p>到这里main函数中的所有问题就理清楚了，接着就是<code>run_yolo</code>函数中问题了</p>
+<p>#0x02 run_yolo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">run_yolo</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *prefix = find_char_arg(argc, argv, <span class="string">"-prefix"</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">float</span> thresh = find_float_arg(argc, argv, <span class="string">"-thresh"</span>, <span class="number">.2</span>);</span><br><span class="line">    <span class="keyword">int</span> cam_index = find_int_arg(argc, argv, <span class="string">"-c"</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">int</span> frame_skip = find_int_arg(argc, argv, <span class="string">"-s"</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(argc &lt; <span class="number">4</span>)&#123;<span class="comment">//如果参数小于4，打印出错信息</span></span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n"</span>, argv[<span class="number">0</span>], argv[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> avg = find_int_arg(argc, argv, <span class="string">"-avg"</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">char</span> *cfg = argv[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">char</span> *weights = (argc &gt; <span class="number">4</span>) ? argv[<span class="number">4</span>] : <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> *filename = (argc &gt; <span class="number">5</span>) ? argv[<span class="number">5</span>]: <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//根据第三个参数选择调用的函数</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[<span class="number">2</span>], <span class="string">"test"</span>)) test_yolo(cfg, weights, filename, thresh);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[<span class="number">2</span>], <span class="string">"train"</span>)) train_yolo(cfg, weights);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[<span class="number">2</span>], <span class="string">"valid"</span>)) validate_yolo(cfg, weights);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[<span class="number">2</span>], <span class="string">"recall"</span>)) validate_yolo_recall(cfg, weights);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(<span class="number">0</span>==<span class="built_in">strcmp</span>(argv[<span class="number">2</span>], <span class="string">"demo"</span>)) demo(cfg, weights, thresh, cam_index, filename, voc_names, <span class="number">20</span>, frame_skip, prefix, avg, <span class="number">.5</span>, <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有<code>find_char_arg</code>，<code>find_float_arg</code>函数，这里就不再赘述了，按照前面解析<code>find_int_arg</code>的思路去做。</p>
+<p>首先<code>cfg</code>这个指针指向<code>cfg</code>文件名字符串，<code>weight</code>指向了权重文件名字符串。别的变量暂时不管，因为我们先关注<code>train_yolo</code>这个函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">train_yolo</span><span class="params">(<span class="keyword">char</span> *cfgfile, <span class="keyword">char</span> *weightfile)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *train_images = <span class="string">"/data/voc/train.txt"</span>;<span class="comment">//train_images指向train.txt路径字符串</span></span><br><span class="line">    <span class="keyword">char</span> *backup_directory = <span class="string">"/home/pjreddie/backup/"</span>;<span class="comment">//backup_directory指向保存权重文件的路径</span></span><br><span class="line">    srand(time(<span class="number">0</span>));<span class="comment">//设置随机数种子</span></span><br><span class="line">    <span class="keyword">char</span> *base = basecfg(cfgfile);<span class="comment">//cfgfile就是上面说的cfg指向的字符串</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, base);</span><br></pre></td></tr></table></figure>
+<p>好的，这里出现了一个<code>basecfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">basecfg</span><span class="params">(<span class="keyword">char</span> *cfgfile)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *c = cfgfile;</span><br><span class="line">    <span class="keyword">char</span> *next;</span><br><span class="line">    <span class="keyword">while</span>((next = <span class="built_in">strchr</span>(c, <span class="string">'/'</span>)))</span><br><span class="line">    &#123;</span><br><span class="line">        c = next+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    c = copy_string(c);</span><br><span class="line">    next = <span class="built_in">strchr</span>(c, <span class="string">'.'</span>);</span><br><span class="line">    <span class="keyword">if</span> (next) *next = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">copy_string</span><span class="params">(<span class="keyword">char</span> *s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *copy = <span class="built_in">malloc</span>(<span class="built_in">strlen</span>(s)+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">strncpy</span>(copy, s, <span class="built_in">strlen</span>(s)+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> copy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先看传入的参数<code>cfgfile</code>，是一个<code>cfg</code>文件的路径字符串。接着<code>strchr</code>，这个函数的作用是去第一个参数中，第二个参数以后的字符包括第二个参数（abc/ab.cfg—&gt;/ab.cfg），接着<code>c=next+1</code>，也就是<code>c</code>指向了这个<code>cfg</code>文件名字符串。</p>
+<p><code>copy_string</code>函数的作用，就是重新分配一块内存，并且内容保留。那这里<code>next</code>后的操作就很清楚了，就是把<code>.cfg</code>后缀去掉。</p>
+<p>这个函数是有缺陷的，因为这里没有考虑到window用户的需求，应该增加<code>\\</code>的处理。</p>
+<p>接着回到<code>train_yolo</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//train_yolo	</span></span><br><span class="line"><span class="keyword">float</span> avg_loss = <span class="number">-1</span>;</span><br><span class="line">   network net = parse_network_cfg(cfgfile);</span><br></pre></td></tr></table></figure>
+<p>这里出现了<code>parse_network_cfg</code>函数</p>
+<p>#0x03 parse_network_cfg</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">network *<span class="title">parse_network_cfg</span><span class="params">(<span class="keyword">char</span> *filename)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">list</span> *sections = read_cfg(filename);</span><br></pre></td></tr></table></figure>
+<p>出现了一个<code>read_cfg</code>函数</p>
+<h2 id="0x0301-read-cfg"><a href="#0x0301-read-cfg" class="headerlink" title="0x0301 read_cfg"></a>0x0301 read_cfg</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">list</span> *<span class="title">read_cfg</span><span class="params">(<span class="keyword">char</span> *filename)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FILE *file = fopen(filename, <span class="string">"r"</span>);</span><br><span class="line">    <span class="keyword">if</span>(file == <span class="number">0</span>) file_error(filename);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">file_error</span><span class="params">(<span class="keyword">char</span> *s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Couldn't open file: %s\n"</span>, s);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>file_error</code>判断<code>cfg</code>文件有没有打开失败。接着往后</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//read_cfg</span></span><br><span class="line">    <span class="keyword">char</span> *line;</span><br><span class="line">    <span class="keyword">int</span> nu = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">list</span> *options = make_list();<span class="comment">//创建一个链表</span></span><br><span class="line">    section *current = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((line=fgetl(file)) != <span class="number">0</span>)&#123;</span><br></pre></td></tr></table></figure>
+<p>这里出现了一个<code>fgetl</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">fgetl</span><span class="params">(FILE *fp)</span><span class="comment">//fp指向打开后的cfg文件</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(feof(fp)) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//如果文件结尾，退出</span></span><br><span class="line">    <span class="keyword">size_t</span> size = <span class="number">512</span>;</span><br><span class="line">    <span class="keyword">char</span> *line = <span class="built_in">malloc</span>(size*<span class="keyword">sizeof</span>(<span class="keyword">char</span>));<span class="comment">//分配512字节内存</span></span><br><span class="line">  </span><br><span class="line">    <span class="comment">//从fp中读取一行数据到line中，数据最大为size。</span></span><br><span class="line">    <span class="comment">//注意，如果碰到换行或文件eof会停止读入。读取失败返回NULL</span></span><br><span class="line">    <span class="keyword">if</span>(!fgets(line, size, fp))&#123;</span><br><span class="line">        <span class="built_in">free</span>(line);<span class="comment">//失败就释放内存</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span> curr = <span class="built_in">strlen</span>(line);<span class="comment">//返回line的长度，也就是读入的字符个数</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">//这里的代码是为了处理size不够的情况</span></span><br><span class="line">    <span class="keyword">while</span>((line[curr<span class="number">-1</span>] != <span class="string">'\n'</span>) &amp;&amp; !feof(fp))&#123;</span><br><span class="line">        <span class="keyword">if</span>(curr == size<span class="number">-1</span>)&#123;</span><br><span class="line">            <span class="comment">//size不够我们就变大两倍</span></span><br><span class="line">            size *= <span class="number">2</span>;</span><br><span class="line">            line = <span class="built_in">realloc</span>(line, size*<span class="keyword">sizeof</span>(<span class="keyword">char</span>));</span><br><span class="line">            <span class="keyword">if</span>(!line) &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%ld\n"</span>, size);</span><br><span class="line">                malloc_error();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//line不够，也就是一行没有读全，那么不会再从开始，而是接着上一次没有读完的信息</span></span><br><span class="line">        <span class="keyword">size_t</span> readsize = size-curr;</span><br><span class="line">        <span class="keyword">if</span>(readsize &gt; INT_MAX) readsize = INT_MAX<span class="number">-1</span>;</span><br><span class="line">        fgets(&amp;line[curr], readsize, fp);</span><br><span class="line">        curr = <span class="built_in">strlen</span>(line);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(line[curr<span class="number">-1</span>] == <span class="string">'\n'</span>) line[curr<span class="number">-1</span>] = <span class="string">'\0'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> line;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的作用，简单理解就是读取文件的一行。其实用c++中的<code>getline</code>函数就可以解决了。同样的python中的<code>readline</code>也可以做到。</p>
+<p>接着回到<code>read_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//read_cfg</span></span><br><span class="line">		++ nu;</span><br><span class="line">        strip(line);</span><br></pre></td></tr></table></figure>
+<p>出现一个<code>strip</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">strip</span><span class="params">(<span class="keyword">char</span> *s)</span><span class="comment">//传入我们前面读入的行</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> i;</span><br><span class="line">    <span class="keyword">size_t</span> len = <span class="built_in">strlen</span>(s);</span><br><span class="line">    <span class="keyword">size_t</span> offset = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//这里的做法和list前移一样，出现空格符，则其后的所有项前移</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; ++i)&#123;</span><br><span class="line">        <span class="keyword">char</span> c = s[i];</span><br><span class="line">        <span class="keyword">if</span>(c==<span class="string">' '</span>||c==<span class="string">'\t'</span>||c==<span class="string">'\n'</span>) ++offset;</span><br><span class="line">        <span class="keyword">else</span> s[i-offset] = c;</span><br><span class="line">    &#125;</span><br><span class="line">    s[len-offset] = <span class="string">'\0'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的作用就是删除字符串中的空格符（’\n’,’\t’,’ ‘）</p>
+<p>回到<code>read_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">		<span class="keyword">switch</span>(line[<span class="number">0</span>])&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'['</span>:<span class="comment">//这里就是看读入的行的第一个字符是'['也就是对于cfg文件中[net],[maxpool]这种东西</span></span><br><span class="line">                current = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(section));<span class="comment">//创建一个current</span></span><br><span class="line">                list_insert(options, current);<span class="comment">//将current插入之前建立的options链表</span></span><br><span class="line">                current-&gt;options = make_list();<span class="comment">//给current创建链表</span></span><br><span class="line">                current-&gt;type = line;<span class="comment">//将读入的[net],[maxpool]读入type</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'\0'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">';'</span>:</span><br><span class="line">                <span class="built_in">free</span>(line);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">if</span>(!read_option(line, current-&gt;options))&#123;</span><br><span class="line">                    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Config file error line %d, could parse: %s\n"</span>, nu, line);</span><br><span class="line">                    <span class="built_in">free</span>(line);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    fclose(file);</span><br><span class="line">    <span class="keyword">return</span> options;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先看一下<code>section</code>这个结构体的定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span> *type;</span><br><span class="line">    <span class="built_in">list</span> *options;</span><br><span class="line">&#125;section;</span><br></pre></td></tr></table></figure>
+<p>它的内部包含一个链表。这里作者的<code>list_insert(options, current);</code>中options和后面的<code>current-&gt;options = make_list();</code>中的options存在歧义。其实两者一毛钱关系都没有。</p>
+<p>分析一下这个<code>read_option</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read_option</span><span class="params">(<span class="keyword">char</span> *s, <span class="built_in">list</span> *options)</span><span class="comment">//s指向读取的行，list就是一个section中的list</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> i;</span><br><span class="line">    <span class="keyword">size_t</span> len = <span class="built_in">strlen</span>(s);</span><br><span class="line">    <span class="keyword">char</span> *val = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; len; ++i)&#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i] == <span class="string">'='</span>)&#123;</span><br><span class="line">            s[i] = <span class="string">'\0'</span>;</span><br><span class="line">            val = s+i+<span class="number">1</span>;<span class="comment">//val指向=后面的字符串</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(i == len<span class="number">-1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> *key = s;<span class="comment">//这个时候key指向的是=前面的字符串</span></span><br><span class="line">    option_insert(options, key, val);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span> *key;</span><br><span class="line">    <span class="keyword">char</span> *val;</span><br><span class="line">    <span class="keyword">int</span> used;</span><br><span class="line">&#125; kvp;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">option_insert</span><span class="params">(<span class="built_in">list</span> *l, <span class="keyword">char</span> *key, <span class="keyword">char</span> *val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    kvp *p = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(kvp));</span><br><span class="line">    p-&gt;key = key;</span><br><span class="line">    p-&gt;val = val;</span><br><span class="line">    p-&gt;used = <span class="number">0</span>;</span><br><span class="line">    list_insert(l, p);<span class="comment">//将一个kvp结构插入section中的list</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回头再看这个<code>switch</code>，他在这里的作用就是将<code>cfg</code>文件中的不同内容（’[net]’,’[maxpool]’）区分开，然后存到一个列表中。</p>
+<p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[convolutional]</span><br><span class="line">batch_normalize=1</span><br><span class="line">filters=32</span><br><span class="line">size=3</span><br><span class="line">stride=1</span><br><span class="line">pad=1</span><br><span class="line">activation=leaky</span><br></pre></td></tr></table></figure>
+<p>这是<code>yolo9000.cfg</code>中的一个片段，我们先看第一行，他是一个’[]’，所以进入第一个判断，我们首先将<code>[convolutional]</code>字符串，存入一个<code>section</code>对象的<code>type</code>中，并且将这个<code>section</code>对象插入到一个列表中。接着读取第二行<code>batch_normalize=1</code>，将<code>=</code>前后内容拆开存储到<code>kvp</code>结构中，再将这个<code>kvp</code>插入到<code>section</code>的<code>list</code>中。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fmkrbpakepj20v1063jrc.jpg"><br></center>
+
+<p>总览整个<code>read_cfg</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">list</span> *<span class="title">read_cfg</span><span class="params">(<span class="keyword">char</span> *filename)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FILE *file = fopen(filename, <span class="string">"r"</span>);</span><br><span class="line">    <span class="keyword">if</span>(file == <span class="number">0</span>) file_error(filename);</span><br><span class="line">    <span class="keyword">char</span> *line;</span><br><span class="line">    <span class="keyword">int</span> nu = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">list</span> *options = make_list();</span><br><span class="line">    section *current = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>((line=fgetl(file)) != <span class="number">0</span>)&#123;</span><br><span class="line">        ++ nu;</span><br><span class="line">        strip(line);</span><br><span class="line">        <span class="keyword">switch</span>(line[<span class="number">0</span>])&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'['</span>:</span><br><span class="line">                current = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(section));</span><br><span class="line">                list_insert(options, current);</span><br><span class="line">                current-&gt;options = make_list();</span><br><span class="line">                current-&gt;type = line;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'\0'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'#'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">';'</span>:</span><br><span class="line">                <span class="built_in">free</span>(line);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">if</span>(!read_option(line, current-&gt;options))&#123;</span><br><span class="line">                    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"Config file error line %d, could parse: %s\n"</span>, nu, line);</span><br><span class="line">                    <span class="built_in">free</span>(line);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    fclose(file);</span><br><span class="line">    <span class="keyword">return</span> options;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>作者做了一种数据结构来存放<code>cfg</code>的文件数据。</p>
+<p>文章全部<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<p>由于本人水平有限，文中有不对之处，希望大家指出，谢谢^_^!</p>
+<p>下一篇继续分析<code>parse_network_cfg</code>这个函数后面的部分，敬请关注。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2代码分析（二）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">目标检测中的IOU计算问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0301-read-cfg"><span class="nav-number">1.</span> <span class="nav-text">0x0301 read_cfg</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

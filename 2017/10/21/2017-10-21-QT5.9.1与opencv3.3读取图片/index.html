@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>QT5.9.1与opencv3.3读取图片 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppopencvqt" />
+  
+  
+  
+  
+  <meta name="description" content="首先我们要新建一个项目，选择Qt Widgets Application  一直点击下一步，直到出现下面这个窗口（项目名称自己填写一个）  注意这里的基类我们要选择QMianWindow，因为我们要做一个带有菜单的界面。接着点击下一步完成即可。 点击pro文件，添加opencv的路径，以及我们所需的相关库文件，例如  1234INCLUDEPATH +=  F:\opencv\opencv3\QT">
+<meta name="keywords" content="cpp,opencv,qt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT5.9.1与opencv3.3读取图片">
+<meta property="og:url" content="http://coordinate.wang/2017/10/21/2017-10-21-QT5.9.1与opencv3.3读取图片/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="首先我们要新建一个项目，选择Qt Widgets Application  一直点击下一步，直到出现下面这个窗口（项目名称自己填写一个）  注意这里的基类我们要选择QMianWindow，因为我们要做一个带有菜单的界面。接着点击下一步完成即可。 点击pro文件，添加opencv的路径，以及我们所需的相关库文件，例如  1234INCLUDEPATH +=  F:\opencv\opencv3\QT">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppk07so9j20oi0fjwez.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppk0lrthj20p20d9glq.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppk1kzddj206k05egll.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppwqxx4hj20at08lmx3.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppzmyxvdj20hg0dbglj.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkppjzr0b3j21f60u041o.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkpv4q9f2gj20hj0ef3ys.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.353Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QT5.9.1与opencv3.3读取图片">
+<meta name="twitter:description" content="首先我们要新建一个项目，选择Qt Widgets Application  一直点击下一步，直到出现下面这个窗口（项目名称自己填写一个）  注意这里的基类我们要选择QMianWindow，因为我们要做一个带有菜单的界面。接着点击下一步完成即可。 点击pro文件，添加opencv的路径，以及我们所需的相关库文件，例如  1234INCLUDEPATH +=  F:\opencv\opencv3\QT">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppk07so9j20oi0fjwez.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-10-21-QT5.9.1与opencv3.3读取图片" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      QT5.9.1与opencv3.3读取图片
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/21/2017-10-21-QT5.9.1与opencv3.3读取图片/" class="article-date">
+	  <time datetime="2017-10-20T16:00:00.000Z" itemprop="datePublished">十月 21, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先我们要新建一个项目，选择Qt Widgets Application</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppk07so9j20oi0fjwez.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppk07so9j20oi0fjwez.jpg" class="img-fluid"><br></a></p>
+<p>一直点击下一步，直到出现下面这个窗口（项目名称自己填写一个）</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppk0lrthj20p20d9glq.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppk0lrthj20p20d9glq.jpg" class="img-fluid"><br></a></p>
+<p>注意这里的基类我们要选择QMianWindow，因为我们要做一个带有菜单的界面。接着点击下一步完成即可。</p>
+<p>点击pro文件，添加opencv的路径，以及我们所需的相关库文件，例如</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppk1kzddj206k05egll.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppk1kzddj206k05egll.jpg" class="img-fluid"><br></a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INCLUDEPATH +=  F:\opencv\opencv3\QT_opencv\include\opencv \</span><br><span class="line">                F:\opencv\opencv3\QT_opencv\include\opencv2 \</span><br><span class="line">                F:\opencv\opencv3\QT_opencv\include</span><br><span class="line">LIBS += -L F:\opencv\opencv3\QT_opencv\x86\mingw\lib\libopencv_*.a</span><br></pre></td></tr></table></figure>
+<p>按照我这篇<a href="http://blog.csdn.net/qq_17550379/article/details/78296057" target="_blank" rel="noopener">文章</a>里面讲的方法，将相应的dll文件copy到工程目录中去（如果不这样做会出现crashed问题）。</p>
+<p>然后双击<code>mianwindow.ui</code>，接下来我们设计图形界面。</p>
+<p>双击<code>在这里输入</code>，我这里输入<code>文件(F)</code>，然后点击我们创建好的<code>文件(F)</code> 我们接着在创建一个<code>a</code>，因为我们这里无法输入汉字，所以先输入一个字母代替。</p>
+<p>接着选中这个<code>a</code>，在下面的菜单栏中修改名称为<code>actionOpenFile</code>，双击快捷键出现编辑动作选项，我们选中<code>shortcut</code>然后按下<code>ctrl+f</code>组合键，即可创建快捷键。如图</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppwqxx4hj20at08lmx3.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkppwqxx4hj20at08lmx3.jpg" class="img-fluid"><br></a></p>
+<p>然后右击，选择<code>转到槽</code>，QAction选择triggered，生成对应的槽函数。再回到ui界面。</p>
+<p>从左边的菜单栏中的Display Widgets中选择出label，将它拖到主界面中。</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppzmyxvdj20hg0dbglj.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkppzmyxvdj20hg0dbglj.jpg" class="img-fluid"><br></a></p>
+<p>双击label，删除里面的文字信息。调整label的大小，使它和整个界面大小一致。最后的界面是这样的</p>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkppjzr0b3j21f60u041o.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkppjzr0b3j21f60u041o.jpg" class="img-fluid"><br></a></p>
+<p>ui界面就搞定了，接下来解决槽函数的编写。</p>
+<p>我们这里使用QImage存储图片对象，而opencv中使用的是Mat数据结构，所以我们要做一些转换操作。使用cvtColor函数将Mat的BGR顺序转换为QImage的RGB顺序。</p>
+<p>要添加如下头文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QMessageBox&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QImage&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QFileDialog&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QFile&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>槽函数为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> MainWindow::on_actionOpenFile_triggered()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//打开文件选择框</span></span><br><span class="line">    QString path = QFileDialog::getOpenFileName(<span class="keyword">this</span>, tr(<span class="string">"open"</span>), tr(<span class="string">"../"</span>));</span><br><span class="line">    <span class="keyword">if</span>(!path.isEmpty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//读取一幅图片，这里我们要将QString转换为String使用toStdString函数</span></span><br><span class="line">        cv::Mat image = cv::imread(path.toStdString());</span><br><span class="line">        <span class="keyword">if</span>(!image.data)</span><br><span class="line">        &#123;</span><br><span class="line">            QMessageBox::warning(<span class="keyword">this</span>, tr(<span class="string">"警告"</span>),tr(<span class="string">"图片打开失败"</span>));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//改变彩色通道顺序</span></span><br><span class="line">            cv::cvtColor(image, image, CV_RGB2BGR);</span><br><span class="line">            <span class="comment">//初始化QImage对象</span></span><br><span class="line">            QImage img = QImage((<span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span>*)(image.data), image.cols, image.rows, QImage::Format_RGB888);</span><br><span class="line">            <span class="comment">//显示在label中</span></span><br><span class="line">            ui-&gt;label-&gt;setPixmap(QPixmap::fromImage(img));</span><br><span class="line">            <span class="comment">//改变label的大小用于自适应图像大小</span></span><br><span class="line">            ui-&gt;label-&gt;resize(ui-&gt;label-&gt;pixmap()-&gt;size());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        QMessageBox::warning(<span class="keyword">this</span>, tr(<span class="string">"警告"</span>),tr(<span class="string">"请选择文件"</span>));</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后的效果图</p>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkpv4q9f2gj20hj0ef3ys.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkpv4q9f2gj20hj0ef3ys.jpg" class="img-fluid"><br></a></p>
+<p>至此我们实现了一个简单的图片读取功能^_^，下一讲我会对这个功能进行一些优化。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/qt/">qt</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/26/2017-10-26-使用opencv对图片进行边缘特征提取/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          使用opencv对图片进行边缘特征提取
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/10/20/2017-10-20-QT5.9.1和opencv3.3运行时crashed的问题解决/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">QT5.9.1和opencv3.3运行时crashed的问题解决</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

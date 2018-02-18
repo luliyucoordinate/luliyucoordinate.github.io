@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度探索c++对象模型(5) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp" />
+  
+  
+  
+  
+  <meta name="description" content="关于虚拟构造函数12345678910111213141516171819202122232425262728class Base1&amp;#123;public:	Base1();	virtual ~Base1();	virtual void speakClearly();	virtual Base1 *clone() const; //函数的返回类型是类本身protected:	float data">
+<meta name="keywords" content="cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度探索c++对象模型(5)">
+<meta property="og:url" content="http://coordinate.wang/2017/08/16/2017-08-16-深度探索c++对象模型(5)/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="关于虚拟构造函数12345678910111213141516171819202122232425262728class Base1&amp;#123;public:	Base1();	virtual ~Base1();	virtual void speakClearly();	virtual Base1 *clone() const; //函数的返回类型是类本身protected:	float data">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.160Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度探索c++对象模型(5)">
+<meta name="twitter:description" content="关于虚拟构造函数12345678910111213141516171819202122232425262728class Base1&amp;#123;public:	Base1();	virtual ~Base1();	virtual void speakClearly();	virtual Base1 *clone() const; //函数的返回类型是类本身protected:	float data">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-08-16-深度探索c++对象模型(5)" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度探索c++对象模型(5)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/16/2017-08-16-深度探索c++对象模型(5)/" class="article-date">
+	  <time datetime="2017-08-15T16:00:00.000Z" itemprop="datePublished">八月 16, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="关于虚拟构造函数"><a href="#关于虚拟构造函数" class="headerlink" title="关于虚拟构造函数"></a>关于虚拟构造函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Base1();</span><br><span class="line">	<span class="keyword">virtual</span> ~Base1();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">speakClearly</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Base1 *<span class="title">clone</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">//函数的返回类型是类本身</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">float</span> data_Base1;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Base2();</span><br><span class="line">	<span class="keyword">virtual</span> ~Base2();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mumble</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Base2 *<span class="title">clone</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">//函数的返回类型是类本身</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">float</span> data_Base2;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Deriverd</span> :</span> <span class="keyword">public</span> Base1, <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">virtual</span> ~Deriverd();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Deriverd *<span class="title">clone</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//函数的返回类型是类本身</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">float</span> data_Derived;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>通过之前的<a href="http://www.coordinate.wang/cpp/2017/08/07/%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B(4" target="_blank" rel="noopener">调试技巧</a>.html)我们可以得到</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">1&gt;  class Base1	size(8):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| data_Base1</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base1::$vftable@:</span><br><span class="line">1&gt;  	| &amp;Base1_meta</span><br><span class="line">1&gt;  	|  0</span><br><span class="line">1&gt;   0	| &amp;Base1::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base1::speakClearly</span><br><span class="line">1&gt;   2	| &amp;Base1::clone</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base1::&#123;dtor&#125; this adjustor: 0</span><br><span class="line">1&gt;  Base1::speakClearly this adjustor: 0</span><br><span class="line">1&gt;  Base1::clone this adjustor: 0</span><br><span class="line">1&gt;  Base1::__delDtor this adjustor: 0</span><br><span class="line">1&gt;  Base1::__vecDelDtor this adjustor: 0</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  class Base2	size(8):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| data_Base2</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base2::$vftable@:</span><br><span class="line">1&gt;  	| &amp;Base2_meta</span><br><span class="line">1&gt;  	|  0</span><br><span class="line">1&gt;   0	| &amp;Base2::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base2::mumble</span><br><span class="line">1&gt;   2	| &amp;Base2::clone        </span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base2::&#123;dtor&#125; this adjustor: 0</span><br><span class="line">1&gt;  Base2::mumble this adjustor: 0</span><br><span class="line">1&gt;  Base2::clone this adjustor: 0</span><br><span class="line">1&gt;  Base2::__delDtor this adjustor: 0</span><br><span class="line">1&gt;  Base2::__vecDelDtor this adjustor: 0</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  class Deriverd	size(20):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| +--- (base class Base1)</span><br><span class="line">1&gt;   0	| | &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| | data_Base1</span><br><span class="line">1&gt;  	| +---</span><br><span class="line">1&gt;   8	| +--- (base class Base2)</span><br><span class="line">1&gt;   8	| | &#123;vfptr&#125;</span><br><span class="line">1&gt;  12	| | data_Base2</span><br><span class="line">1&gt;  	| +---</span><br><span class="line">1&gt;  16	| data_Derived</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Deriverd::$vftable@Base1@:</span><br><span class="line">1&gt;  	| &amp;Deriverd_meta</span><br><span class="line">1&gt;  	|  0</span><br><span class="line">1&gt;   0	| &amp;Deriverd::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base1::speakClearly</span><br><span class="line">1&gt;   2	| &amp;Deriverd::clone //注意一下这里，在Lippman的对象模型书里面在这下面有一个Base2::mumble</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Deriverd::$vftable@Base2@:</span><br><span class="line">1&gt;  	| -8</span><br><span class="line">1&gt;   0	| &amp;thunk: this-=8; goto Deriverd::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base2::mumble</span><br><span class="line">1&gt;   2	| &amp;thunk: this-=8; goto Base2* Deriverd::clone</span><br><span class="line">1&gt;   3	| &amp;thunk: this-=8; goto Deriverd* Deriverd::clone</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Deriverd::&#123;dtor&#125; this adjustor: 0</span><br><span class="line">1&gt;  Deriverd::clone this adjustor: 0</span><br><span class="line">1&gt;  Deriverd::__delDtor this adjustor: 0</span><br><span class="line">1&gt;  Deriverd::__vecDelDtor this adjustor: 0</span><br></pre></td></tr></table></figure>
+<p>我们可以从上面的 <code>Deriverd::$vftable@Base2@</code> 可以看到里面使用了 <code>thunk</code> 的技法。</p>
+<p>如果我们通过如下的方式调用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Base2 *pb1 = <span class="keyword">new</span> Derived;</span><br><span class="line">Base2 *pb2 = pb1-&gt;clone();</span><br></pre></td></tr></table></figure>
+<p>当进行 <code>pb1-&gt;clone()</code> 时，会被调用指向 <code>Deriverd</code> 对象的起始地址，于是 <code>clone()</code>  的 <code>Derived</code> 版会被调用，它会传回一个指针，指向一个新的 <code>Derived</code> 对象，该对象的地址在被指定给pb2之前，必须先经过调整，以指向 <code>Base2subobject</code> </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/20/2017-08-20-QT的线程结束问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          QT的线程结束问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/14/2017-08-14-linux的dd命令/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">linux的dd命令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于虚拟构造函数"><span class="nav-number">1.</span> <span class="nav-text">关于虚拟构造函数</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

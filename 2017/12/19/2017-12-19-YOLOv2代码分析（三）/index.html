@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv2代码分析（三） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+  
+  
+  <meta name="description" content="接着上一讲没有讲完的make_convolutional_layer函数 #0x01 make_convolutional_layer 1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = upd">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv2代码分析（三）">
+<meta property="og:url" content="http://coordinate.wang/2017/12/19/2017-12-19-YOLOv2代码分析（三）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="接着上一讲没有讲完的make_convolutional_layer函数 #0x01 make_convolutional_layer 1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = upd">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.639Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv2代码分析（三）">
+<meta name="twitter:description" content="接着上一讲没有讲完的make_convolutional_layer函数 #0x01 make_convolutional_layer 1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = upd">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-19-YOLOv2代码分析（三）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv2代码分析（三）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/" class="article-date">
+	  <time datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished">十二月 19, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>接着上一讲没有讲完的<code>make_convolutional_layer</code>函数</p>
+<p>#0x01 make_convolutional_layer</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//make_convolutional_layer</span></span><br><span class="line">l.forward = forward_convolutional_layer;</span><br><span class="line">   l.backward = backward_convolutional_layer;</span><br><span class="line">   l.update = update_convolutional_layer;</span><br></pre></td></tr></table></figure>
+<p>上来就是三坐大山^_^，我们先从第一个<code>forward_convolutional_layer</code>开始。</p>
+<h2 id="0x0101-forward-convolutional-layer"><a href="#0x0101-forward-convolutional-layer" class="headerlink" title="0x0101 forward_convolutional_layer"></a>0x0101 forward_convolutional_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_convolutional_layer</span><span class="params">(convolutional_layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//传入卷积层参数和网络的总参数</span></span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line"></span><br><span class="line">    fill_cpu(l.outputs*l.batch, <span class="number">0</span>, l.output, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>看这个<code>fill_cpu</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fill_cpu</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">float</span> ALPHA, <span class="keyword">float</span> *X, <span class="keyword">int</span> INCX)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; ++i) X[i*INCX] = ALPHA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输入的参数<code>N</code>表示一个<code>batch</code>中所有的图像元素个数，<code>x</code>指向<code>n</code>对应大小分配的内存空间。整个函数来看就是对输出图像元素的一个初始化操作。</p>
+<p>接着看后面</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//forward_convolutional_layer</span></span><br><span class="line"><span class="keyword">if</span>(l.xnor)&#123;</span><br><span class="line">       binarize_weights(l.weights, l.n, l.c/l.groups*l.size*l.size, l.binary_weights);</span><br><span class="line">       swap_binary(&amp;l);</span><br><span class="line">       binarize_cpu(net.input, l.c*l.h*l.w*l.batch, l.binary_input);</span><br><span class="line">       net.input = l.binary_input;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>判断是否二值化操作，如果是的话，其中有两个关键的函数<code>binarize_weights</code>和<code>binarize_cpu</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">binarize_weights</span><span class="params">(<span class="keyword">float</span> *weights, <span class="keyword">int</span> n, <span class="keyword">int</span> size, <span class="keyword">float</span> *binary)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, f;</span><br><span class="line">    <span class="keyword">for</span>(f = <span class="number">0</span>; f &lt; n; ++f)&#123;</span><br><span class="line">        <span class="keyword">float</span> mean = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; size; ++i)&#123;</span><br><span class="line">            mean += <span class="built_in">fabs</span>(weights[f*size + i]);</span><br><span class="line">        &#125;</span><br><span class="line">        mean = mean / size;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; size; ++i)&#123;</span><br><span class="line">            binary[f*size + i] = (weights[f*size + i] &gt; <span class="number">0</span>) ? mean : -mean;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第一个参数就是指向分配给<code>weight</code>内存空间 的指针，第二参数是卷积核个数，第三个参数是一个卷积核<code>weight</code>的个数（这里应该使用<code>l.nweights</code>/<code>l.n</code>），第四个参数是指向分配给二值化<code>weight</code>内存空间 的指针。举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">假设有两个2x2卷积核</span><br><span class="line">n=2  size=4</span><br><span class="line">权重值总共8个 1 2 3 4 5 6 7 8</span><br><span class="line"></span><br><span class="line">第一次循环 f=0 </span><br><span class="line">mean = 1+2+3+4 = 10</span><br><span class="line">mean/4 = 2.5</span><br><span class="line">binary[0]=2.5 binary[1]=2.5 binary[2]=2.5 binary[3]=2.5</span><br><span class="line"></span><br><span class="line">第二次循环 f=1</span><br><span class="line">mean = 5+6+7+8 = 26</span><br><span class="line">mean/4 = 6.5</span><br><span class="line">binary[0]=6.5 binary[1]=6.5 binary[2]=6.5 binary[3]=6.5</span><br></pre></td></tr></table></figure>
+<p>接着看后面的<code>swap_binary</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap_binary</span><span class="params">(convolutional_layer *l)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> *swap = l-&gt;weights;</span><br><span class="line">    l-&gt;weights = l-&gt;binary_weights;</span><br><span class="line">    l-&gt;binary_weights = swap;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> GPU</span></span><br><span class="line">    swap = l-&gt;weights_gpu;</span><br><span class="line">    l-&gt;weights_gpu = l-&gt;binary_weights_gpu;</span><br><span class="line">    l-&gt;binary_weights_gpu = swap;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数的作用很明显了，就要把以前的权重值替换二值化后的</p>
+<p>接着<code>binarize_cpu</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">binarize_cpu</span><span class="params">(<span class="keyword">float</span> *input, <span class="keyword">int</span> n, <span class="keyword">float</span> *binary)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">        binary[i] = (input[i] &gt; <span class="number">0</span>) ? <span class="number">1</span> : <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数的第一个参数指向输入图像内存空间的指针，函数第二个参数表示一个batch的图像元素个数，函数第三个参数指向分配给二值化<code>input</code>内存空间 的指针。</p>
+<p>函数很简单，总体来看函数的作用就是出入图像的二值化。</p>
+<p>最后将得到的二值化输入图像赋值给原来的输入图像。</p>
+<p>我们接着回到<code>forward_convolutional_layer</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//forward_convolutional_layer</span></span><br><span class="line"><span class="keyword">int</span> m = l.n/l.groups;<span class="comment">//一个group的卷积核个数</span></span><br><span class="line">   <span class="keyword">int</span> k = l.size*l.size*l.c/l.groups;<span class="comment">//一个group的卷积核元素个数</span></span><br><span class="line">   <span class="keyword">int</span> n = l.out_w*l.out_h;<span class="comment">//一个输出图像的元素个数</span></span><br><span class="line">   <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; l.batch; ++i)&#123;</span><br><span class="line">       <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; l.groups; ++j)&#123;</span><br><span class="line">           <span class="keyword">float</span> *a = l.weights + j*l.nweights/l.groups;</span><br><span class="line">           <span class="keyword">float</span> *b = net.workspace;</span><br><span class="line">           <span class="keyword">float</span> *c = l.output + (i*l.groups + j)*n*m;</span><br><span class="line"></span><br><span class="line">           im2col_cpu(net.input + (i*l.groups + j)*l.c/l.groups*l.h*l.w,</span><br><span class="line">               l.c/l.groups, l.h, l.w, l.size, l.stride, l.pad, b);</span><br><span class="line">           gemm(<span class="number">0</span>,<span class="number">0</span>,m,n,k,<span class="number">1</span>,a,k,b,n,<span class="number">1</span>,c,n);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这里有两个非常重要的函数<code>im2col_cpu</code>和<code>gemm</code>。先看第一个</p>
+<h2 id="0x0102-im2col-cpu-amp-amp-gemm"><a href="#0x0102-im2col-cpu-amp-amp-gemm" class="headerlink" title="0x0102 im2col_cpu &amp;&amp; gemm"></a>0x0102 im2col_cpu &amp;&amp; gemm</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">im2col_get_pixel</span><span class="params">(<span class="keyword">float</span> *im, <span class="keyword">int</span> height, <span class="keyword">int</span> width, <span class="keyword">int</span> channels,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">int</span> row, <span class="keyword">int</span> col, <span class="keyword">int</span> channel, <span class="keyword">int</span> pad)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    row -= pad;</span><br><span class="line">    col -= pad;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (row &lt; <span class="number">0</span> || col &lt; <span class="number">0</span> ||</span><br><span class="line">        row &gt;= height || col &gt;= width) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> im[col + width*(row + height*channel)];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//From Berkeley Vision's Caffe!</span></span><br><span class="line"><span class="comment">//https://github.com/BVLC/caffe/blob/master/LICENSE</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">im2col_cpu</span><span class="params">(<span class="keyword">float</span>* data_im,</span></span></span><br><span class="line"><span class="function"><span class="params">     <span class="keyword">int</span> channels,  <span class="keyword">int</span> height,  <span class="keyword">int</span> width,</span></span></span><br><span class="line"><span class="function"><span class="params">     <span class="keyword">int</span> ksize,  <span class="keyword">int</span> stride, <span class="keyword">int</span> pad, <span class="keyword">float</span>* data_col)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> c,h,w;</span><br><span class="line">    <span class="keyword">int</span> height_col = (height + <span class="number">2</span>*pad - ksize) / stride + <span class="number">1</span>;<span class="comment">//卷积后的高度</span></span><br><span class="line">    <span class="keyword">int</span> width_col = (width + <span class="number">2</span>*pad - ksize) / stride + <span class="number">1</span>;<span class="comment">//卷积后的宽度</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> channels_col = channels * ksize * ksize;</span><br><span class="line">    <span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; channels_col; ++c) &#123;</span><br><span class="line">        <span class="keyword">int</span> w_offset = c % ksize;</span><br><span class="line">        <span class="keyword">int</span> h_offset = (c / ksize) % ksize;</span><br><span class="line">        <span class="keyword">int</span> c_im = c / ksize / ksize;</span><br><span class="line">        <span class="keyword">for</span> (h = <span class="number">0</span>; h &lt; height_col; ++h) &#123;</span><br><span class="line">            <span class="keyword">for</span> (w = <span class="number">0</span>; w &lt; width_col; ++w) &#123;</span><br><span class="line">                <span class="keyword">int</span> im_row = h_offset + h * stride;</span><br><span class="line">                <span class="keyword">int</span> im_col = w_offset + w * stride;</span><br><span class="line">                <span class="keyword">int</span> col_index = (c * height_col + h) * width_col + w;</span><br><span class="line">                data_col[col_index] = im2col_get_pixel(data_im, height, width, channels,</span><br><span class="line">                        im_row, im_col, c_im, pad);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数是参考了早期caffe中的设计，但是现在caffe好像有了新的做法。首先说说这个函数的参数</p>
+<ul>
+<li><code>data_im</code>:指向输入数据的指针</li>
+<li><code>channels</code>:一个卷积组的通道数</li>
+<li><code>height</code>:输入图像的高</li>
+<li><code>width</code>:输入图像的宽</li>
+<li><code>ksize</code>:卷积核的大小</li>
+<li><code>stride</code>:步长大小</li>
+<li><code>pad</code>:pad大小</li>
+<li><code>data_col</code>:指向数据转化后的内存空间</li>
+</ul>
+<p>这个函数比较复杂，还是举个例子说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">我们假设输入图片大小3x3，pad=1，stride=2，卷积核大小3x3，channels=1</span><br><span class="line">0 0 0 0 0</span><br><span class="line">0 1 2 3 0</span><br><span class="line">0 4 5 6 0</span><br><span class="line">0 7 8 9 0</span><br><span class="line">0 0 0 0 0</span><br><span class="line">height_col = (3+2-3)/2+1 = 2</span><br><span class="line">width_col = (3+2-3)/2+1 = 2</span><br><span class="line">channels = 1*3*3 = 9</span><br><span class="line">进入第一个循环c = 0</span><br><span class="line">w_offset = 0</span><br><span class="line">h_offset = 0</span><br><span class="line">c_im = 0</span><br><span class="line"></span><br><span class="line">h=0    w=0</span><br><span class="line">im_row = 0</span><br><span class="line">im_col = 0</span><br><span class="line">col_index = 0</span><br><span class="line">data_col[0] = 0</span><br><span class="line"></span><br><span class="line">h=0    w=1</span><br><span class="line">im_row = 0</span><br><span class="line">im_col = 1</span><br><span class="line">col_index = 1</span><br><span class="line">data_col[1] = 0</span><br><span class="line">...</span><br><span class="line">data_col[2]=0 data_col[3]=5 </span><br><span class="line">data_col[4]=0 data_col[5]=0 data_col[6]=4 data_col[7]=6</span><br><span class="line">...</span><br><span class="line">              </span><br><span class="line">0 0 0 0 0     </span><br><span class="line">0 1 2 3 0     </span><br><span class="line">0 4 5 6 0 ==&gt;  0 0 0 5 0 0 4 6 0 0 5 0 0 2 0 8 1 3 7 9 2 0 8 0 0 5 0 0 4 6 0 0 5 0 0 0</span><br><span class="line">0 7 8 9 0     </span><br><span class="line">0 0 0 0 0</span><br></pre></td></tr></table></figure>
+<p>翻译成人能看得懂的就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0 0 0 5</span><br><span class="line">0 0 4 6</span><br><span class="line">0 0 5 0</span><br><span class="line">0 2 0 8</span><br><span class="line">1 3 7 9</span><br><span class="line">2 0 8 0</span><br><span class="line">0 5 0 0</span><br><span class="line">4 6 0 0</span><br><span class="line">5 0 0 0</span><br></pre></td></tr></table></figure>
+<p>这个矩阵有什么特殊的含义呢?</p>
+<p>我们不难发现，这个矩阵的每一列就表示卷积核对应的一个小窗口，例如第一个窗口<code>0 0 0 0 1 2 0 4 5</code>，很有意思是不是？</p>
+<p>接着我们再来看看这个<code>gemm</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gemm</span><span class="params">(<span class="keyword">int</span> TA, <span class="keyword">int</span> TB, <span class="keyword">int</span> M, <span class="keyword">int</span> N, <span class="keyword">int</span> K, <span class="keyword">float</span> ALPHA, </span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *A, <span class="keyword">int</span> lda, </span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *B, <span class="keyword">int</span> ldb,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> BETA,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *C, <span class="keyword">int</span> ldc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    gemm_cpu( TA,  TB,  M, N, K, ALPHA,A,lda, B, ldb,BETA,C,ldc);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gemm_cpu</span><span class="params">(<span class="keyword">int</span> TA, <span class="keyword">int</span> TB, <span class="keyword">int</span> M, <span class="keyword">int</span> N, <span class="keyword">int</span> K, <span class="keyword">float</span> ALPHA, </span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *A, <span class="keyword">int</span> lda, </span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *B, <span class="keyword">int</span> ldb,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> BETA,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *C, <span class="keyword">int</span> ldc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//printf("cpu: %d %d %d %d %d %f %d %d %f %d\n",TA, TB, M, N, K, ALPHA, lda, ldb, BETA, ldc);</span></span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; M; ++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; N; ++j)&#123;</span><br><span class="line">            C[i*ldc + j] *= BETA;<span class="comment">//因为前面的BETA是1，所以这里我们也不关心了</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!TA &amp;&amp; !TB)</span><br><span class="line">        gemm_nn(M, N, K, ALPHA,A,lda, B, ldb,C,ldc);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(TA &amp;&amp; !TB)</span><br><span class="line">        gemm_tn(M, N, K, ALPHA,A,lda, B, ldb,C,ldc);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(!TA &amp;&amp; TB)</span><br><span class="line">        gemm_nt(M, N, K, ALPHA,A,lda, B, ldb,C,ldc);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        gemm_tt(M, N, K, ALPHA,A,lda, B, ldb,C,ldc);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gemm_nn</span><span class="params">(<span class="keyword">int</span> M, <span class="keyword">int</span> N, <span class="keyword">int</span> K, <span class="keyword">float</span> ALPHA, </span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *A, <span class="keyword">int</span> lda, </span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *B, <span class="keyword">int</span> ldb,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> *C, <span class="keyword">int</span> ldc)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">pragma</span> omp parallel for</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; M; ++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; K; ++k)&#123;</span><br><span class="line">            <span class="keyword">register</span> <span class="keyword">float</span> A_PART = ALPHA*A[i*lda+k];</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; N; ++j)&#123;</span><br><span class="line">                C[i*ldc+j] += A_PART*B[k*ldb+j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于<code>gemm</code>前面传入的参数是<code>0,0</code>，所以我这里只看<code>gemm_nn</code>这个函数，其他函数操作相似，不再赘述。</p>
+<p>我们还是先看看这个函数的参数</p>
+<ul>
+<li><code>M</code>: A的行数</li>
+<li><code>N</code>: B的列数</li>
+<li><code>K</code>: A的列数</li>
+<li><code>ALPHA</code>:系数</li>
+<li><code>A</code>:指向矩阵a的指针</li>
+<li><code>lda</code>: a的列数</li>
+<li><code>B</code>:指向矩阵b的指针</li>
+<li><code>ldb</code>: b的列数</li>
+<li><code>C</code>:指向矩阵c的指针</li>
+<li><code>ldc</code>: c的列数</li>
+</ul>
+<p>我们知道这里<code>A</code>就是输入<code>weight</code>的矩阵，<code>B</code>就是我们前面<code>im2col_cpu</code>中得到的输出矩阵，<code>C</code>用来存储我们最后得到的矩阵（其实是一个数组，前面说的矩阵也是）。<code>M</code> 一个group的卷积核个数，<code>K</code>一个group的卷积核元素个数，<code>N</code> 一个输出图像的元素个数，<code>lda</code>一个group的卷积核元素个数，<code>ldb</code>一个输出图像的元素个数，<code>ldc</code>一个输出图像的元素个数。</p>
+<p>我们还是举个例子说明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">这里我们假设卷积核还是3x3</span><br><span class="line">权重矩阵A为</span><br><span class="line">1 2 3</span><br><span class="line">4 5 6  ==&gt; 1 2 3 4 5 6 7 8 9（应该这样写）</span><br><span class="line">7 8 9</span><br><span class="line"></span><br><span class="line">B为</span><br><span class="line">0 0 0 5</span><br><span class="line">0 0 4 6</span><br><span class="line">0 0 5 0</span><br><span class="line">0 2 0 8</span><br><span class="line">1 3 7 9</span><br><span class="line">2 0 8 0</span><br><span class="line">0 5 0 0</span><br><span class="line">4 6 0 0</span><br><span class="line">5 0 0 0</span><br><span class="line"></span><br><span class="line">C初始化后为</span><br><span class="line">1 1 1 1</span><br><span class="line"></span><br><span class="line">M=1 K=9 N=4 lda=9 ldb=4 ldb=4</span><br><span class="line">C[0]=ALPHA*A[0]*B[0]+ALPHA*A[1]*B[4]+...+ALPHA*A[8]*B[32]=95</span><br><span class="line">C[1]=107</span><br><span class="line">C[2]=107</span><br><span class="line">C[3]=95</span><br></pre></td></tr></table></figure>
+<p>换成人能看懂的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">					       B</span><br><span class="line">					   [0 0 0 5</span><br><span class="line">						0 0 4 6</span><br><span class="line">						0 0 5 0</span><br><span class="line">         A				0 2 0 8       C               C</span><br><span class="line">[1 2 3 4 5 6 7 8 9]  *  1 3 7 9 + [1 1 1 1]==&gt; [95 107 107 95]</span><br><span class="line">						2 0 8 0</span><br><span class="line">						0 5 0 0</span><br><span class="line">                        4 6 0 0</span><br><span class="line">                        5 0 0 0]</span><br></pre></td></tr></table></figure>
+<p>所以这两个函数的意图很明显了，就是将卷积变换成了矩阵运算。一些有意思的数学技巧^_^!!!</p>
+<p>最后简要的提一下<code>gemm_nn</code> 、<code>gemm_tn</code>、<code>gemm_tt</code>、<code>gemm_nt</code>他们之间的区别，他们的命名都是有意义的。这里的<code>n</code>指的是<code>not transpose</code>而<code>t</code>指的是<code>transpose</code>。例如<code>nn</code>就表示<code>AB</code>都不转置。</p>
+<p>接着我们回到<code>forward_convolutional_layer</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//forward_convolutional_layer</span></span><br><span class="line">    <span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        forward_batchnorm_layer(l, net);</span><br></pre></td></tr></table></figure>
+<p>这里有出现一个有用的函数<code>forward_batchnorm_layer</code></p>
+<h2 id="0x0103-forward-batchnorm-layer"><a href="#0x0103-forward-batchnorm-layer" class="headerlink" title="0x0103 forward_batchnorm_layer"></a>0x0103 forward_batchnorm_layer</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward_batchnorm_layer</span><span class="params">(layer l, network net)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l.type == BATCHNORM) copy_cpu(l.outputs*l.batch, net.input, <span class="number">1</span>, l.output, <span class="number">1</span>);</span><br><span class="line">    copy_cpu(l.outputs*l.batch, l.output, <span class="number">1</span>, l.x, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<p>上来就是一个函数<code>copy_cpu</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copy_cpu</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">float</span> *X, <span class="keyword">int</span> INCX, <span class="keyword">float</span> *Y, <span class="keyword">int</span> INCY)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; ++i) Y[i*INCY] = X[i*INCX];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们先看一下输入的参数分别表示的是什么意思。如果我们定义了<code>BATCHNORM</code>，那么这里的<code>N</code>表示一个<code>batch</code>中的输出参数个数，<code>x</code>表示指向输入参数的指针，<code>y</code>表示指向输出参数的指针。那函数的目的很简单，将<code>net</code>中的输入，复制到<code>layer</code>中的输出；如果没有定义<code>BATCHNORM</code>，那么将<code>layer</code>中的输出复制到<code>layer</code>中的<code>x</code>。接着看后面（可以参考这篇论文<a href="https://arxiv.org/abs/1502.03167" target="_blank" rel="noopener">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</a>）</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//forward_batchnorm_layer</span></span><br><span class="line">    <span class="keyword">if</span>(net.train)&#123;</span><br><span class="line">        mean_cpu(l.output, l.batch, l.out_c, l.out_h*l.out_w, l.mean);</span><br><span class="line">        variance_cpu(l.output, l.mean, l.batch, l.out_c, l.out_h*l.out_w, l.variance);</span><br><span class="line"></span><br><span class="line">        scal_cpu(l.out_c, <span class="number">.99</span>, l.rolling_mean, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.out_c, <span class="number">.01</span>, l.mean, <span class="number">1</span>, l.rolling_mean, <span class="number">1</span>);</span><br><span class="line">        scal_cpu(l.out_c, <span class="number">.99</span>, l.rolling_variance, <span class="number">1</span>);</span><br><span class="line">        axpy_cpu(l.out_c, <span class="number">.01</span>, l.variance, <span class="number">1</span>, l.rolling_variance, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        normalize_cpu(l.output, l.mean, l.variance, l.batch, l.out_c, l.out_h*l.out_w);   </span><br><span class="line">        copy_cpu(l.outputs*l.batch, l.output, <span class="number">1</span>, l.x_norm, <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        normalize_cpu(l.output, l.rolling_mean, l.rolling_variance, l.batch, l.out_c, l.out_h*l.out_w);</span><br><span class="line">    &#125;</span><br><span class="line">    scale_bias(l.output, l.scales, l.batch, l.out_c, l.out_h*l.out_w);</span><br><span class="line">    add_bias(l.output, l.biases, l.batch, l.out_c, l.out_h*l.out_w);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我准备把这几个函数放在一块解析，因为这几个函数都不大。先看<code>mean_cpu</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mean_cpu</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">int</span> batch, <span class="keyword">int</span> filters, <span class="keyword">int</span> spatial, <span class="keyword">float</span> *mean)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> scale = <span class="number">1.</span>/(batch * spatial);<span class="comment">//求分母</span></span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; filters; ++i)&#123;</span><br><span class="line">        mean[i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; batch; ++j)&#123;</span><br><span class="line">            <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; spatial; ++k)&#123;</span><br><span class="line">                <span class="keyword">int</span> index = j*filters*spatial + i*spatial + k;</span><br><span class="line">                mean[i] += x[index];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        mean[i] *= scale;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>x</code>:指向<code>layer</code>的输出</li>
+<li><code>batch</code>:一个batch的大小</li>
+<li><code>filters</code>:输出的图像通道数，在这里同样可以理解为卷积核个数</li>
+<li><code>spatial</code>:输出图片的大小</li>
+<li><code>mean</code>:指向保存结果的指针</li>
+</ul>
+<p>还是举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">x [95 107 107 95 1 2 3 4]</span><br><span class="line">batch = 1</span><br><span class="line">filters = 2</span><br><span class="line">spatial = 2x2 = 4</span><br><span class="line"></span><br><span class="line">scale = 1/(1x4) = 0.25</span><br><span class="line">第一次循环</span><br><span class="line">i=0 j=0</span><br><span class="line">mean[0]=0</span><br><span class="line">k=0</span><br><span class="line">index=0</span><br><span class="line">mean[0]=0+x[0]=95</span><br><span class="line">...</span><br><span class="line">mean[0]=101 mean[1]=2.5</span><br></pre></td></tr></table></figure>
+<p>那么这个函数的意义就很明晰了。它要求出的是不同通道下所有输入图像的均值。对应<strong>BN</strong>论文中的这个公式</p>
+<ul>
+<li>$\frac{1}{m}\sum_{i=1}^m{x_i} $      //mini-batch  mean</li>
+</ul>
+<p>接着看<code>variance_cpu</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">variance_cpu</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">float</span> *mean, <span class="keyword">int</span> batch, <span class="keyword">int</span> filters, <span class="keyword">int</span> spatial, <span class="keyword">float</span> *variance)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">float</span> scale = <span class="number">1.</span>/(batch * spatial - <span class="number">1</span>);<span class="comment">//注意这里的减1操作</span></span><br><span class="line">    <span class="keyword">int</span> i,j,k;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; filters; ++i)&#123;</span><br><span class="line">        variance[i] = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; batch; ++j)&#123;</span><br><span class="line">            <span class="keyword">for</span>(k = <span class="number">0</span>; k &lt; spatial; ++k)&#123;</span><br><span class="line">                <span class="keyword">int</span> index = j*filters*spatial + i*spatial + k;</span><br><span class="line">                variance[i] += <span class="built_in">pow</span>((x[index] - mean[i]), <span class="number">2</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        variance[i] *= scale;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>x</code>:指向<code>layer</code>的输出指针</li>
+<li><code>mean</code>:指向上面函数输出的均值</li>
+<li><code>batch</code>:<code>batch</code>大小</li>
+<li><code>filters</code>:输出的图像通道数，在这里同样可以理解为卷积核个数</li>
+<li><code>spatial</code>:输出图片的大小</li>
+<li><code>variance</code>:指向保存结果的指针</li>
+</ul>
+<p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">x [95 107 107 95 1 2 3 4]</span><br><span class="line">mean [101 25]</span><br><span class="line">batch = 1</span><br><span class="line">filters = 2</span><br><span class="line">spatial = 2x2 = 4  </span><br><span class="line">scale = 1/(1x4 - 1)=0.333</span><br><span class="line">i=0</span><br><span class="line">variance[0]=0</span><br><span class="line">j=0 k=0</span><br><span class="line">index=0</span><br><span class="line">variance[0] = 0+(95-101)^2</span><br><span class="line">...</span><br><span class="line">variance[0]=48 variance[1]=1.66666675</span><br></pre></td></tr></table></figure>
+<p>那么这个函数的意义就很明晰了。它要求出的是不同通道下所有输入图像的<strong>样本方差</strong>（对于n个数据，如果n-1个确定了，那么剩下的那个就确定了（前提知道均值，均值*n - (n-1)数））。对应<strong>BN</strong>论文中的这个公式</p>
+<ul>
+<li>$\frac{1}{m}\sum_{i=1}^m(x_i - \mu_\beta) $       //mini-batch variance</li>
+</ul>
+<p>接着看<code>scal_cpu</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scal_cpu</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">float</span> ALPHA, <span class="keyword">float</span> *X, <span class="keyword">int</span> INCX)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; ++i) X[i*INCX] *= ALPHA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数很简单，就是将输入的数据乘以一个系数。</p>
+<p>接着看<code>axpy_cpu</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">axpy_cpu</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">float</span> ALPHA, <span class="keyword">float</span> *X, <span class="keyword">int</span> INCX, <span class="keyword">float</span> *Y, <span class="keyword">int</span> INCY)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; N; ++i) Y[i*INCY] += ALPHA*X[i*INCX];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数也很简单，就是<code>Y =ALPHA*X + Y</code></p>
+<p>接着看<code>normalize_cpu</code>这个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">normalize_cpu</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">float</span> *mean, <span class="keyword">float</span> *variance, <span class="keyword">int</span> batch, <span class="keyword">int</span> filters, <span class="keyword">int</span> spatial)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> b, f, i;</span><br><span class="line">    <span class="keyword">for</span>(b = <span class="number">0</span>; b &lt; batch; ++b)&#123;</span><br><span class="line">        <span class="keyword">for</span>(f = <span class="number">0</span>; f &lt; filters; ++f)&#123;</span><br><span class="line">            <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; spatial; ++i)&#123;</span><br><span class="line">                <span class="keyword">int</span> index = b*filters*spatial + f*spatial + i;</span><br><span class="line">                x[index] = (x[index] - mean[f])/(<span class="built_in">sqrt</span>(variance[f]) + <span class="number">.000001</span>f);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>x</code>：<code>layer</code>的输出图像</li>
+<li><code>mean</code>:前面算的均值</li>
+<li><code>variance</code>:前面算的样本方差</li>
+<li><code>batch</code>:<code>batch</code>大小</li>
+<li><code>filters</code>:输出的图像通道数，在这里同样可以理解为卷积核个数</li>
+<li><code>spatial</code>:输出图片的大小</li>
+</ul>
+<p>还是举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">x [95 107 107 95 1 2 3 4]</span><br><span class="line">mean [101 25]</span><br><span class="line">variance [48 1.66666675]</span><br><span class="line">batch=1</span><br><span class="line">filters=2</span><br><span class="line">spatial = 2x2 = 4</span><br><span class="line">进入第一层循环</span><br><span class="line">b=0 f=0 i=0</span><br><span class="line">index = 0</span><br><span class="line">x[0] = (x[0]-m[0])/(sqrt(variance[0]) + 0.000001f) = -1.44</span><br><span class="line">...</span><br><span class="line">x[0]=-0.866025329 x[0]=0.866025329  x[0]=0.866025329 x[0]=-0.866025329</span><br><span class="line">x[0]=-1.16189408  x[0]=-0.387298018 x[0]=0.387298018 x[0]=1.16189408</span><br></pre></td></tr></table></figure>
+<p>这个函数的作用就是一个归一化处理。对应<strong>BN</strong>论文中的这个公式</p>
+<ul>
+<li>$\frac{x_i-\mu_\beta}{\sqrt{\sigma_\beta^2 + \epsilon}}$       //normalize</li>
+</ul>
+<p>接着看<code>scale_bias</code>和<code>add_bias</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scale_bias</span><span class="params">(<span class="keyword">float</span> *output, <span class="keyword">float</span> *scales, <span class="keyword">int</span> batch, <span class="keyword">int</span> n, <span class="keyword">int</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,b;</span><br><span class="line">    <span class="keyword">for</span>(b = <span class="number">0</span>; b &lt; batch; ++b)&#123;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; size; ++j)&#123;</span><br><span class="line">                output[(b*n + i)*size + j] *= scales[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add_bias</span><span class="params">(<span class="keyword">float</span> *output, <span class="keyword">float</span> *biases, <span class="keyword">int</span> batch, <span class="keyword">int</span> n, <span class="keyword">int</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,b;</span><br><span class="line">    <span class="keyword">for</span>(b = <span class="number">0</span>; b &lt; batch; ++b)&#123;</span><br><span class="line">        <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">            <span class="keyword">for</span>(j = <span class="number">0</span>; j &lt; size; ++j)&#123;</span><br><span class="line">                output[(b*n + i)*size + j] += biases[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这两个函数的意义都很简单。对应<strong>BN</strong>论文中的这个公式</p>
+<ul>
+<li>$\gamma \hat{x_i}+\beta$</li>
+</ul>
+<p>接着我们回到<code>forward_convolutional_layer</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//forward_convolutional_layer</span></span><br><span class="line">    <span class="keyword">if</span>(l.batch_normalize)&#123;</span><br><span class="line">        forward_batchnorm_layer(l, net);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        add_bias(l.output, l.biases, l.batch, l.n, l.out_h*l.out_w);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    activate_array(l.output, l.outputs*l.batch, l.activation);</span><br><span class="line">    <span class="keyword">if</span>(l.binary || l.xnor) swap_binary(&amp;l);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果没有设置<code>batch_normalize</code>，直接添加偏向就完事了。接着是<code>activate_array</code>函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">activate_array</span><span class="params">(<span class="keyword">float</span> *x, <span class="keyword">const</span> <span class="keyword">int</span> n, <span class="keyword">const</span> ACTIVATION a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">        x[i] = activate(x[i], a);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">activate</span><span class="params">(<span class="keyword">float</span> x, ACTIVATION a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span>(a)&#123;</span><br><span class="line">        <span class="keyword">case</span> LINEAR:</span><br><span class="line">            <span class="keyword">return</span> linear_activate(x);</span><br><span class="line">        <span class="keyword">case</span> LOGISTIC:</span><br><span class="line">            <span class="keyword">return</span> logistic_activate(x);</span><br><span class="line">        <span class="keyword">case</span> LOGGY:</span><br><span class="line">            <span class="keyword">return</span> loggy_activate(x);</span><br><span class="line">        <span class="keyword">case</span> RELU:</span><br><span class="line">            <span class="keyword">return</span> relu_activate(x);</span><br><span class="line">        <span class="keyword">case</span> ELU:</span><br><span class="line">            <span class="keyword">return</span> elu_activate(x);</span><br><span class="line">        <span class="keyword">case</span> RELIE:</span><br><span class="line">            <span class="keyword">return</span> relie_activate(x);</span><br><span class="line">        <span class="keyword">case</span> RAMP:</span><br><span class="line">            <span class="keyword">return</span> ramp_activate(x);</span><br><span class="line">        <span class="keyword">case</span> LEAKY:</span><br><span class="line">            <span class="keyword">return</span> leaky_activate(x);</span><br><span class="line">        <span class="keyword">case</span> TANH:</span><br><span class="line">            <span class="keyword">return</span> tanh_activate(x);</span><br><span class="line">        <span class="keyword">case</span> PLSE:</span><br><span class="line">            <span class="keyword">return</span> plse_activate(x);</span><br><span class="line">        <span class="keyword">case</span> STAIR:</span><br><span class="line">            <span class="keyword">return</span> stair_activate(x);</span><br><span class="line">        <span class="keyword">case</span> HARDTAN:</span><br><span class="line">            <span class="keyword">return</span> hardtan_activate(x);</span><br><span class="line">        <span class="keyword">case</span> LHTAN:</span><br><span class="line">            <span class="keyword">return</span> lhtan_activate(x);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">linear_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">logistic_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> <span class="number">1.</span>/(<span class="number">1.</span> + <span class="built_in">exp</span>(-x));&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">loggy_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> <span class="number">2.</span>/(<span class="number">1.</span> + <span class="built_in">exp</span>(-x)) - <span class="number">1</span>;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">relu_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> x*(x&gt;<span class="number">0</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">elu_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x &gt;= <span class="number">0</span>)*x + (x &lt; <span class="number">0</span>)*(<span class="built_in">exp</span>(x)<span class="number">-1</span>);&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">relie_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>) ? x : <span class="number">.01</span>*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">ramp_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> x*(x&gt;<span class="number">0</span>)+<span class="number">.1</span>*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">leaky_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (x&gt;<span class="number">0</span>) ? x : <span class="number">.1</span>*x;&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">float</span> <span class="title">tanh_activate</span><span class="params">(<span class="keyword">float</span> x)</span></span>&#123;<span class="keyword">return</span> (<span class="built_in">exp</span>(<span class="number">2</span>*x)<span class="number">-1</span>)/(<span class="built_in">exp</span>(<span class="number">2</span>*x)+<span class="number">1</span>);&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数的意义也很明显，就是将<code>layer</code>的输出图像，输入到我们设置的激活函数中。至此<code>forward_convolutional_layer</code>中的问题全部解决。</p>
+<p>好的，这篇文章的篇幅有些长了，我们把剩余部分放到下一篇</p>
+<p>文章全部<a href="http://blog.csdn.net/column/details/18380.html" target="_blank" rel="noopener">YOLOv2源码分析</a></p>
+<p>由于本人水平有限，文中有不对之处，希望大家指出，谢谢^_^!</p>
+<p>下一篇开始分析<code>backward_convolutional_layer</code>，敬请关注。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          YOLOv2代码分析（四）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">YOLOv2代码分析（二）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0101-forward-convolutional-layer"><span class="nav-number">1.</span> <span class="nav-text">0x0101 forward_convolutional_layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0102-im2col-cpu-amp-amp-gemm"><span class="nav-number">2.</span> <span class="nav-text">0x0102 im2col_cpu &amp;&amp; gemm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x0103-forward-batchnorm-layer"><span class="nav-number">3.</span> <span class="nav-text">0x0103 forward_batchnorm_layer</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

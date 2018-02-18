@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Tensorflow学习始于MNIST | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythontensorflowMNIST" />
+  
+  
+  
+  
+  <meta name="description" content="本教程面向刚学习机器学习和TensorFlow的读者。 如果您已经知道MNIST是什么，以及softmax（multinomial logistic）回归是什么，那么您可能更喜欢这个速度更快的教程。 确保在开始任何教程之前安装TensorFlow。 当学习如何编程时，首先要做的就是打印“Hello World”。 类似于编程中的Hello World，机器学习对应的是MNIST。 MNIST是一个">
+<meta name="keywords" content="python,tensorflow,MNIST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorflow学习始于MNIST">
+<meta property="og:url" content="http://coordinate.wang/2017/12/02/2017-12-02-MNIST对于机器学习的初学者/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="本教程面向刚学习机器学习和TensorFlow的读者。 如果您已经知道MNIST是什么，以及softmax（multinomial logistic）回归是什么，那么您可能更喜欢这个速度更快的教程。 确保在开始任何教程之前安装TensorFlow。 当学习如何编程时，首先要做的就是打印“Hello World”。 类似于编程中的Hello World，机器学习对应的是MNIST。 MNIST是一个">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zn5effj20c3030weh.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm39znolbjj20f205r74o.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm39zoohhxj20eh05v0sx.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm39zpbpihj20c304e747.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm39zpyim8j20d706pgnn.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zqkwujj20gv06w761.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm39zr7ql7j20g4045dgl.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zrviu2j20f7043wf0.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.554Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tensorflow学习始于MNIST">
+<meta name="twitter:description" content="本教程面向刚学习机器学习和TensorFlow的读者。 如果您已经知道MNIST是什么，以及softmax（multinomial logistic）回归是什么，那么您可能更喜欢这个速度更快的教程。 确保在开始任何教程之前安装TensorFlow。 当学习如何编程时，首先要做的就是打印“Hello World”。 类似于编程中的Hello World，机器学习对应的是MNIST。 MNIST是一个">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zn5effj20c3030weh.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-02-MNIST对于机器学习的初学者" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Tensorflow学习始于MNIST
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/02/2017-12-02-MNIST对于机器学习的初学者/" class="article-date">
+	  <time datetime="2017-12-01T16:00:00.000Z" itemprop="datePublished">十二月 2, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本教程面向刚学习机器学习和TensorFlow的读者。 如果您已经知道MNIST是什么，以及softmax（multinomial logistic）回归是什么，那么您可能更喜欢这个速度更快的教程。 确保在开始任何教程之前安装TensorFlow。</p>
+<p>当学习如何编程时，首先要做的就是打印“Hello World”。 类似于编程中的Hello World，机器学习对应的是MNIST。</p>
+<p>MNIST是一个简单的计算机视觉数据集。 它由这样的手写数字的图像组成：</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zn5effj20c3030weh.jpg"><br></center>
+
+<p>它还包括每个图像的标签，告诉我们它是哪个数字。 例如，上述图像的标签是5,0,4和1。</p>
+<p>在本教程中，我们将训练一个模型来查看图像并预测它们是什么数字。 我们的目标不是训练一个真正精细的模型来实现最先进的性能 - 尽管我们稍后会给您提供代码！ - 而是倾向于使用TensorFlow去实现它的。 因此，我们将从一个非常简单的模型开始，称之为Softmax回归。</p>
+<p>本教程的实际代码非常短，所有有趣的内容都只发生在三行中。 然而，了解其背后的理念非常重要：TensorFlow的工作原理和核心机器学习概念。 正因为如此，我们要非常仔细的了解代码内部的细节。</p>
+<h2 id="关于本教程"><a href="#关于本教程" class="headerlink" title="关于本教程"></a>关于本教程</h2><p>本教程是逐行解释<a href="https://www.github.com/tensorflow/tensorflow/blob/r1.4/tensorflow/examples/tutorials/mnist/mnist_softmax.py" target="_blank" rel="noopener">mnist_softmax.py</a>代码中做了什么的事情。</p>
+<p>您可以通过几种不同的方式使用本教程，其中包括：</p>
+<ul>
+<li>阅读每行的解释时，将每个代码段逐行复制并粘贴到Python环境中。</li>
+<li>在阅读解释之前或之后运行整个<code>mnist_softmax.py</code> Python文件，并使用本教程来理解不清楚的代码行。</li>
+</ul>
+<p>我们将在本教程中完成的任务：</p>
+<ul>
+<li>了解MNIST数据和softmax回归</li>
+<li>基于查看图像中的每个像素，创建一个识别数字的模型</li>
+<li>使用TensorFlow来训练模型，通过让数字“看”数千个示例来识别数字（并运行我们的第一个TensorFlow会话来完成）</li>
+<li>用我们的测试数据检查模型的准确性</li>
+</ul>
+<h2 id="MNIST数据"><a href="#MNIST数据" class="headerlink" title="MNIST数据"></a>MNIST数据</h2><p>MNIST数据在<a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">Yann LeCun</a>的网站上托管。如果您正在复制和粘贴本教程中的代码，请从这两行代码开始，它们将自动下载并读取数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tensorflow.examples.tutorials.mnist <span class="keyword">import</span> input_data</span><br><span class="line">mnist = input_data.read_data_sets（“MNIST_data /”，one_hot = <span class="keyword">True</span>）</span><br></pre></td></tr></table></figure>
+<p>MNIST数据分为三个部分：55,000个训练数据（<code>mnist.train</code>）的数据点，10,000个测试数据（<code>mnist.test</code>），以及5,000个验证数据（<code>mnist.validation</code>）。这种分组是非常重要的：机器学习过程中必须要有不能学习到的独立数据，这样我们才能确保我们学到的东西实际上是泛化的！</p>
+<p>如前所述，每个MNIST数据点有两部分：一个手写数字的图像和一个相应的标签。我们将调用图像“x”和标签“y”。训练集和测试集都包含图像及其相应的标签;例如训练图像是<code>mnist.train.images</code>，训练标签是<code>mnist.train.labels</code>。</p>
+<p>每个图像是28像素×28像素。我们可以把它解释为一大堆数字：</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm39znolbjj20f205r74o.jpg"><br></center>
+
+<p>我们可以把这个数组变成一个28x28 = 784的数字。 只要我们在图像之间保持一致，那么我们如何展开阵列并不重要。 从这个角度来看，MNIST图像只是784维矢量空间中的一束点，具有非常丰富的结构（警告：计算密集的可视化）。</p>
+<p>展平数据会丢弃有关图像二维结构的信息。这样不是不好吗？ 确实，最好的计算机视觉方法就是利用这个原有结构，我们将在后面的教程中这样去做。 但是这里我们将使用简单方法，softmax回归（下面定义）。</p>
+<p><code>mnist.train.images</code>的结果是一个形状为[55000，784]的张量（一个n维数组）。 第一维是图像列表的索引，第二维是每个图像中每个像素的索引。 张量中的每个条目是针对特定图像中的特定像素的介于0和1之间的像素强度。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm39zoohhxj20eh05v0sx.jpg"><br></center>
+
+<p>MNIST中的每个图像都有相应的标签，0到9之间的数字代表图像中绘制的数字。</p>
+<p>为了本教程的目的，我们将要我们的标签作为“one-hot vectors”。one-hot矢量是一个在多维度上为0，在单维度上为1的矢量。 在这种情况下，第n位将被表示为在第n维中为1的向量。 例如，3将是[0,0,0,1,0,0,0,0,0,0]。 因此，<code>mnist.train.labels</code>是一个[55000，10]的浮点数组。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm39zpbpihj20c304e747.jpg"><br></center>
+
+<p>我们现在开始制作我们的模型！</p>
+<h2 id="Softmax回归"><a href="#Softmax回归" class="headerlink" title="Softmax回归"></a>Softmax回归</h2><p>我们知道MNIST中的每个图像都是一个0到9之间的手写数字。所以一个给定的图像可能只有十种可能。我们希望能够看到一个图像，并给出它是每个数字的概率。例如，我们的模型可能会查看一张数字9的图片，并且有80％确定这是一张数字9的图片，但是给出一个5％的概率是因为它是一个8（因为上面弧形），并且有一些概率是其他数字，这不是100％确定。</p>
+<p>这是一个softmax回归简单模型的一个经典案例。如果你想把一个对象的概率分配给几个不同的东西之一，softmax就是要做的事情，因为softmax给了我们一个0到1之间的值的列表，加起来就是1。在学习的后期，当我们训练更复杂的网络，最后一步将是softmax的一层。</p>
+<p>softmax回归有两个步骤：首先我们将输入的特征加在某些类别中，然后将特征转换成概率。</p>
+<p>为了收集给定图像在特定类别中的特征，我们进行像素强度的加权总和。如果具有高强度的像素是针对在该类别中的图像的特征，则权重是负的;如果特征是有利的，则权重是正的。</p>
+<p>下图显示了一个模型在每个类中学习的权重。红色代表负面权重，蓝色代表正面权重。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm39zpyim8j20d706pgnn.jpg"><br></center>
+
+<p>我们还添加了一些额外的参数，称为bias。 基本上，我们希望有些东西能够更好的独立于输入。 结果是，热议一个输入x的类，得到的结果是：</p>
+<ul>
+<li>$evidence_i = \sum_jW_i,_jx_j+b_i$</li>
+</ul>
+<p>其中Wi是权重，bi是类别i的偏差，j是对输入图像x中的像素求和的指数。 然后，我们使用“softmax”函数将特征数据转换成我们的预测概率y：</p>
+<ul>
+<li>$y = softmax(evidence)$</li>
+</ul>
+<p>这里softmax是作为一个“激活”或“链接”功能，塑造我们的线性函数的输出到我们想要的形式 - 在这种情况下，概率分布超过10个案例。 你可以把它看作是将特征转化为我们在每个类型中输入的概率。 它被定义为：</p>
+<ul>
+<li>$softmax(evidence) = normalize(exp(evidence))$</li>
+</ul>
+<p>如果你展开这个等式，你会得到：</p>
+<ul>
+<li>$softmax(evidence)_i = \frac{exp(evidence_i)}{\sum_jexp(evidence_j)}$</li>
+</ul>
+<p>但是，首先考虑softmax是更有帮助的：指数化输入，然后使其规格化。 指数意味着每多一个单位的特征将增加任何前向乘加的权重。 而相反，每少一个特征单位意味着每一个前向获得了上一层权重的一小部分。 没有前向的层为零或负权重。 Softmax然后归一化这些权重，使它们加起来为1，形成有效的概率分布。 （为了获得有关softmax函数的更多直觉，请查看Michael Nielsen书中的部分，并附带交互式可视化。）</p>
+<p>你可以把我们的softmax回归看成如下所示，尽管有更多的xs。 对于每个输出，我们计算xs的加权总和，添加偏差，然后应用softmax。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zqkwujj20gv06w761.jpg"><br></center>
+
+<p>如果我们把它写成等式，我们得到：</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm39zr7ql7j20g4045dgl.jpg"><br></center>
+
+<p>我们可以“矢量化”这个过程，把它变成矩阵乘法和矢量加法。 这对于计算效率是有帮助的。 （这也是一个有用的思考方式。）</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm39zrviu2j20f7043wf0.jpg"><br></center>
+
+<p>更简洁，我们可以写：</p>
+<ul>
+<li>$y = softmax(Wx + b)$</li>
+</ul>
+<p>现在让我们把它转换成TensorFlow可以使用的东西。</p>
+<h2 id="实现回归"><a href="#实现回归" class="headerlink" title="实现回归"></a>实现回归</h2><p>为了在Python中进行高效的数值计算，我们通常使用像NumPy这样的库，这些库会执行复杂的操作，例如Python中的矩阵乘法，可以使用另一种语言实现的高效代码来完成。 不幸的是，每一次操作都会返回到Python，这仍然会有很多开销。 如果要在GPU上运行计算或以分布式方式运行计算，则传输数据的成本很高，所以此开销尤其糟糕。</p>
+<p>TensorFlow也在Python之外进行繁重的工作，但是为了避免这种开销，还需要进一步的工作。 TensorFlow不是独立于Python运行的一个复杂操作，而是让我们描述一个完全在Python之外运行的交互操作图。 （像这样的方法可以在几个机器学习库中看到）</p>
+<p>要使用TensorFlow，首先我们需要导入它。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br></pre></td></tr></table></figure>
+<p>我们通过操纵符号变量来描述这些交互操作。 我们来创建一个：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">784</span>])</span><br></pre></td></tr></table></figure>
+<p><code>x</code>不是一个具体的值。 这是一个占位符，当我们要求TensorFlow运行一个计算时，我们会输入一个值。 我们希望能够输入任意数量的MNIST图像，每个图像被平面化成784维向量。 我们将其表示为浮点数的二维张量，其形状为<code>[None，784]</code>。 （这里<code>None</code>表示维度可以是任何长度。）</p>
+<p>我们也需要我们的模型的权重和biases。 我们可以想象把这些看作是额外的输入，但是TensorFlow有一个更好的方法来处理它：Variable（变量）。 变量是一个可修改的张量，它存在于TensorFlow的交互操作图中。 它可以被使用，甚至被计算修改。 对于机器学习应用程序，通常将模型参数设置为变量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>, <span class="number">10</span>]))</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
+<p>我们通过给定变量的初始值来创建这些变量：在这种情况下，我们将W和b初始化为全0的张量。 既然我们要学习W和b，它们最初是什么都没有关系。</p>
+<p>注意到W的形状是[784，10]，因为我们想用它乘以784维的图像向量来产生差分类的特征的10维向量。 b的形状是[10]，所以我们可以将它添加到输出中。</p>
+<p>我们现在可以实现我们的模型。 只需要一行来定义它！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y = tf.nn.softmax(tf.matmul(x, W) + b)</span><br></pre></td></tr></table></figure>
+<p>首先，我们乘以<code>W</code>乘以表达式<code>tf.matmul（x，W）</code>。这是从我们的方程中乘以它们的时候翻转过来的，这里我们把Wx作为一个小技巧来处理x是一个具有多个输入的2D张量。然后我们添加b，最后应用<code>tf.nn.softmax</code>。</p>
+<p>而已。经过几行简单的设置之后，我们只用一条线来定义我们的模型。这并不是因为TensorFlow被设计成使得softmax回归特别容易：从机器学习模型到物理模拟，这只是描述多种数值计算的一种非常灵活的方式。一旦定义，我们的模型可以在不同的设备上运行：计算机的CPU，GPU，甚至是手机！</p>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><p>为了训练我们的模型，我们需要定义模型的好坏。那么实际上，在机器学习中，我们通常定义一个模型的坏的意义。我们称之为成本或损失，它表示我们的模型离我们期望的结果有多远。我们尽量减少这个误差，误差越小，我们的模型就越好。</p>
+<p>非常常见的，确定模型的损失函数被称为“交叉熵”。交叉熵来源于信息论中信息压缩编码的思想，但在赌博，机器学习等许多领域，都是一个重要的思想。它被定义为：</p>
+<ul>
+<li>$H_{y’}=-\sum{y_i’log(y_i)}$</li>
+</ul>
+<p>其中<code>y</code>是我们预测的概率分布，<code>y&#39;</code>是真实分布（带有数字标签的one-hot矢量）。 在一些粗略的意义上，交叉熵是衡量我们的预测是多差的描述。 关于交叉熵的更多细节超出了本教程的范围，但是非常值得理解。</p>
+<p>为了实现交叉熵，我们需要首先添加一个新的占位符来输入正确的答案：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">y_ = tf.placeholder(tf.float32, [<span class="keyword">None</span>, <span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+<p>那么我们可以实现交叉熵函数，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_ * tf.log(y), reduction_indices=[<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+<p>首先，<code>tf.log</code>计算<code>y</code>的每个元素的对数。接下来，我们将<code>y_</code>的每个元素与<code>tf.log（y）</code>的相应元素相乘。然后，由于<code>reduction_indices = [1]</code>参数，<code>tf.reduce_sum</code>将元素添加到<code>y</code>的第二维中。最后，<code>tf.reduce_mean</code>计算批处理中所有示例的平均值。</p>
+<p>请注意，在源代码中，我们不使用这个公式，因为它在数值上是不稳定的。相反，我们将<code>tf.nn.softmax_cross_entropy_with_logits</code>应用于非标准化的logits（例如，我们把<code>tf.matmul(x，W)+ b</code>）称为<code>softmax_cross_entropy_with_logits</code>，因为这个更稳定的数值函数在内部计算softmax激活。在您的代码中，请考虑使用<code>tf.nn.softmax_cross_entropy_with_logits</code>。</p>
+<p>现在我们知道我们想要我们的模型做什么了，TensorFlow很容易训练它做到这一点。因为TensorFlow知道你计算的整个图表，它可以自动使用反向传播算法来有效地确定你的变量如何影响你要求它最小化的损失。然后它可以应用你选择的优化算法来修改变量并减少损失。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train_step = tf.train.GradientDescentOptimizer(<span class="number">0.5</span>).minimize(cross_entropy)</span><br></pre></td></tr></table></figure>
+<p>在这种情况下，我们要求TensorFlow使用学习率为0.5的梯度下降算法来最小化cross_entropy。 梯度下降是一个简单的过程，其中TensorFlow简单地将每个变量稍微向降低成本的方向移动一点。 同时TensorFlow还提供了许多其他优化算法。</p>
+<p>实际上TensorFlow在幕后做的是添加新的操作到你的计算图，通过计算图来实现反向传播和梯度下降。 然后它给你一个单一的操作，运行时，做一步梯度下降训练，稍微调整你的变量，以减少损失。</p>
+<p>我们现在可以在InteractiveSession中启动模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sess = tf.InteractiveSession()</span><br></pre></td></tr></table></figure>
+<p>我们首先必须创建一个操作来初始化我们创建的变量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.global_variables_initializer().run()</span><br></pre></td></tr></table></figure>
+<p>让我们训练 - 我们将运行1000次的训练步骤！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> range(<span class="number">1000</span>):</span><br><span class="line">  batch_xs, batch_ys = mnist.train.next_batch(<span class="number">100</span>)</span><br><span class="line">  sess.run(train_step, feed_dict=&#123;x: batch_xs, y_: batch_ys&#125;)</span><br></pre></td></tr></table></figure>
+<p>循环中的每一步，我们从我们的训练集中获得一百个随机数据点的“batch”。 我们运行train_step并且传回一个字典数据来替换占位符。</p>
+<p>使用小批量的随机数据称为随机训练 - 在这里是随机梯度下降。 理想情况下，我们希望将所有数据用于每一步训练，因为这样可以让我们更好地了解我们应该做什么，但是这样做很复杂。 所以相反，我们每次都使用不同的子集。 这样做很简单，而且有很多相同的好处。</p>
+<h2 id="评估我们的模型"><a href="#评估我们的模型" class="headerlink" title="评估我们的模型"></a>评估我们的模型</h2><p>怎么评价我们的模型有多好？</p>
+<p>那么，首先让我们弄清楚我们预测了多少正确的标签。<code>tf.argmax</code>是一个非常有用的函数，它可以为您提供某个轴上张量的最大输入索引。 例如，<code>tf.argmax(y，1)</code>是我们模型认为对每个输入最有可能的标签，而<code>tf.argmax(y_，1)</code>是正确的标签。 我们可以使用<code>tf.equal</code>来检查我们的预测是否符合事实。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">correct_prediction = tf.equal(tf.argmax(y,<span class="number">1</span>), tf.argmax(y_,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+<p>这给了我们一个真值表。 为了确定什么分数是正确的，我们转换为浮点数，然后取平均值。 例如，<code>[True，False，True，True]</code>将变成<code>[1,0,1,1]</code>，这将变为<code>0.75</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))</span><br></pre></td></tr></table></figure>
+<p>最后，我们打印出测试数据的准确性。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;))</span><br></pre></td></tr></table></figure>
+<p>这应该是大约92％。</p>
+<p>这个数据怎么样？事实上很糟糕。 这是因为我们正在使用的是一个非常简单的模型。 通过一些小的改变，可以使我们准确率达到97％。 目前最好的模型可以达到超过99.7％的准确性！ （有关更多信息，请查看结果列表。）</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MNIST/">MNIST</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/03/2017-12-03-深入研究MNIST/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深入研究MNIST
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/01/2017-12-01-QT中的QImage、QPixmap和opencv 中的mat转化/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">QT中的QImage、QPixmap和opencv 中的mat转化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于本教程"><span class="nav-number">1.</span> <span class="nav-text">关于本教程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MNIST数据"><span class="nav-number">2.</span> <span class="nav-text">MNIST数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Softmax回归"><span class="nav-number">3.</span> <span class="nav-text">Softmax回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现回归"><span class="nav-number">4.</span> <span class="nav-text">实现回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#训练"><span class="nav-number">5.</span> <span class="nav-text">训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#评估我们的模型"><span class="nav-number">6.</span> <span class="nav-text">评估我们的模型</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

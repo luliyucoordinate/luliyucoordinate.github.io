@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>std::allocator | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl" />
+  
+  
+  
+  
+  <meta name="description" content="在vc6的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。在bc5中的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。在G2.9中的allocator只是以::oper">
+<meta name="keywords" content="cpp,stl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="std::allocator">
+<meta property="og:url" content="http://coordinate.wang/2017/04/10/2017-04-10-std_allocator/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="在vc6的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。在bc5中的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。在G2.9中的allocator只是以::oper">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.088Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="std::allocator">
+<meta name="twitter:description" content="在vc6的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。在bc5中的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。在G2.9中的allocator只是以::oper">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-10-std_allocator" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      std::allocator
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/10/2017-04-10-std_allocator/" class="article-date">
+	  <time datetime="2017-04-09T16:00:00.000Z" itemprop="datePublished">四月 10, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在vc6的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。<br>在bc5中的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计。<br>在G2.9中的allocator只是以::operator new 和::operator delete 完成allocate()和deallocate(),没有任何特殊的设计，但是它内部并没有使用，而是使用的std::alloc。<br>在4.9版中叫__pool_alloc，但是这两个都不是标准分配器。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// NB: __n is permitted to be 0.  The C++ standard says nothing</span></span><br><span class="line"> <span class="comment">// about what the return value is when __n == 0.</span></span><br><span class="line">pointer</span><br><span class="line">allocate(size_type __n, <span class="keyword">const</span> <span class="keyword">void</span>* = <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (__builtin_expect(__n &gt; <span class="keyword">this</span>-&gt;max_size(), <span class="literal">false</span>))</span><br><span class="line">		<span class="built_in">std</span>::__throw_bad_alloc();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;_Tp*&gt;(::<span class="keyword">operator</span> <span class="keyword">new</span>(__n * <span class="keyword">sizeof</span>(_Tp)));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// __p is not permitted to be a null pointer.</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">deallocate(pointer __p, size_type)</span><br><span class="line">&#123; ::<span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(__p)</span></span>; &#125;</span><br></pre></td></tr></table></figure>
+<p>alloc的设计<br>申请32bytes，由于pool为空，所以成功所求32<em>20</em>2+RoundUp(0(目前的申请总量)&gt;&gt;4) =1280，从中切出一个，另外的19个给list#3，剩余640备用。每次分配前都是先看原先的是否有剩余pool，从pool切给出来的数量永远在1~20之间，pool余量不足够的时候，先将pool余量给相应的list#，然后索取相应的内存。当内存不够时，往右边找一块给他。如果就近找不到的话，就会失败。但是这样的话，还有很多的空内存未使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第二级分配器</span></span><br><span class="line"> <span class="keyword">enum</span> &#123; __ALIGN = <span class="number">8</span> &#125;;<span class="comment">//定义常量,小区快的下限</span></span><br><span class="line"> <span class="keyword">enum</span> &#123; __MAX_BYTES = <span class="number">128</span> &#125;;<span class="comment">//上限</span></span><br><span class="line"> <span class="keyword">enum</span> &#123; __NFREELISTS = __MAX_BYTES/ __ALIGN &#125;;<span class="comment">//freelist的长度</span></span><br><span class="line"> <span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line"> <span class="class"><span class="keyword">class</span> __<span class="title">default_alloc_template</span></span></span><br><span class="line"><span class="class"> &#123;</span></span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line"> 	<span class="function"><span class="keyword">static</span> size_t <span class="title">ROUND_UP</span><span class="params">(<span class="keyword">size_t</span> bytes)</span></span></span><br><span class="line"><span class="function"> 	</span>&#123;</span><br><span class="line"> 		<span class="keyword">return</span> ((bytes) + _ALIGN<span class="number">-1</span>) &amp; ~(_ALIGN - <span class="number">1</span>));</span><br><span class="line"> 	&#125;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line"> 	<span class="keyword">union</span> obj</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		<span class="keyword">union</span> obj* free_list_link;</span><br><span class="line"> 	&#125;;</span><br><span class="line"> <span class="keyword">private</span>:</span><br><span class="line"> 	<span class="keyword">static</span> obj *<span class="keyword">volatile</span> free_list[__NFREELISTS];</span><br><span class="line"> 	<span class="comment">//计算list#</span></span><br><span class="line"> 	<span class="function"><span class="keyword">static</span> size_t <span class="title">FREELIST_INDEX</span><span class="params">(<span class="keyword">size_t</span> bytes)</span></span></span><br><span class="line"><span class="function"> 	</span>&#123;</span><br><span class="line"> 		<span class="keyword">return</span> (((bytes) +__ALIGN<span class="number">-1</span>)/__ALIGN<span class="number">-1</span>);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span>* <span class="title">refill</span><span class="params">(<span class="keyword">size_t</span> n)</span></span>;</span><br><span class="line"> 	<span class="function"><span class="keyword">static</span> <span class="keyword">char</span> *<span class="title">chunk_alloc</span><span class="params">(<span class="keyword">size_t</span> size, <span class="keyword">int</span> &amp;nobjs)</span></span>;</span><br><span class="line"> 	<span class="keyword">static</span> <span class="keyword">char</span> *start_free;<span class="comment">//指向pool头</span></span><br><span class="line"> 	<span class="keyword">static</span> <span class="keyword">char</span> *end_free;<span class="comment">//指向pool尾</span></span><br><span class="line"> 	<span class="keyword">static</span> <span class="keyword">size_t</span> heap_size;</span><br><span class="line"> <span class="keyword">public</span>:</span><br><span class="line"> 	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span>* <span class="title">allocate</span><span class="params">(<span class="keyword">size_t</span> n)</span></span></span><br><span class="line"><span class="function"> 	</span>&#123;</span><br><span class="line"> 		obj* <span class="keyword">volatile</span> *my_free_list;</span><br><span class="line"> 		obj* result;</span><br><span class="line"> 		<span class="keyword">if</span>(n &gt; (<span class="keyword">size_t</span>) __MAX_BYTES)<span class="comment">//改用第一级</span></span><br><span class="line"> 		&#123;</span><br><span class="line"> 			<span class="keyword">return</span> (malloc_alloc::allocate(n));</span><br><span class="line"> 		&#125;</span><br><span class="line"> 		my_free_list = free_list + FREELIST_INDEX(n);</span><br><span class="line"> 		result = *my_free_list;</span><br><span class="line"> 		<span class="keyword">if</span>(result == <span class="number">0</span>_</span><br><span class="line"> 		&#123;</span><br><span class="line"> 			<span class="keyword">void</span>* r = refill(ROUND_UP(n));</span><br><span class="line"> 			<span class="keyword">return</span> r;</span><br><span class="line"> 		&#125;</span><br><span class="line"> 		*my_free_list = result-&gt;free_list_link;</span><br><span class="line"> 		<span class="keyword">return</span> (result);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="comment">//回收的时候，把要回收的部分插入二级链表的头</span></span><br><span class="line"> 	<span class="comment">//函数内部没有做p指针的检查，如果这个p指针不是这个系统的，</span></span><br><span class="line"> 	<span class="comment">//如果他不是8的倍数的话，回收后再分配时会出问题，原来分配给list#1，</span></span><br><span class="line"> 	<span class="comment">//可能现在到了list#2</span></span><br><span class="line"> 	<span class="keyword">static</span> <span class="keyword">void</span> deallocate(<span class="keyword">void</span>* p,<span class="keyword">size_t</span> n)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		obj* q = (obj*)p;</span><br><span class="line"> 		obj* <span class="keyword">volatile</span> *my_free_list;</span><br><span class="line"> 		<span class="keyword">if</span>(n &gt; (<span class="keyword">size_t</span>)__MAX_BYTES)</span><br><span class="line"> 		&#123;</span><br><span class="line"> 			malloc_alloc::deallocate(p,n);</span><br><span class="line"> 			<span class="keyword">return</span>;</span><br><span class="line"> 		&#125;</span><br><span class="line"> 		my_free_list = free_list +FREELIST_INDEX(n);</span><br><span class="line"> 		q-&gt;free_list_link = *my_free_list;</span><br><span class="line"> 		*my_free_list = q;</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">static</span> <span class="keyword">void</span>* reallocate(<span class="keyword">void</span>* p, <span class="keyword">size_t</span> old_sz, <span class="keyword">size_t</span> new_sz);<span class="comment">//略</span></span><br><span class="line"> &#125;;</span><br><span class="line"> <span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line"> <span class="keyword">char</span> *</span><br><span class="line"> __default_alloc_template&lt;threads, inst&gt;::</span><br><span class="line"> chunk_alloc(<span class="keyword">size_t</span> size, <span class="keyword">int</span>&amp; nobjs)</span><br><span class="line"> &#123;</span><br><span class="line"> 	<span class="keyword">char</span> *result;</span><br><span class="line"> 	<span class="keyword">size_t</span> total_bytes = size * nobjs;</span><br><span class="line"> 	<span class="keyword">size_t</span> bytes_left = end_free - start_free;</span><br><span class="line"> 	</span><br><span class="line"> 	<span class="keyword">if</span>( bytes_left &gt;= total_bytes)<span class="comment">//pool能否满足20个</span></span><br><span class="line"> 	&#123;</span><br><span class="line"> 		result = start_free;</span><br><span class="line"> 		start_free += total_bytes;</span><br><span class="line"> 		<span class="keyword">return</span>(result);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">else</span> <span class="keyword">if</span>( bytes_left &gt;= size)<span class="comment">//pool能否满足1个</span></span><br><span class="line"> 	&#123;</span><br><span class="line"> 		nobjs = bytes_left /size;</span><br><span class="line"> 		total_bytes = size * nobjs;</span><br><span class="line"> 		result = start_free;</span><br><span class="line"> 		start_free += total_bytes;</span><br><span class="line"> 		<span class="keyword">return</span>(result);</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">else</span></span><br><span class="line"> 	&#123;</span><br><span class="line"> 	<span class="comment">//空pool或者为碎片</span></span><br><span class="line"> 		<span class="keyword">size_t</span> bytes_to_get = <span class="number">2</span>*total_bytes + ROUND_UP(heap_size &gt;&gt; <span class="number">4</span>);</span><br><span class="line"> 		<span class="comment">//将碎片挂接</span></span><br><span class="line"> 		<span class="keyword">if</span>( bytes_left &gt; <span class="number">0</span>)</span><br><span class="line"> 		&#123;</span><br><span class="line"> 			obj* <span class="keyword">volatile</span> *my_free_list = free_list + FREELIST_INDEX(bytes_left);</span><br><span class="line"> 			((obj*)start_free)-&gt;free_list_link = *my_free_list;</span><br><span class="line"> 			*my_free_list = (obj*)start_free;</span><br><span class="line"> 		&#125;</span><br><span class="line"> 		<span class="comment">//分配内存</span></span><br><span class="line"> 		start_free = (<span class="keyword">char</span> *)<span class="built_in">malloc</span>(bytes_to_get);</span><br><span class="line"> 		<span class="keyword">if</span>( <span class="number">0</span> == start_free)<span class="comment">//分配失败的话，从freelist中找</span></span><br><span class="line"> 		&#123;</span><br><span class="line"> 			<span class="keyword">int</span> i;</span><br><span class="line"> 			obj* <span class="keyword">volatile</span> *my_free_list, *p;</span><br><span class="line"><span class="comment">//try to make do with what we have.that can’t hurt.</span></span><br><span class="line"><span class="comment">//we do not try smaller requests,since that tends</span></span><br><span class="line"><span class="comment">//to result in disaster on muti-process machines.</span></span><br><span class="line"> 			<span class="keyword">for</span>( i = size; i &lt;= __MAX_BYTES; i+= __ALIGN)</span><br><span class="line"> 			&#123;</span><br><span class="line"> 				my_free_list = free_list + FREELIST_INDEX(i);</span><br><span class="line"> 				p = *my_free_list;</span><br><span class="line"> 				<span class="keyword">if</span>( <span class="number">0</span> != p)</span><br><span class="line"> 				&#123;</span><br><span class="line"> 					*my_free_list = p-&gt;free_list_link;</span><br><span class="line"> 					start_free = (<span class="keyword">char</span> *)p;</span><br><span class="line"> 					end_free = start_free + i;</span><br><span class="line"> 					<span class="keyword">return</span> (chunk_alloc(size, nobjs));</span><br><span class="line"> 				&#125;</span><br><span class="line"> 			&#125;</span><br><span class="line"> 			<span class="comment">//表示memory已经‘没有’了</span></span><br><span class="line"> 			end_free = <span class="number">0</span>;</span><br><span class="line"> 			start_free = (<span class="keyword">char</span>*)malloc_alloc::allocate(bytes_to_get);</span><br><span class="line"> 		&#125;</span><br><span class="line"> 		heap_size += bytes_to_get;</span><br><span class="line"> 		end_free = start_free + bytes_to_get;</span><br><span class="line"> 		<span class="keyword">return</span> (chunk_alloc(size, nobjs));</span><br><span class="line"> 	&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line"> <span class="keyword">void</span> *</span><br><span class="line"> __default_alloc_template&lt;threads, inst&gt;::refill(<span class="keyword">size_t</span> n)<span class="comment">//n已经是8的倍数</span></span><br><span class="line"> &#123;</span><br><span class="line"> 	<span class="keyword">int</span> nobjs = <span class="number">20</span>;<span class="comment">//预设20个</span></span><br><span class="line"> 	<span class="keyword">char</span> *chunk = chunk_alloc(n, nobjs);</span><br><span class="line"> 	obj* <span class="keyword">volatile</span> *my_free_list;</span><br><span class="line"> 	obj* result;</span><br><span class="line"> 	obj* current_obj;</span><br><span class="line"> 	obj* next_obj;</span><br><span class="line"> 	<span class="keyword">int</span> i;</span><br><span class="line"> 	<span class="keyword">if</span>( <span class="number">1</span>== nobjs) <span class="keyword">return</span> (chunk);</span><br><span class="line"> 	my_free_list = free_list_link;</span><br><span class="line"> 	result = (obj*)chunk;</span><br><span class="line"> 	*my_free_list = next_obj = (obj*)(chunk + n);</span><br><span class="line"> 	<span class="comment">//在chunk内建立freelist</span></span><br><span class="line"> 	<span class="keyword">for</span>( i = <span class="number">1</span>; ; ++i)</span><br><span class="line"> 	&#123;</span><br><span class="line"> 		current_obj = next_obj;</span><br><span class="line"> 		next_obj = (obj*)((<span class="keyword">char</span>*)next_obj + n);</span><br><span class="line"> 		<span class="keyword">if</span>( nobjs<span class="number">-1</span> == i)</span><br><span class="line"> 		&#123;</span><br><span class="line"> 			current_obj-&gt;free_list_link = <span class="number">0</span>;</span><br><span class="line"> 			<span class="keyword">break</span>;</span><br><span class="line"> 		&#125;</span><br><span class="line"> 		<span class="keyword">else</span></span><br><span class="line"> 		&#123;</span><br><span class="line"> 			current_obj-&gt;free_list_link = next_obj;</span><br><span class="line"> 		&#125;</span><br><span class="line"> 	&#125;</span><br><span class="line"> 	<span class="keyword">return</span> (result);</span><br><span class="line"> &#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line"><span class="keyword">char</span> *__default_alloc_template&lt;threads, inst&gt;;:start_free = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line"><span class="keyword">char</span> *__default_alloc_template&lt;threads, inst&gt;;:end_free = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line"><span class="keyword">char</span> *__default_alloc_template&lt;threads, inst&gt;;:heap_free = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">bool</span> threads, <span class="keyword">int</span> inst&gt;</span><br><span class="line">__default_alloc_template&lt;threads, inst&gt;::obj* <span class="keyword">volatile</span></span><br><span class="line">__default_alloc_template&lt;threads, inst&gt;::free_list[_NFREELISTS]</span><br><span class="line">= &#123; <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;</span><br><span class="line"><span class="keyword">typedef</span> __default_alloc_template&lt;<span class="literal">false</span>, <span class="number">0</span>&gt; alloc;</span><br></pre></td></tr></table></figure>
+<p>deallocate完全没有free，设计上的缺陷，没有变量记录freelist的起始位置</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/11/2017-04-11-malloc and free/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          malloc/free
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/09/2017-04-09-内存管理primitives/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">内存管理 primitives</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

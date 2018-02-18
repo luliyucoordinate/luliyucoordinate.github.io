@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>linux Day6 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="linuxsignalcpipe" />
+  
+  
+  
+  
+  <meta name="description" content="结束进程有几个原因造成进程的终止：  return exit函数 _exit函数 abort函数 信号终止前三者为正常。后两者不正常，无论为何终止，最后都会执行相同的内核代码，关闭文件，释放内存和其他清理工作。  exit1int exit(int status) 使程序正常终止，返回父进程状态与return的区别，可以函数中使用abort  1void abort(void) abort可以然程">
+<meta name="keywords" content="linux,signal,c,pipe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux Day6">
+<meta property="og:url" content="http://coordinate.wang/2017/03/06/2017-03-06-linux-day6/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="结束进程有几个原因造成进程的终止：  return exit函数 _exit函数 abort函数 信号终止前三者为正常。后两者不正常，无论为何终止，最后都会执行相同的内核代码，关闭文件，释放内存和其他清理工作。  exit1int exit(int status) 使程序正常终止，返回父进程状态与return的区别，可以函数中使用abort  1void abort(void) abort可以然程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.905Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="linux Day6">
+<meta name="twitter:description" content="结束进程有几个原因造成进程的终止：  return exit函数 _exit函数 abort函数 信号终止前三者为正常。后两者不正常，无论为何终止，最后都会执行相同的内核代码，关闭文件，释放内存和其他清理工作。  exit1int exit(int status) 使程序正常终止，返回父进程状态与return的区别，可以函数中使用abort  1void abort(void) abort可以然程">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-06-linux-day6" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      linux Day6
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/06/2017-03-06-linux-day6/" class="article-date">
+	  <time datetime="2017-03-05T16:00:00.000Z" itemprop="datePublished">三月 6, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="结束进程"><a href="#结束进程" class="headerlink" title="结束进程"></a>结束进程</h1><p>有几个原因造成进程的终止：</p>
+<ol>
+<li>return</li>
+<li>exit函数</li>
+<li>_exit函数</li>
+<li>abort函数</li>
+<li>信号终止<br>前三者为正常。后两者不正常，无论为何终止，最后都会执行相同的内核代码，关闭文件，释放内存和其他清理工作。</li>
+</ol>
+<h1 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int exit(int status)</span><br></pre></td></tr></table></figure>
+<p>使程序正常终止，返回父进程状态<br>与return的区别，可以函数中使用<br>abort </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void abort(void)</span><br></pre></td></tr></table></figure>
+<p>abort可以然程序产生core，用于分析崩溃文件<br>abort比较粗暴，作为最后的手段使用，碰到内存不足这样的问题时，无法用程序的方式处理时再使用。<br>该函数发送SIGABRT信号给调用进程，进程不该忽略这个信号。<br>即使进程捕获到这个信号，进程还是会异常退出。让进程捕获的意义在于，在进程中之前执行所需的清理操作。</p>
+<h1 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line">&lt;sys/types.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> sig)</span></span></span><br></pre></td></tr></table></figure>
+<p>Kill用来杀死其他进程，pid只要杀的进程，sig要发送的信号（杀死进程SIGKILL，ctrl+c的信号是SIGINT）</p>
+<h1 id="so文件"><a href="#so文件" class="headerlink" title="so文件"></a>so文件</h1><p>so文件在linux中为共享库，类似windows下的dll<br>so文件中的函数可以供多个进程调用<br>即使不同进程调用一个so文件，并不能实现通信，不在同一个内存空间<br>so文件的源文件中不需要main函数<br>编译的时候gcc需要加-fPIC选项，使gcc产生与位置无关的代码<br>连接的时候gcc需要加-shared选项，生成一个共享库文件<br>文件名要以lib开头，扩张名位.so  </p>
+<p>so文件的使用需要在.bash_profile中添加export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.<br>或者将文件放入linux的系统目录/usr/lib/<br>在c文件中添加so文件，首先需要#include头文件<br>gcc链接时添加-L参数指明so文件路径，-l参数指明so文件名<br>例子： gcc –L. –ltest –o a a.o<br>-L.指在当前路径下找so文件<br>-ltest为要连接libtest.so这个库文件<br>-o a编译后的可执行文件名为a  </p>
+<p>当我们在cpp文件中包含头文件，用g++连接库文件时出错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(.test+0x19):undefined reference to`max(int, int)’</span><br><span class="line">(.test+0x19):undefined reference to `add(int,int)’</span><br></pre></td></tr></table></figure>
+<p>我们需要增加带有_cplusplus的预编译指令</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> ___cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h1 id="无名管道"><a href="#无名管道" class="headerlink" title="无名管道"></a>无名管道</h1><p>半双工，只能读或写，只能在相关的、有共同祖先的进程间使用(fork execve)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fledes[<span class="number">2</span>])</span></span></span><br></pre></td></tr></table></figure>
+<p>如果成功建立管道，会打开两个文件描述符，保存在一个整数数组中<br>第一个文件描述符用于读取数据，第二个文件描述符用于写入数据<br>如果出错返回-1·同时设置errno<br>关闭一个管道用close()<br>读写管道与读写文件一样，调用write与read函数<br>管道是用来交换数据的，试图对一个管道两端进行读写操作是一个严重的错误，只存在一个读一个写。</p>
+<h1 id="有名管道"><a href="#有名管道" class="headerlink" title="有名管道"></a>有名管道</h1><p>有名管道(FIFO)<br>长久稳定，存在于文件系统中，可以让无关联的进程之间交换数据<br>一个shell命令可以建立有名管道<br>mkfifo[option] name                   mkfifo创建一个名为name的有名管道<br>mkfifo fifo1                          创建一个有名管道fifo1<br>cat &lt; fifo1                             通过cat命令从fifo1中读取数据<br>ls &gt; fifo1                                将ls命令的结果写入fifo1数据  </p>
+<p>创建fifo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, mode_tmode)</span></span></span><br></pre></td></tr></table></figure>
+<p>成功返回0，失败返回-1，设置变量errno</p>
+<p>删除fifo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname)</span></span></span><br></pre></td></tr></table></figure>
+<p>成功返回0，失败返回-1，设置变量errno</p>
+<p>打开关闭fifo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> flags)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> fd)</span></span></span><br></pre></td></tr></table></figure>
+<p>open中的参数flags为O_RDONLY 将阻塞open调用，一直到另一个进程为写入数据打开FIFO为止。<br>相同的，O_WRONLY也导致阻塞一直到为读出数据打开FIFO为止。</p>
+<h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p>共享内存是由内核出于在多个进程间交换信息的目的留下的一块内存区。<br>如果段的权限设置恰当，每个要访问该断内存的进程都可以把它映射到自己的私有地址空间。<br>如果一个进程跟新了段中的数据，其他进程也可以看到。<br>一个进程创建的段，里一个进程也可以写。<br>每个进程都把它自己对共享内存的映像放入自己的地址空间。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;sys/ipc.h&gt;</span><br><span class="line">&lt;sys/shm.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shmget</span><span class="params">(<span class="keyword">key_t</span> key, <span class="keyword">size_t</span> size, intshm-flg)</span></span></span><br></pre></td></tr></table></figure>
+<p>参数key既可以是IC_PRIVATE(系统设置)，也可以是ftok函数的返回关键字<br>size指定段的大小<br>flags为8进制，设置权限0xxx<br>函数成功返回标识符，失败返回-1  </p>
+<p>通过ipcs –m 查看共享内存<br>通过ipcrm shm shmid删除共享内存<br>附加共享内存</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">shmat</span><span class="params">(<span class="keyword">int</span> shmid, <span class="keyword">const</span> vod *ahmaddr,<span class="keyword">int</span> shmflg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shmdt</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *shmaddr)</span></span>;`</span><br></pre></td></tr></table></figure>
+<p>shmid是要附加共享内存的标识符，shmaddr总是设置为0(系统分配)。<br>参数shmflg可以为SHM_RDONLY，这意味着附加段是只读的。<br>成功返回被附加段的地址，失败-1，设置errno<br>函数shmdt是将附加在shmaddr的段从调用进程的地址空间分离出去，这个地址必须是shmat返回的。</p>
+<h1 id="捕获信号"><a href="#捕获信号" class="headerlink" title="捕获信号"></a>捕获信号</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pause</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>pause函数挂其他的进程直到消息到达。调用进程必须有能力处理送达的信号，否则信号的默认部署就会发生。<br>只有进程捕获到一个信号的时候pause才会返回，信号处理发生在pause返回前执行。<br>pause总是返回-1，errno变量设置为EINTR<br>每个进程能够决定响应除了SIGSTOP和SIGKILL之外的其他所有信号，这两个信号不能捕获或者忽略。<br>当一个进程调用fork的时候，其子进程继承父进程的信号处理方式，所有信号捕捉函数的地址在子进程中是有意义的。</p>
+<h1 id="signal函数"><a href="#signal函数" class="headerlink" title="signal函数"></a>signal函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line"><span class="keyword">void</span> (*signal(<span class="keyword">int</span> signo, <span class="keyword">void</span>(*func)(<span class="keyword">int</span>)))(<span class="keyword">int</span> );</span><br></pre></td></tr></table></figure>
+<p>linux/unix处理信号最常用的接口<br>signo为信号名，func接受此信号的调用函数，该函数的参数代表捕获到的信号值<br>kill –s +信号名+pid    可以看出kill是用来发信号的</p>
+<h1 id="发送信号"><a href="#发送信号" class="headerlink" title="发送信号"></a>发送信号</h1><p>使用kill命令<br>使用kill函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line">&lt;sys/typed.h&gt;</span><br><span class="line"><span class="function">Int <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid,<span class="keyword">int</span> sig)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>pid指定要发信号的进程，sig要发送的信号<br>使用raise函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rasie</span><span class="params">(<span class="keyword">int</span> signo)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>kill函数将信号发送给别的进程，raise函数允许进程向自身发送信号。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">raise(digno) = kill(getpid(), signo);</span><br></pre></td></tr></table></figure>
+<p>alarm函数设置一个定时器，当定时器到了就给自己发SIGALRM信号，alarm的默认行为是退出进程，所以必须要捕获。所以最好对每个可捕获的消息，都要写捕获函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;unistd.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">alarm</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> seconds)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>seconds是计时器时间，一个进程只可以设置一次。再次把seconds设置为0，取消alarm。</p>
+<h1 id="作业控制信号"><a href="#作业控制信号" class="headerlink" title="作业控制信号"></a>作业控制信号</h1><p>SIGCHLD          子进程已停止或终止<br>SIGCONT          如果进程停止，使其继续进行<br>SIGSTOP          停止信号，无法捕获<br>SIGTTIN          后台进程组成员读控制终端<br>SIGTTOU          后台进程组成员写控制终端<br>除了SIFCHLD以外，大多数程序不处理这些信号。Shell程序一般需要处理这些信号。<br>信号用于大多数复杂的应用中。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pipe/">pipe</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/signal/">signal</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/07/2017-03-07-linux-day7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          linux Day7
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/05/2017-03-05-linux-day5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">linux Day5</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#结束进程"><span class="nav-number">1.</span> <span class="nav-text">结束进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exit"><span class="nav-number">2.</span> <span class="nav-text">exit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kill"><span class="nav-number">3.</span> <span class="nav-text">kill</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#so文件"><span class="nav-number">4.</span> <span class="nav-text">so文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无名管道"><span class="nav-number">5.</span> <span class="nav-text">无名管道</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#有名管道"><span class="nav-number">6.</span> <span class="nav-text">有名管道</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#共享内存"><span class="nav-number">7.</span> <span class="nav-text">共享内存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#捕获信号"><span class="nav-number">8.</span> <span class="nav-text">捕获信号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#signal函数"><span class="nav-number">9.</span> <span class="nav-text">signal函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发送信号"><span class="nav-number">10.</span> <span class="nav-text">发送信号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#作业控制信号"><span class="nav-number">11.</span> <span class="nav-text">作业控制信号</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>理解C/C++语言的声明语法-声明子 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotes" />
+  
+  
+  
+  
+  <meta name="description" content="转载自dreamliner的blog 声明一些声明可能难以理解，特别是如果声明几个不同类型的名字或者那些指向函数指针的函数。例如在§10.1.1/171中，我们看到 1int* p, q; 定义p为一个“整型指针”类型的对象，q为一个整型对象。在§10.1.2/173中，我们看到 1double (*get_analysis_ptr())(const vector&amp;lt;Student_info&amp;">
+<meta name="keywords" content="cpp,notes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解C&#x2F;C++语言的声明语法-声明子">
+<meta property="og:url" content="http://coordinate.wang/2017/04/18/2017-04-18-理解C++语言的声明语法/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="转载自dreamliner的blog 声明一些声明可能难以理解，特别是如果声明几个不同类型的名字或者那些指向函数指针的函数。例如在§10.1.1/171中，我们看到 1int* p, q; 定义p为一个“整型指针”类型的对象，q为一个整型对象。在§10.1.2/173中，我们看到 1double (*get_analysis_ptr())(const vector&amp;lt;Student_info&amp;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.221Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解C&#x2F;C++语言的声明语法-声明子">
+<meta name="twitter:description" content="转载自dreamliner的blog 声明一些声明可能难以理解，特别是如果声明几个不同类型的名字或者那些指向函数指针的函数。例如在§10.1.1/171中，我们看到 1int* p, q; 定义p为一个“整型指针”类型的对象，q为一个整型对象。在§10.1.2/173中，我们看到 1double (*get_analysis_ptr())(const vector&amp;lt;Student_info&amp;">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-18-理解C++语言的声明语法" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      理解C/C++语言的声明语法-声明子
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/18/2017-04-18-理解C++语言的声明语法/" class="article-date">
+	  <time datetime="2017-04-17T16:00:00.000Z" itemprop="datePublished">四月 18, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自<a href="http://www.cnblogs.com/dreamliner/archive/2009/06/10/1500827.html" target="_blank" rel="noopener">dreamliner</a>的blog</p>
+<h1 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h1><p>一些声明可能难以理解，特别是如果声明几个不同类型的名字或者那些指向函数指针的函数。例如在§10.1.1/171中，我们看到</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* p, q;</span><br></pre></td></tr></table></figure>
+<p>定义p为一个“整型指针”类型的对象，q为一个整型对象。在§10.1.2/173中，我们看到</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> (*get_analysis_ptr())(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;Student_info&gt;&amp;);</span><br></pre></td></tr></table></figure>
+<p>声明get_analysis_ptr为一个函数，不带任何参数，它返回一个指针，它指向一个函数，它带有一个const vector&lt;Student_info&gt;&amp;参数，返回double。你可以通过重写以清楚的表达这些声明的含义，例如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* p;</span><br><span class="line"><span class="keyword">int</span> q;</span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义analysis_fp为一个函数，它带一个const vector&lt;Student_info&gt;&amp;参// 数，返回一个double类型。</span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">double</span> <span class="params">(*analysis_fp)</span><span class="params">(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;Student_info&gt;&amp;)</span></span>;</span><br><span class="line"><span class="function">analysis_fp <span class="title">get_analysis_ptr</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>不幸的是，这种策略不会帮助你阅读其它程序员代码中令人迷惑的声明。<br>一般，一个声明大致如下<br>声明语句：声明说明符[声明子[初始化器]] [,声明子[初始化器]]…;<br>它为每一个声明子声明一个名字。这些名字始于声明开始的地方终于声明作用域结束的地方。一些声明同时也是定义。名字可以声明多次，但是仅能定义一次。如果一个声明分配了存储空间或者定义了类或函数体，那么它也是一个定义。<br>C++继承了C的声明语法。理解声明的关键是认识到每个声明包含两个部分：一系列声明说明符，它们一起说明一个类型和其它正在声明的特性，紧跟着是零个或多个声明子（每个声明子都可选的有一个关联的初始化器）。根据说明符和声明子的形式，每个声明子都为名字赋予一个类型。<br>理解声明的第一步是定位说明符和声明子的边界。这很容易：所有的说明符都是关键字或者类型名，因此说明符终止于第一个不是以上类型之一的符号。<br>例如，在</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> * <span class="keyword">const</span> * cp;</span><br></pre></td></tr></table></figure>
+<p>很容易找到边界：double是一个类型，左括号后面既不是关键字也不是类型名。因此，声明—说明符只是double，声明子为声明的其它部分，不包含分号。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> (*get_analysis_ptr())(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;Student_info&gt;&amp;);</span><br></pre></td></tr></table></figure>
+<p>另一个例子，考虑§10.1.2/173中的声明：<br>第一个既不是关键字也不是类型名的符号是<em>，因此说明符是const char，唯一的声明子</em> const <em> const </em> cp。</p>
+<h2 id="说明符（Specifiers）"><a href="#说明符（Specifiers）" class="headerlink" title="说明符（Specifiers）"></a>说明符（Specifiers）</h2><p>我们可以将声明—说明符分成三个部分：类型说明符，存储类说明符，和其它说明符：<br>声明说明符：{类型说明符|存储类说明符|其它声明说明符}<br>然而，这种划分仅仅有助于理解，因为声明本身不存在对应的划分：声明—说明符可以以任何次序出现。<br>类型说明符决定了声明的类型。我们在§A.2/299中讨论内置类型。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">type-specifier: char | wchar_t | bool | short | int | long | signed</span><br><span class="line">unsigned | float | double | void | type-name | const | volatile</span><br><span class="line">type-name: class-name | enum-name | typedef-name</span><br></pre></td></tr></table></figure>
+<p>const说明符指出这种类型的对象不可以修改，volatile通知编译器变量可能以非语言定义的形式改变，应该避免优化。<br>注意const既可以出现在说明符部分，这样修改类型，也可以出现在声明子部分，说明一个const指针。这没有任何歧义，因为声明子部分的const总是跟着一个*。<br>存储类说明符决定变量的位置和生命周期：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">storage-class-specifiers: register | static | extern | mutable</span><br></pre></td></tr></table></figure>
+<p>register说明符建议编译器通过将此对象放到寄存器中以优化性能。<br>一般，局部变量在退出声明它们的块（block）时即被销毁；静态变量的值在作用域的入口和出口间会被保存起来。<br>extern说明符表明当前的声明不是一个定义，隐含着在其它地方存在相应的定义。<br>mutable存储类仅用于类的数据成员，并且允许修改这些数据成员即使它们是常量对象的成员。<br>其它声明说明符定义了与类型无关的属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">other-decl-specifier: friend | inline | virtual | typedef</span><br></pre></td></tr></table></figure>
+<p>friend说明符(§12.3.2/216 and §13.4.2/246)改写保护。<br>内联说明符用于函数定义，提示编译器如果可能内联下面的代码。当展开调用时，函数定义必须出现在那个作用域，因此将内联函数体放到声明函数的头文件中通常是一个好主意。<br>virtual说明符(§13.2.1/234)仅用于成员函数，表示这个函数是动态绑定的。<br>typedef说明符(§3.2.2/43)定义类型的同义词。</p>
+<h2 id="声明子（Declarators）"><a href="#声明子（Declarators）" class="headerlink" title="声明子（Declarators）"></a>声明子（Declarators）</h2><p>一个声明为每个声明子都声明一个实体（entity）,同时为那个实体给出一个名字，并且隐含的给出存储类，类型，和由说明符给出的其它特性。说明符和声明子一起决定了名字是否是一个对象，数组，指针，引用或函数。例如，声明x为一个整型指针，f为一个函数返回一个整型。正是声明子*x和f()使类型x和f产生区别。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int *x, f();</span><br><span class="line">declarator: [ * [ const ] | &amp; ]... direct-declarator</span><br><span class="line">direct-declarator: declarator-id | ( declarator ) |</span><br><span class="line">direct-declarator ( parameter-declaration-list ) |</span><br><span class="line">direct-declarator [ constant-expression ]</span><br><span class="line">A declarator-id is an identifier, possibly qualified:</span><br><span class="line">declarator-id: [ nested-name-specifier ] identifier</span><br><span class="line">nested-name-specifier: &#123; class-or-namespace-name ::&#125;...</span><br></pre></td></tr></table></figure>
+<p>如果声明子是一个仅包含一个declarator-id的直接-声明子，那么这说明这个标识符具有decl-specifiers隐含的属性，而没有进一步的修饰。例如，在下面的声明中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n;</span><br></pre></td></tr></table></figure>
+<p>声明子是n，这是一个只包含direct-declarator的declarator-id，因此根据含义，n的类型为整型。<br>如果声明子为其它形式，那么你可以按照下面的方法确定标识符的类型：首先，假设T为decl-specifiers隐含的类型，忽略friend或static等非类型属性，同时假设D为声明子。然后重复下面的步骤直到推导出D为一个declarator-id，此时T正是你所寻找的类型：  </p>
+<ol>
+<li>如果D形如(D1)，那么用D1替换D。</li>
+<li>如果D形如<em> D1 或 </em> const D1，那么根据是否有const，用“指针，它指向T”或者“常量指针，它指向T”替换T，然后用D1替换D。</li>
+<li>如果D形如D1(参数-声明-列表)，那么用参数由参数-声明-列表定义的、“返回T的函数”替换T，然后用D1替换D。</li>
+<li>如果D形如D1[常量-表达式]，那么用元素个数由常量-表达式给出的“T数组”替换T，然后然后用D1替换D。</li>
+<li>最后，如果声明子形如&amp;D，那么用“T引用”替换T，然后用D1替换D。<br>作为一个示例，考虑下面的声明</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">f</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>首先，T和D分别为int和<em>f()，因此D形如</em>D1，其中D1为f()。<br>你可能认为D可以形如D1() 或者 <em>D1。然而，如果D形如D1()，那么D1将不得不为</em>f，D1将是一个direct-declarator（因为本节开始处的语法注1规定只有direct-declarator前面是()）。但是如果我们看看direct-declarator的定义注2，很明显它不能包含<em>。因此，D只能是</em>f()，它形如*D1，其中D为f()。<br>既然我们已经确定D1为f()，那么我们知道必须用“指针，它指向T”替换T，即“指针，指向整型”，同时用f()替换D。<br>至此我们还没有解析D为declarator-id，因此我们必须重复该过程。此时，D1只能是f，因此我们用“返回T的函数”替换T，它是一个“返回整型指针不带参数的函数”，然后用f替换D。<br>此时，D为declarator-id，因此推导结束。我们已经确定声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> *<span class="title">f</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>声明f的类型为“不带参数返回整型指针的函数”。另一个例子，声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* p, q;</span><br></pre></td></tr></table></figure>
+<p>具有两个声明子，<em>p和q。对于每个声明子，T都是int。对于第一个声明子，D是</em>p，因此T变成“指针，它指向整型，”而D为p。声明p类型为“指针，它指向整型”。<br>我们单独分析第二个声明子，T还是int，D是q。很明显声明q为整型。<br>最后，让我们分析§10.1.2/173中那个奇怪的例子:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> (*get_analysis_ptr())(<span class="keyword">const</span> <span class="built_in">vector</span>&lt;Student_info&gt;&amp;);</span><br></pre></td></tr></table></figure>
+<p>分析过程可以分为下面五个步骤  </p>
+<ol>
+<li>T: double    D: (*get_analysis_ptr())(const vector&lt;Student_info&gt;&amp;)</li>
+<li>T: 返回double带有 const vector&lt;Student_info&gt;&amp; 参数的函数    D: (*get_analysis_ptr())</li>
+<li>T: function returning double… (如前所示)    D: *get_analysis_ptr()</li>
+<li>T: 指针，它指向一个返回double…的函数    D: get_analysis_ptr()</li>
+<li>T: 一个函数，返回一个函数指针，它指向一个返回double…的函数   D: get_analysis_ptr<br>get_analysis_ptr是一个函数，它返回一个函数指针，它指向一个返回double，带有const vector&lt;Student_info&gt;&amp;参数的函数。我们将如何展开const vector&lt;Student_info&gt;&amp;作为一个练习。幸运的是，很少有函数声明如此令人迷惑；它们中的大多数看起来</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">declarator: declarator-id ( parameter-declaration-list )</span><br></pre></td></tr></table></figure>
+<p>到目前为止，常见情况中最难的是返回函数指针的函数。<br>注1：这里将allows翻译为规定而不是允许。因为如果翻译为允许，言外之意是()后面还可以是其它东西，但是在五条语法中找不到这种东西。语法指的是direct-declarator ( parameter-declaration-list )<br>注2：“declarator: [ * [ const ] | &amp; ]… direct-declarator”</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/19/2017-04-19-标准模板库1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          标准模板库(1)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/17/2017-04-17-cpp通用工具2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cpp通用工具(2)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#声明"><span class="nav-number">1.</span> <span class="nav-text">声明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明符（Specifiers）"><span class="nav-number">1.1.</span> <span class="nav-text">说明符（Specifiers）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明子（Declarators）"><span class="nav-number">1.2.</span> <span class="nav-text">声明子（Declarators）</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

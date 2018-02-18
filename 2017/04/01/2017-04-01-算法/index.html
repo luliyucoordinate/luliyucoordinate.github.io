@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>算法 algorithms | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl算法" />
+  
+  
+  
+  
+  <meta name="description" content="Algorithm 看不见containers，所以他需要的一切信息都必须从iterators取得，而iterators必须回答algorithm的所有问题，才能搭配这个algorithm的所有操作，可以看最前面的一个图。从语言层面看，algorithm是一个function template 算法accumulate1234567891011121314151617181920212223242">
+<meta name="keywords" content="cpp,stl,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法 algorithms">
+<meta property="og:url" content="http://coordinate.wang/2017/04/01/2017-04-01-算法/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Algorithm 看不见containers，所以他需要的一切信息都必须从iterators取得，而iterators必须回答algorithm的所有问题，才能搭配这个algorithm的所有操作，可以看最前面的一个图。从语言层面看，algorithm是一个function template 算法accumulate1234567891011121314151617181920212223242">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法 algorithms">
+<meta name="twitter:description" content="Algorithm 看不见containers，所以他需要的一切信息都必须从iterators取得，而iterators必须回答algorithm的所有问题，才能搭配这个algorithm的所有操作，可以看最前面的一个图。从语言层面看，algorithm是一个function template 算法accumulate1234567891011121314151617181920212223242">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-01-算法" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      算法 algorithms
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/01/2017-04-01-算法/" class="article-date">
+	  <time datetime="2017-03-31T16:00:00.000Z" itemprop="datePublished">四月 1, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Algorithm 看不见containers，所以他需要的一切信息都必须从iterators取得，而iterators必须回答algorithm的所有问题，才能搭配这个algorithm的所有操作，可以看最前面的一个图。从语言层面看，algorithm是一个function template</p>
+<h1 id="算法accumulate"><a href="#算法accumulate" class="headerlink" title="算法accumulate"></a>算法accumulate</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span> <span class="title">accumulate</span> (<span class="title">InputIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">				<span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">				<span class="title">T</span> <span class="title">init</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">for</span>( ; first != last; ++first)</span><br><span class="line"><span class="comment">//将元素累加至初值init身上</span></span><br><span class="line">		init = init + *first;</span><br><span class="line">	<span class="keyword">return</span> init;</span><br><span class="line">&#125;</span><br><span class="line">通常算法有两个版本，另一个允许增加函数</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">BinaryOperation</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">T</span> <span class="title">accumulate</span>(<span class="title">InputIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">				<span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">				<span class="title">T</span> <span class="title">init</span>,</span></span><br><span class="line"><span class="class">				<span class="title">BinaryOperation</span> <span class="title">binary</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">for</span>( ; first != last; ++first)</span><br><span class="line"><span class="comment">//将元素累加至初值init身上</span></span><br><span class="line">		init = binary_op(init, *first);</span><br><span class="line">	<span class="keyword">return</span> init;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="算法for-each"><a href="#算法for-each" class="headerlink" title="算法for_each"></a>算法for_each</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Function</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">Function</span> <span class="title">for_each</span>(<span class="title">InputIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">					<span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">					<span class="title">Function</span> <span class="title">f</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">for</span>( ; first != last ; ++first)</span><br><span class="line">		f(*first);</span><br><span class="line">	<span class="keyword">return</span> f;</span><br><span class="line">&#125;</span><br><span class="line">range-based <span class="keyword">for</span> statement</span><br><span class="line">since c++<span class="number">11</span></span><br><span class="line"><span class="keyword">for</span>( decl : coll )</span><br><span class="line">&#123;</span><br><span class="line">	statement</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="算法replace，replace-if，replace-copy"><a href="#算法replace，replace-if，replace-copy" class="headerlink" title="算法replace，replace_if，replace_copy"></a>算法replace，replace_if，replace_copy</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">关于算法的命名规则</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">replace</span> (<span class="title">ForwardIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">				<span class="title">ForwardIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">				<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">old_value</span>,</span></span><br><span class="line"><span class="class">				<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">new_value</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">for</span>( ;first != last; ++first)</span><br><span class="line">		<span class="keyword">if</span>(*first == old_value)</span><br><span class="line">			*first = new_value;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">OutputIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">OutputIterator</span> <span class="title">replace_copy</span>(<span class="title">InputIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">								<span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">								<span class="title">OutputIterator</span> <span class="title">result</span>,</span></span><br><span class="line"><span class="class">								<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">old_value</span>,</span></span><br><span class="line"><span class="class">								<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">new_value</span>)</span></span><br><span class="line"><span class="class">//等于<span class="title">old_value</span>的都以<span class="title">new_value</span>放入新的存储空间</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">for</span>(; fisrt != last; ++first, ++result)</span><br><span class="line">		*result = *first == old_value? new_value:*first;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>,<span class="title">class</span> <span class="title">Predicate</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">replace_if</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">				<span class="title">ForwardIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">				<span class="title">predicate</span> <span class="title">pred</span>,</span></span><br><span class="line"><span class="class">				<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">new_value</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">for</span> (; first != last ; ++first)</span><br><span class="line">		<span class="keyword">if</span>(pred(*first))</span><br><span class="line">			*first = new_value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="算法count，count-if"><a href="#算法count，count-if" class="headerlink" title="算法count，count_if"></a>算法count，count_if</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">iterator_traits</span>&lt;InputIterator&gt;:</span>:difference_type</span><br><span class="line">count(InputIterator first, InputIterator last,</span><br><span class="line">		<span class="keyword">const</span> T&amp; value)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">typename</span> iterator_traits&lt;InputIterator&gt;::difference_type n = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(; first != last; ++first)</span><br><span class="line">		<span class="keyword">if</span>(*first == value)</span><br><span class="line">			++n;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">Predicate</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">typename</span> <span class="title">iterator_traits</span>&lt;InputIterator&gt;:</span>:difference_type</span><br><span class="line">count_if( InputIterator first, InputIterator last,</span><br><span class="line">			Predicate pred)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">typename</span> iterator_traits&lt;InputIterator&gt;::difference_type n = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>( ; first != last; ++first)</span><br><span class="line">		<span class="keyword">if</span>(pred(*first))</span><br><span class="line">			++n;</span><br><span class="line">	<span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="容器不带成员函数count"><a href="#容器不带成员函数count" class="headerlink" title="容器不带成员函数count()"></a>容器不带成员函数count()</h2><p>array，vector，list，forward_list，deque</p>
+<h2 id="容器带有成员函数"><a href="#容器带有成员函数" class="headerlink" title="容器带有成员函数"></a>容器带有成员函数</h2><p>set/mutiset<br>map/mutimap<br>unordered_set/unordered_mutiset<br>unordered_map/unordered_mutimap</p>
+<h1 id="算法find，find-if"><a href="#算法find，find-if" class="headerlink" title="算法find，find_if"></a>算法find，find_if</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">InputIterator</span> <span class="title">find</span>(<span class="title">InputIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">					<span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">					<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">value</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">while</span>(first != last &amp;&amp; *first != value)</span><br><span class="line">		++first;</span><br><span class="line">	<span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>, <span class="title">class</span> <span class="title">Precidate</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">InputIterator</span> <span class="title">find</span>(<span class="title">InputIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">					<span class="title">InputIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">					<span class="title">Predicate</span> <span class="title">pred</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">while</span>( first != last &amp;&amp; !pred(*first))</span><br><span class="line">	&#123;</span><br><span class="line">		++first;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="容器不带成员函数find"><a href="#容器不带成员函数find" class="headerlink" title="容器不带成员函数find()"></a>容器不带成员函数find()</h2><p>array，vector，list，forward_list，deque</p>
+<h2 id="容器带有成员函数-1"><a href="#容器带有成员函数-1" class="headerlink" title="容器带有成员函数"></a>容器带有成员函数</h2><p>set/mutiset<br>map/mutimap<br>unordered_set/unordered_mutiset<br>unordered_map/unordered_mutimap</p>
+<h1 id="算法sort"><a href="#算法sort" class="headerlink" title="算法sort"></a>算法sort</h1><p>STL中的sort并非只是普通的快速排序，除了对普通的快速排序进行优化，它还结合了插入排序和堆排序。根据不同的数量级别以及不同情况，能自动选用合适的排序方法。当数据量较大时采用快速排序，分段递归。一旦分段后的数据量小于某个阀值，为避免递归调用带来过大的额外负荷，便会改用插入排序。而如果递归层次过深，有出现最坏情况的倾向，还会改用堆排序。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">RandomAccessIter</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">sort</span>(_<span class="title">RandomAccessIter</span> __<span class="title">first</span>, _<span class="title">RandomAccessIter</span> __<span class="title">last</span>) </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  __STL_REQUIRES(_RandomAccessIter, _Mutable_RandomAccessIterator);</span><br><span class="line">  __STL_REQUIRES(<span class="keyword">typename</span> iterator_traits&lt;_RandomAccessIter&gt;::value_type,</span><br><span class="line">                 _LessThanComparable);</span><br><span class="line">  <span class="keyword">if</span> (__first != __last) </span><br><span class="line">  &#123;</span><br><span class="line">    __introsort_loop(__first, __last,</span><br><span class="line">                     __VALUE_TYPE(__first),</span><br><span class="line">                     __lg(__last - __first) * <span class="number">2</span>);</span><br><span class="line">    __final_insertion_sort(__first, __last);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Size</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">Size</span> __<span class="title">lg</span>(<span class="title">Size</span> <span class="title">n</span>)</span></span><br><span class="line"><span class="class"> &#123;</span></span><br><span class="line">    Size k;</span><br><span class="line">    <span class="keyword">for</span> (k = <span class="number">0</span>; n &gt; <span class="number">1</span>; n &gt;&gt;= <span class="number">1</span>) ++k;</span><br><span class="line">    <span class="keyword">return</span> k;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">RandomAccessIter</span>, <span class="title">class</span> _<span class="title">Tp</span>, <span class="title">class</span> _<span class="title">Size</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> __<span class="title">introsort_loop</span>(_<span class="title">RandomAccessIter</span> __<span class="title">first</span>,</span></span><br><span class="line"><span class="class">                      _<span class="title">RandomAccessIter</span> __<span class="title">last</span>, _<span class="title">Tp</span>*,</span></span><br><span class="line"><span class="class">                      _<span class="title">Size</span> __<span class="title">depth_limit</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	  <span class="keyword">while</span> (__last - __first &gt; __stl_threshold) </span><br><span class="line">	  &#123;</span><br><span class="line">		    <span class="keyword">if</span> (__depth_limit == <span class="number">0</span>) </span><br><span class="line">		    &#123;</span><br><span class="line">			      partial_sort(__first, __last, __last);</span><br><span class="line">			      <span class="keyword">return</span>;</span><br><span class="line">		    &#125;</span><br><span class="line">		    --__depth_limit;</span><br><span class="line">		    _RandomAccessIter __cut =</span><br><span class="line">		      __unguarded_partition(__first, __last,</span><br><span class="line">		                            _Tp(__median(*__first,</span><br><span class="line">		                                         *(__first + (__last - __first)/<span class="number">2</span>),</span><br><span class="line">		                                         *(__last - <span class="number">1</span>))));</span><br><span class="line">		    __introsort_loop(__cut, __last, (_Tp*) <span class="number">0</span>, __depth_limit);</span><br><span class="line">		    __last = __cut;</span><br><span class="line">	  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先判断元素规模是否大于阀值<strong>stl_threshold，</strong>stl_threshold是一个常整形的全局变量，值为16，表示若元素规模小于等于16，则结束内省式排序算法，返回sort函数，改用插入排序。若元素规模大于<strong>stl_threshold，则判断递归调用深度是否超过限制。若已经到达最大限制层次的递归调用，则改用堆排序。代码中的partial_sort即用堆排序实现。若没有超过递归调用深度，则调用函数</strong>unguarded_partition()对当前元素做一趟快速排序，并返回枢轴位置。<br>__unguarded_partition()函数采用的便是上面所讲的使用两个迭代器的方法，代码如下</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> _<span class="title">RandomAccessIter</span>, <span class="title">class</span> _<span class="title">Tp</span>&gt;</span></span><br><span class="line"><span class="class">_<span class="title">RandomAccessIter</span> __<span class="title">unguarded_partition</span>(_<span class="title">RandomAccessIter</span> __<span class="title">first</span>, </span></span><br><span class="line"><span class="class">                                    _<span class="title">RandomAccessIter</span> __<span class="title">last</span>, </span></span><br><span class="line"><span class="class">                                    _<span class="title">Tp</span> __<span class="title">pivot</span>) </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) </span><br><span class="line">	&#123;</span><br><span class="line">	    <span class="keyword">while</span> (*__first &lt; __pivot)</span><br><span class="line">	        ++__first;</span><br><span class="line">	    --__last;</span><br><span class="line">	    <span class="keyword">while</span> (__pivot &lt; *__last)</span><br><span class="line">	        --__last;</span><br><span class="line">	    <span class="keyword">if</span> (!(__first &lt; __last))</span><br><span class="line">	        <span class="keyword">return</span> __first;</span><br><span class="line">	    iter_swap(__first, __last);</span><br><span class="line">	    ++__first;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过一趟快速排序后，再递归对右半部分调用内省式排序算法。然后回到while循环，对左半部分进行排序。源码写法和我们一般的写法不同，但原理是一样的，需要注意。 </p>
+<p>容器不带成员函数sort()<br>array，vector，deque</p>
+<p>以下四个默认排好了<br>set/mutiset<br>map/mutimap<br>unordered_set/unordered_mutiset<br>unordered_map/unordered_mutimap</p>
+<p>容器带有成员函数<br>list，forward_list</p>
+<h2 id="算法binary-search"><a href="#算法binary-search" class="headerlink" title="算法binary_search"></a>算法binary_search</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">Test <span class="keyword">if</span> value exits in sorted sequence</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">bool</span> <span class="title">binary_search</span>( <span class="title">ForwardIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">					<span class="title">ForwardIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">					<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">val</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	first = <span class="built_in">std</span>::lower_bound(first, last, val);</span><br><span class="line"><span class="comment">//获得的iterator所指的位置，既非end，目标val也不是小于首元素</span></span><br><span class="line">	<span class="keyword">return</span> (first != last &amp;&amp; !(val &lt;*first));</span><br><span class="line">&#125;</span><br><span class="line">在lower_bound之前做一次!(val &lt;*first)会更好</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">ForwardIterator</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">ForwardIterator</span> </span></span><br><span class="line"><span class="class"><span class="title">lower_bound</span>(<span class="title">ForwardIterator</span> <span class="title">first</span>,</span></span><br><span class="line"><span class="class">			<span class="title">ForwardIterator</span> <span class="title">last</span>,</span></span><br><span class="line"><span class="class">			<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">val</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	ForwardIterator it;</span><br><span class="line">	iterator_traits&lt;ForwardIterator&gt;::difference_type count,step;</span><br><span class="line">	count = distance(first, last);</span><br><span class="line">	<span class="keyword">while</span>(count &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		it = first;step = count /<span class="number">2</span>;</span><br><span class="line">		<span class="keyword">if</span>(*it &lt;val)</span><br><span class="line">		&#123;</span><br><span class="line">			first = ++it;</span><br><span class="line">			count -= step +<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			count = step;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于lower_bound表示的是一个排好的序列里，相同的value的最低点，而upper_bound<br>则相反。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/02/2017-04-02-迭代器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          迭代器 iterators
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/31/2017-03-31-容器/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">容器 containers</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#算法accumulate"><span class="nav-number">1.</span> <span class="nav-text">算法accumulate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法for-each"><span class="nav-number">2.</span> <span class="nav-text">算法for_each</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法replace，replace-if，replace-copy"><span class="nav-number">3.</span> <span class="nav-text">算法replace，replace_if，replace_copy</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法count，count-if"><span class="nav-number">4.</span> <span class="nav-text">算法count，count_if</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器不带成员函数count"><span class="nav-number">4.1.</span> <span class="nav-text">容器不带成员函数count()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器带有成员函数"><span class="nav-number">4.2.</span> <span class="nav-text">容器带有成员函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法find，find-if"><span class="nav-number">5.</span> <span class="nav-text">算法find，find_if</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器不带成员函数find"><span class="nav-number">5.1.</span> <span class="nav-text">容器不带成员函数find()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器带有成员函数-1"><span class="nav-number">5.2.</span> <span class="nav-text">容器带有成员函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#算法sort"><span class="nav-number">6.</span> <span class="nav-text">算法sort</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#算法binary-search"><span class="nav-number">6.1.</span> <span class="nav-text">算法binary_search</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

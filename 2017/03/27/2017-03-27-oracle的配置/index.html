@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>oracle配置 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="oracle" />
+  
+  
+  
+  
+  <meta name="description" content="Redhat enterprise 7安装oracle12安装必须的包根据oracle官网上提供的文档，得到如下信息 1234567891011121314151617181920212223242526272829binutils-2.23.52.0.1-12.el7.x86_64 compat-libcap1-1.10-3.el7.x86_64 gcc-4.8.2-3.el7.x86_64 g">
+<meta name="keywords" content="oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="oracle配置">
+<meta property="og:url" content="http://coordinate.wang/2017/03/27/2017-03-27-oracle的配置/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Redhat enterprise 7安装oracle12安装必须的包根据oracle官网上提供的文档，得到如下信息 1234567891011121314151617181920212223242526272829binutils-2.23.52.0.1-12.el7.x86_64 compat-libcap1-1.10-3.el7.x86_64 gcc-4.8.2-3.el7.x86_64 g">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zsdobfj20gh0awaej.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zstl29j20gl0azaec.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zta6hdj20gm0b7gp5.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14ztplgpj20gl0b5gpq.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zukm5aj20gl0b7q66.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zu5pnyj20gh0b177e.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zuxpbgj20gj0b3n1p.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zvl330j20gl0awn1c.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zvxdrqj20gk0azn1l.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zwd6uaj20gk0b0ae0.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zwrhj6j20gh0b141x.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zx2ozaj20gh0b10w8.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zxhkxwj20gk0azgpn.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zyb3kpj20gj0az77t.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zxvbwrj20gg0azq6i.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zynpmsj20gi0axtbs.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zyzpcoj20gh0b2diz.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zzhjfpj20gl0b4q7k.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.983Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="oracle配置">
+<meta name="twitter:description" content="Redhat enterprise 7安装oracle12安装必须的包根据oracle官网上提供的文档，得到如下信息 1234567891011121314151617181920212223242526272829binutils-2.23.52.0.1-12.el7.x86_64 compat-libcap1-1.10-3.el7.x86_64 gcc-4.8.2-3.el7.x86_64 g">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zsdobfj20gh0awaej.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-27-oracle的配置" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      oracle配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/27/2017-03-27-oracle的配置/" class="article-date">
+	  <time datetime="2017-03-26T16:00:00.000Z" itemprop="datePublished">三月 27, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Redhat-enterprise-7安装oracle12"><a href="#Redhat-enterprise-7安装oracle12" class="headerlink" title="Redhat enterprise 7安装oracle12"></a>Redhat enterprise 7安装oracle12</h1><h2 id="安装必须的包"><a href="#安装必须的包" class="headerlink" title="安装必须的包"></a>安装必须的包</h2><p>根据oracle官网上提供的文档，得到如下信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">binutils-2.23.52.0.1-12.el7.x86_64 </span><br><span class="line">compat-libcap1-1.10-3.el7.x86_64 </span><br><span class="line">gcc-4.8.2-3.el7.x86_64 </span><br><span class="line">gcc-c++-4.8.2-3.el7.x86_64 </span><br><span class="line">glibc-2.17-36.el7.i686</span><br><span class="line">glibc-2.17-36.el7.x86_64 </span><br><span class="line">glibc-devel-2.17-36.el7.i686 </span><br><span class="line">glibc-devel-2.17-36.el7.x86_64 </span><br><span class="line">ksh</span><br><span class="line">libaio-0.3.109-9.el7.i686 </span><br><span class="line">libaio-0.3.109-9.el7.x86_64 </span><br><span class="line">libaio-devel-0.3.109-9.el7.i686 </span><br><span class="line">libaio-devel-0.3.109-9.el7.x86_64 </span><br><span class="line">libgcc-4.8.2-3.el7.i686 </span><br><span class="line">libgcc-4.8.2-3.el7.x86_64 </span><br><span class="line">libstdc++-4.8.2-3.el7.i686 </span><br><span class="line">libstdc++-4.8.2-3.el7.x86_64 </span><br><span class="line">libstdc++-devel-4.8.2-3.el7.i686 </span><br><span class="line">libstdc++-devel-4.8.2-3.el7.x86_64 </span><br><span class="line">libXi-1.7.2-1.el7.i686 </span><br><span class="line">libXi-1.7.2-1.el7.x86_64 </span><br><span class="line">libXtst-1.2.2-1.el7.i686 </span><br><span class="line">libXtst-1.2.2-1.el7.x86_64 </span><br><span class="line">unixODBC-2.3.1-10.el7.i686.rpm</span><br><span class="line">unixODBC-2.3.1-10.el7.x86_64.rpm</span><br><span class="line">unixODBC-devel-2.3.1-10.el7.i686.rpm</span><br><span class="line">unixODBC-devel-2.3.1-10.el7.x86_64.rpm</span><br><span class="line">make-3.82-19.el7.x86_64 </span><br><span class="line">sysstat-10.1.5-1.el7.x86_64</span><br></pre></td></tr></table></figure>
+<p>无论你是选择rpm还是选择yum，这些包必须安装好，在Red Hat Enterprise Linux 7.0 的光盘中，<br>这些包都存在，这里说一下Red Hat Enterprise Linux配置本地源的事情</p>
+<h2 id="配置本地源"><a href="#配置本地源" class="headerlink" title="配置本地源"></a>配置本地源</h2><p>我从来都是将Red Hat Enterprise Linux 7.0的光盘.iso文件上传到系统里，在这里，我将光盘传到/home/yunchu/Desktop里，yunchu是我个人用户名。<br>获得超级权限后在/media下，新建一个文件夹cdrom。具体将光盘挂载到什么地方，自己选择。我选择挂载到/media/cdrom下  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]#mount rhel-server-7.0-x86_64-dvd.iso /media/cdrom</span><br></pre></td></tr></table></figure>
+<p>在/etc/yum.repos.d/ 下面</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yum.repos.d]# touch rhel-media.repo //新建一个rhel-media.repo文件</span><br><span class="line">[root@localhost yum.repos.d]# vi rhel-media.repo //编辑文件</span><br><span class="line"></span><br><span class="line">[rhel-media]  #1行</span><br><span class="line">name=Red Hat Enterprise Linux 7.0</span><br><span class="line">baseurl=file:///media/cdrom</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=file:///media/cdrom/RPM-GPG-KEY-redhat-<span class="keyword">release</span>  #<span class="number">6</span>行</span><br><span class="line">//#<span class="number">1</span>行到#<span class="number">6</span>行以直接复制到rhel-media.repo中，汉字不需要复制，这段说明不需要复制</span><br><span class="line">[root@localhost yum.repos.d]# yum clean all</span><br><span class="line">[root@localhost yum.repos.d]# yum makecache</span><br></pre></td></tr></table></figure>
+<p>搞定<br>用yum安装很快的</p>
+<h2 id="添加组和用户"><a href="#添加组和用户" class="headerlink" title="添加组和用户"></a>添加组和用户</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">groupadd dba</span><br><span class="line">groupadd oinstall</span><br><span class="line">useradd oracle –d /home/oracle –g oinstall –G dba –m </span><br><span class="line">passwd oracle</span><br></pre></td></tr></table></figure>
+<p>不能设123 QAQ </p>
+<h2 id="预先创建安装目录"><a href="#预先创建安装目录" class="headerlink" title="预先创建安装目录"></a>预先创建安装目录</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir –p /opt/oracle/product</span><br><span class="line">mkdir –p /opt/oracle/product/12.2.1</span><br><span class="line">mkdir –p /opt/oraInventory</span><br><span class="line">mkdir –p /opt/oracle/oradata</span><br></pre></td></tr></table></figure>
+<p>设置目录的所有者所属组和权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chown –R oracle.oinstall /opt/oracle</span><br><span class="line">chown –R oracle.oinstall /opt/oracle/oradata</span><br><span class="line">chown –R oracle.oinstall /opt/oracle/product/12.2.1</span><br><span class="line">chown –R oracle.oinstall /opt/oraInventory</span><br><span class="line">chown oracle.dba /opt/oracle</span><br></pre></td></tr></table></figure>
+<h2 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">su – oracle</span><br><span class="line">cd</span><br><span class="line">vi .bash_profile</span><br><span class="line"></span><br><span class="line">export ORACLE_BASE=/opt/oracle</span><br><span class="line">export ORACLE_HOME=$ORACLE_BASE/product/12.2.1</span><br><span class="line">export ORACLE_OWNER=oracle</span><br><span class="line">export ORACLE_SID=orcl</span><br><span class="line">export PATH=$PATH:$HOME/bin:.:$ORACLE_HOME/bin</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib</span><br><span class="line">export NLS_LANG="SIMPLIFIED CHINESE_CHINA.AL32UTF8"</span><br></pre></td></tr></table></figure>
+<p>后退出<br>. .bash_profile让文件生效</p>
+<p>在oracle用户下解压oracle安装包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv linuxx64_12201_database.zip /home/oracle</span><br></pre></td></tr></table></figure>
+<h2 id="安装oracle-database"><a href="#安装oracle-database" class="headerlink" title="安装oracle database"></a>安装oracle database</h2><p>用户oracle登陆<br>进入database目录<br>执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod +x install/.oui</span><br><span class="line">chomd +x install/unzip</span><br><span class="line">chmod +x runInstaller</span><br><span class="line">./runInstaller</span><br></pre></td></tr></table></figure>
+<h2 id="配置监听程序"><a href="#配置监听程序" class="headerlink" title="配置监听程序"></a>配置监听程序</h2><p>打开一个新的终端，执行netca<br>设置</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zsdobfj20gh0awaej.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zsdobfj20gh0awaej.jpg" class="img-fluid"><br></a><br><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zstl29j20gl0azaec.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zstl29j20gl0azaec.jpg" class="img-fluid"><br></a><br><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zta6hdj20gm0b7gp5.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zta6hdj20gm0b7gp5.jpg" class="img-fluid"><br></a><br><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14ztplgpj20gl0b5gpq.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14ztplgpj20gl0b5gpq.jpg" class="img-fluid"><br></a><br><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zukm5aj20gl0b7q66.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zukm5aj20gl0b7q66.jpg" class="img-fluid"><br></a><br><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zu5pnyj20gh0b177e.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zu5pnyj20gh0b177e.jpg" class="img-fluid"><br></a><br><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zuxpbgj20gj0b3n1p.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zuxpbgj20gj0b3n1p.jpg" class="img-fluid"><br></a></p>
+<p>再次打开netca设置  </p>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zvl330j20gl0awn1c.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zvl330j20gl0awn1c.jpg" class="img-fluid"><br></a><br><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zvxdrqj20gk0azn1l.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zvxdrqj20gk0azn1l.jpg" class="img-fluid"><br></a><br><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zwd6uaj20gk0b0ae0.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zwd6uaj20gk0b0ae0.jpg" class="img-fluid"><br></a><br><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zwrhj6j20gh0b141x.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zwrhj6j20gh0b141x.jpg" class="img-fluid"><br></a><br><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zx2ozaj20gh0b10w8.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zx2ozaj20gh0b10w8.jpg" class="img-fluid"><br></a><br><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zxhkxwj20gk0azgpn.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe14zxhkxwj20gk0azgpn.jpg" class="img-fluid"><br></a></p>
+<p>这里填写的是自己的IP  </p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zyb3kpj20gj0az77t.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zyb3kpj20gj0az77t.jpg" class="img-fluid"><br></a><br><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zxvbwrj20gg0azq6i.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zxvbwrj20gg0azq6i.jpg" class="img-fluid"><br></a><br><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zynpmsj20gi0axtbs.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe14zynpmsj20gi0axtbs.jpg" class="img-fluid"><br></a><br><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zyzpcoj20gh0b2diz.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe14zyzpcoj20gh0b2diz.jpg" class="img-fluid"><br></a><br><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zzhjfpj20gl0b4q7k.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe14zzhjfpj20gl0b4q7k.jpg" class="img-fluid"><br></a></p>
+<h2 id="添加数据库用户"><a href="#添加数据库用户" class="headerlink" title="添加数据库用户"></a>添加数据库用户</h2><p>用oracle登陆linux，在命令行输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlplus /nolog</span><br></pre></td></tr></table></figure>
+<p>进入sqlplus命令提示符，输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conn /as sysdba</span><br></pre></td></tr></table></figure>
+<p>在sqlplus 命令提示符输入<br>create user dbuser1 identified by dbuser1; 一定要以;结尾</p>
+<p>在这里我们碰到这个问题<br>oracle报ORA-01034错误<br>解决办法是  </p>
+<ol>
+<li>connect  /as  sysdba;   </li>
+<li>startup  </li>
+<li>exit<br>QAQ不幸的是又再次报错了<br>oracle12创建用户错误ORA-65096: 公用用户名或角色名无效 invalid common user or role name<br>解决办法  </li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create user C##fdf01 IDENTIFIED BY  fdf01;</span><br><span class="line">User created.</span><br></pre></td></tr></table></figure>
+<p>根据错误提示了解，在CDB中用户得以C##开头;<br>做完这些后，给用户添加权限  </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span>,<span class="keyword">resource</span> <span class="keyword">to</span> dbuser1;</span><br></pre></td></tr></table></figure>
+<p>退出现在的用户，我们登陆到这个用户<br>使用这个指令<br>sqlplus 账户名/密码@orcl   注意这里的orcl是前面设置的</p>
+<h2 id="linux下停止oracle的方法"><a href="#linux下停止oracle的方法" class="headerlink" title="linux下停止oracle的方法"></a>linux下停止oracle的方法</h2><p>在oracle用户下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sqlplus /nolog</span><br><span class="line">connect /as sysdba;</span><br><span class="line">shutdown;</span><br></pre></td></tr></table></figure>
+<p>使用quit命令退出sqlplus<br>在命令提示符下执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl</span><br></pre></td></tr></table></figure>
+<p>在命令提示符下执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stop</span><br></pre></td></tr></table></figure>
+<h2 id="启动oracle的方法"><a href="#启动oracle的方法" class="headerlink" title="启动oracle的方法"></a>启动oracle的方法</h2><p>在oracle用户下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sqlplus /nolog</span><br><span class="line">connect /as sysdba;</span><br><span class="line">startup</span><br></pre></td></tr></table></figure>
+<p>quit命令退出sqlplus<br>在命令行执行  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl</span><br></pre></td></tr></table></figure>
+<p>在lsnrctl提示符执行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">start</span></span><br></pre></td></tr></table></figure>
+<p>如果想修改用户密码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">user</span> dbuser1 <span class="keyword">identified</span> <span class="keyword">by</span> newpasswd</span><br></pre></td></tr></table></figure>
+<p>如果想删除该用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">user</span> dbuser1</span><br></pre></td></tr></table></figure>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><p>设置字符启动界面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl set-default multi-user.target</span><br></pre></td></tr></table></figure>
+<p>图形界面<br>graphical.target<br>查看剩余空间<br>df /opt<br>mysql端口是3306<br>oracle端口是1521  </p>
+<p>解决退格键回显的问题  </p>
+<ol>
+<li>要使用回删键（backspace）时，同时按住ctrl键  </li>
+<li>设定环境变量<br>在bash下：$ stty erase ^?<br>或者把 stty erase ^? 添加到.bash_profile中。<br>在csh下：$ stty erase ^H<br>或者把 stty erase ^H 添加到.cshrc中  </li>
+<li>在脚本的开头可结尾 参数 stty erase ^H stty erase ^?  </li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oracle/">oracle</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/28/2017-03-28-oracle编程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          oracle配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/26/2017-03-26-再看c++/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">再看c++</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Redhat-enterprise-7安装oracle12"><span class="nav-number">1.</span> <span class="nav-text">Redhat enterprise 7安装oracle12</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装必须的包"><span class="nav-number">1.1.</span> <span class="nav-text">安装必须的包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置本地源"><span class="nav-number">1.2.</span> <span class="nav-text">配置本地源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加组和用户"><span class="nav-number">1.3.</span> <span class="nav-text">添加组和用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预先创建安装目录"><span class="nav-number">1.4.</span> <span class="nav-text">预先创建安装目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置环境变量"><span class="nav-number">1.5.</span> <span class="nav-text">设置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装oracle-database"><span class="nav-number">1.6.</span> <span class="nav-text">安装oracle database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置监听程序"><span class="nav-number">1.7.</span> <span class="nav-text">配置监听程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加数据库用户"><span class="nav-number">1.8.</span> <span class="nav-text">添加数据库用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linux下停止oracle的方法"><span class="nav-number">1.9.</span> <span class="nav-text">linux下停止oracle的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动oracle的方法"><span class="nav-number">1.10.</span> <span class="nav-text">启动oracle的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积累"><span class="nav-number">2.</span> <span class="nav-text">积累</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

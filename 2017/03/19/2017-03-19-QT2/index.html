@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>QT | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="networkQTcpp" />
+  
+  
+  
+  
+  <meta name="description" content="Qt布局通常，子Widget时通常使用布局对象在窗口中进行排列的，而不是通过指定位置和大小进行排列的。在此，构造一个并列的标签和行编辑框Widget123456QLabel *label = new QLabel(tr(“Name:”));QLineEdit *lineEdit = new QLineEdit();QHBoxLayout *layout = new QHBxLayout();lay">
+<meta name="keywords" content="network,QT,cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT">
+<meta property="og:url" content="http://coordinate.wang/2017/03/19/2017-03-19-QT2/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Qt布局通常，子Widget时通常使用布局对象在窗口中进行排列的，而不是通过指定位置和大小进行排列的。在此，构造一个并列的标签和行编辑框Widget123456QLabel *label = new QLabel(tr(“Name:”));QLineEdit *lineEdit = new QLineEdit();QHBoxLayout *layout = new QHBxLayout();lay">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.951Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QT">
+<meta name="twitter:description" content="Qt布局通常，子Widget时通常使用布局对象在窗口中进行排列的，而不是通过指定位置和大小进行排列的。在此，构造一个并列的标签和行编辑框Widget123456QLabel *label = new QLabel(tr(“Name:”));QLineEdit *lineEdit = new QLineEdit();QHBoxLayout *layout = new QHBxLayout();lay">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-19-QT2" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      QT
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/19/2017-03-19-QT2/" class="article-date">
+	  <time datetime="2017-03-18T16:00:00.000Z" itemprop="datePublished">三月 19, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Qt布局"><a href="#Qt布局" class="headerlink" title="Qt布局"></a>Qt布局</h1><p>通常，子Widget时通常使用布局对象在窗口中进行排列的，而不是通过指定位置和大小进行排列的。<br>在此，构造一个并列的标签和行编辑框Widget<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QLabel *label = <span class="keyword">new</span> QLabel(tr(“Name:”));</span><br><span class="line">QLineEdit *lineEdit = <span class="keyword">new</span> QLineEdit();</span><br><span class="line">QHBoxLayout *layout = <span class="keyword">new</span> QHBxLayout();</span><br><span class="line">layout-&gt;addWidget(label);</span><br><span class="line">layout-&gt;addWidget(lineEdit);</span><br><span class="line">window-&gt;setLayout(layout);</span><br></pre></td></tr></table></figure></p>
+<p>由于Widget可包含其他Widget，所以布局可用来提供按不同层次分组的Widget。<br>这里，要在显示查询结果的表视图上方、窗口顶部的行编辑框旁，显示一个标签</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">QLabel *queryLabel = <span class="keyword">new</span> QLabel(tr(“Query:”));</span><br><span class="line">QLineEdit *queryEdit = <span class="keyword">new</span> QLineEdit();</span><br><span class="line">QTableView *resultView = <span class="keyword">new</span> QTableView();</span><br><span class="line">QHBoxLayout *queryLayout = <span class="keyword">new</span> QHBoxLayout();</span><br><span class="line">queryLayout-&gt;addWidget(queryLabel);</span><br><span class="line">queryLayout-&gt;addWidget(queryEdit);</span><br><span class="line">QVBoxLayout *mainLayout = <span class="keyword">new</span> QVBoxLayout();</span><br><span class="line">mainLayout-&gt;addLayout(queryLayout);</span><br><span class="line">mainLayout-&gt;addWidget(resultView);</span><br><span class="line">window-&gt;setLayout(mainLayout);</span><br></pre></td></tr></table></figure>
+<h2 id="QGridLayout控件对齐"><a href="#QGridLayout控件对齐" class="headerlink" title="QGridLayout控件对齐"></a>QGridLayout控件对齐</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">layout-&gt;addWiget(label, <span class="number">0</span>, <span class="number">0</span>);    注意在后面加上两个参数，标识位置</span><br></pre></td></tr></table></figure>
+<p>addWidget()方法用于向布局中加入需要的控件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> addWidget&#123;</span><br><span class="line">	QWidget widget;</span><br><span class="line">	<span class="keyword">int</span> fromRow,</span><br><span class="line">	<span class="keyword">int</span> fromColumn,</span><br><span class="line">	<span class="keyword">int</span> rowSpan,                <span class="comment">//占用的行数</span></span><br><span class="line">	<span class="keyword">int</span> columnSpan,             <span class="comment">//占用的列数</span></span><br><span class="line">	Qt::Alignment alignment=<span class="number">0</span>   <span class="comment">//对齐方式</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>addLayout()方法用于向布局中加入需要布局的字布局，addLayout()的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> addLayout&#123;</span><br><span class="line">	QLayout *layout,</span><br><span class="line">	<span class="keyword">int</span> row,</span><br><span class="line">	<span class="keyword">int</span> column,</span><br><span class="line">	<span class="keyword">int</span> rowSpan,</span><br><span class="line">	<span class="keyword">int</span> columnSpan,</span><br><span class="line">	Qt::Alignment alignment=<span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="label设置图像"><a href="#label设置图像" class="headerlink" title="label设置图像"></a>label设置图像</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QPixmap <span class="title">icon</span><span class="params">(“<span class="number">1.</span>png”)</span></span>;</span><br><span class="line">label-&gt;setPixmap(icon);</span><br><span class="line">label-&gt;resize(icon.width(), icon.height());</span><br></pre></td></tr></table></figure>
+<p>layout设置控件的间距</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">layout-&gt;serSpacing(<span class="number">20</span>);</span><br></pre></td></tr></table></figure>
+<p>layout设置站位比</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">layout-&gt;setColumnStretch(<span class="number">0</span>,<span class="number">1</span>);    <span class="comment">//设置每列的站位比</span></span><br></pre></td></tr></table></figure>
+<p>layout设置边距</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">layout-&gt;setMargin(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+<p>layout大小与控件最合适</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">layout-&gt;setSizeConstraint(QLayout::SetFixedSize);</span><br></pre></td></tr></table></figure>
+<h2 id="QTimer-QTime"><a href="#QTimer-QTime" class="headerlink" title="QTimer\QTime"></a>QTimer\QTime</h2><p>QTimer是定时器，QTime是显示系统时间的，用法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// QTimer</span></span><br><span class="line">QTimer *timer = <span class="keyword">new</span> QTimer();</span><br><span class="line">connect(timer, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(sltTimeOut()));</span><br><span class="line">&#123;  </span><br><span class="line">    QTimer *myTimer;  </span><br><span class="line">    myTimer=<span class="keyword">new</span> QTimer(<span class="keyword">this</span>);  </span><br><span class="line">    myTimer-&gt;start(<span class="number">1000</span>);  </span><br><span class="line">    connect(myTimer,SIGNAL(timeout()),<span class="keyword">this</span>,SLOT(getDateTime()));  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="comment">// QTime</span></span><br><span class="line">qDebug() &lt;&lt; QTime::currentTime().toString(<span class="string">"hh:mm:ss"</span>);</span><br><span class="line"><span class="keyword">void</span> MainWindow::getDateTime()  </span><br><span class="line">&#123;  </span><br><span class="line">    ui-&gt;label_time-&gt;setText(QTime::currentTime().toString());  </span><br><span class="line">    ui-&gt;label_date-&gt;setText(QDate::currentDate().toString(tr(<span class="string">"yyyy-MM-dd dddd"</span>)));  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Qt对话框"><a href="#Qt对话框" class="headerlink" title="Qt对话框"></a>Qt对话框</h1><h2 id="标准文件对话框"><a href="#标准文件对话框" class="headerlink" title="标准文件对话框"></a>标准文件对话框</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">QString QFileDialog::getOpenFileName(</span><br><span class="line">	QWidget *parent = <span class="number">0</span>;               <span class="comment">//标准文件对话框的父窗口</span></span><br><span class="line">	<span class="keyword">const</span> QString &amp;caption=QString();    <span class="comment">//标准文件对话框的标题</span></span><br><span class="line">	<span class="keyword">const</span> QString &amp;dir=QString();        <span class="comment">//指定目录</span></span><br><span class="line">	QString *selectedFilter = <span class="number">0</span>;          <span class="comment">//文件过滤器</span></span><br><span class="line">	Options options = <span class="number">0</span>;               <span class="comment">//显示文件名的格式</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>返回文件路径和文件名</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(s.isEmpty())</span><br><span class="line">	setWindowTitle(s);    <span class="comment">//判断是否点击确认按钮</span></span><br></pre></td></tr></table></figure>
+<h2 id="标准颜色对话框"><a href="#标准颜色对话框" class="headerlink" title="标准颜色对话框"></a>标准颜色对话框</h2><p>getColor()函数时标准颜色对话框QColorDialog类的一个静态函数，数返回用户选择的颜色值，下面是getColor()函数形式:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QColor <span class="title">getColor</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">const</span> QColor&amp; initial = Qt::white,</span></span></span><br><span class="line"><span class="function"><span class="params">	QWidget *parent = <span class="number">0</span>                <span class="comment">//父窗口</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="标准字体对话框"><a href="#标准字体对话框" class="headerlink" title="标准字体对话框"></a>标准字体对话框</h2><p>getFont()函数是标准字体对话框QFontDialog类的一个静态函数，该函数返回用户所选择的字体</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QFont <span class="title">getFont</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">bool</span> *ok,</span></span></span><br><span class="line"><span class="function"><span class="params">	QWidget *parent = <span class="number">0</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="QMessageBox类"><a href="#QMessageBox类" class="headerlink" title="QMessageBox类"></a>QMessageBox类</h2><p>question()函数<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">StandardButton QMessageBox::question(</span><br><span class="line">	QWidget *parent,</span><br><span class="line">	<span class="keyword">const</span> QString &amp;title,                  <span class="comment">//消息框标题</span></span><br><span class="line">	<span class="keyword">const</span> QString &amp;text,               <span class="comment">//消息框的文字提示信息</span></span><br><span class="line">	StandardButtons buttons = Ok,     <span class="comment">//按钮</span></span><br><span class="line">	StandardButton defaultButton = No <span class="comment">//默认按钮</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>information()函数,用于提示</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">StandardButton QMessageBox::information(</span><br><span class="line">	QWidget *parent,</span><br><span class="line">	<span class="keyword">const</span> QString &amp;title,</span><br><span class="line">	<span class="keyword">const</span> QString &amp;text,</span><br><span class="line">	StandardButtons buttons = Ok,</span><br><span class="line">	StandardButton defaultButton = NoButton</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>warning()函数<br>warning消息框使用QMessage Box::warning()函数完成，</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">StandardButton QMessageBox::warning(</span><br><span class="line">	Qwidget *parent,</span><br><span class="line">	<span class="keyword">const</span> QString &amp;title,</span><br><span class="line">	<span class="keyword">const</span> QString &amp;text,</span><br><span class="line">	StandardButtons buttons = Ok,</span><br><span class="line">	StandardButton defaultButton = NoButton</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>critical()函数<br>about()函数</p>
+<h2 id="toolbox类"><a href="#toolbox类" class="headerlink" title="toolbox类"></a>toolbox类</h2><p>实现抽屉效果</p>
+<h2 id="文件读写"><a href="#文件读写" class="headerlink" title="文件读写"></a>文件读写</h2><p>QT提供了QFile文件<br>QFile可以都写文本文件，也可以读写二进制文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;QFile&gt;</span><br><span class="line">&lt;QTextStream&gt;</span><br><span class="line">QString s;</span><br><span class="line"><span class="function">QFile <span class="title">file</span><span class="params">(“a.txt”)</span></span>;</span><br><span class="line">If(file.open(QFile::ReadOnly))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function">QTextSream <span class="title">stream</span><span class="params">(&amp;file)</span></span>;</span><br><span class="line">	<span class="keyword">while</span>(!stream.atEnd())</span><br><span class="line">	&#123;</span><br><span class="line">	    s = stream.readLine();</span><br><span class="line">	&#125;</span><br><span class="line">	file.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>写文件例子</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">QFile <span class="title">file</span><span class="params">(“a.txt”)</span></span></span><br><span class="line">if(file.open(QFile::WriteOnly | QFile::Truncate))</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function">QTextStream <span class="title">out</span><span class="params">(&amp;file)</span></span>;</span><br><span class="line">	out &lt;&lt; tr(“hello world\n”);    <span class="comment">//out &lt;&lt; text-&gt;toPlainText();</span></span><br><span class="line">	file.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="QMainWindow"><a href="#QMainWindow" class="headerlink" title="QMainWindow "></a>QMainWindow </h2><p>是一个为用户提供的主窗口程序的类，包含菜单栏、及一个中心部件，是许多应用程序的基础。<br>QMainWindow中菜单需要QMenu和QAction类来实现<br>QAction类中定义了菜单的具体行为<br>QMainWindow中提供了menuBar函数返回一个menuBar<br>通过调用menuBar的addMenu函数就可以生成一个新的菜单项<br>QMenu类addAction函数为菜单制定一个QAction<br>QMainWindow中提供了自己的布局控件，所以不需要再为QMainWindow定义布局控件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">open = <span class="keyword">new</span> QAction(tr(<span class="string">"open"</span>), <span class="keyword">this</span>);</span><br><span class="line">open-&gt;setShortcut(tr(<span class="string">"Ctrl+O"</span>));</span><br><span class="line">connect(open, SIGNAL(triggered()), <span class="keyword">this</span>, SLOT(openfile()));</span><br><span class="line">menu = menuBar()-&gt;addMenu(tr(<span class="string">"file"</span>));</span><br><span class="line">menu-&gt;addAction(open);</span><br><span class="line">edit = <span class="keyword">new</span> QTextEdit();</span><br><span class="line">setCentralWidget(edit);</span><br></pre></td></tr></table></figure>
+<h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><p>qt如果需要进行网络编程首先需要在.pro文件中添加<br>QT += network<br>在头文件中添加 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;QHostInfo&gt;  </span><br><span class="line">&lt;QNetworkInterface&gt;</span><br></pre></td></tr></table></figure>
+<p>QHostInfor类用于获取主机信息</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">QString localHostName = QHostInfo::localHostName();</span><br><span class="line">QHostInfo hostInfo = QHostInfo::fromName(localHostName);</span><br><span class="line">QList&lt;QHostAddress&gt; <span class="built_in">list</span> = hostInfo.addresses();</span><br><span class="line"><span class="keyword">if</span>(!<span class="built_in">list</span>.isEmpty())</span><br><span class="line">&#123;</span><br><span class="line">	QList&lt;QHostAddress&gt;::iterator i;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="built_in">list</span>.begin(); i != <span class="built_in">list</span>.end(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">   		 QMessageBox::information(<span class="keyword">this</span>, tr(“hint”), (*i).toString());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>QNetworkInterface类获取与网口相关的信息</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QT/">QT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/21/2017-03-21-MySQL1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          MySQL
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/17/2017-03-17-QT1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">QT</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Qt布局"><span class="nav-number">1.</span> <span class="nav-text">Qt布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#QGridLayout控件对齐"><span class="nav-number">1.1.</span> <span class="nav-text">QGridLayout控件对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#label设置图像"><span class="nav-number">1.2.</span> <span class="nav-text">label设置图像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QTimer-QTime"><span class="nav-number">1.3.</span> <span class="nav-text">QTimer\QTime</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Qt对话框"><span class="nav-number">2.</span> <span class="nav-text">Qt对话框</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标准文件对话框"><span class="nav-number">2.1.</span> <span class="nav-text">标准文件对话框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准颜色对话框"><span class="nav-number">2.2.</span> <span class="nav-text">标准颜色对话框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准字体对话框"><span class="nav-number">2.3.</span> <span class="nav-text">标准字体对话框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QMessageBox类"><span class="nav-number">2.4.</span> <span class="nav-text">QMessageBox类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#toolbox类"><span class="nav-number">2.5.</span> <span class="nav-text">toolbox类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件读写"><span class="nav-number">2.6.</span> <span class="nav-text">文件读写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QMainWindow"><span class="nav-number">2.7.</span> <span class="nav-text">QMainWindow </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络编程"><span class="nav-number">2.8.</span> <span class="nav-text">网络编程</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

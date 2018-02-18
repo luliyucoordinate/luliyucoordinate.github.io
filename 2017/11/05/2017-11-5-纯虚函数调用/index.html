@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>纯虚函数的调用 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp" />
+  
+  
+  
+  
+  <meta name="description" content="看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子 123456789101112131415161718192021222324class Abstract_base&amp;#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &amp;#123; re">
+<meta name="keywords" content="cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纯虚函数的调用">
+<meta property="og:url" content="http://coordinate.wang/2017/11/05/2017-11-5-纯虚函数调用/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子 123456789101112131415161718192021222324class Abstract_base&amp;#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &amp;#123; re">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl6brmv6hlj20m809i3yq.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="纯虚函数的调用">
+<meta name="twitter:description" content="看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子 123456789101112131415161718192021222324class Abstract_base&amp;#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &amp;#123; re">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl6brmv6hlj20m809i3yq.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-11-5-纯虚函数调用" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      纯虚函数的调用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/05/2017-11-5-纯虚函数调用/" class="article-date">
+	  <time datetime="2017-11-04T16:00:00.000Z" itemprop="datePublished">十一月 5, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Abstract_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">virtual</span> ~Abstract_base();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">interface</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">mumble</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> _mumble; &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">char</span> *_mumble;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Concrete_derived</span> :</span><span class="keyword">public</span> Abstract_base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">Concrete_deriverd</span><span class="params">()</span> </span>&#123;&#125;;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">interface</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Abstract_base::interface()</span><br><span class="line">&#123;</span><br><span class="line">    function</span><br><span class="line">      <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> Concrete_derived::interface()</span><br><span class="line">&#123;</span><br><span class="line">    Abstract_base::interface();<span class="comment">//静态调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不过只可以通过静态调用，不可以通过虚拟机制去调用。为什么不可以？如果这样做</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Concrete_derived *p = <span class="keyword">new</span> Abstract_base;<span class="comment">//错误，Abstract_Base是一个抽象数据类，不允许构造一个对象</span></span><br><span class="line">p-&gt;interface();</span><br></pre></td></tr></table></figure>
+<p>你似乎会觉得这没什么！那我接着加大难度</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Base()&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">callFunc</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">virtual</span> ~Base()&#123;&#125;;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Func</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Derived</span>:</span><span class="keyword">public</span> Base</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Derived()&#123;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Func</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">void</span> Base::Func()</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"func in Base!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> Base::callFunc()</span><br><span class="line">&#123;</span><br><span class="line">  	Func();</span><br><span class="line">  	Base::Func();<span class="comment">//静态调用纯虚函数</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> Derived::Func()</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"func in Derived!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Base *pd = <span class="keyword">new</span> Derived;</span><br><span class="line">	pd-&gt;callFunc();</span><br><span class="line">	<span class="keyword">delete</span> pd;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果是</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">func in Derived!</span><br><span class="line">func in Base!</span><br></pre></td></tr></table></figure>
+<p>你这个时候是不是很困惑？<code>Base</code>中的<code>callFunc</code>函数分别调用了在<code>Base</code>中定义的纯虚函数版本和<code>Derived</code>中的实现版本。为什么？<code>Base</code>中的<code>callFunc</code>函数调用了<code>Derived</code>中的<strong>私有虚函数</strong>！它竟然绕过了访问控制机制！为什么？</p>
+<p>我们慢慢开始，首先我们知道这里<code>pd</code>没有发生动态绑定，因为调用的不是虚函数，这里我们可以明确<code>pd</code>调用的是<code>Base::callFunc()</code>接着进入<code>Base::callFunc()</code>内部。第一个函数<code>Func()</code>，这里我们会疑惑，到底是<code>Base::Func()</code>还是<code>Derived::Func()</code>？这时你可能很快地回答我<code>Base::Func()</code>。因为我在 <a href="http://blog.csdn.net/qq_17550379/article/details/78436845" target="_blank" rel="noopener">关于重载、隐藏、重写的一些思考（1）</a> 中谈过类继承里面的作用域问题。此时你坚信这是在<code>Base</code>的作用域里面，难道调用的不是<code>Base::Func()</code>？<strong>pd确实是在<code>Base</code>的作用域内，但是pd指向的<code>Func</code>是在<code>Derived</code> 的作用域内的</strong>。我在  <a href="http://blog.csdn.net/qq_17550379/article/details/78436873" target="_blank" rel="noopener">关于重载、隐藏、重写的一些思考（2）</a>中分析了复杂作用域的问题。</p>
+<p>我这里提出这样一个问题，如果<code>Derived</code>内也有一个<code>callFunc</code>函数，那么此时pd调用的还是<code>Base::callFunc()</code>吗？我这里给出答案，是的，因为pd是在<code>Base</code>的作用域内。</p>
+<p>从另一个角度看这个问题，<code>Func</code>是一个虚函数，它会是一种动态绑定。也就是说这里的<code>Func</code> 是根据运行期来决定的。这个时候<code>pd</code>实际上是一个<code>Derived</code>类型的首地址（Derived虚函数表的地址），自然地会找到<code>Derived::Func()</code>，再次强调这个过程是<strong>动态调用</strong>，接着我们使用<strong>静态调用</strong>去访问<code>Base::Func()</code>。</p>
+<p>ok，问题解决了一大半。为什么可以调用<code>Derived</code>的私有函数这里也很好理解了。因为这个函数是在虚函数表里面的，而虚函数表中没有私有这个概念，自然就可以了。</p>
+<p>用一张图总结</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl6brmv6hlj20m809i3yq.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl6brmv6hlj20m809i3yq.jpg" class="img-fluid"><br></a></p>
+<p>好的，接着我们会想为什么会有这么奇怪的做法呢？这其实是一种<strong><code>Template Method</code>设计模式</strong>。</p>
+<p>另外还有一个问题，细心的同学会发现，第一个例子是一个抽象类，但是它里面有一个保护成员<code>char *_mumble</code> ，问什么会有这样的做法？我们该怎么初始化这个数据？请看<a href="http://blog.csdn.net/qq_17550379/article/details/78441420" target="_blank" rel="noopener">抽象类中的数据</a></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          虚函数表到底是怎么存放的
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/04/2017-11-4-关于重载、隐藏、重写的一些思考（2）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">关于重载、隐藏、重写的一些思考（2）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

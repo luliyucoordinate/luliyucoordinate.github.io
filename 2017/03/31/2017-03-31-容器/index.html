@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>容器 containers | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppstl" />
+  
+  
+  
+  
+  <meta name="description" content="stl 六大部件 容器containers12345678910111213141516前闭后开区间Begin指向第一个元素，end指向最后一个元素的下一个元素Container&amp;lt;T&amp;gt; c;...Container&amp;lt;T&amp;gt;::iterator ite = c.begin();for(; ite != c.end(); ite++)...Ranged-based for sta">
+<meta name="keywords" content="cpp,stl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器 containers">
+<meta property="og:url" content="http://coordinate.wang/2017/03/31/2017-03-31-容器/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="stl 六大部件 容器containers12345678910111213141516前闭后开区间Begin指向第一个元素，end指向最后一个元素的下一个元素Container&amp;lt;T&amp;gt; c;...Container&amp;lt;T&amp;gt;::iterator ite = c.begin();for(; ite != c.end(); ite++)...Ranged-based for sta">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jdem29sj20j80dl7cf.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe7jg3srgsj20py0cik4d.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe7jg42m1zj20fi0ayq3d.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe7jktznx7j20qr0gn18c.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jku891ij20od090mxf.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="容器 containers">
+<meta name="twitter:description" content="stl 六大部件 容器containers12345678910111213141516前闭后开区间Begin指向第一个元素，end指向最后一个元素的下一个元素Container&amp;lt;T&amp;gt; c;...Container&amp;lt;T&amp;gt;::iterator ite = c.begin();for(; ite != c.end(); ite++)...Ranged-based for sta">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jdem29sj20j80dl7cf.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-31-容器" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      容器 containers
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/31/2017-03-31-容器/" class="article-date">
+	  <time datetime="2017-03-30T16:00:00.000Z" itemprop="datePublished">三月 31, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="stl-六大部件"><a href="#stl-六大部件" class="headerlink" title="stl 六大部件"></a>stl 六大部件</h1><p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jdem29sj20j80dl7cf.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jdem29sj20j80dl7cf.jpg" class="img-fluid"><br></a></p>
+<h1 id="容器containers"><a href="#容器containers" class="headerlink" title="容器containers"></a>容器containers</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">前闭后开区间</span><br><span class="line">Begin指向第一个元素，end指向最后一个元素的下一个元素</span><br><span class="line">Container&lt;T&gt; c;</span><br><span class="line">...</span><br><span class="line">Container&lt;T&gt;::iterator ite = c.begin();</span><br><span class="line"><span class="keyword">for</span>(; ite != c.end(); ite++)</span><br><span class="line">...</span><br><span class="line">Ranged-based <span class="keyword">for</span> statement c++<span class="number">11</span></span><br><span class="line">And <span class="keyword">auto</span> keyword</span><br><span class="line"><span class="keyword">for</span>( decl : coll) </span><br><span class="line">&#123; statement &#125;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; vec;</span><br><span class="line"><span class="keyword">for</span>( <span class="keyword">auto</span> elem : vec )</span><br><span class="line">&#123; <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; elem &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; &#125;</span><br><span class="line"><span class="keyword">for</span>( <span class="keyword">auto</span>&amp; elem : vec )</span><br><span class="line">&#123; elem *= <span class="number">3</span>; &#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe7jg3srgsj20py0cik4d.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe7jg3srgsj20py0cik4d.jpg" class="img-fluid"><br></a></p>
+<p>Associative containers 使用红黑树Unordered containers 哈希表separate chaining,注意对于vector 和list，forword list用其自带的排序，而对于deque使用全局的排序queue和stack内部使用了deque，而且他们的内部都不会提供iterator</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe7jg42m1zj20fi0ayq3d.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe7jg42m1zj20fi0ayq3d.jpg" class="img-fluid"><br></a></p>
+<p>在c++11中，slist名为forward_list，hash_set，hash_map名为unordered_set，unordered_man，hash_mutiset，hash_mutimap名为unordered_mutiset，unordered_multimap</p>
+<h2 id="容器list"><a href="#容器list" class="headerlink" title="容器list"></a>容器list</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">是一个环形双向链表</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">list_node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">void</span>* void_pointer;</span><br><span class="line">	void_pointer prev;</span><br><span class="line">	void_pointer next;</span><br><span class="line">	T data;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">list</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">typedef</span> __list_node&lt;T&gt; list_node;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> list_node* link_type;</span><br><span class="line">	<span class="keyword">typedef</span> __list_iterator&lt;T, T&amp;, T*&gt; iterator;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	link_type node;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Ref</span>, <span class="title">class</span> <span class="title">Ptr</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">list_iterator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> __list_iterator&lt;T, Ref, Ptr&gt; self;</span><br><span class="line">	<span class="keyword">typedef</span> bidirectional_iterator_tag iterator_category;</span><br><span class="line">	<span class="keyword">typedef</span> T value_type;</span><br><span class="line">	<span class="keyword">typedef</span> Ptr pointer;</span><br><span class="line">	<span class="keyword">typedef</span> Ref reference;</span><br><span class="line">	<span class="keyword">typedef</span> __list_node&lt;T&gt;* link_type;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">ptrdiff_t</span> difference_type;</span><br><span class="line"></span><br><span class="line">	link_type node;</span><br><span class="line"></span><br><span class="line">	reference <span class="keyword">operator</span>*() <span class="keyword">const</span> &#123; <span class="keyword">return</span> (*node).data; &#125;</span><br><span class="line">	pointer <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span> &#123; <span class="keyword">return</span> &amp;(<span class="keyword">operator</span>*()); &#125;</span><br><span class="line">	self &amp;<span class="keyword">operator</span>++() <span class="comment">//prefix</span></span><br><span class="line">	&#123; node = (link_type)((*node).next); <span class="keyword">return</span> *<span class="keyword">this</span>; &#125;</span><br><span class="line">	self <span class="keyword">operator</span>++(<span class="keyword">int</span>) <span class="comment">//postfix</span></span><br><span class="line">&#123; self tmp = *<span class="keyword">this</span>; ++*<span class="keyword">this</span>; <span class="keyword">return</span> tmp; &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果iterator不是一个类的话，那他的内部就不可以使用typedef，例如指针，指针不是一个类，但指针是一种退化的iterator。所以传给算法的时候，有可能是一个指针而不是迭代器</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> </span><br><span class="line">algorithm (T first, T last)</span><br><span class="line">&#123;</span><br><span class="line">	T::iterator_category;</span><br><span class="line">	T::pointer;</span><br><span class="line">	T::reference;</span><br><span class="line">	T::value_type;</span><br><span class="line">	T::difference_type;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这个时候就引入了traits萃取机</p>
+<h2 id="Taits-特性"><a href="#Taits-特性" class="headerlink" title="Taits 特性"></a>Taits 特性</h2><p>Iterator traits用以分离class iterators和non-class iterators,这个traits机器不许有分辨iterator是一个class iterator T或是一个native pointer to T</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//to class</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">iterator_tarits</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> T::value_type value_type;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//to pointer</span></span><br><span class="line">Partial specialization 偏特化</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">iterator_traits</span>&lt;T*&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> T value_type;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">iterator_traits</span>&lt;const T*&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> T value_type;<span class="comment">//这里是T不是const T</span></span><br><span class="line"><span class="comment">//如果是const 那他就不能被赋值，那就没有用了</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//于是但需要知道value type，这样写</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T,...&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">algorithm</span><span class="params">(...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">typename</span> iterator_taits&lt;T&gt;::value_type v1;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="容器vector"><a href="#容器vector" class="headerlink" title="容器vector"></a>容器vector</h2><p>如果空间不够的话，需要向操作系统寻求两倍大的空间。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">vector</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> T			value_type;</span><br><span class="line">	<span class="keyword">typedef</span> value_type*	iterator;</span><br><span class="line">	<span class="keyword">typedef</span> value_type&amp;	reference;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">size_t</span>		size_type;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	iterator start;</span><br><span class="line">	iterator finish;<span class="comment">//实际大小</span></span><br><span class="line">	iterator end_of_storage;<span class="comment">//理论大小</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">iterator <span class="title">begin</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> start; &#125;</span><br><span class="line">	<span class="function">iterator <span class="title">end</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> finish; &#125;</span><br><span class="line">	<span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123; <span class="keyword">return</span> size_type( end() - begin()); &#125;<span class="comment">//这样确定size永远不会改变</span></span><br><span class="line">	<span class="function">size_type <span class="title">capacity</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123; <span class="keyword">return</span> size_type( end_of_storge - begin()); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> beign() == end(); &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Vector’s iterator</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>,<span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">vector</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> T value_type;</span><br><span class="line">	<span class="keyword">typedef</span> value_type *iterator;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>使用的是指针萃取机</p>
+<h2 id="容器array"><a href="#容器array" class="headerlink" title="容器array"></a>容器array</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> _Tp, <span class="built_in">std</span>::<span class="keyword">size_t</span> _Nm&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">array</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> _Tp			value_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Tp*		pointer;</span><br><span class="line">	<span class="keyword">typedef</span> value_type*	iterator;</span><br><span class="line">	</span><br><span class="line">	value_type _M_instance[_Nm ? _Nm : <span class="number">1</span> ];</span><br><span class="line">	</span><br><span class="line">	<span class="function">iterator <span class="title">begin</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123; <span class="keyword">return</span> iterator(&amp; _M_instance[<span class="number">0</span>]; &#125;</span><br><span class="line">	</span><br><span class="line">	iterator end()</span><br><span class="line">	&#123; <span class="keyword">return</span> iterator(&amp;_M_instance[_Nm]; &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没有构造和析构<br>使用必须指定大小，因为她不可扩充</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">array</span>&lt;<span class="keyword">int</span>,10&gt; myArray;</span><br><span class="line"><span class="keyword">auto</span> ite = myArray.begin();</span><br><span class="line">ite += <span class="number">3</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; *ite;</span><br></pre></td></tr></table></figure>
+<p>使用的是指针萃取机</p>
+<h2 id="容器deque"><a href="#容器deque" class="headerlink" title="容器deque"></a>容器deque</h2><p>双向开口的空间</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe7jktznx7j20qr0gn18c.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe7jktznx7j20qr0gn18c.jpg" class="img-fluid"><br></a></p>
+<p>每个vector里面是一个指针，内存不够的话，分配一个buf，让指针指向buf</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">size_t</span> __deque_buf_size(<span class="keyword">size_t</span> n, <span class="keyword">size_t</span> sz)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> n != <span class="number">0</span> ? n : (sz &lt; <span class="number">512</span>? <span class="keyword">size_t</span>(<span class="number">512</span> /sz) :<span class="keyword">size_t</span>(<span class="number">1</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;class T, class Alloc = alloc, <span class="keyword">size_t</span> BufSiz = <span class="number">0</span>&gt;<span class="comment">//如果是0使用默认设置，如果不是，使用上面的算式</span></span><br><span class="line">class <span class="built_in">deque</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> T value_type;</span><br><span class="line">	<span class="keyword">typedef</span> __deque_iterator&lt;T, T&amp;, T*, BufSize&gt; iteartor;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">typedef</span> pointer *map_pointer;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	iterator start;</span><br><span class="line">	iterator finish;</span><br><span class="line">	map_pointer <span class="built_in">map</span>;</span><br><span class="line">	size_type map_size;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	iterator begin() &#123; <span class="keyword">return</span> start; &#125;</span><br><span class="line">	iterator end() &#123; <span class="keyword">return</span> finish; &#125;</span><br><span class="line">	size_type size() <span class="keyword">const</span> &#123; <span class="keyword">return</span> finish - start; &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">deque</span>’s iterator</span><br><span class="line"><span class="keyword">template</span> &lt;class T, class Ref, class Ptr, <span class="keyword">size_t</span> BufSiz&gt;</span><br><span class="line">struct __deque_iterator</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">typedef</span> random_access_iterator_tag iterator_category;<span class="comment">//注意这里random</span></span><br><span class="line">	<span class="keyword">typedef</span> T value_type;</span><br><span class="line">	<span class="keyword">typedef</span> Ptr pointer;</span><br><span class="line">	<span class="keyword">typedef</span> Ref reference;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">ptrdiff_t</span> difference_type;</span><br><span class="line">	<span class="keyword">typedef</span> T** map_pointer;</span><br><span class="line">	<span class="keyword">typedef</span> __deque_iterator self;</span><br><span class="line">	</span><br><span class="line">	T* cur;</span><br><span class="line">	T* first;</span><br><span class="line">	T* last;</span><br><span class="line">	map_pointer node;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>Deque是如何模拟连续空间的</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">reference <span class="keyword">operator</span>[](size_type n)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> start[difference_type(n)];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">reference <span class="title">front</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> *start;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">reference <span class="title">back</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	iterator tmp = finish;</span><br><span class="line">	--tmp;</span><br><span class="line">	<span class="keyword">return</span> *tmp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> finish - start;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> finish == start;</span><br><span class="line">&#125;</span><br><span class="line">reference <span class="keyword">operator</span>*() <span class="keyword">const</span></span><br><span class="line">&#123; <span class="keyword">return</span> *cur; &#125;</span><br><span class="line">pointer opertor-&gt;() <span class="keyword">const</span></span><br><span class="line">&#123; <span class="keyword">return</span> &amp;(<span class="keyword">operator</span>*()); &#125;</span><br><span class="line">difference_type</span><br><span class="line"><span class="keyword">operator</span>-(<span class="keyword">const</span> self&amp; x) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> difference_type(buffer_size()) * (node - x.node - <span class="number">1</span>) +</span><br><span class="line">	(cur - first) + (x.last - x.cur );</span><br><span class="line">&#125;</span><br><span class="line">self&amp; <span class="keyword">operator</span>++()</span><br><span class="line">&#123;</span><br><span class="line">	++cur;</span><br><span class="line">	<span class="keyword">if</span>(cur == last)</span><br><span class="line">	&#123;	</span><br><span class="line">		set_node(node + <span class="number">1</span>);</span><br><span class="line">		cur = first;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line">self <span class="keyword">operator</span>++(<span class="keyword">int</span>)</span><br><span class="line">&#123;</span><br><span class="line">	self tmp = *<span class="keyword">this</span>;</span><br><span class="line">	++*<span class="keyword">this</span>;</span><br><span class="line">	<span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line">self&amp; <span class="keyword">operator</span>--()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(cur == last)</span><br><span class="line">	&#123;	</span><br><span class="line">		set_node(node - <span class="number">1</span>);</span><br><span class="line">		cur = last;</span><br><span class="line">	&#125;</span><br><span class="line">	--cur;</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br><span class="line">self <span class="keyword">operator</span>--(<span class="keyword">int</span>)</span><br><span class="line">&#123;</span><br><span class="line">	self tmp = *<span class="keyword">this</span>;</span><br><span class="line">	--*<span class="keyword">this</span>;</span><br><span class="line">	<span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_node</span><span class="params">(map_pointer new_node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	node = new_node;</span><br><span class="line">	first = *new_node;</span><br><span class="line">	last = first + difference_type(buffer_size());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="容器queue，stack"><a href="#容器queue，stack" class="headerlink" title="容器queue，stack"></a>容器queue，stack</h2><p>就是变相的deque，deque是双进双出，stack先进后出，queue先进先出<br>Stack和queue都可以选择list或queue</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">stack</span>&lt;<span class="built_in">string</span>, <span class="built_in">list</span>&lt;<span class="built_in">string</span>&gt;&gt; c;</span><br><span class="line"><span class="built_in">stack</span>&lt;<span class="built_in">string</span>&gt; c;<span class="comment">//默认是deque</span></span><br></pre></td></tr></table></figure>
+<p>Stack或queue都不允许遍历，所以也就不提供iterator<br>Stack可以选择vector作为底部结构，但是queue不可以<br>Stack与queue都不可以使用set或map作为底部支撑</p>
+<h2 id="容器rb-tree"><a href="#容器rb-tree" class="headerlink" title="容器rb_tree"></a>容器rb_tree</h2><p>红黑数是平衡二叉树中的常用的一种<br>平衡二叉树的特征：配列规则有利search和insert，并保持适度平衡。我们不应使用rb_tree的iterators改变元素值。变成层面并未阻绝此事。因为rb_tree即将为set和map服务，而map允许元素的data被改变，只有元素的key才是不可被改编的。Rb_tree提供两种insertion操作：insert_unique和insert_equal。前者表示节点的key一定是整个tree中独一无二的，后者便是节点的key可重复。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span>, //<span class="title">key</span>的类型</span></span><br><span class="line"><span class="class">		  <span class="title">class</span> <span class="title">Value</span>,//<span class="title">value</span>是<span class="title">data</span>和<span class="title">key</span>一起，这里指<span class="title">value</span>的类型</span></span><br><span class="line"><span class="class">		  <span class="title">class</span> <span class="title">KeyOfValue</span>, //<span class="title">key</span>要怎么取出</span></span><br><span class="line"><span class="class">		  <span class="title">class</span> <span class="title">Compare</span>, //<span class="title">key</span>怎么比大小</span></span><br><span class="line"><span class="class">		  <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">rb_tree</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">typedef</span> __rb_tree_node&lt;Value&gt; rb_tree_node;</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> rb_tree_node *link_type;</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	size_type node_count;</span><br><span class="line">	link_type header;</span><br><span class="line">	Compare key_compare;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>用法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">rb_tree&lt;<span class="keyword">int</span>, <span class="comment">//key的类型</span></span><br><span class="line">		<span class="keyword">int</span>, <span class="comment">//value的类型</span></span><br><span class="line">		identity&lt;<span class="keyword">int</span>&gt;, <span class="comment">//注意这个gc下的，但是可以自己写</span></span><br><span class="line">		less&lt;<span class="keyword">int</span>&gt;</span><br><span class="line">		alloc&gt;</span><br><span class="line">myTree;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Arg</span>, <span class="title">class</span> <span class="title">Result</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">unary_function</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> Arg argument_type;</span><br><span class="line">	<span class="keyword">typedef</span> Result result_type;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">identity</span>:</span> <span class="keyword">public</span> unary_function&lt;T, T&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> T&amp; <span class="title">operator</span><span class="params">()</span> <span class="params">(<span class="keyword">const</span> T&amp; x)</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> x; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Arg1</span>, <span class="title">class</span> <span class="title">Arg2</span>, <span class="title">class</span> <span class="title">Result</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">binary_function</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	tyepdef Arg1 first_argument_type;</span><br><span class="line">	<span class="keyword">typedef</span> Arg2 second_argument_type;</span><br><span class="line">	<span class="keyword">typedef</span> Result result_type;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">less</span> :</span> <span class="keyword">public</span> binary_function&lt;T, T, <span class="keyword">bool</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T&amp; x, <span class="keyword">const</span> T&amp; y)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123; <span class="keyword">return</span> x &lt; y; &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>注意没有必要这样做，只是为了更加了解内部原理</p>
+<h2 id="容器set、mutiset"><a href="#容器set、mutiset" class="headerlink" title="容器set、mutiset"></a>容器set、mutiset</h2><p>以rb_tree为底层结构，因此有元素自动排序特性。排序的依据是key，而set/mutiset元素的value和key合一：value就是key<br>Set/mutiset提供遍历操作及iterators<br>我们无法使用set/mutiset的iterators改变元素值。Set/mutiset的iterator是其底部的re_tree的const iterator，就是为了禁止user对其赋值。Set元素的key必须是独一无二的，因此insert用的rb_tree的insert_unique。Mutiset元素的key可以重复，因此insert用的是rb_tree的insert_equal</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;	<span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Compare</span> = <span class="title">less</span>&lt;Key&gt;,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">set</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> Key key_type;</span><br><span class="line">	<span class="keyword">typedef</span> Key value_type;</span><br><span class="line">	<span class="keyword">typedef</span> Compare key_compare;</span><br><span class="line">	<span class="keyword">typedef</span> Compare value_compare;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">typedef</span> rb_tree&lt;key_type, value_type, </span><br><span class="line">					identity&lt;value_type&gt;, key_compare, Alloc&gt; rep_type;</span><br><span class="line">	rep_type t;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> rep_type ::const_iterator iterator;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="容器map，mutimap"><a href="#容器map，mutimap" class="headerlink" title="容器map，mutimap"></a>容器map，mutimap</h2><p>Map/mutimap以rb_tree为底层结构，因此有元素自动排序的特性，排序的依据是key<br>Set/mutiset提供遍历操作及iterators<br>我们无法使用map/mutimap的iterators改变元素的key但可以改变data。因此map/mutimap内部自动将user指定的keytype设为const，如此便能禁止user对元素的key赋值。map元素的key必须是独一无二的，因此insert用的rb_tree的insert_unique。mutimap元素的key可以重复，因此insert用的是rb_tree的insert_equal</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;	<span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Compare</span> = <span class="title">less</span>&lt;Key&gt;,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">map</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> Key key_type;</span><br><span class="line">	<span class="keyword">typedef</span> T data_type;</span><br><span class="line">	<span class="keyword">typedef</span> T mapped_type;</span><br><span class="line">	<span class="keyword">typedef</span> pair&lt;<span class="keyword">const</span> Key, T&gt; value_type;<span class="comment">//注意这里将data和key合成为value</span></span><br><span class="line">	<span class="keyword">typedef</span> Compare key_compare;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">typedef</span> rb_tree&lt;key_type, value_type,</span><br><span class="line">						select1st&lt;value_type&gt;, key_compare, Alloc&gt; rep_type;</span><br><span class="line">	rep_type t;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">typename</span> rep_type::iterator iterator;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在mutimap中不可以用[]做insert，必需使用insert<br>在map中可以<br>Allow for easy lookup with the subscript(@c[])operator.Returns data associated with the key specified subscript.If the key does not exit, a pair with that key is created using default values, which is then returned.  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mapped_type&amp;</span><br><span class="line"><span class="keyword">operator</span>[](<span class="keyword">const</span> key_type&amp; __k)</span><br><span class="line">&#123;</span><br><span class="line">	iterator __i = lower_bound(__k);</span><br><span class="line">	<span class="keyword">if</span>(__i == end() || key_comp()(__k, (*__i).first))</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> __cpluscplus &gt;= 201103L</span></span><br><span class="line">	__i = M_t....</span><br><span class="line">#<span class="keyword">else</span> </span><br><span class="line">	__i = insert(__i, value_type(__k, mapped_type()));</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	<span class="keyword">return</span> (*__i).second;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>lower_bound是二分查找，在sorted[first, last)中查找元素value，找到返回一个iterator指向其中的第一个元素。如果没有这样的元素存在，他就会传回最适合按插这个key的iterator。<br>但是可以从源代码中看出，使用[]后速度变慢了，调用了lower_bound</p>
+<h2 id="容器hashtable"><a href="#容器hashtable" class="headerlink" title="容器hashtable"></a>容器hashtable</h2><p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jku891ij20od090mxf.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe7jku891ij20od090mxf.jpg" class="img-fluid"><br></a></p>
+<p>如果多个元素放在同一个位置就会发生碰撞，但是如果采用移动位置的方式就会降低效率，最后的方法是，每一个节点做一个链表，把碰撞的元素放入链表中，也就是separate chaining。但是这样做的话，可能会出现单一链表过长，所以就出现了buckets。<br>如果按插的元素个数大于buckets个数，于是rehashing，所有的元素要重新按插，这是一件花时间的事情。buckets的数目是按照素数来的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">HashFcn</span>,//<span class="title">HashFcn</span>计算<span class="title">hashcode</span></span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">ExtractKey</span>, <span class="title">class</span> <span class="title">EqualKey</span>,//<span class="title">ExtractKey</span>取出<span class="title">key</span>的方法</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Alloc</span> = <span class="title">alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">hashtable</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> HashFcn hasher;</span><br><span class="line">	<span class="keyword">typedef</span> EqualKey key_equal;</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	hasher hash;</span><br><span class="line">	key_equal equals;</span><br><span class="line">	ExtractKey get_key;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">typedef</span> __hashtable_node&lt;Value&gt; node;</span><br><span class="line">	<span class="built_in">vector</span>&lt;node*, Alloc&gt; buckets;</span><br><span class="line">	size_type num_elements;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">size_type <span class="title">bucket_count</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> buckets.size(); &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>, <span class="title">class</span> <span class="title">Key</span>, <span class="title">class</span> <span class="title">HashFcn</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">ExtractKey</span>, <span class="title">class</span> <span class="title">EqualKey</span>,</span></span><br><span class="line"><span class="class">			<span class="title">class</span> <span class="title">Alloc</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">hashtable_iterator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	...</span><br><span class="line">	node *cur;<span class="comment">//指向节点</span></span><br><span class="line">	hashtable *ht;<span class="comment">//指向buckets，这样做和前面的deque做法类似</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Value</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> __<span class="title">hashtable_node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	__hashtable_node *next;<span class="comment">//这个是gc的版本，在vc下面时双向链表</span></span><br><span class="line">	Value val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">hashtable&lt;<span class="keyword">const</span> <span class="keyword">char</span> *,</span><br><span class="line">			<span class="keyword">const</span> <span class="keyword">char</span> *,</span><br><span class="line">			hash&lt;<span class="keyword">const</span> <span class="keyword">char</span> *&gt;,</span><br><span class="line">			identity&lt;<span class="keyword">const</span> <span class="keyword">char</span> *&gt;,</span><br><span class="line">			eqstr,</span><br><span class="line">			alloc&gt;</span><br><span class="line">ht(<span class="number">50</span>, hash&lt;<span class="keyword">const</span> <span class="keyword">char</span> *&gt;(), eqstr());</span><br><span class="line">ht.insert_unique(<span class="string">"fjds"</span>);</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">eqstr</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s1,<span class="keyword">const</span> <span class="keyword">char</span> *s2)</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">strcmp</span>(s1,s2) == <span class="number">0</span>;</span><br><span class="line"><span class="comment">//注意strcmp有三种返回值-1，0，1，C/C++函数，比较两个字符串，</span></span><br><span class="line"><span class="comment">//设这两个字符串为str1，str2，若str1==str2，则返回零；若</span></span><br><span class="line"><span class="comment">//str1&lt;str2，则返回负数；若str1&gt;str2，则返回正数。</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Key</span> &gt; <span class="title">struct</span> <span class="title">hash</span> &#123;</span>&#125;;<span class="comment">//泛化</span></span><br><span class="line">_STL_TEMPLATE_NULL <span class="class"><span class="keyword">struct</span> <span class="title">hash</span>&lt;char&gt;//特化</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">size_t</span> <span class="keyword">operator</span>() (<span class="keyword">char</span> x) <span class="keyword">const</span> &#123; <span class="keyword">return</span> x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>..数值型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">size_t</span> __stl_hash_string(<span class="keyword">const</span> <span class="keyword">char</span> * s)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">long</span> h = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(; *s; ++s)</span><br><span class="line">		h = h*<span class="number">5</span> + *s;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">size_t</span>(h);</span><br><span class="line">&#125;</span><br><span class="line">__STL_TEMPLATE_NULL <span class="class"><span class="keyword">struct</span> <span class="title">hash</span>&lt;char *&gt;//特化</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">size_t</span> <span class="keyword">operator</span>() (<span class="keyword">const</span> <span class="keyword">char</span> *s ) <span class="keyword">const</span> &#123; <span class="keyword">return</span> __stl_hash_string(s); &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>..字符串型但是不是c++的string<br>Hash_function的目的就是希望根据元素值算出一个hash code，使得元素经hash code映射后可以得到一个唯一值放入hashtable中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">iterator <span class="title">find</span><span class="params">(<span class="keyword">const</span> key_type &amp;key)</span></span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">	size_type n = bkt_num_key(key);</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line">size_type</span><br><span class="line">bkt_num_key(<span class="keyword">const</span> key_type&amp; key) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> bkt_num_key(key, buckets.size());</span><br><span class="line">&#125;</span><br><span class="line">size_type</span><br><span class="line">bkt_num(<span class="keyword">const</span> value_type &amp;obj) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> bkt_num_key(get_key(obj));</span><br><span class="line">&#125;;</span><br><span class="line">size_type</span><br><span class="line">bkt_num_key(<span class="keyword">const</span> key_type &amp;key, <span class="keyword">size_t</span> n) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> hash(key)%n;</span><br><span class="line">&#125;		 </span><br><span class="line">size_type</span><br><span class="line">bkt_num(<span class="keyword">const</span> value_type&amp; obj, <span class="keyword">size_t</span> n)<span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> bkt_num_key(get_key(obj) n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Before c++11<br>Hash_set<br>Hash_mutiset<br>Hash_map<br>Hash_mutimap  </p>
+<p>Since c++11<br>Unordered_set<br>Unordered_multiset<br>Unordered_map<br>Unordered_multimap</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/01/2017-04-01-算法/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          算法 algorithms
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/29/2017-03-29-再看c++/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">再看c++</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#stl-六大部件"><span class="nav-number">1.</span> <span class="nav-text">stl 六大部件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器containers"><span class="nav-number">2.</span> <span class="nav-text">容器containers</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器list"><span class="nav-number">2.1.</span> <span class="nav-text">容器list</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Taits-特性"><span class="nav-number">2.2.</span> <span class="nav-text">Taits 特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器vector"><span class="nav-number">2.3.</span> <span class="nav-text">容器vector</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器array"><span class="nav-number">2.4.</span> <span class="nav-text">容器array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器deque"><span class="nav-number">2.5.</span> <span class="nav-text">容器deque</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器queue，stack"><span class="nav-number">2.6.</span> <span class="nav-text">容器queue，stack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器rb-tree"><span class="nav-number">2.7.</span> <span class="nav-text">容器rb_tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器set、mutiset"><span class="nav-number">2.8.</span> <span class="nav-text">容器set、mutiset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器map，mutimap"><span class="nav-number">2.9.</span> <span class="nav-text">容器map，mutimap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器hashtable"><span class="nav-number">2.10.</span> <span class="nav-text">容器hashtable</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

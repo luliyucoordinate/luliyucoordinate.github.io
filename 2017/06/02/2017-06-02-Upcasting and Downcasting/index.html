@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Upcasting and Downcasting | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp转载upcastingdowncasting" />
+  
+  
+  
+  
+  <meta name="description" content="转自bogotobogo UpcastingUpcasting is converting a derived-class reference or pointer to a base-class. In other words, upcasting allows us to treat a derived type as though it were its base type. It is a">
+<meta name="keywords" content="cpp,转载,upcasting,downcasting">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Upcasting and Downcasting">
+<meta property="og:url" content="http://coordinate.wang/2017/06/02/2017-06-02-Upcasting and Downcasting/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="转自bogotobogo UpcastingUpcasting is converting a derived-class reference or pointer to a base-class. In other words, upcasting allows us to treat a derived type as though it were its base type. It is a">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.752Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Upcasting and Downcasting">
+<meta name="twitter:description" content="转自bogotobogo UpcastingUpcasting is converting a derived-class reference or pointer to a base-class. In other words, upcasting allows us to treat a derived type as though it were its base type. It is a">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-06-02-Upcasting and Downcasting" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Upcasting and Downcasting
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/06/02/2017-06-02-Upcasting and Downcasting/" class="article-date">
+	  <time datetime="2017-06-01T16:00:00.000Z" itemprop="datePublished">六月 2, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转自<a href="http://www.bogotobogo.com/cplusplus/upcasting_downcasting.php" target="_blank" rel="noopener">bogotobogo</a></p>
+<h2 id="Upcasting"><a href="#Upcasting" class="headerlink" title="Upcasting"></a>Upcasting</h2><p>Upcasting is converting a derived-class reference or pointer to a base-class. In other words, upcasting allows us to treat a derived type as though it were its base type. It is always allowed for public inheritance, without an explicit type cast. This is a result of the is-a relationship between the base and derived classes.<br>Here is the code dealing with shapes. We created Shape class, and derived Circle, Square, and Triangle classes from the Shape class. Then, we made a member function that talks to the base class:  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">play</span><span class="params">(Shape&amp; s)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   s.draw();</span><br><span class="line">   s.move();</span><br><span class="line">   s.shrink();</span><br><span class="line">   ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The function speaks to any Shape, so it is independent of the specific type of object that it’s drawing, moving, and shrinking. If in some other part of the program we use the play( ) function like below:  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Circle c;</span><br><span class="line">Triangle t;</span><br><span class="line">Square sq;</span><br><span class="line">play(c);</span><br><span class="line">play(t);</span><br><span class="line">play(sq);</span><br></pre></td></tr></table></figure>
+<p>Let’s check what’s happening here. A Triangle is being passed into a function that is expecting a Shape. Since a Triangle is a Shape, it can be treated as one by play(). That is, any message that play() can send to a Shape a Triangle can accept.<br>Upcasting allows us to treat a derived type as though it were its base type. That’s how we decouple ourselves from knowing about the exact type we are dealing with.<br>Note that it doesn’t say “If you’re a Triangle, do this, if you’re a Circle, do that, and so on.” If we write that kind of code, which checks for all the possible types of a Shape, it will soon become a messy code, and we need to change it every time we add a new kind of Shape. Here, however, we just say “You’re a Shape, I know you can move(), draw(), and shrink( ) yourself, do it, and take care of the details correctly.”<br>The compiler and runtime linker handle the details. If a member function is virtual, then when we send a message to an object, the object will do the right thing, even when upcasting is involved.<br>Note that the most important aspect of inheritance is not that it provides member functions for the new class, however. It’s the relationship expressed between the new class and the base class. This relationship can be summarized by saying, “The new class is a type of the existing class.”</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>:</span> <span class="keyword">public</span> Parent &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">gotoSchool</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( )</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">  Parent parent;</span><br><span class="line">  Child child;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// upcast - implicit type cast allowed</span></span><br><span class="line">  Parent *pParent = &amp;child; </span><br><span class="line"></span><br><span class="line">  <span class="comment">// downcast - explicit type case required </span></span><br><span class="line">  Child *pChild =  (Child *) &amp;parent;</span><br><span class="line"></span><br><span class="line">  pParent -&gt; sleep();</span><br><span class="line">  pChild -&gt; gotoSchool();</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>A Child object is a Parent object in that it inherits all the data members and member functions of a Parent object. So, anything that we can do to a Parent object, we can do to a Child object. Therefore, a function designed to handle a Parent pointer (reference) can perform the same acts on a Child object without any problems. The same idea applies if we pass a pointer to an object as a function argument. Upcasting is transitive: if we derive a Child class from Parent, then Parent pointer (reference) can refer to a Parent or a Child object.<br>Upcasting can cause object slicing when a derived class object is passed by value as a base class object, as in foo(Base derived_obj).</p>
+<h2 id="Downcasting"><a href="#Downcasting" class="headerlink" title="Downcasting"></a>Downcasting</h2><p>The opposite process, converting a base-class pointer (reference) to a derived-class pointer (reference) is called downcasting. Downcasting is not allowed without an explicit type cast. The reason for this restriction is that the is-a relationship is not, in most of the cases, symmetric. A derived class could add new data members, and the class member functions that used these data members wouldn’t apply to the base class.<br>As in the example, we derived Child class from a Parent class, adding a member function, gotoSchool(). It wouldn’t make sense to apply the gotoSchool() method to a Parent object. However, if implicit downcasting were allowed, we could accidentally assign the address of a Parent object to a pointer-to-Child</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Child *pChild =  &amp;parent; <span class="comment">// actually this won't compile</span></span><br><span class="line">        <span class="comment">// error: cannot convert from 'Parent *' to 'Child *'</span></span><br></pre></td></tr></table></figure>
+<p>and use the pointer to invoke the gotoSchool() method as in the following line.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pChild -&gt; gotoSchool();</span><br></pre></td></tr></table></figure>
+<p>Because a Parent isn’t a Child (a Parent need not have a gotoSchool() method), the downcasting in the above line can lead to an unsafe operation.<br>C++ provides a special explicit cast called dynamic_cast that performs this conversion. Downcasting is the opposite of the basic object-oriented rule, which states objects of a derived class, can always be assigned to variables of a base class.<br>One more thing about the upcasting:<br>Because implicit upcasting makes it possible for a base-class pointer (reference) to refer to a base-class object or a derived-class object, there is the need for dynamic binding. That’s why we have virtual member functions.<br>Pointer (Reference) type: known at compile time.<br>Object type: not known until run time.  </p>
+<h2 id="Dynamic-Casting"><a href="#Dynamic-Casting" class="headerlink" title="Dynamic Casting"></a>Dynamic Casting</h2><p>The dynamic_cast operator answers the question of whether we can safely assign the address of an object to a pointer of a particular type.<br>Here is a similar example to the previous one.  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Parent</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">sleep</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Child</span>:</span> <span class="keyword">public</span> Parent &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> classes[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">gotoSchool</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">( )</span> </span></span><br><span class="line"><span class="function"></span>&#123; </span><br><span class="line">  Parent *pParent = <span class="keyword">new</span> Parent;</span><br><span class="line">  Parent *pChild = <span class="keyword">new</span> Child;</span><br><span class="line">    </span><br><span class="line">  Child *p1 = (Child *) pParent;  <span class="comment">// #1</span></span><br><span class="line">  Parent *p2 = (Child *) pChild;  <span class="comment">// #2</span></span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Let look at the lines where we do type cast.  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Child *p1 = (Child *) pParent;  <span class="comment">// #1</span></span><br><span class="line">Parent *p2 = (Child *) pChild;  <span class="comment">// #2</span></span><br></pre></td></tr></table></figure>
+<p>Which of the type cast is safe?<br>The only one guaranteed to be safe is the ones in which the pointer is the same type as the object or else a base type for the object.<br>Type cast #1 is not safe because it assigns the address of a base-class object (Parent) to a derived class (Child) pointer. So, the code would expect the base-class object to have derived class properties such as gotoSchool() method, and that is false. Also, Child object, for example, has a member classes that a Parent object is lacking.<br>Type case #2, however, is safe because it assigns the address of a derived-class object to a base-class pointer. In other words, public derivation promises that a Child object is also a Parent object.<br>The question of whether a type conversion is safe is more useful than the question of what kind of object is pointed to. The usual reason for wanting to know the type is so that we can know if it’s safe to invoke a particular method.<br>Here is the syntax of dynamic_cast.  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Child *p = <span class="keyword">dynamic_cast</span>&lt;Child *&gt;(pParent);</span><br></pre></td></tr></table></figure>
+<p>This code is asking whether the pointer pParent can be type cast safely to the type Child *.</p>
+<p>It returns the address of the object, if it can.<br>It returns 0, otherwise.<br>How do we use the dynamic_cast?  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(Parent* p)</span> </span>&#123;</span><br><span class="line">  Child *ptr = <span class="keyword">dynamic_cast</span>&lt;Child*&gt;(p);</span><br><span class="line">   <span class="keyword">if</span>(ptr) &#123; </span><br><span class="line">    <span class="comment">// we can safely use ptr</span></span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In the code, if (ptr) is of the type Child or else derived directly or indirectly from the type Child, the dynamic_cast converts the pointer p to a pointer of type Child. Otherwise, the expression evaluates to 0, the null pointer.<br>In other words, we want to check if we can use the passed in pointer p before we do some operation on a child class object even though it’s a pointer to base class.<br>“The need for dynamic_cast generally arises because we want perform derived class operation on a derived class object, but we have only a pointer-or reference-to-base.” -Scott Meyers</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/downcasting/">downcasting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/upcasting/">upcasting</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/03/2017-06-03-迭代器适配器/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          迭代器适配器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/01/2017-06-01-C++内存模型/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">C++类对象的内存模型和占用空间</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Upcasting"><span class="nav-number">1.</span> <span class="nav-text">Upcasting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Downcasting"><span class="nav-number">2.</span> <span class="nav-text">Downcasting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dynamic-Casting"><span class="nav-number">3.</span> <span class="nav-text">Dynamic Casting</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

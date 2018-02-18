@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>理解std::move和std::forward | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp转载moveforward" />
+  
+  
+  
+  
+  <meta name="description" content="转自Effective Modern C++ 条款23 理解std::move和std::forward 首先我要提一下右值与左值，我觉得本书中的一句话说的非常好： A useful heuristic to determine whether an expression is an lvalue is to ask if you can take its address. If you can,">
+<meta name="keywords" content="cpp,转载,move,forward">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解std::move和std::forward">
+<meta property="og:url" content="http://coordinate.wang/2017/06/22/2017-06-22-理解move和forward/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="转自Effective Modern C++ 条款23 理解std::move和std::forward 首先我要提一下右值与左值，我觉得本书中的一句话说的非常好： A useful heuristic to determine whether an expression is an lvalue is to ask if you can take its address. If you can,">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.853Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解std::move和std::forward">
+<meta name="twitter:description" content="转自Effective Modern C++ 条款23 理解std::move和std::forward 首先我要提一下右值与左值，我觉得本书中的一句话说的非常好： A useful heuristic to determine whether an expression is an lvalue is to ask if you can take its address. If you can,">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-06-22-理解move和forward" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      理解std::move和std::forward
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/06/22/2017-06-22-理解move和forward/" class="article-date">
+	  <time datetime="2017-06-21T16:00:00.000Z" itemprop="datePublished">六月 22, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转自<a href="http://blog.csdn.net/big_yellow_duck/article/details/52371164" target="_blank" rel="noopener">Effective Modern C++ 条款23 理解std::move和std::forward</a></p>
+<p>首先我要提一下右值与左值，我觉得本书中的一句话说的非常好：</p>
+<p>A useful heuristic to determine whether an expression is an lvalue is to ask if you can take its address. If you can, it typically is. If you can’t, it’s usually an rvalue. A nice feature of this heuristic is that it helps you remember that the type of an expression is independent of whether the expression is an lvalue or an rvalue. That is, given a type T, you can have lvalues of type T as well as rvalues of type T. It’s especially important to remember this when dealing with a parameter of rvalue reference type, because the parameter itself is an lvalue:</p>
+<p>有效了解std::move和std::forward的方法是，了解它们做不了的事情。std::move不会移动任何东西，std::forward不会转发任何东西，在运行期间，它们什么事情都不会做，不会生成一个字节的可执行代码。</p>
+<p>std::move和std::forward仅仅是表现为转换类型的函数（实际上是模板函数），std::move无条件地把参数转换为右值，而std::forward在满足条件下才会执行std::move的转换。这个说明导致了一系列问题，但是从根本上，那是一个完整的故事。</p>
+<p>为了让故事更具体，这里是C++11的std::move的简单实现，它没有完全覆盖标准库的细节，不过很接近了。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;              <span class="comment">// 在std命名空间里`</span></span><br><span class="line"><span class="keyword">typename</span> remove_reference&lt;T&gt;::type&amp;&amp;</span><br><span class="line">move(T&amp;&amp; param)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> ReturnType = <span class="keyword">typename</span> remove_reference&lt;T&gt;::type&amp;&amp;;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;ReturnType&gt;(param);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实函数的本质就是类型转换，就如你所见，std::move接收一个对象的引用（准确地说，是通用引用，具体看条款24），然后返回相同对象的引用。</p>
+<p>返回类型中的“&amp;&amp;”暗示着std::move返回的是一个右值引用，不过，就像条款28讲述那样，如果T的类型是个左值引用，T&amp;&amp;将会变成左值引用。为了防止这种事发生，我们对T使用了remove_reference（去除引用语义），因此确保了使用“&amp;&amp;”的类型不是引用类型，那就保证了std::move返回的是右值引用，这是很重要的，因为函数返回的右值引用是右值。因此，std::move把参数转换为一个右值，那就是它做的全部事情。</p>
+<p>说点题外话，std::move在c++14的实现就没那么夸张了，返回类型推断（看条款3）和标准库的别名模板std::remove_reference_t（看条款9），std::move可以这样写：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;             <span class="comment">// C++14，依然在std命名空间</span></span><br><span class="line"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) move(T&amp;&amp; param)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> ReturnType = <span class="keyword">remove_reference_t</span>&lt;T&gt;&amp;&amp;;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;ReturnType&gt;(param);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是不是容易看多了？</p>
+<p>因为std::move除了把参数转换为右值，没做其他事情，这表明类似rvalue_cast这样的名字或许更适合它。话虽如此，但我们用的名字是std::move，所以记住std::move做了什么和没做什么是重要的，它做的是转换，不是移动。</p>
+<p>当然，右值会成为可移动的候选者，因此对一个对象使用std::move是告诉编译器，这个对象符合被移动的条件。那就是为什么std::move会有这个名字：很容易指出可能被移动的对象。</p>
+<p>事实上，右值在通常情况下是唯一的可移动候选者。假如你要写一个代表注释的类，这个类的构造函数接受一个std::string参数（含有注释），然后把参数拷贝到成员变量，根据条款41，你声明的是值传递的参数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Annotation</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Annotation</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">string</span> text)</span></span>;        <span class="comment">// 参数会被拷贝，值传递</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>不过因为注释类只是需要读text的值，不需要修改它，根据尽可能使用const这个悠久的历史，你修改了声明，把text修改成const：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Annotation</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Annotation</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> text)</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>为了避免拷贝text到成员变量的开销，你根据条款41的建议，对text使用std::move，由此产生一个右值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Annotation</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">Annotation</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> text)</span></span></span><br><span class="line">    : value(std::move(text))  // 把text"移动"成右值</span><br><span class="line">    &#123; ... &#125;                   <span class="comment">// 但这代码的行为跟你看到的不一样</span></span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> value;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>代码编译，链接，运行，把成员变量value设置为text的内容。唯一把这代码和你眼中的完美实现分离的事情是text不是被移动到value的，它只是被拷贝。当然，text被std::move转换为右值了，但是text是被声明为const std::string，所以在转换之前，text是一个const std::string左值，转换后，是一个const std::string右值，在整个过程中，const的性质是一支存在的。</p>
+<p>当编译器选择std::string构造函数时，有两个可能：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">string</span> &#123;</span>  <span class="comment">// std::string实际上是std::basic_string&lt;char&gt;的typedef</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="built_in">string</span>(<span class="keyword">const</span> <span class="built_in">string</span>&amp; rhs);   <span class="comment">//拷贝构造</span></span><br><span class="line">    <span class="built_in">string</span>(<span class="built_in">string</span>&amp;&amp; rhs);     <span class="comment">//移动构造</span></span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在Annotation构造函数的初始化列表中，std::move(text)的结果是一个类型为const std::string的右值，这个右值不能传递给std::string的移动构造函数，因为移动构造函数接受的是non-const std::string的右值引用。不过这右值，可以传递给拷贝构造函数，因为一个lvalue-reference-to-const（const的左值引用）可以绑定const右值。所以，成员初始化列表调用了std::string的拷贝构造函数，即使text被转换成右值！这种行为对于维护const的正确性是必不可少的。把一个值搬离对象通常都会改变这个对象，所以C++不允许把const对象传递给会改变它们（对象）的函数（例如移动构造）。</p>
+<p>在这个例子中我们可以得到两个教训。第一，如果你想要有能力移动对象，不要把它们声明为const。向一个const对象请求移动操作会默默转换为拷贝操作。第二，std::move不仅不会移动东西，还不能保证转换出来的对象有被移动的资格。你唯一能确保的事情是：对一个对象使用std::move，那个对象就被转换为右值。</p>
+<p>std::forward的故事就比std::move简单多了，不过std::move是无条件把参数转换为右值，而std::forward在特定情况下才会这样做。std::forward是个有条件的类型转换。为了理解它什么时候转换，回忆一下std::forward一般是怎样使用的。最常见用法是一个模板函数接受全局引用，然后用std::forward把参数传递给另一个函数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(<span class="keyword">const</span> Widget&amp; lvalArg)</span></span>;    <span class="comment">// 处理左值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(Widget&amp;&amp; rvalArg)</span></span>;         <span class="comment">// 处理右值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">logAndProcess</span><span class="params">(T&amp;&amp; param)</span>      <span class="comment">// 把参数传递给process的模板</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="keyword">auto</span> now = <span class="built_in">std</span>::chrono::system_clock::now();   <span class="comment">// 获取当前时间           </span></span><br><span class="line"></span><br><span class="line">     makeLogEntry(<span class="string">"Calling 'process'"</span>, now);</span><br><span class="line">     process(<span class="built_in">std</span>::forward&lt;T&gt;(param));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>考虑logAndProcess的两次调用，一次左值，一次右值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Widget w;</span><br><span class="line"></span><br><span class="line">logAndProcess(w);             <span class="comment">// 左值参数调用</span></span><br><span class="line">logAndProcess(<span class="built_in">std</span>::move(w));  <span class="comment">// 右值参数调用</span></span><br></pre></td></tr></table></figure>
+<p>在logAndProcess里面，参数param被传递给process函数，而process函数为了左值参数和右值参数进行重载。当我们用左值调用logAndProcess的时候，我们自然是希望把左值转发给process，而当我们用右值调用logAndProcess时，我们希望调用的是右值重载的process。</p>
+<p>但是param，和所有的函数参数一样，是个左值。在logAndProcess里每次调用process都会使用左值重载的process。为了防止这样的事情，我们需要一项技术，当且仅当初始化param的参数——即传递给logAndProcess的参数——是右值时，在logAndProcess把param转换为右值。这就是std::forward干的事情了，这也是为什么说std::forward是个有条件的类型转换：仅当参数是用右值初始化时，才会把它转换为右值。</p>
+<p>你可能想要知道std::forward是如何知道参数是否用右值初始化的。举个例子，上面的代码中，std::forward是怎样知道初始化param的，是左值还是右值呢？简短的答案是信息会被编码到logAndProces的模板参数T中。这个参数传递给std::forward模板，然后恢复编码的信息。具体细节看条款28。</p>
+<p>倘若把std::move和std::forward把归结为类型转换，那么它们的差别是std::move总是会转换，std::forward只会在某些时刻转换，你可以会问我们是否可以摒弃std::move，只是用std::forward。从纯粹的技术角度看，答案是可以的：std::forward可以应付所有场景，std::move不是必须的。当然，没有一个函数是真的必须的，因为我们可以自己写转换，不过如果那样的话，是很恶心的。</p>
+<p>std::move吸引人的地方在于它的方便，减少可能的错误，还有更简洁。试想在一个类中，我们要记录移动构造函数被调用了多少次。我们所需要的是个static计数器，它在移动构造中递增。假如类中的非static成员变量只有一个std::string，这里有个十分方便的方法（即使用std::move）实现我们的移动构造：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Widget(Widget&amp;&amp; rhs)</span><br><span class="line">    : s(<span class="built_in">std</span>::move(rhs.s))</span><br><span class="line">    &#123; ++moveCtorCalls; &#125;</span><br><span class="line">    ...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> moveCtorCalls;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> s;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>用std::forward实现相同的效果，代码是这样的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">     Widget(Widget&amp;&amp; rhs)</span><br><span class="line">     :s(<span class="built_in">std</span>::forward&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;(rhs.s))</span><br><span class="line">    &#123; ++moveCtorCalls; &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>首先要注意到的是std::move只需要一个函数参数（rhs.s），而std::forward既需要一个函数参数（rhs.s）又需要一个模板类型参数（std::string）。然后需要注意的是我们一般传递给std::forward的参数类型是不带引用的，那是因为这会很方便把参数编码成右值（看条款28）。结合起来，意味着std::move比起std::forward需要更少的类型，不用传递类型参数可以减少编码的麻烦。它还可以消除我们可能传递的类型错误（例如，std::string&amp;， 使用std::forward的话，会导致成员变量拷贝构造，而不是移动构造）。</p>
+<p>最重要的是，std::move是无条件转换，而std::forward只会将绑在右值上的参数转换为右值。这两个操作不一样，第一个操作通常会造成移动，而第二个操作只是传递——转发——一个对象给另一个函数，而保持原来的左值性质或者右值性质。因为这两个行为是不一样的，所以用两个不同的函数（和函数名）区分它们是很好的设计。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>需要记住的3点：</p>
+<ol>
+<li>std::move表现为无条件的右值转换，就其本身而已，它不会移动任何东西。</li>
+<li>std::forward仅当参数被右值绑定时，才会把参数转换为右值。</li>
+<li>std::move和std::forward在运行时不做任何事情。</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/forward/">forward</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/move/">move</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/02/2017-07-02-Aggregate和POD类型/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Aggregate和POD类型
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/21/2017-06-21-尽可能使用constexpr/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">尽可能使用constexpr</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

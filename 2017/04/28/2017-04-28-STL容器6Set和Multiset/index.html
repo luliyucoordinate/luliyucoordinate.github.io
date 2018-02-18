@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>STL容器（6）Set和Multiset | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="Set和Multiset定义于头文件  12345template&amp;lt;    class Key,    class Compare = std::less&amp;lt;Key&amp;gt;,class Allocator = std::allocator&amp;lt;Key&amp;gt;&amp;gt; class set; std::set是一个关联容器，是一个有序的集合，集合中包含不可重复的、类型为Key的元素。排序通">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL容器（6）Set和Multiset">
+<meta property="og:url" content="http://coordinate.wang/2017/04/28/2017-04-28-STL容器6Set和Multiset/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Set和Multiset定义于头文件  12345template&amp;lt;    class Key,    class Compare = std::less&amp;lt;Key&amp;gt;,class Allocator = std::allocator&amp;lt;Key&amp;gt;&amp;gt; class set; std::set是一个关联容器，是一个有序的集合，集合中包含不可重复的、类型为Key的元素。排序通">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.352Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL容器（6）Set和Multiset">
+<meta name="twitter:description" content="Set和Multiset定义于头文件  12345template&amp;lt;    class Key,    class Compare = std::less&amp;lt;Key&amp;gt;,class Allocator = std::allocator&amp;lt;Key&amp;gt;&amp;gt; class set; std::set是一个关联容器，是一个有序的集合，集合中包含不可重复的、类型为Key的元素。排序通">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-28-STL容器6Set和Multiset" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      STL容器（6）Set和Multiset
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/28/2017-04-28-STL容器6Set和Multiset/" class="article-date">
+	  <time datetime="2017-04-27T16:00:00.000Z" itemprop="datePublished">四月 28, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Set和Multiset"><a href="#Set和Multiset" class="headerlink" title="Set和Multiset"></a>Set和Multiset</h1><p>定义于头文件 <set></set></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Compare</span> = <span class="title">std</span>:</span>:less&lt;Key&gt;,</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;Key&gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">set</span>;</span></span><br></pre></td></tr></table></figure>
+<p>std::set是一个关联容器，是一个有序的集合，集合中包含不可重复的、类型为Key的元素。排序通过使用类型为Compare的比较函数比较来实现。搜索，删除和插入操作具有对数时间复杂度。set通常实现为红黑树。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Compare</span> = <span class="title">std</span>:</span>:less&lt;Key&gt;,</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;Key&gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">multiset</span>;</span></span><br></pre></td></tr></table></figure>
+<p>multiset 是一个关联容器，它包含一些有序的Key类型的对象。与set不同的是，它允许多个带有相同值的键存在。排序通过使用键比较函数比较来实现。搜索，插入和删除操作具有对数的复杂性.<br>在比较中相等的元素，顺序为插入时的顺序，且不会改变。 (C++11 起)</p>
+<h2 id="Set和Multiset的能力"><a href="#Set和Multiset的能力" class="headerlink" title="Set和Multiset的能力"></a>Set和Multiset的能力</h2><p>自动排序会造成set和multiset的一个重要限制：你不能直接改变元素值，因为这样会打乱原本正确的顺序。<br>因此，要改变元素值，必须先删除旧元素，在插入新元素。一下接口反映这种行为：<br>Set和multiset不提供任何操作函数可以直接访问元素。<br>从迭代器的角度看，元素只是一个常量。</p>
+<h2 id="Set和Multiset的操作函数"><a href="#Set和Multiset的操作函数" class="headerlink" title="Set和Multiset的操作函数"></a>Set和Multiset的操作函数</h2><p>排序准则也被用来检查元素的相等性。采用默认排序准则时，两元素的相等性检查如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!(elem1 &lt; elem2)||（elem2 &lt; elem1))</span><br></pre></td></tr></table></figure>
+<p>这种做法有三种好处：  </p>
+<ol>
+<li>只需传递一个实参作为排序准则</li>
+<li>不必针对元素类型提供operator==</li>
+<li>可以对“相等性”有相反的定义。<br>元素比较只适用于类型相同的容器。换而言之，元素和排序准则则必须有相同的类型，否则编译器会报错。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">set</span>&lt;<span class="keyword">float</span>&gt; c;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">set</span>&lt;<span class="keyword">float</span>,<span class="built_in">std</span>::greater&lt;<span class="keyword">float</span>&gt;&gt; c2;</span><br><span class="line"><span class="keyword">if</span>(c == c2)<span class="comment">//ERROR different  types</span></span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>lower_bound和upper_bound分别返回第一个和最后一个“元素可安插点”。换而言之，lower_bound返回第一个“大于等于实参值”的元素位置，upper_bound返回第一个“大于实参值”的位置。equal_range则是将lower_bound和upper_bound的返回值做成一个pair返回，所以他返回的是“与实参值相等”的元素所形成的区间。<br>和所有关联式容器类似，这里迭代器是双向迭代器。所以，对于那些“只能接受随机访问迭代器”的STL算法。<br>更重要的是，从迭代器的角度看，所有元素都被视为常量。这使得你无法对set或multiset调用更易性算法。例如你不能对它们调用remove，因为remove算法实际上是以其实参值覆盖被移除的元素。<br>注意，用于安插元素的函数：insert和emplace，其返回值不尽相同：<br>返回类型之所以不相同，原因是：multiset允许元素重复而set不允许。因此，如果将某元素安插至set内，而该set内含同值元素，安插失败。所以set的返回类型是以pair组织起来的两个值：  </p>
+<ol>
+<li>pair结构中的second成员表示安插是否成功。</li>
+<li>pair结构中first成员表示新元素的位置，或现存的同元素位置。</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/29/2017-04-29-STL容器7Map和Mutimap/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          STL容器（7）Map和Mutimap
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/26/2017-04-26-STL容器5forward_list/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">STL容器（5）forward_list</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Set和Multiset"><span class="nav-number">1.</span> <span class="nav-text">Set和Multiset</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Set和Multiset的能力"><span class="nav-number">1.1.</span> <span class="nav-text">Set和Multiset的能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Set和Multiset的操作函数"><span class="nav-number">1.2.</span> <span class="nav-text">Set和Multiset的操作函数</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>STL容器（8）无序容器 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="定义于头文件\&amp;lt;unordered_set&amp;gt;   123456template&amp;lt;    class Key,    class Hash = std::hash&amp;lt;Key&amp;gt;,    class KeyEqual = std::equal_to&amp;lt;Key&amp;gt;,    class Allocator = std::allocator&amp;lt;Key&amp;gt;&amp;gt; clas">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL容器（8）无序容器">
+<meta property="og:url" content="http://coordinate.wang/2017/05/25/2017-05-25-STL容器8无序容器/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="定义于头文件\&amp;lt;unordered_set&amp;gt;   123456template&amp;lt;    class Key,    class Hash = std::hash&amp;lt;Key&amp;gt;,    class KeyEqual = std::equal_to&amp;lt;Key&amp;gt;,    class Allocator = std::allocator&amp;lt;Key&amp;gt;&amp;gt; clas">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.637Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL容器（8）无序容器">
+<meta name="twitter:description" content="定义于头文件\&amp;lt;unordered_set&amp;gt;   123456template&amp;lt;    class Key,    class Hash = std::hash&amp;lt;Key&amp;gt;,    class KeyEqual = std::equal_to&amp;lt;Key&amp;gt;,    class Allocator = std::allocator&amp;lt;Key&amp;gt;&amp;gt; clas">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-25-STL容器8无序容器" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      STL容器（8）无序容器
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/25/2017-05-25-STL容器8无序容器/" class="article-date">
+	  <time datetime="2017-05-24T16:00:00.000Z" itemprop="datePublished">五月 25, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>定义于头文件\&lt;unordered_set>  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Hash</span> = <span class="title">std</span>:</span>:hash&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">KeyEqual</span> = <span class="title">std</span>:</span>:equal_to&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;Key&gt;</span><br><span class="line">&gt; <span class="class"><span class="keyword">class</span> <span class="title">unordered_set</span>;</span></span><br></pre></td></tr></table></figure>
+<p>(C++11 起)<br>无序集合是一个关联容器，包含一些类型为Key的唯一对象。搜索，插入和删除具有平摊的常数时间复杂度。<br>定义于头文件\&lt;unordered_set>  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Hash</span> = <span class="title">std</span>:</span>:hash&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">KeyEqual</span> = <span class="title">std</span>:</span>:equal_to&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;Key&gt;</span><br><span class="line">&gt; <span class="class"><span class="keyword">class</span> <span class="title">unordered_multiset</span>;</span></span><br></pre></td></tr></table></figure>
+<p>(C++11 起)<br>无序多重集合是一个关联容器，含有一些类型为Key的，可能不是唯一的对象。搜索，插入和删除具有平摊的常数时间复杂度。<br>定义于头文件 \&lt;unordered_map>  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Hash</span> = <span class="title">std</span>:</span>:hash&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">KeyEqual</span> = <span class="title">std</span>:</span>:equal_to&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt; <span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> Key, T&gt; &gt;</span><br><span class="line">&gt; <span class="class"><span class="keyword">class</span> <span class="title">unordered_map</span>;</span></span><br></pre></td></tr></table></figure>
+<p>(C++11 起)<br>无序映射是一个关联容器，包含带有唯一键的键值对。搜索，插入和去除具有平摊的常数时间复杂度。<br>定义于头文件 \&lt;unordered_map>  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Key</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class">    <span class="title">class</span> <span class="title">Hash</span> = <span class="title">std</span>:</span>:hash&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">KeyEqual</span> = <span class="title">std</span>:</span>:equal_to&lt;Key&gt;,</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt; <span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> Key, T&gt; &gt;</span><br><span class="line">&gt; <span class="class"><span class="keyword">class</span> <span class="title">unordered_multimap</span>;</span></span><br></pre></td></tr></table></figure>
+<p>(C++11 起)<br>无序多重映射是一个无序关联容器，支持多个相等的键（unordered_multimap中，每个键对应的值可能不唯一）以及相关联的另一种类型的值。unordered_multimap类支持前向迭代器。搜索，插入和去除具有平摊的常数时间复杂度。  </p>
+<h2 id="Unordered容器能力"><a href="#Unordered容器能力" class="headerlink" title="Unordered容器能力"></a>Unordered容器能力</h2><p>Unordered容器比起寻常的associative容器，要的优点是：在安插、删除、查找元素时获得amortized常量时间，因为偶尔发生的rehashing可能是个大型操作。主要缺点是：Unordered容器不提供operator&lt;、&gt;、&lt;=和&gt;=这些容器的多重实例。不提供lower_bound和upper_bound。由于iterator只保证至少是个forward iterator，所以别的迭代器的算法都是用不了。<br>由于元素的(key)value关系到元素的位置，所以不可以直接修改(key)value，通过iterator访问时，元素的(key)value是常量。<br>Erase函数不会造成指向元素的iterator、reference和pointer失效。在调用insert、reserve和clear、rehash时会rehashing。  </p>
+<h2 id="创建和控制Unordered容器"><a href="#创建和控制Unordered容器" class="headerlink" title="创建和控制Unordered容器"></a>创建和控制Unordered容器</h2><p>欲定义最大负载系数，你必须在构建后立刻调用一个成员函数：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unordered_set</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; coll;</span><br><span class="line">coll.max_load_factor(<span class="number">0.7</span>);</span><br></pre></td></tr></table></figure>
+<p>通常0.7~0.8是速度和内存消耗量之间一个不错的折中。默认的最大负载系数时1.0，意思是通常碰撞会发生在rehash之前。<br>reverse与rehash的区别在于：如果在大负载系数时0.7而你打算准备100个元素，你必须将100初一0.7。也就是你必须传入143给rehash以避免在最高达到100个元素的情况下出现进一步rehash。如果使用reverse，这一计算是内部进行的额，所以你可以仅仅传递hashtable应该筹备的元素个数：<br>rehash：Sets the number of buckets to count and rehashes the container, i.e. puts the elements into appropriate buckets considering that total number of buckets has changed. If the new number of buckets makes load factor more than maximum load factor (count &lt; size() / max_load_factor()), then the new number of buckets is at least size() / max_load_factor().<br>reverse：Sets the number of buckets to the number needed to accomodate at least count elements without exceeding maximum load factor and rehashes the container, i.e. puts the elements into appropriate buckets considering that total number of buckets has changed. Effectively calls rehash(std::ceil(count / max_load_factor())).  </p>
+<h2 id="Unordered容器的其他操作"><a href="#Unordered容器的其他操作" class="headerlink" title="Unordered容器的其他操作"></a>Unordered容器的其他操作</h2><p>Unordered左右两端容器必须有相同类型，更明确地说是其hash function的类型以及equivalence criterion(等价标准)必须相同，即使hash函数本身可能不同。<br>与map/multimap对应的是unordered map/multimap的元素类型是pair<const key,="" t="">，意味着你需要first和second才能范文一个元素的key和value。  </const></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> elem&amp; : coll)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"key："</span> &lt;&lt; elem.first &lt;&lt; <span class="string">"\t"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改变key的值会导致错误，改变元素的value就没问题，只要elem是个non-const reference且value的类型不是const：  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">elem.second = <span class="number">13.5</span>;</span><br></pre></td></tr></table></figure>
+<p>如果你是用算法和lambda来操作map内的元素，你必须明确元素类型，可以查看<a href="http://www.coordinate.wang/cpp/2017/04/29/STL%E5%AE%B9%E5%99%A87Map%E5%92%8CMutimap.html" target="_blank" rel="noopener">map的例子</a><br>一般而言，erasing函数并不会令“指向至其他元素”的iterator和reference失效。然而成员函数insert和emplace有可能令所有iterator失效，当rehashing发生，尽管指向元素的reference将总是保持有效。rehashing之所以发生，是由于一次安插动作造成最终元素的个数大于等于bucket数量乘以最大负载系数。insert和emplace成员函数不会影响指向容器元素的reference的有效性。  </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/26/2017-05-26-迭代器种类/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          迭代器种类
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/24/2017-05-24-多种语言实现贪吃蛇（c）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">多种语言实现贪吃蛇（c）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unordered容器能力"><span class="nav-number">1.</span> <span class="nav-text">Unordered容器能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建和控制Unordered容器"><span class="nav-number">2.</span> <span class="nav-text">创建和控制Unordered容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unordered容器的其他操作"><span class="nav-number">3.</span> <span class="nav-text">Unordered容器的其他操作</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

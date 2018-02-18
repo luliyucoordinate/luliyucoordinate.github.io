@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cpp通用工具(1) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppnotescpp标准库" />
+  
+  
+  
+  
+  <meta name="description" content="Pair 构造函数与赋值自C++11开始，如果pair&amp;lt;&amp;gt;用到了某个类型而该类型只有一个nonconstant copy构造函数，将会编译失败： 1234567class A&amp;#123;	public:	...	A(A&amp;amp;);&amp;#125;std::pair&amp;lt;A,int&amp;gt; p;//ERROR since C++11 piecewise construction12345">
+<meta name="keywords" content="cpp,notes,cpp标准库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp通用工具(1)">
+<meta property="og:url" content="http://coordinate.wang/2017/04/16/2017-04-16-cpp通用工具1/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Pair 构造函数与赋值自C++11开始，如果pair&amp;lt;&amp;gt;用到了某个类型而该类型只有一个nonconstant copy构造函数，将会编译失败： 1234567class A&amp;#123;	public:	...	A(A&amp;amp;);&amp;#125;std::pair&amp;lt;A,int&amp;gt; p;//ERROR since C++11 piecewise construction12345">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.200Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpp通用工具(1)">
+<meta name="twitter:description" content="Pair 构造函数与赋值自C++11开始，如果pair&amp;lt;&amp;gt;用到了某个类型而该类型只有一个nonconstant copy构造函数，将会编译失败： 1234567class A&amp;#123;	public:	...	A(A&amp;amp;);&amp;#125;std::pair&amp;lt;A,int&amp;gt; p;//ERROR since C++11 piecewise construction12345">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-16-cpp通用工具1" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      cpp通用工具(1)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/16/2017-04-16-cpp通用工具1/" class="article-date">
+	  <time datetime="2017-04-15T16:00:00.000Z" itemprop="datePublished">四月 16, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Pair"><a href="#Pair" class="headerlink" title="Pair "></a>Pair </h1><h2 id="构造函数与赋值"><a href="#构造函数与赋值" class="headerlink" title="构造函数与赋值"></a>构造函数与赋值</h2><p>自C++11开始，如果pair&lt;&gt;用到了某个类型而该类型只有一个nonconstant copy构造函数，将会编译失败：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">	...</span><br><span class="line">	A(A&amp;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">std</span>::pair&lt;A,<span class="keyword">int</span>&gt; p;<span class="comment">//ERROR since C++11</span></span><br></pre></td></tr></table></figure>
+<h2 id="piecewise-construction"><a href="#piecewise-construction" class="headerlink" title="piecewise construction"></a>piecewise construction</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Foo(tuple&lt;<span class="keyword">int</span>,<span class="keyword">float</span>&gt;)&#123;&#125;</span><br><span class="line">	<span class="keyword">template</span>&lt;<span class="keyword">typename</span>.. Args&gt;</span><br><span class="line">	Foo(Args... args)&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mian</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	tuple&lt;<span class="keyword">int</span>,<span class="keyword">float</span>&gt; t(<span class="number">1</span>,<span class="number">2.22</span>);</span><br><span class="line">	pair&lt;<span class="keyword">int</span>,Foo) p1(<span class="number">42</span>,t);</span><br><span class="line">	pair&lt;<span class="keyword">int</span>,Foo&gt; p2(piecewise_construct, make_tuple(<span class="number">42</span>),t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只有当std::poecewise_construct被当作第一参数，class Foo才会被迫使用那个“接受tuple的元素而非tuple整体”的构造函数。这就意味着，在这个例子中被调用的是那个“实参数目不定的构造函数”。</p>
+<h2 id="make-pair"><a href="#make-pair" class="headerlink" title="make_pair"></a>make_pair</h2><p>自C++11开始，可以使用<tuple>内的tie()接口，抽取出pair的value：</tuple></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::pair&lt;<span class="keyword">char</span>,<span class="keyword">char</span>&gt; p = <span class="built_in">std</span>::make_pair(<span class="string">'x'</span>,<span class="string">'y'</span>);</span><br><span class="line"><span class="keyword">char</span> c;</span><br><span class="line"><span class="built_in">std</span>::tie(sstd::ignore,c) = p;<span class="comment">//extra seconf value into c</span></span><br></pre></td></tr></table></figure>
+<p>c++standard明确指出，如果可能的话make_pair()使用move语义，否则就使用copy语义</p>
+<h1 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h1><h2 id="Tuple的操作"><a href="#Tuple的操作" class="headerlink" title="Tuple的操作"></a>Tuple的操作</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//create four-element tuple elements are initialized with default value</span></span><br><span class="line">tuple &lt;<span class="built_in">string</span>,<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">complex</span>&lt;<span class="keyword">double</span>&gt;&gt; t;</span><br><span class="line"><span class="comment">//create and initialize a tuple explicitly</span></span><br><span class="line">tuple &lt;<span class="keyword">int</span>,<span class="keyword">float</span>,<span class="built_in">string</span>&gt; t1(<span class="number">41</span>,<span class="number">6.3</span>,<span class="string">"nico"</span>);</span><br><span class="line"><span class="comment">//create tuple with make_tuple</span></span><br><span class="line"><span class="keyword">auto</span> t2 = make_tuple(<span class="number">22</span>,<span class="number">33</span>,<span class="string">"nico"</span>);</span><br><span class="line"><span class="comment">//assignment</span></span><br><span class="line">get&lt;<span class="number">1</span>&gt;(t1) = get&lt;<span class="number">1</span>&gt;(t2);</span><br><span class="line"><span class="comment">//cpmparsion</span></span><br><span class="line"><span class="keyword">if</span>(t1 &lt; t2)</span><br><span class="line">&#123;</span><br><span class="line">	t1 = t2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行期传入一个索引是不允许的</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i;</span><br><span class="line">get&lt;i&gt;(t1);<span class="comment">//ERROR</span></span><br></pre></td></tr></table></figure>
+<h2 id="tie"><a href="#tie" class="headerlink" title="tie"></a>tie</h2><p>如果想最方便的在tuple中使用reference，可以使用tie，他可以建立一个内含reference的tuple：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::tuple&lt;<span class="keyword">int</span> <span class="keyword">float</span>,<span class="built_in">std</span>::<span class="built_in">string</span>&gt; t(<span class="number">77</span>,<span class="number">1.1</span>,<span class="string">"move lisght"</span>);</span><br><span class="line"><span class="keyword">int</span> i;<span class="keyword">float</span> f;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> s;</span><br><span class="line"><span class="built_in">std</span>::tie(i,f,s) = t;<span class="comment">//assigns values of t to I,fand s</span></span><br></pre></td></tr></table></figure>
+<p>这里std::tie会将i、f和s的reference建立起一个tuple。等同于:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::make_tuple(<span class="built_in">std</span>::ref(i),<span class="built_in">std</span>::ref(f),<span class="built_in">std</span>::ref(s)) = t;</span><br></pre></td></tr></table></figure>
+<p>使用tie的时候，std::ignore允许我们忽略tuple的某些元素，也就是我们可以用它来局部提取tuple的元素值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::tuple&lt;<span class="keyword">int</span> <span class="keyword">float</span>,<span class="built_in">std</span>::<span class="built_in">string</span>&gt; t(<span class="number">77</span>,<span class="number">1.1</span>,<span class="string">"move lisght"</span>);</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> s;</span><br><span class="line"><span class="built_in">std</span>::tie(i,<span class="built_in">std</span>::ignore,s) = t;<span class="comment">//assign first and third value of t to I and s</span></span><br></pre></td></tr></table></figure>
+<h2 id="Initializer-List"><a href="#Initializer-List" class="headerlink" title="Initializer List"></a>Initializer List</h2><p>不可以将初值列传至“期望获得一个tuple”的地方</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::tuple&lt;<span class="keyword">int</span>,<span class="keyword">float</span>&gt;&gt; v&#123;<span class="number">1</span>,<span class="number">1.0</span>&#125;;ERROR</span><br><span class="line"><span class="built_in">std</span>::tuple&lt;<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>&gt; foo()&#123;<span class="keyword">return</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;&#125;<span class="comment">//ERROR</span></span><br></pre></td></tr></table></figure>
+<p>注意的是，上面的做法对于pair和array是可以的<br>但是对于tuple，你必须明确的将初值转为一个tuple</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::tuple&lt;<span class="keyword">int</span>,<span class="keyword">float</span>&gt;&gt; v&#123;<span class="built_in">std</span>::make_tuple(<span class="number">1</span>,<span class="number">1.0</span>),</span><br><span class="line">					<span class="built_in">std</span>::make_tuple(<span class="number">2</span>,<span class="number">2.0</span>)&#125;;<span class="comment">//OK</span></span><br><span class="line"><span class="built_in">std</span>::tuple&lt;<span class="keyword">int</span>,<span class="keyword">int</span>,<span class="keyword">int</span>&gt; foo()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">std</span>::make_tuple(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>);<span class="comment">//OK</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="其他的tuple特性"><a href="#其他的tuple特性" class="headerlink" title="其他的tuple特性"></a>其他的tuple特性</h2><p>tuple_size<tupletype>::value可获得元素个数<br>tuple_element&lt;idx,tupletype&gt;::type可获得idx个元素的类型<br>tuple_cat()可将多个tuple创成一个tuple<br>tuple的输入输出<br>tuple class 出公开于boost程序库，在那里tuple可以将元素写至ouput stream，但是C++标准库不支持。你可以使用一下头文件做支持：</tupletype></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//printtuple.hpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;tuple&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">int</span> IDX,<span class="keyword">int</span> MAX, <span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PRINT_TUPLE</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">(<span class="built_in">std</span>::ostream&amp; strm,<span class="keyword">const</span> <span class="built_in">std</span>::tuple&lt;Args...&gt;&amp; t)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		strm &lt;&lt; <span class="built_in">std</span>::get&lt;IDX&gt;(t) &lt;&lt; (IDX + <span class="number">1</span>==MAX?<span class="string">""</span>:<span class="string">","</span>);</span><br><span class="line">		PRINT_TUPLE&lt;IDX+<span class="number">1</span>, MAX, Args...&gt;::print(strm, t);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; strm, <span class="keyword">const</span> tuple&lt;Args...&gt;&amp; t)</span><br><span class="line">&#123;</span><br><span class="line">	strm &lt;&lt; <span class="string">"["</span>;</span><br><span class="line">	PRINT_TUPLE&lt;<span class="number">0</span>,<span class="keyword">sizeof</span>...(Args),Args...&gt;::print(strm,t);</span><br><span class="line">	<span class="keyword">return</span> strm &lt;&lt; <span class="string">"]"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">int</span> MAX, <span class="keyword">typename</span>...Args&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PRINT_TUPLE</span>&lt;MAX, MAX, Args...&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">print</span> <span class="params">(<span class="built_in">std</span>::ostream&amp; strm, <span class="keyword">const</span> tuple&lt;Args...&gt;&amp; t)</span></span></span><br><span class="line"><span class="function">	</span>&#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这文件在<a href="http://www.coordinate.wang/cpp/2017/04/14/cpp2.0%E6%96%B0%E7%89%B9%E6%80%A72.html#处理first和last元素" target="_blank" rel="noopener">cpp2.0新特性第二讲</a>中有提及</p>
+<h1 id="Class-shared-ptr"><a href="#Class-shared-ptr" class="headerlink" title="Class shared_ptr"></a>Class shared_ptr</h1><p>多个shared_ptr可以共享同一个对象。对象的最后一个拥有着有责任销毁对象，并清除与该对象相关的所有资源。</p>
+<h2 id="使用shared-ptr"><a href="#使用shared-ptr" class="headerlink" title="使用shared_ptr"></a>使用shared_ptr</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pNic(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"nic"</span>));</span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pJut(<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"jut"</span>));</span><br></pre></td></tr></table></figure>
+<p>由于“接受单一pointer作为唯一实参”的构造函数是explicit，所以这里不可以使用assign，那要被视为需要一个隐式转换。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pNic = <span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"nic"</span>);<span class="comment">//ERROR</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pNic;</span><br><span class="line">pNic.reset(<span class="keyword">new</span> <span class="built_in">string</span>(“nico”));<span class="comment">//OK</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pJut &#123;<span class="keyword">new</span> <span class="built_in">string</span>(<span class="string">"jut"</span>)&#125;;<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<p>也可以使用make_shared</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pNic = make_shared&lt;<span class="built_in">string</span>&gt;(“nic”);</span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="built_in">string</span>&gt; pJut = make_shared&lt;<span class="built_in">string</span>&gt;(“jut”);</span><br></pre></td></tr></table></figure>
+<p>这样做会比较安全</p>
+<h2 id="对于array"><a href="#对于array" class="headerlink" title="对于array"></a>对于array</h2><p>可以使用unique_ptr的辅助函数作为deleter，其内部调用delete[]:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; p(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">						<span class="built_in">std</span>::default_delete&lt;<span class="keyword">int</span>[]&gt;());</span><br></pre></td></tr></table></figure>
+<p>然而要注意的是，shared_ptr和unique_ptr以不同的方式处理deleter。例如unique_ptr允许你只传递对应元素类型作为template实参，对于shared_ptr就不可以：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>[]&gt; p(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]);<span class="comment">//OK</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>[]&gt; p(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>]);<span class="comment">//ERROR</span></span><br></pre></td></tr></table></figure>
+<p>此外对于unique_ptr，必须明确给第二个template实参，指出自己的deleter：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="keyword">void</span>(*)(<span class="keyword">int</span>*)&gt; p(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">									[](<span class="keyword">int</span> *p)&#123; <span class="keyword">delete</span> []p;&#125;);</span><br></pre></td></tr></table></figure>
+<p>还要注意的是shared_ptr不提供operator[]，但是unique_ptr可以。</p>
+<h1 id="Class-weak-ptr"><a href="#Class-weak-ptr" class="headerlink" title="Class weak_ptr"></a>Class weak_ptr</h1><p>允许使用“共享但不拥有”的对象，这个class 会建立起一个shared_ptr。一旦最末尾一个拥有该对象的shared_ptr失去拥有全，任何weak_ptr都会自动成空。</p>
+<h2 id="使用-weak-ptr"><a href="#使用-weak-ptr" class="headerlink" title="使用 weak_ptr"></a>使用 weak_ptr</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> &#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; mother;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; father;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">shared_ptr</span>&lt;Person&gt;&gt; kids;</span><br><span class="line"></span><br><span class="line">    Person (<span class="keyword">const</span> <span class="built_in">string</span>&amp; n,</span><br><span class="line">            <span class="built_in">shared_ptr</span>&lt;Person&gt; m = <span class="literal">nullptr</span>,</span><br><span class="line">            <span class="built_in">shared_ptr</span>&lt;Person&gt; f = <span class="literal">nullptr</span>)</span><br><span class="line">     : name(n), mother(m), father(f) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~Person() &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"delete "</span> &lt;&lt; name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;Person&gt; initFamily (<span class="keyword">const</span> <span class="built_in">string</span>&amp; name)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; mom(<span class="keyword">new</span> Person(name+<span class="string">"'s mom"</span>)); </span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; dad(<span class="keyword">new</span> Person(name+<span class="string">"'s dad"</span>)); </span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; kid(<span class="keyword">new</span> Person(name,mom,dad)); </span><br><span class="line">    mom-&gt;kids.push_back(kid);</span><br><span class="line">    dad-&gt;kids.push_back(kid);</span><br><span class="line">    <span class="keyword">return</span> kid;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; p = initFamily(<span class="string">"nico"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"nico's family exists"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"- nico is shared "</span> &lt;&lt; p.use_count() &lt;&lt; <span class="string">" times"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"- name of 1st kid of nico's mom: "</span> </span><br><span class="line">         &lt;&lt; p-&gt;mother-&gt;kids[<span class="number">0</span>]-&gt;name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    p = initFamily(<span class="string">"jim"</span>);</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"jim's family exists"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每个person的析构函数都未被调用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> &#123;</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">string</span> name;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; mother;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;Person&gt; father;</span><br><span class="line">    <span class="built_in">vector</span>&lt;weak_ptr&lt;Person&gt;&gt; kids;  <span class="comment">// weak pointer !!!</span></span><br><span class="line"></span><br><span class="line">    Person (<span class="keyword">const</span> <span class="built_in">string</span>&amp; n,</span><br><span class="line">            <span class="built_in">shared_ptr</span>&lt;Person&gt; m = <span class="literal">nullptr</span>,</span><br><span class="line">            <span class="built_in">shared_ptr</span>&lt;Person&gt; f = <span class="literal">nullptr</span>)</span><br><span class="line">     : name(n), mother(m), father(f) &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~Person() &#123;</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"delete "</span> &lt;&lt; name &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这样做后。我们可以打破shared pointer形成的cycle，使得从kid到parent用的时shared pointer，而parent到kids使用的weak pointer。<br>注意使用weak pointer时，我们必须用一下方式访问对象。不应该这样：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;mother-&gt;kids[<span class="number">0</span>]-&gt;name</span><br></pre></td></tr></table></figure>
+<p>必须是这样在式子内加上lock：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p-&gt;mother-&gt;kids[<span class="number">0</span>].lock()-&gt;name</span><br></pre></td></tr></table></figure>
+<h2 id="错误的使用shared-pointer"><a href="#错误的使用shared-pointer" class="headerlink" title="错误的使用shared pointer"></a>错误的使用shared pointer</h2><p>shared_ptr多次引用同一数据，如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* pInt = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">100</span>];</span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; sp1(pInt);</span><br><span class="line"><span class="comment">// 一些其它代码之后…</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; sp2(pInt);</span><br></pre></td></tr></table></figure>
+<p>这种情况在实际中是很容易发生的，结果也是非常致命的，它会导致两次释放同一块内存，而破坏堆。<br>使用shared_ptr包装this指针带来的问题，如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">tester</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    tester()</span><br><span class="line">    ~tester()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"析构函数被调用!\n"</span>; </span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;tester&gt; sget()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">shared_ptr</span>&lt;tester&gt;(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    tester t;</span><br><span class="line">	<span class="built_in">shared_ptr</span>&lt;tester&gt; sp =  t.sget();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>也将导致两次释放t对象破坏堆栈，一次是出栈时析构，一次就是shared_ptr析构。若有这种需要，可以使用下面代码。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">tester</span> :</span> <span class="keyword">public</span> <span class="built_in">std</span>::enable_shared_from_this&lt;tester&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    tester()</span><br><span class="line">    ~tester()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"析构函数被调用!\n"</span>; </span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;tester&gt; sget()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> shared_from_this();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;tester&gt; sp(<span class="keyword">new</span> tester);</span><br><span class="line">    <span class="comment">// 正确使用sp 指针。</span></span><br><span class="line">    sp-&gt;sget();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Class-unique-ptr"><a href="#Class-unique-ptr" class="headerlink" title="Class unique_ptr"></a>Class unique_ptr</h1><p>可确保一个对象和其相应资源同一时间之辈一个pointer占有。<br>unique_ptr是“其所指对象”的唯一拥有者。当unique_ptr被销毁，其所指的对象也就自动销毁。unique_ptr的必要条件是，他指的对象只有一个拥有者。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::unqiue&lt;ClassA&gt; ptr(<span class="keyword">new</span> ClassA);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就够了，不需要delete语句和catch语句。如果是普通的指针的话，会出现这样的问题，可能会忘记delete对象，特别是如果你在函数中有个return语句。</p>
+<h2 id="使用unique-ptr"><a href="#使用unique-ptr" class="headerlink" title="使用unique_ptr"></a>使用unique_ptr</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//create and initialize string</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"nico"</span>);</span><br><span class="line">(*up)[<span class="number">0</span>] = <span class="string">'N'</span>;<span class="comment">//replace first character</span></span><br><span class="line">up-&gt;append(<span class="string">"fjdk"</span>);<span class="comment">//append some characters</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *up &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>此外你可以调用release,获得unique_ptr拥有的对象并放弃拥有权，于是调用者对该对象有了使用权：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="string">"nico"</span>);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span>* sp = up.release();</span><br></pre></td></tr></table></figure>
+<h2 id="转移unique-ptr的拥有权"><a href="#转移unique-ptr的拥有权" class="headerlink" title="转移unique_ptr的拥有权"></a>转移unique_ptr的拥有权</h2><p>不可以对unique_ptr执行copy和assign，如果你要的是寻常的copy语句。然而你可以使用move。这种情况下上述的copy构造函数或assignment操作符拥有权交给另一个unique_ptr。<br>举个例子:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up1(<span class="keyword">new</span> ClassA);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up2(up1);<span class="comment">//ERROR</span></span><br><span class="line"><span class="comment">//transfer ownership  of the unique_ptr</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up3(<span class="built_in">std</span>::move(up1));<span class="comment">//OK</span></span><br><span class="line">assignment操作符的行为和上面所说的类似:</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up1(<span class="keyword">new</span> ClassA);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up2;</span><br><span class="line">up2 = up1;<span class="comment">//ERROR </span></span><br><span class="line">up2 = <span class="built_in">std</span>::move(up1);<span class="comment">//assign the unique_ptr</span></span><br></pre></td></tr></table></figure>
+<p>如果上述的复制动作之前up2原本拥有对象，会有一个delete动作被调用。删除该对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up1(<span class="keyword">new</span> ClassA);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA&gt; up2(<span class="keyword">new</span> ClassA);</span><br><span class="line">up2 = <span class="built_in">std</span>::move(up1);<span class="comment">//assign the unique_ptr</span></span><br><span class="line"><span class="comment">//delete object owned by up2</span></span><br></pre></td></tr></table></figure>
+<h2 id="对于array-1"><a href="#对于array-1" class="headerlink" title="对于array"></a>对于array</h2><p>对于array应该是用delete[]而不是delete，所以下面的做法是错误的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[<span class="number">10</span>]);</span><br></pre></td></tr></table></figure>
+<p>很幸运，C++标准可提供了一个派诺特话版本用来处理array，对该对象调用delete[]。<br>你只要这样申明：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>[]&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[<span class="number">10</span>]);</span><br></pre></td></tr></table></figure>
+<p>然而要注意的是，他不提供操作符*和-&gt;，提供[]，用于访问其所执行的array中的某个对象：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>[]&gt; up(<span class="keyword">new</span> <span class="built_in">std</span>::<span class="built_in">string</span>[<span class="number">10</span>]);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *up &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;<span class="comment">//ERROR</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; up[<span class="number">0</span>] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<h2 id="其他相应资源的deleter"><a href="#其他相应资源的deleter" class="headerlink" title="其他相应资源的deleter"></a>其他相应资源的deleter</h2><p>当你所指向的对象要求的不只是delete或delete[]，你就只好自己制定deleter。但是与shared_ptr不同的是，你必须指定deleter的类型作为第二个template实参。该类型可以是reference to function，或是个function pointer或function object。如果是function object的话，其function call操作符()应该接受一个“指向对象”的pointer。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassADeleter</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">operator</span><span class="params">()</span> <span class="params">(ClassA* p)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">delete</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;ClassA,ClassADeleter&gt; up(<span class="keyword">new</span> ClassA());</span><br></pre></td></tr></table></figure>
+<p>如果你给的是个函数或lambda，你必须声明deleter的类型位void(<em>)(T</em>)或std::function&lt;void(T*)&gt;，要不就是使用decltype</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="keyword">void</span>(*)(<span class="keyword">int</span>*)&gt; up(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">					[](<span class="keyword">int</span>* p)</span><br><span class="line">					&#123;</span><br><span class="line">						...</span><br><span class="line">						<span class="keyword">delete</span> [] p;</span><br><span class="line">					&#125;);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="built_in">std</span>::function&lt;<span class="keyword">void</span>(<span class="keyword">int</span>*)&gt; up(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],</span><br><span class="line">						[](<span class="keyword">int</span>* p)</span><br><span class="line">						&#123;</span><br><span class="line">							...</span><br><span class="line">							<span class="keyword">delete</span> [] p;</span><br><span class="line">						&#125;);</span><br><span class="line"><span class="keyword">auto</span> l = [](<span class="keyword">int</span> *p)</span><br><span class="line">			&#123;</span><br><span class="line">				...</span><br><span class="line">				<span class="keyword">delete</span> [] p;</span><br><span class="line">			&#125;);</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>,<span class="keyword">decltype</span>(l)&gt; up(<span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">10</span>],l);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/17/2017-04-17-cpp通用工具2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cpp通用工具(2)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/15/2017-04-15-cpp2.0新特性3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cpp2.0新特性(3)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Pair"><span class="nav-number">1.</span> <span class="nav-text">Pair </span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数与赋值"><span class="nav-number">1.1.</span> <span class="nav-text">构造函数与赋值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#piecewise-construction"><span class="nav-number">1.2.</span> <span class="nav-text">piecewise construction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#make-pair"><span class="nav-number">1.3.</span> <span class="nav-text">make_pair</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tuple"><span class="nav-number">2.</span> <span class="nav-text">Tuple</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tuple的操作"><span class="nav-number">2.1.</span> <span class="nav-text">Tuple的操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tie"><span class="nav-number">2.2.</span> <span class="nav-text">tie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Initializer-List"><span class="nav-number">2.3.</span> <span class="nav-text">Initializer List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他的tuple特性"><span class="nav-number">2.4.</span> <span class="nav-text">其他的tuple特性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class-shared-ptr"><span class="nav-number">3.</span> <span class="nav-text">Class shared_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用shared-ptr"><span class="nav-number">3.1.</span> <span class="nav-text">使用shared_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对于array"><span class="nav-number">3.2.</span> <span class="nav-text">对于array</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class-weak-ptr"><span class="nav-number">4.</span> <span class="nav-text">Class weak_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-weak-ptr"><span class="nav-number">4.1.</span> <span class="nav-text">使用 weak_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#错误的使用shared-pointer"><span class="nav-number">4.2.</span> <span class="nav-text">错误的使用shared pointer</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class-unique-ptr"><span class="nav-number">5.</span> <span class="nav-text">Class unique_ptr</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用unique-ptr"><span class="nav-number">5.1.</span> <span class="nav-text">使用unique_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转移unique-ptr的拥有权"><span class="nav-number">5.2.</span> <span class="nav-text">转移unique_ptr的拥有权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对于array-1"><span class="nav-number">5.3.</span> <span class="nav-text">对于array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他相应资源的deleter"><span class="nav-number">5.4.</span> <span class="nav-text">其他相应资源的deleter</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

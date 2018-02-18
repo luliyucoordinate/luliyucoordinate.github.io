@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>理解模板类型推断 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp转载auto" />
+  
+  
+  
+  
+  <meta name="description" content="以下内容转自Effective Modern C++ 条款1 理解模板类型推断 C++11的auto自动推断变量的方式是以模板推断为基础的，模板推断的规则也应用在auto上，所以理解掌握模板推断的规则对于我们C++程序员来说很重要。   12template &amp;lt;typename T&amp;gt; void f(ParamType param); 考虑上面的代码，当我们调用上面函数并传入参数expr">
+<meta name="keywords" content="cpp,转载,auto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解模板类型推断">
+<meta property="og:url" content="http://coordinate.wang/2017/06/20/2017-06-20-理解模板类型推断/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="以下内容转自Effective Modern C++ 条款1 理解模板类型推断 C++11的auto自动推断变量的方式是以模板推断为基础的，模板推断的规则也应用在auto上，所以理解掌握模板推断的规则对于我们C++程序员来说很重要。   12template &amp;lt;typename T&amp;gt; void f(ParamType param); 考虑上面的代码，当我们调用上面函数并传入参数expr">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.822Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解模板类型推断">
+<meta name="twitter:description" content="以下内容转自Effective Modern C++ 条款1 理解模板类型推断 C++11的auto自动推断变量的方式是以模板推断为基础的，模板推断的规则也应用在auto上，所以理解掌握模板推断的规则对于我们C++程序员来说很重要。   12template &amp;lt;typename T&amp;gt; void f(ParamType param); 考虑上面的代码，当我们调用上面函数并传入参数expr">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-06-20-理解模板类型推断" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      理解模板类型推断
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/06/20/2017-06-20-理解模板类型推断/" class="article-date">
+	  <time datetime="2017-06-19T16:00:00.000Z" itemprop="datePublished">六月 20, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>以下内容转自<a href="http://blog.csdn.net/big_yellow_duck/article/details/52140262" target="_blank" rel="noopener">Effective Modern C++ 条款1 理解模板类型推断</a></p>
+<p>C++11的auto自动推断变量的方式是以模板推断为基础的，模板推断的规则也应用在auto上，所以理解掌握模板推断的规则对于我们C++程序员来说很重要。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(ParamType param)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>考虑上面的代码，当我们调用上面函数并传入参数expr时   </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(expr);</span><br></pre></td></tr></table></figure>
+<p>编译器需要根据expr的来推断两个类型，一个是T， 一个是ParamType，这两个类型通常是不一样的，因为ParamType通常会含有修饰符，例如const，例如以下代码  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> T&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">0</span>;</span><br><span class="line">f(x);</span><br></pre></td></tr></table></figure>
+<p>此时T会被推断为int，而ParamType会被推断为const int &amp; 。  </p>
+<p>人们会很自然的认为编译器为T推断的类型就是我们传进的参数的类型，用上面的代码表示就是T的类型就是expr的类型，也就是说传进来的x是int的类型，然后T就是int的类型。但这有时候是不对的，类型T的推导不仅仅依赖于expr，也依赖于ParamType。  </p>
+<p>具体有以下3中情况  </p>
+<ol>
+<li>ParamType是指针类型或者引用类型，但不是通用引用(universal references)类型</li>
+<li>ParamType是通用引用(universal references)类型</li>
+<li>ParamType既不是指针类型也不是引用类型</li>
+</ol>
+<h2 id="情况1-ParamType-是指针类型或者引用类型，但不是通用引用-universal-references-类型"><a href="#情况1-ParamType-是指针类型或者引用类型，但不是通用引用-universal-references-类型" class="headerlink" title="情况1 ParamType 是指针类型或者引用类型，但不是通用引用(universal references)类型"></a>情况1 ParamType 是指针类型或者引用类型，但不是通用引用(universal references)类型</h2><p>这是最简单的一种情况。只需记住以下两点  </p>
+<ol>
+<li>如果传进来的参数expr 是一个引用类型，忽视引用的部分</li>
+<li>通过模式匹配expr 的类型来决定ParamType 的类型从而决定T 的类型（Then pattern-match expr’s type against ParamType to determine T. ）</li>
+</ol>
+<p>例子如下   </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp; param)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>然后我们定义一下变量  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;rx = x;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用模板函数</span></span><br><span class="line">f(x);   <span class="comment">// T 的类型为int, ParamType的类型为int&amp;</span></span><br><span class="line">f(cx);   <span class="comment">// T 的类型为const int, ParamType的类型为const int&amp;</span></span><br><span class="line">f(rx);   <span class="comment">// T 的类型为const int, ParamType的类型为const int&amp;</span></span><br></pre></td></tr></table></figure>
+<p>值得注意的是f(rx)，rx是引用类型，但是编译器会把引用忽略，然后用去掉引用后的参数类型来匹配T 。如果ParamType为右值引用，推断的原则也是相同。但是如果为const引用，就会与上面的结果有点不一样，参考下面的例子。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> T&amp; param)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>定义的变量和上面的一致  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;rx = x;</span><br><span class="line"> <span class="comment">// 一样调用模板函数</span></span><br><span class="line">f(x);   <span class="comment">// T 的类型为int, ParamType的类型为const int&amp;</span></span><br><span class="line">f(cx);   <span class="comment">// T 的类型为int, ParamTyp的类型为const int&amp;</span></span><br><span class="line">f(rx);   <span class="comment">// T 的类型为int, ParamType的类型为const int&amp;</span></span><br></pre></td></tr></table></figure>
+<p>因为我们在定义声明模板的时候参数类型已经认定了是const引用，所以T 的类型不再需要推断出const。而rx的引用依旧被忽略。  </p>
+<p>如果把引用换成指针，原则基本一致，把expr的指针类型忽略，例子如下  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T* param)</span></span>;</span><br><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *px = &amp;x;</span><br><span class="line">f(&amp;x);  <span class="comment">// T的类型为int，ParamType 的类型为int*</span></span><br><span class="line">f(px);   <span class="comment">// T的类型为const int，ParamType的类型为const int*</span></span><br></pre></td></tr></table></figure>
+<h2 id="情况2-ParamType-是通用引用-universal-references-类型"><a href="#情况2-ParamType-是通用引用-universal-references-类型" class="headerlink" title="情况2 ParamType 是通用引用(universal references)类型"></a>情况2 ParamType 是通用引用(universal references)类型</h2><p>首先要知道什么是universal references，可以google或者baidu，懒得搜索的可以直接看这里。简单来说就是type&amp;&amp; + syntax + type deduction，即可以引用左值，也可以引用右值。<br>这种情况也有两个原则  </p>
+<ol>
+<li>如果expr是一个左值，那么T和ParamType会被推断为左值引用</li>
+<li>如果expr是一个右值，那么会用正常的推断方式(情况1)</li>
+</ol>
+<p>可以看以下代码</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp;&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;rx = x;</span><br><span class="line"></span><br><span class="line">f(x);  <span class="comment">// x是左值，所以T 和ParamType会被推断为int &amp;类型</span></span><br><span class="line">f(cx); <span class="comment">// cx是左值，所以T和ParamType会被推断为const int &amp;类型</span></span><br><span class="line">f(rx);  <span class="comment">// rx是左值，所以T和 ParamType会被推断为const int &amp;类型</span></span><br><span class="line">f(<span class="number">27</span>);`  <span class="comment">// 27是右值，根据情况1，T的类型会被推断为int、ParamType会被推断为int &amp;&amp;</span></span><br></pre></td></tr></table></figure>
+<h2 id="情况3-ParamType-既不是指针类型也不是引用类型"><a href="#情况3-ParamType-既不是指针类型也不是引用类型" class="headerlink" title="情况3 ParamType 既不是指针类型也不是引用类型"></a>情况3 ParamType 既不是指针类型也不是引用类型</h2><p>如果ParamType 既不是指针也不是引用，那么参数是通过值传递(pass-by-value)的</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T param)</span></span>;    <span class="comment">// 此处会有拷贝(构造)</span></span><br></pre></td></tr></table></figure>
+<p>T 的类型推断主要依赖于传进来的参数expr  </p>
+<ol>
+<li>如果expr的类型是引用类型，那么忽略引用</li>
+<li>通过了上面的检测(无论是不是引用类型)后，如果expr 的类型是const的，把const也忽略了，还会忽略volatile。</li>
+</ol>
+<p>给出下面的例子  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cx = x;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;rx = x;</span><br></pre></td></tr></table></figure>
+<p>和之前的例子一样  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(x);  <span class="comment">// 易知T和ParamType的类型都是int</span></span><br><span class="line">f(cx);  <span class="comment">// 忽略const，T和ParamType的类型都是int</span></span><br><span class="line">f(rx);`  <span class="comment">// 忽略了引用后再忽略const,T和ParamType的类型都是int</span></span><br></pre></td></tr></table></figure>
+<p>虽说cx和rx都是const修饰的，但是param是值语义，所以param只是拷贝了cx和rx的值，并可以改变值。这就是为什么会忽略const，因为传进的参数expr 尽管不可以改变值，但并不意味着他们的拷贝不可以。  </p>
+<p>如果我们定义一个指向常量的常量指针   </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> ptr = <span class="string">"Fun with pointers"</span>;</span><br></pre></td></tr></table></figure>
+<p>然后调用函数 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(ptr);</span><br></pre></td></tr></table></figure>
+<p>这个时候T 和 ParamType的类型会被推断为const char *，这是因为这种情况下传入的参数都会被函数拷贝并可以改变的，所以指针是可以指向不同的地址，个人理解在情况3是只会忽略 顶层const，然后保留 底层const。  </p>
+<h2 id="数组作为参数"><a href="#数组作为参数" class="headerlink" title="数组作为参数"></a>数组作为参数</h2><p>在情况3下，如果传入的参数是数组，会转化为指针类型，例如 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> name[] = <span class="string">"J. R. Briggs"</span>; <span class="comment">// name的类型是const char[13] </span></span><br><span class="line">f(name); <span class="comment">// T会被推断为 const char *</span></span><br></pre></td></tr></table></figure>
+<p>但在情况1下 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(T&amp; param)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>我们把数组作为参数传入函数 </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(name); <span class="comment">// T 的类型会被推断为const char [13]</span></span><br></pre></td></tr></table></figure>
+<p>这个时候T 的类型会被推断为有长度的数组，在这个例子中T 的类型会被推断为const char [13]，ParamType的类型会是 const char (&amp;) [13]<br>在这里引用一段书中的原话，这规则有毒….  </p>
+<p>Yes, the syntax looks toxic, but knowing it will score you mondo points with those few souls who care.<br>是的，语法看起来很有毒，但是知道它会让你与那些关心的少数灵魂分享你的意见。  </p>
+<p>利用这个特性可以写一个模板，用来返回数组的长度  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> arraySize(T (&amp;)[N]) <span class="keyword">noexcept</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="keyword">return</span> N;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为这个模板函数是constexpr修饰的，所以他的结果可以在编译时期得到，所以可以用来初始化变量。  另外关于constexpr可以看这篇<a href="">《尽可能使用constexpr》</a></p>
+<h2 id="函数作为参数"><a href="#函数作为参数" class="headerlink" title="函数作为参数"></a>函数作为参数</h2><p>因为函数像数组一样可以转化为指针，所以函数作为参数与数组类似，例子如下  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">someFunc</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">double</span>)</span></span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(T param)</span></span>; </span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">(T&amp; param)</span></span>;</span><br><span class="line"></span><br><span class="line">f1(someFunc); <span class="comment">// 传值，ParamType 类型为void (*)(int, double)，情况3</span></span><br><span class="line"></span><br><span class="line">f2(someFunc); <span class="comment">// 引用语义，ParamType类型为void (&amp;)(int, double)，情况1</span></span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>auto的规则与模板类型推断有很大关联，这在一开始已经说了，是理解auto的前提。  </p>
+<p>要记住的4点  </p>
+<ol>
+<li>在模板类型推断过程中，参数的引用语义会被忽略</li>
+<li>在通用引用(universal reference)类型推断时，左值引用会被特别对待</li>
+<li>在传值类型的模板推断过程中，const 和 volatile的参数会以non-const 和 non-volatile 对待。</li>
+<li>在模板类型推断过程中，如果参数是数组或者函数，他们被转化为对应的指针，除非模板参数类型一开始就是引用。</li>
+</ol>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/auto/">auto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/21/2017-06-21-尽可能使用constexpr/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          尽可能使用constexpr
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/06/19/2017-06-19-为什么size_t重要？（Why-size_t-matters）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">为什么size_t重要？（Why size_t matters）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#情况1-ParamType-是指针类型或者引用类型，但不是通用引用-universal-references-类型"><span class="nav-number">1.</span> <span class="nav-text">情况1 ParamType 是指针类型或者引用类型，但不是通用引用(universal references)类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况2-ParamType-是通用引用-universal-references-类型"><span class="nav-number">2.</span> <span class="nav-text">情况2 ParamType 是通用引用(universal references)类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#情况3-ParamType-既不是指针类型也不是引用类型"><span class="nav-number">3.</span> <span class="nav-text">情况3 ParamType 既不是指针类型也不是引用类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数组作为参数"><span class="nav-number">4.</span> <span class="nav-text">数组作为参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数作为参数"><span class="nav-number">5.</span> <span class="nav-text">函数作为参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number"></span> <span class="nav-text">总结</span></a>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>后缀表达式计算四则运算 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp算法" />
+  
+  
+  
+  
+  <meta name="description" content="我们平时书写的算术表达式都是中序表达式，例如  (1 + 2) x 3/4 - 5  而对应的后缀表达式就是  12+3x4/5-  如何由中序表达式变为后缀表达式呢？具体做法如下：  建立符号栈s 从左向右扫描中序表达式 碰到数字，直接输出 碰到运算符 如果s为空或者栈顶元素为左括号，则压入s，回到从左向右扫描中序表达式 运算符的优先级大于s栈顶运算符的优先级，压入s，回到从左向右扫描中序表达式">
+<meta name="keywords" content="cpp,算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后缀表达式计算四则运算">
+<meta property="og:url" content="http://coordinate.wang/2017/10/02/2017-10-02-后缀表达式问题/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我们平时书写的算术表达式都是中序表达式，例如  (1 + 2) x 3/4 - 5  而对应的后缀表达式就是  12+3x4/5-  如何由中序表达式变为后缀表达式呢？具体做法如下：  建立符号栈s 从左向右扫描中序表达式 碰到数字，直接输出 碰到运算符 如果s为空或者栈顶元素为左括号，则压入s，回到从左向右扫描中序表达式 运算符的优先级大于s栈顶运算符的优先级，压入s，回到从左向右扫描中序表达式">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.302Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="后缀表达式计算四则运算">
+<meta name="twitter:description" content="我们平时书写的算术表达式都是中序表达式，例如  (1 + 2) x 3/4 - 5  而对应的后缀表达式就是  12+3x4/5-  如何由中序表达式变为后缀表达式呢？具体做法如下：  建立符号栈s 从左向右扫描中序表达式 碰到数字，直接输出 碰到运算符 如果s为空或者栈顶元素为左括号，则压入s，回到从左向右扫描中序表达式 运算符的优先级大于s栈顶运算符的优先级，压入s，回到从左向右扫描中序表达式">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-10-02-后缀表达式问题" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      后缀表达式计算四则运算
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/10/02/2017-10-02-后缀表达式问题/" class="article-date">
+	  <time datetime="2017-10-01T16:00:00.000Z" itemprop="datePublished">十月 2, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们平时书写的算术表达式都是<strong>中序表达式</strong>，例如</p>
+<ul>
+<li>(1 + 2) x 3/4 - 5</li>
+</ul>
+<p>而对应的<strong>后缀表达式</strong>就是</p>
+<ul>
+<li>12+3x4/5-</li>
+</ul>
+<p>如何由中序表达式变为后缀表达式呢？具体做法如下：</p>
+<ul>
+<li>建立符号栈s</li>
+<li>从左向右扫描中序表达式<ul>
+<li>碰到数字，直接输出</li>
+<li>碰到运算符<ul>
+<li>如果s为空或者栈顶元素为左括号，则压入s，回到从左向右扫描中序表达式</li>
+<li>运算符的优先级大于s栈顶运算符的优先级，压入s，回到从左向右扫描中序表达式</li>
+<li>运算符的优先级小于或者等于s栈顶运算符的优先级，弹出并输出s栈顶元素，回到碰到运算符</li>
+</ul>
+</li>
+<li>如果是左括号，压入s</li>
+<li>如果是右括号<ul>
+<li>弹出s栈顶元素<ul>
+<li>如果弹出的栈顶元素是左括号，则不输出，回到从左向右扫描中序表达式</li>
+<li>如果弹出的栈顶元素不是左括号，则输出，回到弹出s栈顶元素</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>弹出并输出s中的符号</li>
+</ul>
+<p>所以对于$(1+2)\times3/4-5$可以这样去做</p>
+<ul>
+<li><p>建立符号栈s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：</span><br><span class="line">s:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>从左向右扫描，第一个左括号，压入s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：</span><br><span class="line">s:(</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>1，输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：1</span><br><span class="line">s:(</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>+，栈顶元素为左括号，压入s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：1</span><br><span class="line">s:(+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2，输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12</span><br><span class="line">s:(+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>右括号，弹出栈顶元素+并输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+</span><br><span class="line">s:(</span><br></pre></td></tr></table></figure>
+<p>栈顶元素是左括号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+</span><br><span class="line">s:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>x，压入s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+</span><br><span class="line">s:x</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3，输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3</span><br><span class="line">s:x</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>/，优先级等于栈顶元素优先级，弹出并输出栈顶元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x</span><br><span class="line">s:</span><br></pre></td></tr></table></figure>
+<p>栈为空，压入s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x</span><br><span class="line">s:/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4，输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x4</span><br><span class="line">s:/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-，优先级小于栈顶元素优先级，弹出并输出栈顶元素</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x4/</span><br><span class="line">s:</span><br></pre></td></tr></table></figure>
+<p>栈为空，压入s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x4/</span><br><span class="line">s:-</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>5，输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x4/5</span><br><span class="line">s:-</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>弹出并输出s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出：12+3x4/5-</span><br><span class="line">s:</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>关于后缀表达式的计算，就是所有的计算按运算符出现的顺序，严格从左向右进行即可。但是我们是不是每次都要先将中缀转化为后缀在计算呢？如何按后缀表达式方式的思想计算中序表达式呢？具体做法如下：</p>
+<ul>
+<li>建立数字栈s1，符号栈s2</li>
+<li>表达式不为空，从左向右扫描中序表达式<ul>
+<li>碰到数字压入s1</li>
+<li>碰到操作符<ul>
+<li>如果s2为空或栈顶元素为左括号，则压入s2，回到从左向右扫描中序表达式</li>
+<li>如果s2不空，且运算符的优先级和s2栈顶的运算符优先级高，则将这个运算符压入s2 ，回到从左向右扫描中序表达式</li>
+<li>如果s2不空，且运算符的优先级比s2栈顶的运算符优先级相同或比其低，则从s1 中弹出两个数字与s1栈顶弹出的运算符做运算，将结果压入s1，然后回到碰到操作符。</li>
+</ul>
+</li>
+<li>碰到左括号，则压入s2</li>
+<li>碰到右括号<ul>
+<li>如果s2栈顶元素不是左括号，则从s1 中弹出两个数字与s1栈顶的运算符做运算，将结果压入s1</li>
+<li>如果s2栈顶元素是左括号，弹出左括号</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>表达式为空，如果s2不为空，则从s1 中弹出两个数字与s2栈顶弹出的运算符做运算，将结果压入s1，直到s2为空</li>
+<li>如果s1只有一个，ok，否则肯定就出错了^_^!</li>
+</ul>
+<p>对于$(1+2)\times3/4-5$这样计算</p>
+<ul>
+<li><p>建立s1,s2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:</span><br><span class="line">s2:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>左括号，压入s2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:</span><br><span class="line">s2:(</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>1，压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:1</span><br><span class="line">s2:(</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>+，s2为空，压入s2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:1</span><br><span class="line">s2:(+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>2，压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:12</span><br><span class="line">s2:(+</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>右括号，s2栈顶元素不是左括号，则从s1 中弹出两个数字与s1栈顶的运算符做运算，将结果压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:3</span><br><span class="line">s2:(</span><br></pre></td></tr></table></figure>
+<p>s2栈顶元素是左括号，弹出左括号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:3</span><br><span class="line">s2:</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>x，s2为空，压入s2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:3</span><br><span class="line">s2:x</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>3，压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:33</span><br><span class="line">s2:x</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>/，s2不空，且运算符的优先级和s2栈顶的运算符优先级相同，则将这个运算符压入s2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:33</span><br><span class="line">s2:x/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>4，压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:334</span><br><span class="line">s2:x/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>-，s2不空，且运算符的优先级比s2栈顶的运算符优先级相同或比其低，则从s1 中弹出两个数字与s1栈顶弹出的运算符做运算，将结果压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:3 0.75</span><br><span class="line">s2:x</span><br></pre></td></tr></table></figure>
+<p>s2不空，且运算符的优先级比s2栈顶的运算符优先级相同或比其低，则从s1 中弹出两个数字与s1栈顶弹出的运算符做运算，将结果压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:2.25</span><br><span class="line">s2:</span><br></pre></td></tr></table></figure>
+<p>s2为空，压入s2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:2.25</span><br><span class="line">s2:-</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>5，压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:2.25 5</span><br><span class="line">s2:-</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>s2不为空，则从s1 中弹出两个数字与s2栈顶弹出的运算符做运算，将结果压入s1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1:-2.75</span><br><span class="line">s2:</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>最后一个问题就是关于负数和浮点数的问题，关于这方面的处理我放在了代码中。负数的问题，主要分为减号语意和负数语意去处理。我觉得这里最简单的方式，就是对于负号前面空或者是左括号，我们给它插上个0，这样问题就归为了减号语意一个问题。当然分两个去做也没有问题，只是讨论情况会很麻烦。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**********************************************************</span></span><br><span class="line"><span class="comment">*2017_10_2 by coordinte</span></span><br><span class="line"><span class="comment">*前缀四则运算</span></span><br><span class="line"><span class="comment">*win10 vs2015 x86 debug </span></span><br><span class="line"><span class="comment">*www.coordinate.wang</span></span><br><span class="line"><span class="comment">************************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stack&gt;		//内部是通过deque实现的</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cctype&gt;		//isdigit</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;		//stod</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdexcept&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;	//remove</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//运算符的优先级</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">char</span>, <span class="keyword">int</span>&gt; priority&#123; &#123; <span class="string">'+'</span>, <span class="number">1</span> &#125;,</span><br><span class="line">							&#123; <span class="string">'-'</span>, <span class="number">1</span> &#125;,</span><br><span class="line">							&#123; <span class="string">'*'</span>, <span class="number">2</span> &#125;,</span><br><span class="line">							&#123; <span class="string">'/'</span>, <span class="number">2</span> &#125; &#125;;	</span><br><span class="line"></span><br><span class="line"><span class="comment">//计算两个数的值，返回结果</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">execute</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">stack</span>&lt;<span class="keyword">char</span>&gt;&amp; ops, <span class="built_in">std</span>::<span class="built_in">stack</span>&lt;<span class="keyword">double</span>&gt;&amp; operands)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> result&#123;&#125;;</span><br><span class="line">	<span class="keyword">double</span> rhs&#123; operands.top() &#125;; operands.pop();</span><br><span class="line">	<span class="keyword">double</span> lhs&#123; operands.top() &#125;; operands.pop();</span><br><span class="line">	<span class="keyword">switch</span> (ops.top())</span><br><span class="line">	&#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">'+'</span>:</span><br><span class="line">		result = lhs + rhs;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">'-'</span>:</span><br><span class="line">		result = lhs - rhs;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">'*'</span>:</span><br><span class="line">		result = lhs * rhs;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> <span class="string">'/'</span>:</span><br><span class="line">		result = lhs / rhs;</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		<span class="keyword">throw</span> <span class="built_in">std</span>::runtime_error&#123; <span class="built_in">string</span>&#123; <span class="string">"invalid operator: "</span> + ops.top() &#125; &#125;;</span><br><span class="line">	&#125;</span><br><span class="line">	ops.pop();</span><br><span class="line">	operands.push(result);</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将输入字符串转化为前缀形式</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">toSuffix</span><span class="params">(<span class="built_in">string</span> str_in)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">stack</span>&lt;<span class="keyword">char</span>&gt; operators;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">stack</span>&lt;<span class="keyword">double</span>&gt; operands;</span><br><span class="line">	<span class="keyword">size_t</span> index&#123;&#125;;		<span class="comment">//标记字符串中数字的下一个字符的位置</span></span><br><span class="line">	<span class="keyword">size_t</span> i&#123;&#125;;			<span class="comment">//标记字符的位置www.coordinate.wang</span></span><br><span class="line">	<span class="keyword">while</span> (i &lt; str_in.length())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">char</span> s_i = str_in[i];</span><br><span class="line">		<span class="keyword">if</span> (s_i == <span class="string">'('</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			operators.push(s_i);</span><br><span class="line">			++i;</span><br><span class="line">		&#125;	</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (s_i == <span class="string">')'</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">char</span> temp&#123;&#125;;</span><br><span class="line">			<span class="keyword">while</span> ((temp = operators.top()) != <span class="string">'('</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				execute(operators, operands);</span><br><span class="line">				<span class="keyword">if</span> (operators.empty())</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//去除temp</span></span><br><span class="line">			operators.pop();</span><br><span class="line">			++i;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//处理操作符</span></span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span> (priority.count(s_i))			</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">while</span> (!operators.empty() &amp;&amp; operators.top() != <span class="string">'('</span></span><br><span class="line">				&amp;&amp; priority.at(s_i) &lt;= priority.at(operators.top()))</span><br><span class="line">			&#123;</span><br><span class="line">				execute(operators, operands);</span><br><span class="line">			&#125;</span><br><span class="line">			operators.push(s_i);</span><br><span class="line">			++i;</span><br><span class="line">		&#125;	</span><br><span class="line">		<span class="keyword">else</span><span class="comment">//处理数字</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">double</span> number = <span class="built_in">std</span>::stod(str_in.substr(i), &amp;index);</span><br><span class="line">			operands.push(number);</span><br><span class="line">			i += index;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (!operators.empty())</span><br><span class="line">	&#123;</span><br><span class="line">		execute(operators, operands);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">double</span> result = operands.top(); operands.pop();</span><br><span class="line">  	<span class="keyword">if</span> (!operands.empty())</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//输入字符串的小数点前要有数字，如0.1，不可以是.1</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> str_in;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"An arithmetic can include the operators +,-,*,/."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	<span class="keyword">try</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter an arithmetic expression and press Enter"</span></span><br><span class="line">				&lt;&lt; <span class="string">" - enter an empty line to end:"</span></span><br><span class="line">				&lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">			<span class="built_in">std</span>::getline(<span class="built_in">std</span>::<span class="built_in">cin</span>, str_in, <span class="string">'\n'</span>);</span><br><span class="line">			<span class="keyword">if</span> (str_in.empty()) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//删除空格</span></span><br><span class="line">			str_in.erase(<span class="built_in">std</span>::remove(<span class="built_in">std</span>::begin(str_in), <span class="built_in">std</span>::end(str_in), <span class="string">' '</span>), <span class="built_in">std</span>::end(str_in));</span><br><span class="line">			<span class="comment">//如果负号前面是空或者左括号的话插入0</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; str_in.length(); ++i)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span> (str_in[i] == <span class="string">'-'</span> &amp;&amp; i == <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					str_in.insert(<span class="number">0</span>, <span class="number">1</span>, <span class="string">'0'</span>);</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (str_in[i] == <span class="string">'-'</span> &amp;&amp; str_in[i - <span class="number">1</span>] == <span class="string">'('</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					str_in.insert(i, <span class="number">1</span>, <span class="string">'0'</span>);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; toSuffix(str_in) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="built_in">std</span>::exception&amp; e)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; e.what() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Calculator ending ..."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个程序稍加改动就可以输出后缀表达式了。不再赘述，留给读者思考。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/10/03/2017-10-03-变位词问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          变位词问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/29/2017-09-29-判断两个线段相交/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">判断两个线段相交，求交点</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

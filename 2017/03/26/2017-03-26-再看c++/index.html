@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>再看c++ | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpp" />
+  
+  
+  
+  
+  <meta name="description" content="Object Based基于对象这里的类型是含有指针 1234567891011class String&amp;#123;public:	string(constchar* cstr = 0);	string(conststring&amp;amp; str);	string&amp;amp;operator=(const String&amp;amp; str);	~String();	char *get_c_str()co">
+<meta name="keywords" content="cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="再看c++">
+<meta property="og:url" content="http://coordinate.wang/2017/03/26/2017-03-26-再看c++/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Object Based基于对象这里的类型是含有指针 1234567891011class String&amp;#123;public:	string(constchar* cstr = 0);	string(conststring&amp;amp; str);	string&amp;amp;operator=(const String&amp;amp; str);	~String();	char *get_c_str()co">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfh2smwj20p40i2taq.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3yfhgf74j20se0hegnw.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfhxibyj20pe0eltac.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe3yfi6sf8j20wx0abjsm.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe3yfip9j5j20eg0acte5.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe3yfj1eiaj20nc0ei0us.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.967Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="再看c++">
+<meta name="twitter:description" content="Object Based基于对象这里的类型是含有指针 1234567891011class String&amp;#123;public:	string(constchar* cstr = 0);	string(conststring&amp;amp; str);	string&amp;amp;operator=(const String&amp;amp; str);	~String();	char *get_c_str()co">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfh2smwj20p40i2taq.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-26-再看c++" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      再看c++
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/26/2017-03-26-再看c++/" class="article-date">
+	  <time datetime="2017-03-25T16:00:00.000Z" itemprop="datePublished">三月 26, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Object-Based基于对象"><a href="#Object-Based基于对象" class="headerlink" title="Object Based基于对象"></a>Object Based基于对象</h1><p>这里的类型是含有指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">String</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="built_in">string</span>(constchar* cstr = <span class="number">0</span>);</span><br><span class="line">	<span class="built_in">string</span>(conststring&amp; str);</span><br><span class="line">	<span class="built_in">string</span>&amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> String&amp; str);</span><br><span class="line">	~String();</span><br><span class="line">	<span class="function"><span class="keyword">char</span> *<span class="title">get_c_str</span><span class="params">()</span><span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> m_data; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">char</span> *m_data;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="ctor和dtor"><a href="#ctor和dtor" class="headerlink" title="ctor和dtor"></a>ctor和dtor</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">String::String(<span class="keyword">const</span> <span class="keyword">char</span> * cstr = <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>( cstr)</span><br><span class="line">	&#123;</span><br><span class="line">	   	m_data = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="built_in">strlen</span>(cstr) + <span class="number">1</span>];</span><br><span class="line">		<span class="built_in">strcpy</span>(m_data, cstr);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">   	 	m_data = <span class="keyword">new</span> <span class="keyword">char</span> [<span class="number">1</span>];</span><br><span class="line">    	*m_data = ‘\<span class="number">0</span>’;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span></span><br><span class="line">String::String()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">delete</span>[] m_data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="copy-constructor"><a href="#copy-constructor" class="headerlink" title="copy constructor"></a>copy constructor</h2><p>如果使用的是默认拷贝的话，只会copy指针，指针指向的值不会copy</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span></span><br><span class="line">String::String(<span class="keyword">const</span> String&amp; str)</span><br><span class="line">&#123;</span><br><span class="line">	m_data = newchar[ <span class="built_in">strlen</span>(str.m_data  + <span class="number">1</span>)];</span><br><span class="line">	<span class="built_in">strcpy</span>(m_data,str.m_data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="copy-assignment-operator"><a href="#copy-assignment-operator" class="headerlink" title="copy assignment operator"></a>copy assignment operator</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> </span><br><span class="line">String&amp; String::<span class="keyword">operator</span>=(constString&amp; str)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span> == &amp;str)</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;   <span class="comment">//self assignment</span></span><br><span class="line">	<span class="keyword">delete</span>[] m_data;</span><br><span class="line">	m_data = newchar[ <span class="built_in">strlen</span>(str.m_data) + <span class="number">1</span>];</span><br><span class="line">	<span class="built_in">strcpy</span>(m_data,str.m_data);</span><br><span class="line">	<span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里self assignment的原因在于<br>我们在copy之前调用了delete</p>
+<h2 id="stack-and-heap"><a href="#stack-and-heap" class="headerlink" title="stack and heap"></a>stack and heap</h2><p>stack是存在于某个作用域内的内存空间，但你调用函数，函数本身会形成一个stack用来放置他所接受的参数，以及返回地址。在函数本体内申明的任何变量，其所使用的内存块都取自于上述的stackHeap，是指由系统提供的一块global内存空间，程序可动态分配Complex c1(1,2)c1便是所谓的stack object，其生命在作用域结束之后结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Complex <span class="title">c2</span><span class="params">(<span class="number">1</span>,<span class="number">2</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>c1便是所谓的static object，其生命在作用域结束之后任然存在，在整个程序结束后结束。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Complex <span class="title">c3</span><span class="params">(<span class="number">1</span>,<span class="number">2</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>c3便是global object，他的生命在程序结束后才结束，你也可以把它视为static object<br>new先分配内存在调用ctor</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Complex *pc = <span class="keyword">new</span> Complex(<span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>编译器转化为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Complex *pc;</span><br><span class="line"><span class="keyword">void</span>* mem = <span class="keyword">operator</span> <span class="keyword">new</span> (<span class="keyword">sizeof</span>( Complex));<span class="comment">// 内部调用malloc</span></span><br><span class="line">pc = <span class="keyword">static_cast</span>&lt; Complex*&gt;(mem);</span><br><span class="line">pc-&gt;Comnplex::Complex(<span class="number">1</span>,<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<p>delete 先调用dtor，在释放内存</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String::~String(ps);</span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">delete</span><span class="params">(ps)</span></span>; <span class="comment">// 内部调用free</span></span><br></pre></td></tr></table></figure>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfh2smwj20p40i2taq.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfh2smwj20p40i2taq.jpg" class="img-fluid"><br></a><br><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3yfhgf74j20se0hegnw.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3yfhgf74j20se0hegnw.jpg" class="img-fluid"><br></a></p>
+<p>array new一定要搭配array delete<br>delete[] p;与delete p;都会删除内存</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfhxibyj20pe0eltac.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659gy1fe3yfhxibyj20pe0eltac.jpg" class="img-fluid"><br></a></p>
+<p>但是问题不是发生这里，第一种写法会告诉编译器调用三次析构函数 而第二个会调用一次析构函数。最后的指针空间都会被释放，但是这里指针所指向的内存空间在第二种情况下会发生内存泄漏。但是如果一个类里面没有指针的话。那这两种就没有区别，但是区别做是一种好的习惯。</p>
+<p>关于static<br>static data members<br>同一个类不同对象具有相同的值时，使用静态成员变量<br>static member functions<br>静态函数没有this pointer，所以他不可像一般函数那样访问非静态成员数据，所以他只可以访问静态成员数据。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Account</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">double</span> m_rate;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">set_rate</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span>&amp; x)</span> </span>&#123; m_rate = x;&#125;</span><br><span class="line">];</span><br><span class="line"><span class="keyword">double</span> Account::m_rate = <span class="number">8.0</span>;</span><br></pre></td></tr></table></figure>
+<p>调用static函数的方式<br>通过object调用和通过class name调用<br>多谈几句<br>问题1： 为什么在类内的静态成员定义后，要到类的外部在定义和初始化？<br>答：首先这句话就是错的，在类内的静态成员变量只是一定声明，并没有分配相应的内存空间；在类外，相当于定义加上初始化，如果只是定义，也是能够编译成功的，因为分配了内存。等价于全局变量，但只属于类。  </p>
+<p>问题2：为什么类的静态成员在类外部的定义只能一次?<br>答：好比全局变量的多重定义<br>另外，任何变量都只进行一次初始化。局部变量在程序块结束时生存期就结束了，下次再调用这个程序块时从原理上说声明的是另一个变量了(分配到的地址也不一定一样)。<br>PS：在不同编译器的不同编译情况时，实际的内存分区可能不同。例如TC的Small模式下堆和栈区是重合的，而Tiny模式下连静态区域和动态区域都是重合的。  </p>
+<p>问题3：私有的静态成员变量如何初始化，访问权限还是私有么？<br>答：显然，也是在类的外部进行初始化，但是访问权限是存在的。比如不能在程序执行的过程中直接用类名加作用域来访问此私有的静态成员。需要通过类公有的外部接口来访问，包括静态与非静态接口。  </p>
+<p>问题4：在程序执行过程中，其他类的对象改变静态成员变量的值，那么相应的在建立另一个对象时的静态成员值会是初始化的值还是上一次改变的值？<br>答：是上一次改变的值，因为初始化是分配内存，赋初值。  </p>
+<p>问题5：类的非静态成员函数中能访问静态成员变量么？<br>答：是可以访问的，前提是要对静态的进行外部的初始化。如果为初始化，则会报错，是链接错误，显然在类内部只是声明，并没有在类的外部进行定义与初始化，未分配内存。  </p>
+<p>问题6：类的静态成员函数中能访问非静态成员变量么？<br>答：不能，解析不了。非静态成员，不是一个特定的对象的，既没有this指针，指向，根本找不到。  </p>
+<p>首先问题来自这个函数:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">	i++;</span><br><span class="line">	<span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当这个函数被反复调用时,i的值是会一直加的,也就是静态变量只被初始化了一次.<br>我对此产生了疑惑.不知道大家有没有.当改为:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    i=<span class="number">0</span>;</span><br><span class="line">    ++i;</span><br><span class="line">    <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反复调用时都返回的是1; 这个例子很明白,虽然i这个变量时同名的,但是地址是不一样的,这是一个新的变量,因为在作用域后,原变量被销毁了.接着创建一个新的变量.<br>那么这里我们就知道了一件事情:就是静态变量是全局的,和程序的生命周期是一样的.那么原来的staic的i依然存在. 但是它的可访问区域就只能是定义的作用域,而不一定能全局访问,这是全局变量的一个差别.而静态变量的必须初始化,如果没有显示初始化,则初始化为0 ,’0’或者其他.初始化在程序第一次加载中开始.并设置了相应的标志位!所以当变量重复时,编译器忽略了重复初始化的代码,到这里就算是C++只能初始化一次的原因了!操作系统在加载程序时会根据程序中的声明部分为程序分配内存空间(这部分数据是由编译器生成的)。程序所支配的内存空间分为两大部分：静态区域和动态区域(至于为什么这样区分涉及到硬件知识，<br>建议LZ不要深究)：动态区域用于存储经常会变动的数据(动态区域又分为两大部分：<br>栈和堆，关于这两个部分大家应该都很熟悉了)；静态区域(Java里称为永久区域)用于存储不会经常变化的数据，<br>例如程序的指令代码(C/C++里就是各个函数编译后得到的代码)、用户类型(结构体、类)的声明代码、全局变量、静态变量<br>有些例子提到用静态变量来做递归的计数器，那只是为了说明静态变量的特性。<br>实际上不推荐这种用法，因为这样会对程序性能造成轻微的影响。<br>静态区域内的数据会在程序加载时进行初始化，生存期为程序运行的全部时间。</p>
+<p>关于singleton<br>这个设计模式主要目的是想在整个系统中只能出现一个类的实例。这样做当然是有必然的，比如你的软件的全局配置信息，或者是一个Factory，或是一个主控类，等等。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>: </span><br><span class="line">	<span class="function"><span class="keyword">static</span> A&amp; <span class="title">getInstance</span> <span class="params">( <span class="keyword">return</span> a; )</span></span>;</span><br><span class="line">	setup() &#123; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	A();</span><br><span class="line">	A(<span class="keyword">const</span> A&amp; rhs);</span><br><span class="line">&#125;;</span><br><span class="line">A&amp; A::getInstance()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">static</span> A a;</span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line">A::getInstance.setup();</span><br></pre></td></tr></table></figure>
+<p>关于function template</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> </span></span><br><span class="line"><span class="class"><span class="title">const</span> <span class="title">T</span>&amp; <span class="title">min</span>(<span class="title">const</span> <span class="title">T</span>&amp; <span class="title">a</span>, <span class="title">constT</span>&amp; <span class="title">b</span>)</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">return</span> b &lt; a ? b : a; <span class="comment">// &lt; overload</span></span><br><span class="line">&#125;</span><br><span class="line">r3 = min( r1, r2);</span><br></pre></td></tr></table></figure>
+<p>编译器会对function template 进行<br>argument deduction,所以像模板类一样不用写类型  </p>
+<p>member template</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>, <span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">pair</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> T1 first_type;</span><br><span class="line">	<span class="keyword">typedef</span> T2 second_type;</span><br><span class="line">	</span><br><span class="line">	T1 first;</span><br><span class="line">	T2 second;</span><br><span class="line">	</span><br><span class="line">	pair()</span><br><span class="line">		: first(T1()), second(T2()) &#123;&#125;</span><br><span class="line">	pair(<span class="keyword">const</span> T1&amp; a, <span class="keyword">const</span> T2&amp; b)</span><br><span class="line">		: first(a) ,second(b) &#123;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">U1</span>, <span class="title">class</span> <span class="title">U2</span>&gt;</span></span><br><span class="line"><span class="class">	<span class="title">pair</span>(<span class="title">const</span> <span class="title">pair</span>&lt;U1, U2&gt;&amp; <span class="title">p</span></span></span><br><span class="line"><span class="class">		:</span> first(p.first), second(p.second) &#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>关于namespace</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">namespce <span class="built_in">std</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe3yfi6sf8j20wx0abjsm.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe3yfi6sf8j20wx0abjsm.jpg" class="img-fluid"><br></a></p>
+<p>关于type conversion operator(类型转换操作符)<br>类型转换操作符（type conversion operator）是一种特殊的类成员函数，它定义将类类型值转变为其他类型值的转换。转换操作符在类定义体内声明，在保留字 operator 之后跟着转换的目标类型。boost::ref和boost::cref就使用到了类型转换操作符。</p>
+<p>T1::operator T2() [const];　　　//T1的成员函数，”(T2)a”类型转换<br>转换函数必须是成员函数，不能指定返回类型，并且形参表必须为空；返回值是隐含的，返回值是与转换的类型相同的，即为上面原型中的T2；T2表示内置类型名（built-in type）、类类型名（class type）或由类型别名（typedef）定义的名字；对任何可作为函数返回类型的类型（除了 void 之外）都可以定义转换函数，一般而言，不允许转换为数组或函数类型，转换为指针类型（数据和函数指针）以及引用类型是可以的；转换函数一般不应该改变被转换的对象，因此转换操作符通常应定义为 const 成员；支持继承，可以为虚函数；只要存在转换，编译器将在可以使用内置转换的地方自动调用它；</p>
+<h1 id="Object-oriented-programming面向对象"><a href="#Object-oriented-programming面向对象" class="headerlink" title="Object oriented programming面向对象"></a>Object oriented programming面向对象</h1><h2 id="Composition-复合has-a"><a href="#Composition-复合has-a" class="headerlink" title="Composition 复合has-a"></a>Composition 复合has-a</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Adapter模式</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Sequence</span> = <span class="title">deque</span>&lt;T&gt; &gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">queue</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	…</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	Sequence c;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">bool</span> <span class="title">empty</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> c.empty(); &#125;</span><br><span class="line">	<span class="function">size_type <span class="title">size</span><span class="params">()</span> <span class="keyword">const</span> </span>&#123; <span class="keyword">return</span> c.size(); &#125;</span><br><span class="line">	<span class="function">reference <span class="title">front</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> c.front(); &#125;</span><br><span class="line">	<span class="function">reference <span class="title">back</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> c.back(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">push</span> <span class="params">(<span class="keyword">const</span> value_type&amp; x)</span> </span>&#123; <span class="keyword">return</span> c.push_back(x); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">pop</span><span class="params">()</span> </span>&#123; c.pop_front(); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>更深层的复合<br>Container &lt;&gt; – –&gt;component<br>构造由内而外<br>Container 的构造函数首先调用Component的default构造函数，然后才执行自己<br>Container::Container(…) : Component() { … }<br>析构由外向内<br>Container 的析构函数首先执行自己，然后才调用Component的析构函数<br>Container::~Container() : {…~Component() };</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Delegation 委托Composition by reference</span><br><span class="line">String.hpp文件</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StringRep</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">String</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	String();</span><br><span class="line">	String( <span class="keyword">const</span> <span class="keyword">char</span> *s);</span><br><span class="line">	String(<span class="keyword">const</span> String &amp;s);</span><br><span class="line">	String &amp;<span class="keyword">operator</span>=(<span class="keyword">const</span> String&amp; s);</span><br><span class="line">	~String();</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	StringRep *rep;  <span class="comment">//pimpl handle/body</span></span><br><span class="line">&#125;;</span><br><span class="line">Cpp文件</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> “String.hpp”</span></span><br><span class="line"><span class="keyword">namespace</span> </span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">StringRep</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		<span class="keyword">friend</span> <span class="class"><span class="keyword">class</span> <span class="title">String</span>;</span></span><br><span class="line">		StringRep(<span class="keyword">const</span> <span class="keyword">char</span> *);</span><br><span class="line">		~StringRep();</span><br><span class="line">		<span class="keyword">int</span> count;</span><br><span class="line">		<span class="keyword">char</span> *rep;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;</span><br><span class="line">String::String()&#123; … &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Inheritance继承 is-a</span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">List_node_base</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    _List_node_base *_M_next;</span><br><span class="line">	_List_node_base *_M_prev;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> _Tp &gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> _<span class="title">List_node</span></span></span><br><span class="line"><span class="class">:</span> <span class="keyword">public</span> _List_node_base</span><br><span class="line">&#123;</span><br><span class="line">	_Tp _M_data;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>构造由内而外<br>base 的构造函数首先调用derived的default构造函数，然后才执行自己<br>derived::derived(…) : base() { … }<br>析构由外向内<br>derived 的析构函数首先执行自己，然后才调用base的析构函数<br>derived::~ derived () : {…~base() };<br>注意base class 的dtor必须是virtual否则会出现undefined behavior  </p>
+<p>Inheritance with virtual functions<br>继承的是调用权<br>non-virtual函数：不希望dervied class重新定义override它<br>virtual 函数：希望derived class重新定义override它，他已有默认定义。<br>pure virtual函数：希望derived class一定要重新定义override它，你对他没有默认定义。  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shap</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> <span class="keyword">const</span> </span>= <span class="number">0</span>; <span class="comment">//pure virtual</span></span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">error</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; msg)</span></span>; <span class="comment">// impure virtual</span></span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">objectID</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">//non-virtual</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rectangle</span> :</span> <span class="keyword">public</span> Shape &#123; … &#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Ellipse</span> :</span> <span class="keyword">public</span> Shape &#123; … &#125;;</span><br></pre></td></tr></table></figure>
+<p>Delegation and Inheritance<br>Observer模式  </p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Subject</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> m_value;</span><br><span class="line">	<span class="built_in">vector</span>&lt; Observer* &gt;m_views;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">attach</span><span class="params">( Observer *obs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_views.push_back(obs);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_val</span> <span class="params">(<span class="keyword">int</span> value)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    m_value = value;</span><br><span class="line">    notify();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">notify</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> I = <span class="number">0</span>; I &lt; m_views.size(); ++i)</span><br><span class="line">        m_views[i]-&gt;update(<span class="keyword">this</span>, m_value);</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Observer</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">update</span><span class="params">(Subject *sub, <span class="keyword">int</span> value )</span> </span>= <span class="number">0</span>;</span><br><span class="line">&#125;;<span class="comment">//作为父类派生出多个观察者，放入容器中</span></span><br></pre></td></tr></table></figure>
+<p>Composite模式</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe3yfip9j5j20eg0acte5.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fe3yfip9j5j20eg0acte5.jpg" class="img-fluid"><br></a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Component</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> value;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Component(<span class="keyword">int</span> val) &#123; value = val; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">( Component *)</span></span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Primitive</span>:</span> <span class="keyword">public</span> Component</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Primitive(<span class="keyword">int</span> val) : Component(val) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Composite</span>:</span> <span class="keyword">public</span> </span><br><span class="line">&#123;</span><br><span class="line">	vecotor&lt; Component *&gt;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Composite(<span class="keyword">int</span> val) :Component(val) &#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(Component *elem)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	c.push_back(elem);</span><br><span class="line">&#125;</span><br><span class="line">…</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="Prototype模式"><a href="#Prototype模式" class="headerlink" title="Prototype模式"></a>Prototype模式</h2><p>创建未来的对象</p>
+<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe3yfj1eiaj20nc0ei0us.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fe3yfj1eiaj20nc0ei0us.jpg" class="img-fluid"><br></a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream.h&gt;</span></span></span><br><span class="line"><span class="keyword">enum</span> imageType</span><br><span class="line">&#123;</span><br><span class="line">	LAST, SPOT</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Image</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> Image *<span class="title">findAndClone</span><span class="params">(imageType)</span></span>;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> imageType <span class="title">returnType</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Image *<span class="title">clone</span><span class="params">()</span> </span>= <span class="number">0</span>;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addPrototype</span><span class="params">( Image *image)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">    	_prototypes[_nextSlot++] = image;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">static</span> Image * prototypes[<span class="number">10</span>];</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> _nextSlot;</span><br><span class="line">&#125;;</span><br><span class="line">Image *Image::_prototypes[];</span><br><span class="line"><span class="keyword">int</span> Image::_nextSlot;</span><br><span class="line">Image *Image::findAndClone(imageType type)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> I = <span class="number">0</span>; I &lt; _nextSlot; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">    	<span class="keyword">if</span>(_prototypes[i]-&gt;returnType() == type)</span><br><span class="line">   		&#123;</span><br><span class="line">        	<span class="keyword">return</span> _prototypes[i]-&gt;clone();</span><br><span class="line">    	&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LandSatImage</span>:</span>:<span class="keyword">public</span> Image</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">imageType <span class="title">returnType</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> LSAT;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">draw</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; <span class="string">"LandSatImage::draw"</span> &lt;&lt; _id &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function">Image *<span class="title">clone</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> LandSatImage(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	LandSatImage(<span class="keyword">int</span> dummy) <span class="comment">///这里私有保护都可以</span></span><br><span class="line">	&#123;</span><br><span class="line">		_id = count++;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">static</span> LandSatImage _LandSatImage;</span><br><span class="line">	LandSatImage()</span><br><span class="line">	&#123;</span><br><span class="line">		addPrototype(<span class="keyword">this</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> _id;</span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">int</span> _count;</span><br><span class="line">&#125;</span><br><span class="line">LandSatImage LandSatImage::_LandSatImage;</span><br><span class="line"><span class="keyword">int</span> LandSatImage::_count = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="conversion-function转换函数"><a href="#conversion-function转换函数" class="headerlink" title="conversion function转换函数"></a>conversion function转换函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">fraction</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">Fraction (<span class="keyword">int</span> num, <span class="keyword">int</span> den = <span class="number">1</span>)</span><br><span class="line">    : m_numberator ( num ), m_denominator(den) &#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">operator</span> <span class="title">double</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> (<span class="keyword">double</span>) (m_numerator / m-denominator;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="keyword">int</span> m_numerator;</span><br><span class="line"><span class="keyword">int</span> m_denominator;</span><br><span class="line">&#125;</span><br><span class="line">Fraction f(<span class="number">3</span>,<span class="number">5</span>);</span><br><span class="line"><span class="keyword">double</span> d = <span class="number">4</span> + f;</span><br></pre></td></tr></table></figure>
+<h2 id="non-explicit-one-argument-ctor"><a href="#non-explicit-one-argument-ctor" class="headerlink" title="non-explicit-one-argument ctor"></a>non-explicit-one-argument ctor</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Fraction(<span class="keyword">int</span> num, <span class="keyword">int</span> den = <span class="number">1</span>)</span><br><span class="line">	    : m_numberator(num), m_denbominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span>+(<span class="keyword">const</span> Fraction&amp; f)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numerator;</span><br><span class="line">	<span class="keyword">int</span> m_denominator;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d2 = f + <span class="number">4</span>;<span class="comment">//调用 non-explicit ctor将4转化为Fraction(4,1)</span></span><br></pre></td></tr></table></figure>
+<p>注意的是如果一个类里面同时有这两个的话会报错，出现二意</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fraction</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">explicit</span> <span class="title">Fraction</span><span class="params">(<span class="keyword">int</span> num, <span class="keyword">int</span> den = <span class="number">1</span>)</span></span></span><br><span class="line">	    : m_numberator(num), m_denbominator(den)&#123;&#125;</span><br><span class="line">	Fraction <span class="keyword">operator</span>+(<span class="keyword">const</span> Fraction&amp; f)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> Fraction(...);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> m_numerator;</span><br><span class="line">	<span class="keyword">int</span> m_denominator;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">Fraction <span class="title">f</span><span class="params">(<span class="number">3</span>,<span class="number">5</span>)</span></span>;</span><br><span class="line">Fraction d2 = f + <span class="number">4</span>;<span class="comment">//error声明为explicit的构造函数不能在隐式转换中使用</span></span><br></pre></td></tr></table></figure>
+<h2 id="pointer-like-class"><a href="#pointer-like-class" class="headerlink" title="pointer-like class"></a>pointer-like class</h2><p>关于智能指针<br>智能指针(smart pointer)是存储指向动态分配（堆）对象指针的类，用于生存期控制，能够确保自动正确的销毁动态分配的对象，防止内存泄露。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">shared_ptr</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	T&amp; <span class="keyword">operator</span>* () <span class="keyword">const</span></span><br><span class="line">	&#123; <span class="keyword">return</span> *px; &#125;</span><br><span class="line">	T* <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span></span><br><span class="line">	&#123; <span class="keyword">return</span> px; &#125;</span><br><span class="line">	<span class="built_in">shared_ptr</span>(T* p): px(p) &#123;&#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	T* px;</span><br><span class="line">	<span class="keyword">long</span>* pn;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;Foo&gt; sp(<span class="keyword">new</span> Foo);</span><br><span class="line"><span class="function">Foo <span class="title">f</span><span class="params">(*sp)</span></span>;</span><br><span class="line">sp-&gt;method();</span><br><span class="line">关于迭代器</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Ref</span>, <span class="title">class</span> <span class="title">Ptr</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> _<span class="title">list_iterator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">typedef</span> _list_iterator&lt;T, Ref, Ptr&gt; self;</span><br><span class="line">	<span class="keyword">typedef</span> Ptr pointer;</span><br><span class="line">	<span class="keyword">typedef</span> Ref reference;</span><br><span class="line">	<span class="keyword">typedef</span> _list_node&lt;T&gt;* link_type;</span><br><span class="line">	link_type node;</span><br><span class="line">	reference <span class="keyword">operator</span>*() <span class="keyword">const</span> &#123; <span class="keyword">return</span> (*node).data; &#125;</span><br><span class="line">	pointer <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span> &#123; <span class="keyword">return</span> &amp;(<span class="keyword">operator</span>* ()); &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="Function-like-classes仿函数"><a href="#Function-like-classes仿函数" class="headerlink" title="Function-like classes仿函数"></a>Function-like classes仿函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">identity</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">const</span> T&amp;</span><br><span class="line">	<span class="keyword">operator</span>() (<span class="keyword">const</span> T&amp; x) <span class="keyword">const</span> &#123; <span class="keyword">return</span> x; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">select1st</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">typename</span> Pair::first_type&amp;</span><br><span class="line">	<span class="keyword">operator</span>() (<span class="keyword">const</span> Pair&amp; x) <span class="keyword">const</span></span><br><span class="line">	&#123;<span class="keyword">return</span> x.first; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">Pair</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">select2nd</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">typename</span> Pair::second_type&amp;</span><br><span class="line">	<span class="keyword">operator</span>() (<span class="keyword">const</span> Pair&amp; x) <span class="keyword">const</span></span><br><span class="line">	&#123; <span class="keyword">return</span> x.second; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T1</span>,<span class="title">class</span> <span class="title">T2</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">pair</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	T1 first;</span><br><span class="line">	T2 second;</span><br><span class="line">	pair() :first(T1()) ,second(T2())&#123;&#125;</span><br><span class="line">pair(<span class="keyword">const</span> T1&amp; a,<span class="keyword">const</span> T2&amp; b)</span><br><span class="line">	 :first(a), second(b)&#123;&#125;</span><br><span class="line">…</span><br><span class="line">&#125;;</span><br><span class="line">select1st&lt;Pair&gt;() (<span class="keyword">new</span> Pair());</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/27/2017-03-27-oracle的配置/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          oracle配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/25/2017-03-25-再看c++/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">再看c++</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-Based基于对象"><span class="nav-number">1.</span> <span class="nav-text">Object Based基于对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ctor和dtor"><span class="nav-number">1.1.</span> <span class="nav-text">ctor和dtor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-constructor"><span class="nav-number">1.2.</span> <span class="nav-text">copy constructor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-assignment-operator"><span class="nav-number">1.3.</span> <span class="nav-text">copy assignment operator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#stack-and-heap"><span class="nav-number">1.4.</span> <span class="nav-text">stack and heap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-oriented-programming面向对象"><span class="nav-number">2.</span> <span class="nav-text">Object oriented programming面向对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Composition-复合has-a"><span class="nav-number">2.1.</span> <span class="nav-text">Composition 复合has-a</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prototype模式"><span class="nav-number">2.2.</span> <span class="nav-text">Prototype模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conversion-function转换函数"><span class="nav-number">2.3.</span> <span class="nav-text">conversion function转换函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#non-explicit-one-argument-ctor"><span class="nav-number">2.4.</span> <span class="nav-text">non-explicit-one-argument ctor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pointer-like-class"><span class="nav-number">2.5.</span> <span class="nav-text">pointer-like class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Function-like-classes仿函数"><span class="nav-number">2.6.</span> <span class="nav-text">Function-like classes仿函数</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

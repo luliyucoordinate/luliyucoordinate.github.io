@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>oracle配置 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="oracle" />
+  
+  
+  
+  
+  <meta name="description" content="管理oracle启动和停止oracle停止和启动oracle需要切换到oracle用户才可以，其他用户都没有权限启动和停止oracle（包括root也没有权限）运行sqlplus但不登录到oracle:sqlplus /nolog以系统管理权的权限连接到oracle服务器conn /as sysdba;启动oracle服务startup停止oracle服务shutdown immediate; 立">
+<meta name="keywords" content="oracle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="oracle配置">
+<meta property="og:url" content="http://coordinate.wang/2017/03/28/2017-03-28-oracle编程/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="管理oracle启动和停止oracle停止和启动oracle需要切换到oracle用户才可以，其他用户都没有权限启动和停止oracle（包括root也没有权限）运行sqlplus但不登录到oracle:sqlplus /nolog以系统管理权的权限连接到oracle服务器conn /as sysdba;启动oracle服务startup停止oracle服务shutdown immediate; 立">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3y4bhm0ij20ft06bwjd.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="oracle配置">
+<meta name="twitter:description" content="管理oracle启动和停止oracle停止和启动oracle需要切换到oracle用户才可以，其他用户都没有权限启动和停止oracle（包括root也没有权限）运行sqlplus但不登录到oracle:sqlplus /nolog以系统管理权的权限连接到oracle服务器conn /as sysdba;启动oracle服务startup停止oracle服务shutdown immediate; 立">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3y4bhm0ij20ft06bwjd.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-28-oracle编程" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      oracle配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/28/2017-03-28-oracle编程/" class="article-date">
+	  <time datetime="2017-03-27T16:00:00.000Z" itemprop="datePublished">三月 28, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="管理oracle"><a href="#管理oracle" class="headerlink" title="管理oracle"></a>管理oracle</h1><h2 id="启动和停止oracle"><a href="#启动和停止oracle" class="headerlink" title="启动和停止oracle"></a>启动和停止oracle</h2><p>停止和启动oracle需要切换到oracle用户才可以，其他用户都没有权限启动和停止oracle（包括root也没有权限）<br>运行sqlplus但不登录到oracle:<br>sqlplus /nolog<br>以系统管理权的权限连接到oracle服务器<br>conn /as sysdba;<br>启动oracle服务<br>startup<br>停止oracle服务<br>shutdown immediate; 立即关闭<br>-normal 真正关闭<br>-tarnsactional 尽量少影响客户端<br>abort 放弃一切事物，立即关闭  </p>
+<h2 id="listener"><a href="#listener" class="headerlink" title="listener"></a>listener</h2><p>oracle的listener,相当于oracle的TCPserver，liestener会在1521这个端口listen。<br>所有的oracle client端都需要通过listener才能连接到oracle server。<br>启动和停止listener<br>进入listener的管理界面<br>lsnrctl<br>启动listener<br>start<br>停止listener<br>stop  </p>
+<h2 id="sqlplus"><a href="#sqlplus" class="headerlink" title="sqlplus"></a>sqlplus</h2><p>sqlplus是一个最常用的工具，具有很强的功能，主要有：<br>数据库的维护，一般在服务器上操作，不可以远程<br>执行sql语句执行pl/sql<br>执行sql脚本<br>数据的导出，报表<br>用户管理级权限维护<br>生成新的sql脚本  </p>
+<h2 id="conn"><a href="#conn" class="headerlink" title="conn"></a>conn</h2><p>conn 用户名/密码@网络服务名<br>show user<br>显示当前用户<br>@script.sql<br>执行当前sql脚本文件<br>quit<br>断开数据库连接，退出sqlplus  </p>
+<h2 id="spool"><a href="#spool" class="headerlink" title="spool"></a>spool</h2><p>该命令可以将sqlplus屏幕上的内容输出到指定文件中去<br>例子</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sql&gt;spool a.txt</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tablename;</span><br><span class="line">sql&gt;spool off;</span><br></pre></td></tr></table></figure>
+<h2 id="linesize"><a href="#linesize" class="headerlink" title="linesize"></a>linesize</h2><p>显示行的宽度，默认80字符</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sql&gt;show linesize</span><br><span class="line">sql&gt;set linesize 90</span><br></pre></td></tr></table></figure>
+<p>pagesize<br>设置每页显示的行数目，默认14，用法和linesize一样，至于其他环境参数的使用也是大同小异</p>
+<h2 id="NLS-LANG环境变量"><a href="#NLS-LANG环境变量" class="headerlink" title="NLS_LANG环境变量"></a>NLS_LANG环境变量</h2><p>sqlplus通过.bash_profile中的NLS_LANG环境变量决定显示语言<br>中文gbk<br>NLS_LANG=”SIMPLIFIED CHINESE_CHINA.ZHS16GBK”<br>简体中文utf8<br>NLS_LANG=”SIMPLIFIED CHINESE_CHINA.AL32UTF8”<br>在sqlplus中的oracle server短的字符集  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; select userenv('language') from dual;</span><br></pre></td></tr></table></figure>
+<h2 id="创建用户create-user"><a href="#创建用户create-user" class="headerlink" title="创建用户create user"></a>创建用户create user</h2><p>在oracle中创建一个新的用户使用create user语句，一般是具有dba(数据库管理员)的权限才能使用<br>基本语法：create user 用户名 identified by dbuser1;</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> dbuser1 <span class="keyword">identified</span> <span class="keyword">by</span> dbuser1;</span><br></pre></td></tr></table></figure>
+<h2 id="用户赋权grant"><a href="#用户赋权grant" class="headerlink" title="用户赋权grant"></a>用户赋权grant</h2><p>创建的新用户是没有任何权限的，需要为其指定相应的权限，赋权使用grant，回收权限使用revoke<br>基本语法：grant 权限/角色 to 用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">connect</span>, <span class="keyword">resource</span> <span class="keyword">to</span> dbuser1;</span><br></pre></td></tr></table></figure>
+<h2 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">user</span> username</span><br></pre></td></tr></table></figure>
+<p>一般以dba的身份去删除莫个用户<br>基本语法：drop user 用户名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop user dbuser1;</span><br></pre></td></tr></table></figure>
+<p>所有对表的修改，都是在一个事务中，commit后才会有效<br>如果操作失误的话<br>使用rollback命令可以回去  </p>
+<h2 id="返回指定行数的SELECT查询数据语句"><a href="#返回指定行数的SELECT查询数据语句" class="headerlink" title="返回指定行数的SELECT查询数据语句"></a>返回指定行数的SELECT查询数据语句</h2><p>ROWNUM的语法</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> TABLENAME <span class="keyword">WHERE</span> <span class="keyword">ROWNUM</span> CONDITIONAL n;</span><br></pre></td></tr></table></figure>
+<p>CONDITIONAL 代表条件( &lt;, &lt;= ,&gt;, &gt;=)，其中n是返回数<br>SELECT * FROM table1 WHERE ROWNUM &lt;= 5;可以=1但是别的数不可以</p>
+<h1 id="主键与序列"><a href="#主键与序列" class="headerlink" title="主键与序列"></a>主键与序列</h1><h2 id="CREATE-TABLE"><a href="#CREATE-TABLE" class="headerlink" title="CREATE TABLE"></a>CREATE TABLE</h2><p>建立表的时候同时可以指定一个字段为主键<br>CONSTRAINT 主键名 PRIMARY KEY 主键字段名<br>例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> table1 (<span class="keyword">id</span> <span class="built_in">int</span>, <span class="keyword">name</span> varchar2(<span class="number">100</span>), <span class="keyword">CONSTRAINT</span> pk_id PRIMARY <span class="keyword">KEY</span>(<span class="keyword">id</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="ORACLE-创建序列语句"><a href="#ORACLE-创建序列语句" class="headerlink" title="ORACLE 创建序列语句"></a>ORACLE 创建序列语句</h2><p>CREATE SEQUENCE 序列名<br>increment by 序列步长<br>sart with 序列起始值<br>mxvalue 序列最大值<br>例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">SEQUENCE</span> seql</span><br><span class="line"><span class="keyword">increment</span> <span class="keyword">by</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">start</span> <span class="keyword">with</span> <span class="number">1</span></span><br><span class="line">maxvalue <span class="number">9999999</span>；</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> table1 (<span class="keyword">id</span>,<span class="keyword">name</span>) <span class="keyword">values</span> (<span class="number">0</span>,<span class="string">'sd'</span>);</span><br></pre></td></tr></table></figure>
+<p>出现如下错误<br>ORA-01950: 对表空间 ‘USERS’ 无权限<br>解决方案：<br>在sys用户下 </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; alter user c##dbuser1 quota unlimited on USERS;</span><br></pre></td></tr></table></figure>
+<h2 id="删除序列"><a href="#删除序列" class="headerlink" title="删除序列"></a>删除序列</h2><p>DROP SEQUENCE 序列名<br>得到序列的下一个值<br>序列名.nextval<br>例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> table1 (<span class="keyword">id</span>,<span class="keyword">name</span>) <span class="keyword">VALUES</span> (seql.nextval,’tom’);</span><br></pre></td></tr></table></figure>
+<p>要注意的是这个nextval是个全局变量，所以往不同的表插都会增加<br>在oracle下，如果用varchar这个数据类型，推荐用varchar2  </p>
+<h1 id="Oracle编程"><a href="#Oracle编程" class="headerlink" title="Oracle编程"></a>Oracle编程</h1><h2 id="Proc程序设计"><a href="#Proc程序设计" class="headerlink" title="Proc程序设计"></a>Proc程序设计</h2><p>通过在过程化编程语言中嵌入sql语句而开发出的应用程序成为pro程序,在c/c++语言中嵌入sql语句而开发出的应用程序成为pro*c/c++程序。<br>Proc常用选项</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3y4bhm0ij20ft06bwjd.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fe3y4bhm0ij20ft06bwjd.jpg" class="img-fluid"><br></a></p>
+<p>Makefile文件例子</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">.SUFFIXES:.c .o</span><br><span class="line"></span><br><span class="line">CC=gcc</span><br><span class="line">PROC=proc</span><br><span class="line"></span><br><span class="line">PROCSRCS=oracle.pc</span><br><span class="line">SRCS=$(PROCSRCS:.pc=.c)</span><br><span class="line">OBJS=$(SRCS:.c=.o)</span><br><span class="line">ORACLE_HOME=/opt/oracle/product/12.2.0/dbhome_2</span><br><span class="line">ORAFLAGS1=/usr/include/linux</span><br><span class="line">ORAFLAGS2=/usr/lib/gcc/x86_64-redhat-linux/4.8.2/include</span><br><span class="line">EXEC=abc</span><br><span class="line"></span><br><span class="line">start: $(OBJS)</span><br><span class="line"><span class="meta">	$</span>(CC) -o $(EXEC) $(OBJS) -L$(ORACLE_HOME)/lib -lclntsh</span><br><span class="line">	@echo '----------------ok-----------------'</span><br><span class="line"></span><br><span class="line">.c.o: $(SRCS)</span><br><span class="line"><span class="meta">	$</span>(CC) -Wall -g -o $@ -c $&lt;</span><br><span class="line">	</span><br><span class="line"><span class="meta">$</span>(SRCS):</span><br><span class="line"><span class="meta">	$</span>(PROC) INAME=$(PROCSRCS) INCLUDE=$(ORAFLAGS1) INCLUDE=$(ORAFLAGS2) CPOOL=YES MODE=ANSI CODE=ANSI_C PARSE=PARTIAL THREADS=YES ONAME=$(SRCS)</span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">	rm -f $(OBJS)</span><br><span class="line">	rm -f $(SRCS)</span><br><span class="line">	rm -f core*</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//pc文件中，如果是嵌入式的sql语句要增加的话</span></span><br><span class="line"><span class="comment">//proc PARSE=PARTIAL ,变量必须在begin和end之间定义</span></span><br><span class="line">EXEC SQL BEGIN DECLARE SECTION;</span><br><span class="line">	sql_context pContext;</span><br><span class="line">	<span class="keyword">long</span> SQLCODE; <span class="comment">//变量的类型和名称都不可以变</span></span><br><span class="line">EXEC SQL END DECLARE SECTION;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">sqlglmt</span><span class="params">(<span class="keyword">void</span>*, <span class="keyword">char</span>*, <span class="keyword">size_t</span>*, <span class="keyword">size_t</span>* )</span></span>; </span><br><span class="line"><span class="comment">//安装错误处理函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sql_error</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">char</span> sErrorString[<span class="number">512</span>];<span class="comment">//自定义一个数组，数组的名字可以自定义</span></span><br><span class="line">	<span class="keyword">size_t</span> tMessageSize = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">size_t</span> tErrorSize = <span class="keyword">sizeof</span>(sErrorString);</span><br><span class="line">	<span class="built_in">memset</span>(sErrorString, <span class="number">0</span>, <span class="keyword">sizeof</span>(sErrorString));</span><br><span class="line">	sqlglmt(pContext, sErrorString, &amp;tErrorSize, &amp;tMessageSize);<span class="comment">//调用sqlglmt这个函数得到具体错误描述</span></span><br><span class="line">	sErrorString[tMessageSize] = <span class="number">0</span>;<span class="comment">//设置错误描述字符串最后以0结尾</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%s\n"</span>, sErrorString);<span class="comment">//打印错误描述</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//初始化数据库</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sql_init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	SQLCODE = <span class="number">0</span>;</span><br><span class="line">	pContext = <span class="literal">NULL</span>;</span><br><span class="line">	EXEC SQL ENABLE THREADS;<span class="comment">//可以在代码当中生成线程相关代码</span></span><br><span class="line">	EXEC SQL CONTEXT ALLOCATE :pContext;<span class="comment">//为pContext分配内存</span></span><br><span class="line">	EXEC SQL CONTEXT USE :pContext;<span class="comment">//使用pContext</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>连接到数据库</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">int sql_connect(const char *user, const char *passwd, const char *dbname)</span><br><span class="line">&#123;</span><br><span class="line">	EXEC SQL <span class="keyword">BEGIN</span> <span class="keyword">DECLARE</span> <span class="keyword">SECTION</span>;</span><br><span class="line">		const char *sUser;</span><br><span class="line">		const char *sPasswd;</span><br><span class="line">		const char *sDBname;</span><br><span class="line">	</span><br><span class="line">	EXEC SQL <span class="keyword">END</span> <span class="keyword">DECLARE</span> <span class="keyword">SECTION</span>;</span><br><span class="line">	SQLCODE = 0;</span><br><span class="line">	sUser = user;</span><br><span class="line">	sPasswd = passwd;</span><br><span class="line">	sDBname = dbname;</span><br><span class="line">//在嵌入式SQL语句里面 冒号代表要用输入变量</span><br><span class="line">	EXEC SQL CONNECT :sUser IDENTIFIED BY :sPasswd USING :sDBname;</span><br><span class="line">	</span><br><span class="line">	if (SQLCODE != 0)</span><br><span class="line">	&#123;</span><br><span class="line">		sql_error();</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;else</span><br><span class="line">	&#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int sql_disconnect()</span><br><span class="line">&#123;</span><br><span class="line">	SQLCODE = 0;</span><br><span class="line">	EXEC SQL <span class="keyword">ROLLBACK</span> <span class="keyword">WORK</span> <span class="keyword">RELEASE</span>;</span><br><span class="line">	if (SQLCODE != 0)</span><br><span class="line">	&#123;</span><br><span class="line">		sql_error();</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;else</span><br><span class="line">	&#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int sql_free()</span><br><span class="line">&#123;</span><br><span class="line">	SQLCODE = 0;</span><br><span class="line">	EXEC SQL CONTEXT FREE :pContext;</span><br><span class="line">	if (SQLCODE != 0)</span><br><span class="line">	&#123;</span><br><span class="line">		sql_error();</span><br><span class="line">		return 1;</span><br><span class="line">	&#125;else</span><br><span class="line">	&#123;</span><br><span class="line">		return 0;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><p>drop user  ×× ； 仅仅是删除用户<br>如果用户下有对象，那么drop user  ×× ；会报错<br>ORA-01922: 必须指定 CASCADE 以删除 ××<br>drop user ×× cascade ；会删除此用户名下的所有表和视图<br>使用cascade参数可以删除该用户的全部objects。<br>如果用户的schema中有表，则在删除表的时候自动删除与该表相关的主键和外键。<br>如果用户的schema中有表，则在删除表的时候自动删除与该表相关的索引。  </p>
+<p>oracle 12g创建用户必须加c##吗<br>你是建成了CDB导致 用户必须加C##，  dbca重新建一个库 然后不要选择CDB 就会和以前的版本一样没有这个限制， CDB不适合新手或者初学者</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oracle/">oracle</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/29/2017-03-29-再看c++/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          再看c++
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/27/2017-03-27-oracle的配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">oracle配置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#管理oracle"><span class="nav-number">1.</span> <span class="nav-text">管理oracle</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动和停止oracle"><span class="nav-number">1.1.</span> <span class="nav-text">启动和停止oracle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#listener"><span class="nav-number">1.2.</span> <span class="nav-text">listener</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqlplus"><span class="nav-number">1.3.</span> <span class="nav-text">sqlplus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conn"><span class="nav-number">1.4.</span> <span class="nav-text">conn</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spool"><span class="nav-number">1.5.</span> <span class="nav-text">spool</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linesize"><span class="nav-number">1.6.</span> <span class="nav-text">linesize</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NLS-LANG环境变量"><span class="nav-number">1.7.</span> <span class="nav-text">NLS_LANG环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建用户create-user"><span class="nav-number">1.8.</span> <span class="nav-text">创建用户create user</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户赋权grant"><span class="nav-number">1.9.</span> <span class="nav-text">用户赋权grant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除用户"><span class="nav-number">1.10.</span> <span class="nav-text">删除用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回指定行数的SELECT查询数据语句"><span class="nav-number">1.11.</span> <span class="nav-text">返回指定行数的SELECT查询数据语句</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主键与序列"><span class="nav-number">2.</span> <span class="nav-text">主键与序列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CREATE-TABLE"><span class="nav-number">2.1.</span> <span class="nav-text">CREATE TABLE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ORACLE-创建序列语句"><span class="nav-number">2.2.</span> <span class="nav-text">ORACLE 创建序列语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除序列"><span class="nav-number">2.3.</span> <span class="nav-text">删除序列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Oracle编程"><span class="nav-number">3.</span> <span class="nav-text">Oracle编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Proc程序设计"><span class="nav-number">3.1.</span> <span class="nav-text">Proc程序设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积累"><span class="nav-number">4.</span> <span class="nav-text">积累</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

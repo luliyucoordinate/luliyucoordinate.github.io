@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="tensorflowDellUbuntu1080ticudacudnn" />
+  
+  
+  
+  
+  <meta name="description" content="在此之前你应该已经装好了Ubuntu17.04，如果你对于装系统有什么疑问的话，请看这篇Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录 首先我们要先安装pip源 1sudo apt-get install python-pip 接着cd到根目录，使用 1ls -la 这个时候应该可以看到.config文件夹，进入这个文件夹（cd .config），">
+<meta name="keywords" content="tensorflow,Dell,Ubuntu,1080ti,cuda,cudnn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4&#x2F;1.3">
+<meta property="og:url" content="http://coordinate.wang/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="在此之前你应该已经装好了Ubuntu17.04，如果你对于装系统有什么疑问的话，请看这篇Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录 首先我们要先安装pip源 1sudo apt-get install python-pip 接着cd到根目录，使用 1ls -la 这个时候应该可以看到.config文件夹，进入这个文件夹（cd .config），">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fljn2fnj3aj20s90nj75p.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:50:59.659Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4&#x2F;1.3">
+<meta name="twitter:description" content="在此之前你应该已经装好了Ubuntu17.04，如果你对于装系统有什么疑问的话，请看这篇Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录 首先我们要先安装pip源 1sudo apt-get install python-pip 接着cd到根目录，使用 1ls -la 这个时候应该可以看到.config文件夹，进入这个文件夹（cd .config），">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fljn2fnj3aj20s90nj75p.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/" class="article-date">
+	  <time datetime="2017-11-14T16:00:00.000Z" itemprop="datePublished">十一月 15, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在此之前你应该已经装好了<code>Ubuntu17.04</code>，如果你对于装系统有什么疑问的话，请看这篇<a href="http://blog.csdn.net/qq_17550379/article/details/78546850" target="_blank" rel="noopener">Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录</a></p>
+<p>首先我们要先安装pip源</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br></pre></td></tr></table></figure>
+<p>接着cd到根目录，使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -la</span><br></pre></td></tr></table></figure>
+<p>这个时候应该可以看到<code>.config</code>文件夹，进入这个文件夹（<code>cd .config</code>），建立一个pip文件夹（mkdir pip），进入pip文件夹（cd pip），接着建立<code>pip.conf</code>文件（vim pip.conf），按i（表示输入文本）输入以下内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[global] </span><br><span class="line">index-url = https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<p>输入<code>:wq</code>（保存并退出）。</p>
+<p>以上步骤是要修改pip的源，这样安装会更加的快。</p>
+<h2 id="安装cuda9-0和cudnn7"><a href="#安装cuda9-0和cudnn7" class="headerlink" title="安装cuda9.0和cudnn7"></a>安装cuda9.0和cudnn7</h2><p>去官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="noopener">cuda9.0安装包</a></p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659ly1fljn2fnj3aj20s90nj75p.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fljn2fnj3aj20s90nj75p.jpg" class="img-fluid"><br></a></p>
+<p>按照上面说的安装步骤安装即可。</p>
+<p>接着我们对cuda9下面的例子测试一下，以保证我们装好了cuda</p>
+<p>现在桌面建立一个文件夹test，进入test文件夹（cd test）。使用下面的命令，将cuda例子文件复制进去</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r /usr/local/cuda-9.0/samples/ .</span><br></pre></td></tr></table></figure>
+<p>进入samples文件夹（cd samples），输入指令make，进行编译，编译要花很长时间。</p>
+<p>编译好后，进入其中一个文件夹，我这里是进入了<code>cd ./1_Utilities/bandwidthTest</code>，接着输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bandwidthTest</span><br></pre></td></tr></table></figure>
+<p>查看最后结果，如果是<code>Result = PASS</code>，那就ok。</p>
+<p>接着cd到根目录。编辑<code>.bashrc文件</code>（vim  .bashrc，不过新装的系统好像没有这个文件，没有的话跳过这步），在文件结尾添加下面的语句</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>cuda9.0</span><br><span class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125; </span><br><span class="line">export CUDA_HOME=/usr/local/cuda</span><br></pre></td></tr></table></figure>
+<p>输入<code>:wq</code>（保存退出）。接着在命令窗口输入<code>source .bashrc</code>，让文件生效。</p>
+<p>接着去官网下载<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">cudnn7安装文件</a>，但是好像最近无法下载了，我有时间会上传一份。</p>
+<p>下载好后输入下列指令将相关文件拷贝到cuda安装目录下即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf cudnn-9.0-linux-x64-v7.tgz </span><br><span class="line">sudo cp cuda/include/cudnn.h /usr/local/cuda/include/ </span><br><span class="line">sudo cp -a cuda/lib64/libcudnn* /usr/local/cuda/lib64/ </span><br><span class="line">sudo chmod a+r /usr/local/cuda/include/cudnn.h </span><br><span class="line">sudo chmod a+r /usr/local/cuda/lib64/libcudnn*</span><br></pre></td></tr></table></figure>
+<p>注意上面第二条指令，这里多加了一个<code>-a</code>，在官方给的方案里面没有，我建议你这样做，否则会出现连接出错的问题。如果你忘记了，可以参考下面做法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/cuda/lib64/</span><br><span class="line">sudo rm -rf libcudnn.so libcudnn.so.7.0  </span><br><span class="line">sudo ln -s libcudnn.so.7.0.64 libcudnn.so.7.0  </span><br><span class="line">sudo ln -s libcudnn.so.7.0 libcudnn.so</span><br></pre></td></tr></table></figure>
+<p>其实是相同的道理。</p>
+<h2 id="安装tensorflow1-4"><a href="#安装tensorflow1-4" class="headerlink" title="安装tensorflow1.4"></a>安装tensorflow1.4</h2><p>这是本次安装的重难点，因为tensorflow1.3/1.4对于cuda9并没有支持，所以安装中会出现一些问题。可行的办法有自己编译tensorflow文件进行安装，但是我不推荐你这样去做。</p>
+<p>在github找到了别人编译好的cuda9补丁版<a href="https://github.com/mind/wheels/releases/tag/tf1.4-gpu-cuda9" target="_blank" rel="noopener">tensorflow1.4</a>，<a href="https://github.com/mind/wheels/releases/download/tf1.4-gpu-cuda9/tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl" target="_blank" rel="noopener"><strong>tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl</strong></a>索性就拿来直接用。</p>
+<p>使用这个之前，你要先安装mkl。在此之前你要确认你的cpu是否是以下系列之一</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Intel Atom(R) processor with Intel(R) SSE4.1 support</span><br><span class="line">4th, 5th, 6th and 7th generation Intel(R) Core processor</span><br><span class="line">Intel(R) Xeon(R) processor E5 v3 family (code named Haswell)</span><br><span class="line">Intel(R) Xeon(R) processor E5 v4 family (code named Broadwell)</span><br><span class="line">Intel(R) Xeon(R) Platinum processor family (code name Skylake)</span><br><span class="line">Intel(R) Xeon Phi(TM) product family x200 (code named Knights Landing)</span><br><span class="line">Future Intel(R) Xeon Phi(TM) processor (code named Knights Mill)</span><br></pre></td></tr></table></figure>
+<p>如果不是，这个方法就可能不适用了，请使用编译tensorflow源码的办法。</p>
+<p>如果cpu是其中的话，我们先要安装<code>git</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+<p>接着下载mkl的包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/01org/mkl-dnn.git</span><br></pre></td></tr></table></figure>
+<p>接着安装cmake和doxygen</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install Cmake</span><br><span class="line">sudo apt-get install Doxygen</span><br></pre></td></tr></table></figure>
+<p>接着使用下面命令进入文件夹，下载相关文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd scripts &amp;&amp; ./prepare_mkl.sh &amp;&amp; cd ..</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>如果出错的话，你可以在这里<a href="https://github.com/01org/mkl-dnn/releases" target="_blank" rel="noopener">下载</a>，我这里下载的是<a href="https://github.com/01org/mkl-dnn/releases/download/v0.11/mklml_lnx_2018.0.1.20171007.tgz" target="_blank" rel="noopener"><strong>mklml_lnx_2018.0.1.20171007.tgz</strong></a></p>
+<p>现在之前下载好的mkl文件夹里面建立一个<code>external</code>文件夹。下载好现在的这个文件后解压（双击-&gt;提取），将加压后的文件夹里面的内容，copy到<code>external</code>文件夹中。</p>
+</li>
+</ul>
+<p>回到mkl目录下，接着建立一个bulid文件夹，进行编译</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p build &amp;&amp; cd build &amp;&amp; cmake .. &amp;&amp; make</span><br></pre></td></tr></table></figure>
+<p>接着测试我们的编译文件是否有效，使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make test</span><br></pre></td></tr></table></figure>
+<p>接着生成doc文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make doc</span><br></pre></td></tr></table></figure>
+<p>最后安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<p>在此之前如果出现错误的话，可以使用<code>sudo+命令</code>再次尝试。</p>
+<p>安装完成后，应该会有这样几个文件</p>
+<p>共享库 (/<em>usr/local/lib</em>)：</p>
+<ul>
+<li>libiomp5.so</li>
+<li>libmkldnn.so</li>
+<li>libmklml_intel.so</li>
+</ul>
+<p>标头文件 (/<em>usr/local/include</em>)：</p>
+<ul>
+<li>mkldnn.h</li>
+<li>mkldnn.hpp</li>
+<li>mkldnn_types.h</li>
+</ul>
+<p>文档 (/<em>usr/local/share/doc/mkldnn</em>)：</p>
+<ul>
+<li>英特尔许可和版权声明</li>
+<li>构成 HTML 文档的各种文件（在 <em>/reference/html</em> 之下）</li>
+</ul>
+<p>cd到根目录。编辑<code>.bashrc</code>文件（vim .bahsrc，没有的话，跳过这步），和之前做法一样。在文件最后添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>mkl</span><br><span class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib</span><br></pre></td></tr></table></figure>
+<p>然后输入<code>:wq</code>退出，在命令窗口输入<code>source .bashrc</code>让文件生效。</p>
+<p>接着我们开始安装tensorflow1.4，在此之前，先安装一个<code>libcupti-dev</code>库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcupti-dev</span><br></pre></td></tr></table></figure>
+<p>接着先回到下载tensorflow的目录，就可以安装了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install tensorflow-1.4.0-cp27-cp27mu-linux_x86_64.whl</span><br></pre></td></tr></table></figure>
+<p>装好后我们在python中（命令窗口输入python）测试一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br></pre></td></tr></table></figure>
+<p>如果没有报错的话，就可以了。如果报错的话，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImportError: libmklml_intel.so: cannot open shared object file: No such file <span class="keyword">or</span> directory</span><br></pre></td></tr></table></figure>
+<p>可能是你的mkl环境没有配置好。</p>
+<p>如果有任何问题，请及时指出，我不想我的文章对大家造成误导，谢谢！！！^_date: 2017-11-15 00:00:00<br>^</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/1080ti/">1080ti</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dell/">Dell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cuda/">cuda</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cudnn/">cudnn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/14/2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装cuda9-0和cudnn7"><span class="nav-number">1.</span> <span class="nav-text">安装cuda9.0和cudnn7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装tensorflow1-4"><span class="nav-number">2.</span> <span class="nav-text">安装tensorflow1.4</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>IA-32指令系统概述 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="notes原理" />
+  
+  
+  
+  
+  <meta name="description" content="程序转换概述指令的概念计算机中的指令有微指令、机器指令和伪指令机器指令处于硬件和软件的交界面，相当于一个菜谱指定的一个完整做菜过程微指令是微程序命令，属于硬件范畴，相当于洗，切煮等过程伪指令是由若干机器指令组成的指令序列，属于软件范畴，相当于由多个菜谱合成一个大菜的过程汇编指令是机器指令的汇编表示形式，即符号表示。机器指令与汇编指令一一对应，它们都与机器结构有关，都属于机器级指令。 IA-32指令">
+<meta name="keywords" content="notes,原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IA-32指令系统概述">
+<meta property="og:url" content="http://coordinate.wang/2017/05/11/2017-05-11-IA-32指令系统概述/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="程序转换概述指令的概念计算机中的指令有微指令、机器指令和伪指令机器指令处于硬件和软件的交界面，相当于一个菜谱指定的一个完整做菜过程微指令是微程序命令，属于硬件范畴，相当于洗，切煮等过程伪指令是由若干机器指令组成的指令序列，属于软件范畴，相当于由多个菜谱合成一个大菜的过程汇编指令是机器指令的汇编表示形式，即符号表示。机器指令与汇编指令一一对应，它们都与机器结构有关，都属于机器级指令。 IA-32指令">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IA-32指令系统概述">
+<meta name="twitter:description" content="程序转换概述指令的概念计算机中的指令有微指令、机器指令和伪指令机器指令处于硬件和软件的交界面，相当于一个菜谱指定的一个完整做菜过程微指令是微程序命令，属于硬件范畴，相当于洗，切煮等过程伪指令是由若干机器指令组成的指令序列，属于软件范畴，相当于由多个菜谱合成一个大菜的过程汇编指令是机器指令的汇编表示形式，即符号表示。机器指令与汇编指令一一对应，它们都与机器结构有关，都属于机器级指令。 IA-32指令">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-05-11-IA-32指令系统概述" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      IA-32指令系统概述
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/11/2017-05-11-IA-32指令系统概述/" class="article-date">
+	  <time datetime="2017-05-10T16:00:00.000Z" itemprop="datePublished">五月 11, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="程序转换概述"><a href="#程序转换概述" class="headerlink" title="程序转换概述"></a>程序转换概述</h1><h2 id="指令的概念"><a href="#指令的概念" class="headerlink" title="指令的概念"></a>指令的概念</h2><p>计算机中的指令有微指令、机器指令和伪指令<br>机器指令处于硬件和软件的交界面，相当于一个菜谱指定的一个完整做菜过程<br>微指令是微程序命令，属于硬件范畴，相当于洗，切煮等过程<br>伪指令是由若干机器指令组成的指令序列，属于软件范畴，相当于由多个菜谱合成一个大菜的过程<br>汇编指令是机器指令的汇编表示形式，即符号表示。机器指令与汇编指令一一对应，它们都与机器结构有关，都属于机器级指令。</p>
+<h1 id="IA-32指令系统概述"><a href="#IA-32指令系统概述" class="headerlink" title="IA-32指令系统概述"></a>IA-32指令系统概述</h1><h2 id="IA-32的寄存器组织"><a href="#IA-32的寄存器组织" class="headerlink" title="IA-32的寄存器组织"></a>IA-32的寄存器组织</h2><p>EAX累加器000<br>EBX基址寄存器011<br>ECX计数寄存器001<br>EDX数据寄存器010<br>ESP堆栈指针100<br>EBP基址指针101<br>ESI源变址寄存器110<br>EDI目标变址寄存器111<br>EIP指令指针<br>EFLAGS标志寄存器<br>CS代码段<br>SS堆栈段<br>DS数据段<br>ES附加段<br>FS附加段<br>GS附加段</p>
+<h2 id="IA-32的标志寄存器"><a href="#IA-32的标志寄存器" class="headerlink" title="IA-32的标志寄存器"></a>IA-32的标志寄存器</h2><p>6个条件标志<br>零标志ZF、溢出标志OF、进借位标志CF、符号标志SF、辅助进位标志AF（BCD码运算时才有意义）、奇偶标志PF<br>3个控制标志<br>DF：方向标志（自动变址方向是增还是减）<br>IF：中断允许标志（仅对外部可屏蔽中断有用）<br>TF：陷阱标志（是否是单步跟踪状态）   </p>
+<h2 id="IA-32的寻址方式"><a href="#IA-32的寻址方式" class="headerlink" title="IA-32的寻址方式"></a>IA-32的寻址方式</h2><p>寻址方式：如何根据指令给定信息得到操作数或操作数的地址<br>操作数所在的位置:   </p>
+<ol>
+<li>指令中：立即寻址    </li>
+<li>寄存器中：寄存器寻址  </li>
+<li>存储单元中（属于存储器操作数，按字节编址）：其他寻址方式</li>
+</ol>
+<p>存储器操作数的寻址方式与微处理器的工作模式有关：   </p>
+<ol>
+<li>实地址模式（基本用不到）<br>为与8086/8088兼容设置，加电或复位时，寻址空间1MB，20位地址：(CS) &lt;&lt; 4 + (IP)  </li>
+<li>保护模式（需要掌握）<br>加电后进入，采用虚拟存储管理，多任务情况下隔离、保护，80286以上微处理器的工作方式，寻址空间2^32B，32位线性寻址分段（段基址+段内偏移量）</li>
+</ol>
+<p>存储器操作数的寻址方式<br>在linux系统中：double型变量按4B边界对齐<br>在windows系统中：double型变量按8B边界对齐  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a[<span class="number">100</span>];</span><br><span class="line"><span class="keyword">short</span> b[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line"><span class="keyword">double</span> d[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
+<p>a[i]的地址计算：$$104+i<em>4$$，位移+比例变址<br>b[i][j]的地址计算：$$504+i</em>8+j<em>2(4</em>2 = 8)$$，位移+基址+比例变址<br>d[i]的地址计算：$$544+i<em>8$$，位移+比例变址<br>将b[i][j]取到AX中的指令可以是：movew 504(%ebp, %esi), %ax，其中i</em>8在EBP中，j在ESI中，2为比例因子</p>
+<h2 id="IA-32机器指令格式"><a href="#IA-32机器指令格式" class="headerlink" title="IA-32机器指令格式"></a>IA-32机器指令格式</h2><p><table border="1" align="left"><br>    <tr><br>        <td>操作码</td><br>        <td>寻址方式</td><br>        <td>SIB</td><br>        <td>位移</td><br>        <td>直接数据</td><br>    </tr><br>    <tr><br>        <td>1或2</td><br>        <td>0或1</td><br>        <td>0或1</td><br>        <td>1、2、4</td><br>        <td>立即数</td><br>    </tr><br></table><br><br><br><br></p>
+<p>寻址方式</p>
+<p><table border="1" align="left"><br>    <tr><br>        <td>Mod</td><br>        <td>Reg/OP</td><br>        <td>R/M</td><br>    </tr><br>    <tr><br>        <td>(6~7)</td><br>        <td>(3~5)</td><br>        <td>(0~2)</td><br>    </tr><br></table><br><br><br><br></p>
+<p>SIB</p>
+<p><table border="1" align="left"><br>    <tr><br>        <td>SS</td><br>        <td>Index</td><br>        <td>Base</td><br>    </tr><br>    <tr><br>        <td>(6~7)</td><br>        <td>(3~5)</td><br>        <td>(0~2)</td><br>    </tr><br></table><br><br><br><br></p>
+<p>位移量和立即数都可以是：1B/2B/4B<br>SIB中的基址B和变址I都可以是8个GRS中任一个：SS给出比例因子(00 01 10 11)<br>操作码：opcode；W：与机器模式（16/32位）一起确定寄存器位数（AL/AX/EAX）；D：操作方向（确定源和目标）<br>寻址方式：mod、r/m、reg/op三个字段与w字段和机器模式(16/32)一起确定操作数所在的寄存器编号或有效地址计算方式<br>例如：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1000 1101 0000 0100 0000 0010</span><br><span class="line">8d 04 02 leal (%edx,%eax,1),%eax</span><br><span class="line">1:SS eax:Index edx:Base eax:Reg/OP</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/05/12/2017-05-12-IA-32指令类型1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          IA-32指令类型（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/05/09/2017-05-09-乘除运算及浮点数运算2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">乘除运算及浮点数运算（2）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#程序转换概述"><span class="nav-number">1.</span> <span class="nav-text">程序转换概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#指令的概念"><span class="nav-number">1.1.</span> <span class="nav-text">指令的概念</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IA-32指令系统概述"><span class="nav-number">2.</span> <span class="nav-text">IA-32指令系统概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IA-32的寄存器组织"><span class="nav-number">2.1.</span> <span class="nav-text">IA-32的寄存器组织</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IA-32的标志寄存器"><span class="nav-number">2.2.</span> <span class="nav-text">IA-32的标志寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IA-32的寻址方式"><span class="nav-number">2.3.</span> <span class="nav-text">IA-32的寻址方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IA-32机器指令格式"><span class="nav-number">2.4.</span> <span class="nav-text">IA-32机器指令格式</span></a></li></ol></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

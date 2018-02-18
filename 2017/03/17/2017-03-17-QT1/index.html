@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>QT | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="QTcpp" />
+  
+  
+  
+  
+  <meta name="description" content="QtQt图形界面界面设计，双击dialog.ui进入  属性窗口  右点击控件Go to slot，点击clicked  头文件中增加12private slots:    void on_pushButton_clicked(); cpp文件中增加 1234567void Widget::on_pushButton_clicked()&amp;#123;    QString s1 = ui-&amp;gt;l">
+<meta name="keywords" content="QT,cpp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QT">
+<meta property="og:url" content="http://coordinate.wang/2017/03/17/2017-03-17-QT1/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="QtQt图形界面界面设计，双击dialog.ui进入  属性窗口  右点击控件Go to slot，点击clicked  头文件中增加12private slots:    void on_pushButton_clicked(); cpp文件中增加 1234567void Widget::on_pushButton_clicked()&amp;#123;    QString s1 = ui-&amp;gt;l">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fdq5vuoq99j21f60u0436.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vv8mb2j209a0ef0t4.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vwbyg5j20ec06ajrd.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:05.946Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="QT">
+<meta name="twitter:description" content="QtQt图形界面界面设计，双击dialog.ui进入  属性窗口  右点击控件Go to slot，点击clicked  头文件中增加12private slots:    void on_pushButton_clicked(); cpp文件中增加 1234567void Widget::on_pushButton_clicked()&amp;#123;    QString s1 = ui-&amp;gt;l">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659gy1fdq5vuoq99j21f60u0436.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-03-17-QT1" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      QT
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/17/2017-03-17-QT1/" class="article-date">
+	  <time datetime="2017-03-16T16:00:00.000Z" itemprop="datePublished">三月 17, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Qt"><a href="#Qt" class="headerlink" title="Qt"></a>Qt</h1><h2 id="Qt图形界面"><a href="#Qt图形界面" class="headerlink" title="Qt图形界面"></a>Qt图形界面</h2><p>界面设计，双击dialog.ui进入</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fdq5vuoq99j21f60u0436.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fdq5vuoq99j21f60u0436.jpg" class="img-fluid"><br></a></p>
+<p>属性窗口</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vv8mb2j209a0ef0t4.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vv8mb2j209a0ef0t4.jpg" class="img-fluid"><br></a></p>
+<p>右点击控件Go to slot，点击clicked</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vwbyg5j20ec06ajrd.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vwbyg5j20ec06ajrd.jpg" class="img-fluid"><br></a></p>
+<p>头文件中增加<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">on_pushButton_clicked</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>cpp文件中增加</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Widget::on_pushButton_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    QString s1 = ui-&gt;lineEdit-&gt;text();</span><br><span class="line">    QString s2 = ui-&gt;lineEdit_2-&gt;text();</span><br><span class="line">    <span class="keyword">int</span> a = s1.toInt() + s2.toInt();</span><br><span class="line">    ui-&gt;label-&gt;setText(QString::number(a));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再把文件打包给别人使用时，要删除文件夹内的pro文件</p>
+<h2 id="qt代码实现界面"><a href="#qt代码实现界面" class="headerlink" title="qt代码实现界面"></a>qt代码实现界面</h2><p>头文件<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDialog&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QPushButton&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QLineEdit&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QGridLayout&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Cpp文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">btn1 = <span class="keyword">new</span> QPushButton(<span class="keyword">this</span>);</span><br><span class="line">edit1 = <span class="keyword">new</span> QLineEdit(<span class="keyword">this</span>);</span><br><span class="line">edit2 = <span class="keyword">new</span> QLineEdit(<span class="keyword">this</span>);</span><br><span class="line">label1 = <span class="keyword">new</span> QLabel(<span class="keyword">this</span>);</span><br><span class="line">btn1-&gt;setText(<span class="string">"sum"</span>);</span><br><span class="line">QGridLayout *layout = <span class="keyword">new</span> QGridLayout(<span class="keyword">this</span>);</span><br><span class="line"><span class="comment">// QGridLayout *layout = new QGridLayout();</span></span><br><span class="line"><span class="comment">//this-&gt;setLayout(layout);</span></span><br><span class="line">layout-&gt;addWidget(edit1, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">layout-&gt;addWidget(edit2, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">layout-&gt;addWidget(btn1, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">layout-&gt;addWidget(label1, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">connect(btn1, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(add()));</span><br></pre></td></tr></table></figure>
+<p>在qt中使用相关的容器控件不需要delete<br>要注意的是如果控件变量没有附加到widget<br>如btn1 = new QPushButton();<br>并且没有写layout-&gt;addWidget(btn1, 0, 0);<br>那就要写delete</p>
+<h2 id="控件的事件响应函数"><a href="#控件的事件响应函数" class="headerlink" title="控件的事件响应函数"></a>控件的事件响应函数</h2><p>头文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>cpp文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">connect(btn1, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(add()));</span><br><span class="line"></span><br><span class="line">QString().isNULL();             <span class="comment">//true</span></span><br><span class="line">QString().isEmpty();            <span class="comment">//true</span></span><br><span class="line">QString(“”).isNULL();           <span class="comment">//false</span></span><br><span class="line">QString(“”).isEmpty();          <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<p>一个NULL字符串一定是一个空字符串，但一个空字符串不一定是一个NULL字符串<br>null表示未指向任何对象<br>而””，表示一个没有内容的字符串</p>
+<h2 id="QDateTime类"><a href="#QDateTime类" class="headerlink" title="QDateTime类"></a>QDateTime类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;QDateTime&gt;</span><br></pre></td></tr></table></figure>
+<p>可以使用这个类获取系统时间。通过QDateTime::currentDateTime()来获取本地系统的时间和日期信号。<br>可以通过date()和time()来返回datetime中的日期和时间</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QDateTime *dateTime = <span class="keyword">new</span> QDateTime(QDateTime::currentDateTime());</span><br><span class="line">QString s = dataTime-&gt;date().toString();</span><br></pre></td></tr></table></figure>
+<h2 id="QTimer类"><a href="#QTimer类" class="headerlink" title="QTimer类"></a>QTimer类</h2><p>新建定时器</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QTimer *time_clock = <span class="keyword">new</span> QTimer(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+<p>链接这个定时期的信号和槽，利用定时器的timeout()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">connect(time_clock, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(slottimedone()));</span><br><span class="line">time_clock-&gt;start(<span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+<p>开启定时器，并设置定时周期<br>定时器定时有两种，start(int time)和setSingleShot(true)。<br>其中第一个函数表示每隔”time”秒就会重启定时器，利用stop()将定时器关掉，而后者表示近启动一次。前者比较常用。</p>
+<h2 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h2><p>如果Widget未使用父级进行创建，则在显示视为窗口或顶层Wiget。<br>由于顶层Widget没有父级对象类来确保对其不再使用时就删除，所以需要开发人员在应用程序中对其进行追踪。<br>在本例中，使用QWiget创建和显示具有默认大小的窗口</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QWidget *window = <span class="keyword">new</span> QWidget();    <span class="comment">//注意一个问题，此时是在堆里面的</span></span><br><span class="line">window-&gt;resize(<span class="number">320</span>, <span class="number">240</span>);</span><br><span class="line">window-&gt;show();</span><br><span class="line">QPushButton *button = <span class="keyword">new</span> QPushButton(tr(“press me”), window);</span><br><span class="line">button-&gt;move(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">button-&gt;show();</span><br></pre></td></tr></table></figure>
+<p>针对于上面的问题<br>下面的方式，是在栈里面，所以效果是一闪而过</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">QWidget window;</span><br><span class="line">window.resize(<span class="number">320</span>, <span class="number">240</span>)</span><br><span class="line">window.show();</span><br></pre></td></tr></table></figure>
+<p>widget适合非模式的对话框，dialog适合模式的对话框</p>
+<h1 id="字符图形界面"><a href="#字符图形界面" class="headerlink" title="字符图形界面"></a>字符图形界面</h1><p>-lcurses 编译时要加这个库文件<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">       initscr();         <span class="comment">//begin graphic model</span></span><br><span class="line">       neocho();              <span class="comment">//not echo</span></span><br><span class="line">       chartemp[<span class="number">128</span>];</span><br><span class="line">       chars[<span class="number">128</span>];</span><br><span class="line">       intseq = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%s"</span>,s))&#123;</span><br><span class="line">              <span class="keyword">if</span>(stramp(s,<span class="string">"exit"</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">                     <span class="keyword">break</span>;</span><br><span class="line">              &#125;</span><br><span class="line">              clear();    <span class="comment">//cls</span></span><br><span class="line">              <span class="built_in">sprintf</span>(temp,<span class="string">"please input:\n"</span>);</span><br><span class="line">              mvaddstr(<span class="number">0</span>,<span class="number">0</span>, temp);   <span class="comment">//print at the specifiedcoordinate</span></span><br><span class="line">              inti = <span class="number">0</span>;</span><br><span class="line">              <span class="keyword">for</span>(;i &lt; <span class="number">10</span>; ++i)&#123;</span><br><span class="line">                     <span class="built_in">sprintf</span>(temp,<span class="string">"%s %d %s "</span>,s seq++,s);</span><br><span class="line">                     mvaddr(i+ <span class="number">1</span>, <span class="number">0</span>, temp);</span><br><span class="line">	     	   &#125;</span><br><span class="line">              movd(<span class="number">0</span>,<span class="number">13</span>);  <span class="comment">//move cursor to the specifiedcoordinate</span></span><br><span class="line">              refresh();        <span class="comment">//refresh </span></span><br><span class="line">       &#125;</span><br><span class="line">       endwin();</span><br><span class="line">       return0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iconv --list                 //查看字符编码</span><br><span class="line">&lt;iconv.h&gt;</span><br><span class="line">iconv_t iconv_open(const char *tocode,const char *fromcode);      //linux转化字符集</span><br><span class="line">size_t iconv(iconv_t cd, char **inbuf,size_t *inbytesleft,</span><br><span class="line">             char **outbuf, size_t *outbytesleft);</span><br></pre></td></tr></table></figure>
+<p>iconv_close()       最后要调用close函数<br>第一步<br>iconv_open(目标字符集，源字符集)<br>第二步<br>iconv()实现字符集转化<br>第三部<br>iconv_close()关闭iconv  </p>
+<p>建立文件链接<br>ln libGL.so.1 libGL.so</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">abc</span>&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">const</span> <span class="keyword">char</span>*<span class="title">getp</span><span class="params">()</span></span>&#123;    <span class="comment">//注意要返回const，以防别人外部修改私有变量</span></span><br><span class="line">   		 <span class="keyword">return</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">char</span> *p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果将const char <em>强转为char </em>，c++会复制一个空间出来<br>如char <em>s = (char </em>)p;<br>p是一个const char *类型，则p与s所指向的空间不同</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QT/">QT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/19/2017-03-19-QT2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          QT
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/16/2017-03-16-linux-day11/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">linux Day11</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Qt"><span class="nav-number">1.</span> <span class="nav-text">Qt</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Qt图形界面"><span class="nav-number">1.1.</span> <span class="nav-text">Qt图形界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#qt代码实现界面"><span class="nav-number">1.2.</span> <span class="nav-text">qt代码实现界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控件的事件响应函数"><span class="nav-number">1.3.</span> <span class="nav-text">控件的事件响应函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QDateTime类"><span class="nav-number">1.4.</span> <span class="nav-text">QDateTime类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#QTimer类"><span class="nav-number">1.5.</span> <span class="nav-text">QTimer类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建窗口"><span class="nav-number">1.6.</span> <span class="nav-text">创建窗口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符图形界面"><span class="nav-number">2.</span> <span class="nav-text">字符图形界面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积累"><span class="nav-number">3.</span> <span class="nav-text">积累</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

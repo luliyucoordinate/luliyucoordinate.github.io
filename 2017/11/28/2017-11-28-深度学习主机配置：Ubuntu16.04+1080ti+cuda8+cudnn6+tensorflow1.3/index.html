@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="tensorflowDellUbuntu1080ticudacudnn" />
+  
+  
+  
+  
+  <meta name="description" content="由于在Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置后，工作过程中出现了一些问题，比较好的做法是等待tensorflow1.5的发布，但是我没有时间去等QAQ。所以重装系统，QAQ。 和之前装机的方法一样，只是这里的系统是ubuntu16.04。系统安装好后，我们修改源。好，第一个坑出现了。 无线网卡驱动装好系统后，无线网卡无法使用（主要是我">
+<meta name="keywords" content="tensorflow,Dell,Ubuntu,1080ti,cuda,cudnn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3">
+<meta property="og:url" content="http://coordinate.wang/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="由于在Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置后，工作过程中出现了一些问题，比较好的做法是等待tensorflow1.5的发布，但是我没有时间去等QAQ。所以重装系统，QAQ。 和之前装机的方法一样，只是这里的系统是ubuntu16.04。系统安装好后，我们修改源。好，第一个坑出现了。 无线网卡驱动装好系统后，无线网卡无法使用（主要是我">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:50:43.847Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3">
+<meta name="twitter:description" content="由于在Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置后，工作过程中出现了一些问题，比较好的做法是等待tensorflow1.5的发布，但是我没有时间去等QAQ。所以重装系统，QAQ。 和之前装机的方法一样，只是这里的系统是ubuntu16.04。系统安装好后，我们修改源。好，第一个坑出现了。 无线网卡驱动装好系统后，无线网卡无法使用（主要是我">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/" class="article-date">
+	  <time datetime="2017-11-27T16:00:00.000Z" itemprop="datePublished">十一月 28, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>由于在<a href="http://blog.csdn.net/qq_17550379/article/details/78547648" target="_blank" rel="noopener">Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置</a>后，工作过程中出现了一些问题，比较好的做法是等待tensorflow1.5的发布，但是我没有时间去等QAQ。所以重装系统，QAQ。</p>
+<p>和之前装机的方法一样，只是这里的系统是ubuntu16.04。系统安装好后，我们修改源。好，第一个坑出现了。</p>
+<h2 id="无线网卡驱动"><a href="#无线网卡驱动" class="headerlink" title="无线网卡驱动"></a>无线网卡驱动</h2><p>装好系统后，无线网卡无法使用（主要是我这里有线需要拨号上网，对就是这么的原始QAQ，dsl一直出问题）</p>
+<p>我的网卡型号是Killer Wireless-AC 1535<a href="http://mirrors.kernel.org/ubuntu/pool/main/l/linux-firmware/linux-firmware_1.161.1_all.deb" target="_blank" rel="noopener">下载驱动</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo dpkg -i linux-firmware*.deb</span><br><span class="line">sudo modprobe -r ath10k_pci &amp;&amp; sudo modprobe ath10k_pci</span><br></pre></td></tr></table></figure>
+<h2 id="下载软件仓库信息失败"><a href="#下载软件仓库信息失败" class="headerlink" title="下载软件仓库信息失败"></a>下载软件仓库信息失败</h2><p>我尝试着去更换源，确实在有的源解决了这个问题，但是我不推荐你这么去做。我这里希望我的源是<code>aliyun</code>，但是它一更新后就会出现下面的问题。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*** Error in `appstreamcli': double free or corruption (fasttop): 0x0000000001549c80 ***</span><br></pre></td></tr></table></figure>
+<p>解决方法</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get purge libappstream3</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<h2 id="安装显卡驱动"><a href="#安装显卡驱动" class="headerlink" title="安装显卡驱动"></a>安装显卡驱动</h2><p>我推荐你先安装<code>vim</code>，因为我觉得<code>vi</code>不怎么好用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure>
+<p>接着去禁用nouveau驱动（这是一个开源的驱动，对nvidia显卡不支持）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/modprobe.d/blacklist-nouveau.conf</span><br></pre></td></tr></table></figure>
+<p>在后面添加</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br></pre></td></tr></table></figure>
+<p>接着更新一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure>
+<p><strong>修改之后需要重启系统</strong>。</p>
+<p>重启后可以使用以下命令： </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep nouveau</span><br></pre></td></tr></table></figure>
+<p>如果什么都没有的话，禁用成功。我这里要说的是，大家都这样做了，所以我这样做了，但是如果不禁用会不会有问题，我不知道（有人说没问题）。</p>
+<p>先进入文本模式（Ctrl+Alt+F1），接着使用这条指令，添加一个源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:graphics-drivers/ppa</span><br></pre></td></tr></table></figure>
+<p>关闭图形化窗口</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br></pre></td></tr></table></figure>
+<p>先更新一下，因为我们添加了一个源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p>使用这个命令下载安装驱动（我的显卡是1080ti所以使用381，没有使用384，很多人说这个有问题，不想再被坑了）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nvidia-381</span><br></pre></td></tr></table></figure>
+<p>这次安装的过程中出现了这样的一个问题</p>
+<ul>
+<li><p>pcie bus error</p>
+<p>先恢复图形环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
+<p>Ctrl+Alt+F7进入图形界面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/default/grub</span><br></pre></td></tr></table></figure>
+<p>将其中的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"</span><br></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GRUB_CMDLINE_LINUX_DEFAULT="quiet splash nomodeset"</span><br></pre></td></tr></table></figure>
+<p>然后更新<code>sudo update-grub</code>，后重启电脑。</p>
+</li>
+</ul>
+<p>接着按照之前的步骤安装驱动就可以了，很高兴的是，这次并没有像Ubuntu17.04那样出现下载出错的问题。</p>
+<p>装好后，恢复图形环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br></pre></td></tr></table></figure>
+<p>Ctrl+Alt+F7进入图形界面，关机。</p>
+<p>将独立显卡插上，将视屏线插在独显上，开机，这个时候你会发现，系统可以打开了，不再是黑屏。</p>
+<p>进入系统后，输入下面指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure>
+<p>如果没有出现报错，那么恭喜你ubuntu装好了。</p>
+<h2 id="安装pip"><a href="#安装pip" class="headerlink" title="安装pip"></a>安装pip</h2><p>接着我们要先安装pip源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python-pip</span><br></pre></td></tr></table></figure>
+<p>接着cd到根目录，使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -la</span><br></pre></td></tr></table></figure>
+<p>这个时候应该可以看到<code>.config</code>文件夹，进入这个文件夹（<code>cd .config</code>），建立一个pip文件夹（mkdir pip），进入pip文件夹（cd pip），接着建立<code>pip.conf</code>文件（vim pip.conf），按i（表示输入文本）输入以下内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[global] </span><br><span class="line">index-url = https://pypi.tuna.tsinghua.edu.cn/simple</span><br></pre></td></tr></table></figure>
+<p>输入<code>:wq</code>（保存并退出）。</p>
+<p>以上步骤是要修改pip的源，这样安装会更加的快。</p>
+<h2 id="安装cuda8"><a href="#安装cuda8" class="headerlink" title="安装cuda8"></a>安装cuda8</h2><p>下载好cuda8的<code>.run</code>文件，注意这里不要下载<code>.deb</code>文件（据说有坑），应该是两个文件，其中一个是补丁文件。</p>
+<p>使用下面指令安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./cuda_8.0.61_375.26_linux.run</span><br></pre></td></tr></table></figure>
+<p>这个安装的过程没有什么困难的，唯一一个要注意的地方就是<strong>在选择安装驱动时，选n</strong></p>
+<p>装好后打上补丁</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./cuda_8.0.61.2_linux.run</span><br></pre></td></tr></table></figure>
+<p>我这里的samples文件是在home文件夹下（各位可能是在<code>/usr/local/cuda-8.0/</code>下）</p>
+<p>现在桌面建立一个文件夹test，进入test文件夹（cd test）。使用下面的命令，将cuda例子文件复制进去</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r /home/nvidia_samples/ .</span><br></pre></td></tr></table></figure>
+<p>进入samples文件夹（cd samples），输入指令<code>make -j</code>，进行编译，编译要花一点时间。</p>
+<p>编译好后切换到release文件夹</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ./bin/x86_64/linux/release</span><br></pre></td></tr></table></figure>
+<p>执行下面指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./deviceQuery</span><br></pre></td></tr></table></figure>
+<p>查看最后结果，如果是<code>Result = PASS</code>，那就ok。</p>
+<p>接着cd到根目录。编辑<code>.bashrc文件</code>（vim  .bashrc，不过新装的系统好像没有这个文件，没有的话跳过这步），在文件结尾添加下面的语句</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>cuda8.0</span><br><span class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125; </span><br><span class="line">export CUDA_HOME=/usr/local/cuda</span><br></pre></td></tr></table></figure>
+<p>输入<code>:wq</code>（保存退出）。接着在命令窗口输入<code>source .bashrc</code>，让文件生效。</p>
+<h2 id="安装cudnn6"><a href="#安装cudnn6" class="headerlink" title="安装cudnn6"></a>安装cudnn6</h2><p>推荐安装cudnn6，不要安装cudnn7</p>
+<p>接着去官网下载<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="noopener">cudnn6安装文件</a>，但是好像最近无法下载了，我有时间会上传一份。（需要的同学留言，我发给你）</p>
+<p>下载好后输入下列指令将相关文件拷贝到cuda安装目录下即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf cudnn-8.0-linux-x64-v6.0.tgz</span><br><span class="line">sudo cp cuda/include/cudnn.h /usr/local/cuda/include/ </span><br><span class="line">sudo cp -a cuda/lib64/libcudnn* /usr/local/cuda/lib64/ </span><br><span class="line">sudo chmod a+r /usr/local/cuda/include/cudnn.h </span><br><span class="line">sudo chmod a+r /usr/local/cuda/lib64/libcudnn*</span><br></pre></td></tr></table></figure>
+<p>注意上面第二条指令，这里多加了一个<code>-a</code>，在官方给的方案里面没有，我建议你这样做，否则会出现连接出错的问题。</p>
+<h2 id="安装tensorflow1-3"><a href="#安装tensorflow1-3" class="headerlink" title="安装tensorflow1.3"></a>安装tensorflow1.3</h2><p>接着我们开始安装tensorflow1.3，在此之前，先安装一个<code>libcupti-dev</code>库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libcupti-dev</span><br></pre></td></tr></table></figure>
+<p>接着如果使用</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install tensorflow-gpu</span><br></pre></td></tr></table></figure>
+<p>会安装tensorflow1.4的版本，我觉得如果你是使用cuda8的用户，我推荐你去安装tensorflow1.3。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install tensorflow-gpu==1.3</span><br></pre></td></tr></table></figure>
+<p>装好后我们在python中（命令窗口输入python）测试一下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br></pre></td></tr></table></figure>
+<p>如果没有报错的话，就可以了date: 2017-11-28 00:00:00<br>。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/1080ti/">1080ti</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dell/">Dell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cuda/">cuda</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cudnn/">cudnn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/30/2017-11-30-QT5.9.1与opencv3.3读取图片（2）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          QT5.9.1与opencv3.3读取图片（2）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#无线网卡驱动"><span class="nav-number">1.</span> <span class="nav-text">无线网卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载软件仓库信息失败"><span class="nav-number">2.</span> <span class="nav-text">下载软件仓库信息失败</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装显卡驱动"><span class="nav-number">3.</span> <span class="nav-text">安装显卡驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装pip"><span class="nav-number">4.</span> <span class="nav-text">安装pip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装cuda8"><span class="nav-number">5.</span> <span class="nav-text">安装cuda8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装cudnn6"><span class="nav-number">6.</span> <span class="nav-text">安装cudnn6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装tensorflow1-3"><span class="nav-number">7.</span> <span class="nav-text">安装tensorflow1.3</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>cpp2.0新特性(3) | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cppcpp第二版" />
+  
+  
+  
+  
+  <meta name="description" content="Rvalue referencesRvalue references are a new reference type introduced in C++0x that help solve the problem of unnecessary copying and enable perfect forwarding.When the right-hand side of an assignme">
+<meta name="keywords" content="cpp,cpp第二版">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cpp2.0新特性(3)">
+<meta property="og:url" content="http://coordinate.wang/2017/04/15/2017-04-15-cpp2.0新特性3/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="Rvalue referencesRvalue references are a new reference type introduced in C++0x that help solve the problem of unnecessary copying and enable perfect forwarding.When the right-hand side of an assignme">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-18T03:29:06.181Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cpp2.0新特性(3)">
+<meta name="twitter:description" content="Rvalue referencesRvalue references are a new reference type introduced in C++0x that help solve the problem of unnecessary copying and enable perfect forwarding.When the right-hand side of an assignme">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-04-15-cpp2.0新特性3" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      cpp2.0新特性(3)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/15/2017-04-15-cpp2.0新特性3/" class="article-date">
+	  <time datetime="2017-04-14T16:00:00.000Z" itemprop="datePublished">四月 15, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Rvalue-references"><a href="#Rvalue-references" class="headerlink" title="Rvalue references"></a>Rvalue references</h1><p>Rvalue references are a new reference type introduced in C++0x that help solve the problem of unnecessary copying and enable perfect forwarding.When the right-hand side of an assignment is an rvalue, then the left-hand side object can steal resources from the right-hand side object rather than performing a separate allocation ,thus enabling move semantics<br>Lvalue:可以出现operator=左侧<br>Rvalue:只能出现operator=右侧<br>做以下测试：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s1</span><span class="params">(<span class="string">"hello "</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="title">s2</span><span class="params">(<span class="string">"world"</span>)</span></span>;</span><br><span class="line">s1 + s2 = s2; <span class="comment">//竟然通过了编译</span></span><br><span class="line"><span class="built_in">string</span>() = <span class="string">"world"</span>;<span class="comment">//竟然可以对temp object赋值</span></span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s1 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s2 &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="built_in">cout</span> &lt;&lt; s1 + s2 &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+<p>结果为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hello</span><br><span class="line">world</span><br><span class="line">hello world</span><br></pre></td></tr></table></figure>
+<p>这个是标准库设计上的不合理，temp object是一个Rvalue<br>C++ with its user-defined types has introduced some subtleties regarding modifiability and assignability that cause this definition to be incorrect</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">foo</span><span class="params">()</span></span>&#123; <span class="keyword">return</span> <span class="number">5</span>; &#125;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">int</span> x = foo();</span><br><span class="line"><span class="keyword">int</span> *p = &amp;foo(); <span class="comment">//ERROR 表达式必须为左值</span></span><br><span class="line">foo() = <span class="number">7</span>; <span class="comment">//ERROR 表达式必须是可修改的左值</span></span><br></pre></td></tr></table></figure>
+<p>函数的返回值是一个Rvalue，对Rvalue取reference是不可以的</p>
+<h2 id="Unperfect-Forwarding"><a href="#Unperfect-Forwarding" class="headerlink" title="Unperfect Forwarding"></a>Unperfect Forwarding</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(<span class="keyword">int</span>&amp; i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"process"</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">process</span><span class="params">(<span class="keyword">int</span>&amp;&amp; i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"process(int&amp;&amp;):"</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">forward</span><span class="params">(<span class="keyword">int</span> &amp;&amp;i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"forward(int &amp;&amp;):"</span> &lt;&lt; i &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">	process(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">process(a);<span class="comment">//process(int&amp;):0</span></span><br><span class="line">process(<span class="number">1</span>);<span class="comment">//process(int&amp;&amp;):1</span></span><br><span class="line">process(move(a));<span class="comment">//process(int&amp;&amp;):0</span></span><br><span class="line">forward(<span class="number">2</span>);<span class="comment">//forward(int&amp;&amp;):2,process(int&amp;):2</span></span><br><span class="line"><span class="comment">//rvalue经过forward()传给另一个函数却变为lvalue</span></span><br><span class="line"><span class="comment">//原因在于传递的过程中它变成了一个named object</span></span><br><span class="line">forward(move(a));<span class="comment">//forward(int&amp;&amp;):0,process(int&amp;):0</span></span><br><span class="line"><span class="comment">//rvalue经过forward()传给另一个函数却变为rvalue</span></span><br></pre></td></tr></table></figure>
+<h2 id="Perfect-Forwarding"><a href="#Perfect-Forwarding" class="headerlink" title="Perfect Forwarding"></a>Perfect Forwarding</h2><p>Perfect forwarding allows you to write a single function template that takes n arbitrary arguments and forwards them transparently to another arbitrary function.The nature of the argument(modifiable,const ,lvalue or rvalue) is preserved in this forwarding process.</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">functionA</span><span class="params">(T1&amp;&amp; t1, T2&amp;&amp; t2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	functionB(<span class="built_in">std</span>::forward&lt;T1&gt;(t1),</span><br><span class="line">				<span class="built_in">std</span>::forward&lt;T2&gt;(t2));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="String-Literal"><a href="#String-Literal" class="headerlink" title="String Literal"></a>String Literal</h1><h2 id="Raw-String-Literal"><a href="#Raw-String-Literal" class="headerlink" title="Raw String Literal"></a>Raw String Literal</h2><p>例如一个用来表示两个反斜杠和一个n的寻常字面常量可定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“\\\\n”</span><br></pre></td></tr></table></figure>
+<p>也可以定义为raw string literal</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">R”(\\n)”</span><br></pre></td></tr></table></figure>
+<p>如果要在raw string内写出)”，可以使用定义符。因此，一个raw string的完整语法是R”delim()delim”,其中delim是字符序列，最多16个基本字符，不包含反斜线、空格和小括号。举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">R”nc(a\</span><br><span class="line">    b\nc()”</span><br><span class="line">)nc”</span><br></pre></td></tr></table></figure>
+<p>等同于</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“a\\\n    b\\nc()\”\n    ”</span><br></pre></td></tr></table></figure>
+<h2 id="Encoded-String-Literal"><a href="#Encoded-String-Literal" class="headerlink" title="Encoded String Literal"></a>Encoded String Literal</h2><p>u8定义一个UTF-8编码。<br>u定义一个string lteral，带着char16_t的字符<br>U定义一个string lteral，带着char32_t的字符<br>L定义一个wide string lteral，带着wchar_t的字符</p>
+<h1 id="New-Fundamental-Data-Type"><a href="#New-Fundamental-Data-Type" class="headerlink" title="New Fundamental Data Type"></a>New Fundamental Data Type</h1><p>char16_t 和 char32_t<br>long long 和unsigned long long<br>std::nullptr_t</p>
+<h1 id="Scoped-Enumerration"><a href="#Scoped-Enumerration" class="headerlink" title="Scoped Enumerration"></a>Scoped Enumerration</h1><p>一般情况下，在花括号中声明一个name（包括变量名，函数名），这个name的可见性会被限制在花括号的作用域内。对于在C++98风格的enum中声明的enum成员却不是这样。这些enum成员的name属于的作用域是enum所在作用域，这意味着在这个作用域中，不能拥有相同的name:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Color &#123; black, white, red &#125;;   <span class="comment">//black，white，red</span></span><br><span class="line">                                    <span class="comment">//和Color在同一个作用域</span></span><br><span class="line"><span class="keyword">auto</span> white = <span class="literal">false</span>;                 <span class="comment">//错误！white在这个</span></span><br><span class="line">                                    <span class="comment">//作用域已经声明过了</span></span><br></pre></td></tr></table></figure>
+<p>所以事实上，这些enum成员name泄露到enum所在的作用域中去了，这导致官方对于这种enum给出了一个官方术语：unscoped。新的C++11中有一个与此相对应的版本：scoped enum，不会像这样让name泄露：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span> &#123;</span> black, white, red &#125;; <span class="comment">//black，white red</span></span><br><span class="line">                                        <span class="comment">//在Color作用域中</span></span><br><span class="line"><span class="keyword">auto</span> white = <span class="literal">false</span>;                     <span class="comment">//好的，没其他white</span></span><br><span class="line">Color c = white;                        <span class="comment">//错误！在这个作用域中没有</span></span><br><span class="line">                                        <span class="comment">//一个叫“white”的enum成员</span></span><br><span class="line">Color c = Color::white;                 <span class="comment">//对的</span></span><br><span class="line"><span class="keyword">auto</span> c = Color::white;                  <span class="comment">//也是对的（而且和Item 5的建议一样）</span></span><br></pre></td></tr></table></figure>
+<p>再举个例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="class"><span class="keyword">class</span> <span class="title">Salutation</span> :</span> <span class="keyword">char</span> &#123; mr, ms co&#125;;</span><br></pre></td></tr></table></figure>
+<p>你可以明显定义底层类型（本例是char）并因此获得一个保证大小（如果你这里省略了char，则默认是int）。</p>
+<h1 id="Member-Template"><a href="#Member-Template" class="headerlink" title="Member Template "></a>Member Template </h1><p>Member template的一个特殊形式时template构造函数。这个函数通常被提供用于“对象被复制时给予隐式类型转换”的能力。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="comment">//copy constructor with inmplicit type conversion</span></span><br><span class="line"><span class="comment">//-ddoes not supperss implicit copy constructor</span></span><br><span class="line">	<span class="keyword">template</span>&lt;<span class="keyword">typename</span> U&gt;</span><br><span class="line">	MyClass ( <span class="keyword">const</span> MyClass&lt;U&gt;&amp; x);</span><br><span class="line">	...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	MyClass&lt;<span class="keyword">double</span>&gt; xd;</span><br><span class="line">	MyClass&lt;<span class="keyword">double</span>&gt; xd2(xd);</span><br><span class="line">	MyClass&lt;<span class="keyword">int</span>&gt; xi(xd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里xd2与xd类型完全相同，因此其初始化是通过被隐式生成的copy构造函数完成。xi的类型与xd不同，因此其初始化是通过template构造函数完成的。</p>
+<h1 id="Explicit-Initialization-for-Fundamental-Type"><a href="#Explicit-Initialization-for-Fundamental-Type" class="headerlink" title="Explicit Initialization for Fundamental Type"></a>Explicit Initialization for Fundamental Type</h1><p>如果你使用一个明确的构造函数，但不给实参这样的语法，基础类型会被设定初值为0：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i1;<span class="comment">//undefined value</span></span><br><span class="line"><span class="keyword">int</span> i2 = <span class="keyword">int</span>();<span class="comment">//initialized with zero</span></span><br><span class="line"><span class="keyword">int</span> i3&#123;&#125;;<span class="comment">//initialized with zero</span></span><br><span class="line"><span class="built_in">std</span>::pair&lt;<span class="keyword">int</span>,<span class="keyword">float</span>&gt; p;<span class="comment">//initialize p.first and p.second with zero</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp第二版/">cpp第二版</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/16/2017-04-16-cpp通用工具1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          cpp通用工具(1)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/14/2017-04-14-cpp2.0新特性2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">cpp2.0新特性(2)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rvalue-references"><span class="nav-number">1.</span> <span class="nav-text">Rvalue references</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Unperfect-Forwarding"><span class="nav-number">1.1.</span> <span class="nav-text">Unperfect Forwarding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Perfect-Forwarding"><span class="nav-number">1.2.</span> <span class="nav-text">Perfect Forwarding</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#String-Literal"><span class="nav-number">2.</span> <span class="nav-text">String Literal</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Raw-String-Literal"><span class="nav-number">2.1.</span> <span class="nav-text">Raw String Literal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encoded-String-Literal"><span class="nav-number">2.2.</span> <span class="nav-text">Encoded String Literal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#New-Fundamental-Data-Type"><span class="nav-number">3.</span> <span class="nav-text">New Fundamental Data Type</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Scoped-Enumerration"><span class="nav-number">4.</span> <span class="nav-text">Scoped Enumerration</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Member-Template"><span class="nav-number">5.</span> <span class="nav-text">Member Template </span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Explicit-Initialization-for-Fundamental-Type"><span class="nav-number">6.</span> <span class="nav-text">Explicit Initialization for Fundamental Type</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>TensorBoard计算图可视化 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythontensorflowestimator" />
+  
+  
+  
+  
+  <meta name="description" content="TensorFlow计算图功能强大但复杂。 图表可视化可以帮助您理解和调试它们。 这是一个可视化工作的例子。    命名空间和节点典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用tf.name_sc">
+<meta name="keywords" content="python,tensorflow,estimator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorBoard计算图可视化">
+<meta property="og:url" content="http://coordinate.wang/2017/12/06/2017-12-06-TensorBoard图形可视化/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="TensorFlow计算图功能强大但复杂。 图表可视化可以帮助您理解和调试它们。 这是一个可视化工作的例子。    命名空间和节点典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用tf.name_sc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/large/af2d2659ly1fm4kh0mnwug21040iw7wj.gif">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm4kgw1iifj20tr0f30u2.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgwn70jj20ts09rmyj.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgx2inuj20tm04twez.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgxhputj20tq0fbjsq.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm4kgy45psj20tr0c4mzt.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgyk7epj20tq0h777t.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgz1b12j20az050mxt.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm4kgzet29j20tt0g2dja.jpg">
+<meta property="og:updated_time" content="2018-02-18T03:29:07.585Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TensorBoard计算图可视化">
+<meta name="twitter:description" content="TensorFlow计算图功能强大但复杂。 图表可视化可以帮助您理解和调试它们。 这是一个可视化工作的例子。    命名空间和节点典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用tf.name_sc">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/large/af2d2659ly1fm4kh0mnwug21040iw7wj.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="coordinate" rel="home"> coordinate </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2017-12-06-TensorBoard图形可视化" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      TensorBoard计算图可视化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/06/2017-12-06-TensorBoard图形可视化/" class="article-date">
+	  <time datetime="2017-12-05T16:00:00.000Z" itemprop="datePublished">十二月 6, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TensorFlow计算图功能强大但复杂。 图表可视化可以帮助您理解和调试它们。 这是一个可视化工作的例子。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/large/af2d2659ly1fm4kh0mnwug21040iw7wj.gif"><br></center>
+
+
+<h2 id="命名空间和节点"><a href="#命名空间和节点" class="headerlink" title="命名空间和节点"></a>命名空间和节点</h2><p>典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用<code>tf.name_scope</code>在<code>hidden</code>名称范围下定义三个操作的示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">'hidden'</span>) <span class="keyword">as</span> scope:</span><br><span class="line">  a = tf.constant(<span class="number">5</span>, name=<span class="string">'alpha'</span>)</span><br><span class="line">  W = tf.Variable(tf.random_uniform([<span class="number">1</span>, <span class="number">2</span>], <span class="number">-1.0</span>, <span class="number">1.0</span>), name=<span class="string">'weights'</span>)</span><br><span class="line">  b = tf.Variable(tf.zeros([<span class="number">1</span>]), name=<span class="string">'biases'</span>)</span><br></pre></td></tr></table></figure>
+<p>这产生了以下三个操作名称：</p>
+<ul>
+<li><p><code>hidden/alpha</code></p>
+</li>
+<li><p><code>hidden/weights</code></p>
+</li>
+<li><p><code>hidden/biases</code></p>
+</li>
+</ul>
+<p>默认情况下，可视化文件将全部折叠为标记为隐藏的节点。 额外的细节不会丢失。 你可以双击，或者点击右上角的橙色<code>+</code>符号来展开节点，然后你会看到三个子节点，分别是<code>alpha</code>，<code>weight</code>和<code>bias</code>。</p>
+<p>这是一个复杂节点在其初始状态和扩展状态的例子。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fm4kgw1iifj20tr0f30u2.jpg"><br></center>
+
+<p>按命名空间对节点进行分组对于制作清晰的图形至关重要。如果您正在构建模型，则命名空间可以控制生成的可视化图像。你的命名空间越好，你的可视化就越好。</p>
+<p>上图说明了可视化的第二个方面。 TensorFlow图有两种连接：数据相关性和控制相关性。数据相关性显示两个操作符之间的张量流，并用实线箭头显示，而控制相关性使用虚线。在扩展视图（上图右侧）中，除了连接<code>CheckNumerics</code>和<code>control_dependency</code>的虚线外，所有连接都是数据依赖关系。</p>
+<p>还有一个简化布局的技巧。大多数TensorFlow图有几个与其他节点连接的节点。例如，许多节点可能对初始化步骤具有控制依赖性。绘制<code>init</code>节点及其依赖关系之间的所有边将创建一个非常混乱的视图。</p>
+<p>为了减少混乱，可视化将所有高度节点分隔到右侧的辅助区域，并不画线来表示其边缘。我们绘制小节点图标来代替连线。分离出的辅助节点通常不会去除关键信息，因为这些节点通常与簿记功能相关。有关如何在主图形和辅助区域之间移动节点的信息，请参阅交互。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgwn70jj20ts09rmyj.jpg"><br></center>
+
+<p>最后一个结构简化是<em>series collapsing</em>连续图案 - 也就是说，名称相差最后一个数字并具有同构结构的节点 - 会折叠成一堆节点，如下所示。 对于长序列的网络，这大大简化了视图。 与分层节点一样，双击将扩展该系列。 请参阅交互以了解如何为特定节点集禁用/启用系列折叠。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgx2inuj20tm04twez.jpg"><br></center>
+
+<p>最后，作为易读性的最后一个帮助，可视化对常量和汇总节点使用特殊的图标。 总结为下面的节点符号表：</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgxhputj20tq0fbjsq.jpg"><br></center>
+
+
+<h2 id="交互"><a href="#交互" class="headerlink" title="交互"></a>交互</h2><p>通过平移和缩放导航图形。 点击并拖动以平移，并使用滚动手势进行缩放。 双击某个节点，或单击其<code>+</code>按钮，展开一个代表一组操作的命名空间。 为了在放大和平移时轻松跟踪当前视点，右下角会有一个小地图。</p>
+<p>要关闭打开的节点，请再次双击它或单击其<code>-</code>按钮。 您也可以单击一次以选择一个节点， 它会变成一个较深的颜色，并且关于它的详细信息以及它所连接的节点将出现在右上角的可视化对象信息卡中。</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fm4kgy45psj20tr0c4mzt.jpg"><br></center>
+
+<p>TensorBoard提供了几种方法来改变图形的视觉布局。这不会改变图的计算语义，但是它可以使网络的结构变得清晰。通过右键单击某个节点或按该节点信息卡底部的按钮，可以对其布局进行以下更改：</p>
+<ul>
+<li>节点可以在主图表和辅助区域之间移动。</li>
+<li>可以将一系列节点取消分组，使得该系列中的节点不会出现在一起。未分组的序列也可以重新组合。</li>
+</ul>
+<p><code>Selection</code>也可以帮助理解高层次节点。选择任何高层次节点，其他连接的相应节点图标也将被选中。这可以很容易地看到哪些节点正在保存 - 哪些不是。</p>
+<p>点击信息卡中的节点名称将选择它。如有必要，视点将自动平移，以便节点可见。</p>
+<p>最后，您可以使用图例上方的颜色菜单为图形选择两种配色方案。默认的显示结构：当两个高层节点具有相同的结构时，它们以相同颜色出现。结构独特的节点是灰色的。第二个视图，它显示了不同操作运行的设备。名称范围与其内部操作的设备成比例。</p>
+<p>下面的图片给出了例子。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgyk7epj20tq0h777t.jpg"><br></center>
+
+
+<h2 id="张量形状信息"><a href="#张量形状信息" class="headerlink" title="张量形状信息"></a>张量形状信息</h2><p>当序列化的<code>GraphDef</code>包含张量形状时，图形可视化器将张量标注为边缘，边缘厚度反映总张量大小。 要在<code>GraphDef</code>中包含张量形状，在序列化图形时将实际图形对象（如<code>sess.graph</code>）传递给<code>FileWriter</code>。 下面的图片显示了具有张量形状信息的CIFAR-10模型：</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fm4kgz1b12j20az050mxt.jpg"><br></center>
+
+
+<h2 id="运行时统计"><a href="#运行时统计" class="headerlink" title="运行时统计"></a>运行时统计</h2><p>收集运行时元数据通常是非常有用的，例如总内存使用量，总计算时间和节点的张量形状。 下面的代码示例是简单的MNIST教程的修改的训练和测试部分的一个片段，其中我们记录了摘要和运行时统计信息。 有关如何记录摘要的详细信息，请参阅摘要教程。 完整的源代码在这里。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Train the model, and also write summaries.</span></span><br><span class="line"> <span class="comment"># Every 10th step, measure test-set accuracy, and write test summaries</span></span><br><span class="line"> <span class="comment"># All other steps, run train_step on training data, &amp; add training summaries</span></span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">def</span> <span class="title">feed_dict</span><span class="params">(train)</span>:</span></span><br><span class="line">   <span class="string">"""Make a TensorFlow feed_dict: maps data onto Tensor placeholders."""</span></span><br><span class="line">   <span class="keyword">if</span> train <span class="keyword">or</span> FLAGS.fake_data:</span><br><span class="line">     xs, ys = mnist.train.next_batch(<span class="number">100</span>, fake_data=FLAGS.fake_data)</span><br><span class="line">     k = FLAGS.dropout</span><br><span class="line">   <span class="keyword">else</span>:</span><br><span class="line">     xs, ys = mnist.test.images, mnist.test.labels</span><br><span class="line">     k = <span class="number">1.0</span></span><br><span class="line">   <span class="keyword">return</span> &#123;x: xs, y_: ys, keep_prob: k&#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> i <span class="keyword">in</span> range(FLAGS.max_steps):</span><br><span class="line">   <span class="keyword">if</span> i % <span class="number">10</span> == <span class="number">0</span>:  <span class="comment"># Record summaries and test-set accuracy</span></span><br><span class="line">     summary, acc = sess.run([merged, accuracy], feed_dict=feed_dict(<span class="keyword">False</span>))</span><br><span class="line">     test_writer.add_summary(summary, i)</span><br><span class="line">     print(<span class="string">'Accuracy at step %s: %s'</span> % (i, acc))</span><br><span class="line">   <span class="keyword">else</span>:  <span class="comment"># Record train set summaries, and train</span></span><br><span class="line">     <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">99</span>:  <span class="comment"># Record execution stats</span></span><br><span class="line">       run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)</span><br><span class="line">       run_metadata = tf.RunMetadata()</span><br><span class="line">       summary, _ = sess.run([merged, train_step],</span><br><span class="line">                             feed_dict=feed_dict(<span class="keyword">True</span>),</span><br><span class="line">                             options=run_options,</span><br><span class="line">                             run_metadata=run_metadata)</span><br><span class="line">       train_writer.add_run_metadata(run_metadata, <span class="string">'step%d'</span> % i)</span><br><span class="line">       train_writer.add_summary(summary, i)</span><br><span class="line">       print(<span class="string">'Adding run metadata for'</span>, i)</span><br><span class="line">     <span class="keyword">else</span>:  <span class="comment"># Record a summary</span></span><br><span class="line">       summary, _ = sess.run([merged, train_step], feed_dict=feed_dict(<span class="keyword">True</span>))</span><br><span class="line">       train_writer.add_summary(summary, i)</span><br></pre></td></tr></table></figure>
+<p>此代码将从步骤99开始每100步发出运行时统计信息。</p>
+<p>当启动tensorboard并转到图表选项卡时，您将在“会话运行”下看到与添加运行元数据的步骤相对应的选项。 选择其中一个运行将显示在该步骤的网络快照，淡出未使用的节点。 在左侧的控件中，您可以通过总内存或总计算时间对节点着色。 此外，单击节点将显示确切的总内存，计算时间和张量输出大小。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fm4kgzet29j20tt0g2dja.jpg"><br></center>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/estimator/">estimator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+        
+	<section id="comments" class="comment">
+	  <div id="disqus_thread">
+	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+	  </div>
+	</section>
+
+	<script type="text/javascript">
+	var disqus_shortname = 'luliyucoordinate';
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	(function(){
+	  var dsq = document.createElement('script');
+	  dsq.type = 'text/javascript';
+	  dsq.async = true;
+	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	}());
+	</script>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/13/2017-12-13-tf.identity的作用/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          tf.identity的作用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/05/2017-12-05-TensorBoard可视化学习/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">TensorBoard可视化学习</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命名空间和节点"><span class="nav-number">1.</span> <span class="nav-text">命名空间和节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#交互"><span class="nav-number">2.</span> <span class="nav-text">交互</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#张量形状信息"><span class="nav-number">3.</span> <span class="nav-text">张量形状信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时统计"><span class="nav-number">4.</span> <span class="nav-text">运行时统计</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>
