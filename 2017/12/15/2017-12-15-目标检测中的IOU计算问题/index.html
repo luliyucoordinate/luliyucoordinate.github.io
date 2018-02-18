@@ -9,7 +9,13 @@
   <meta name="keywords" content="cpythonIOU" />
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。   那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？   IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为">
 <meta name="keywords" content="c,python,IOU">
@@ -63,10 +69,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -305,6 +333,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

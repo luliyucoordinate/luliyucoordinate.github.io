@@ -9,7 +9,13 @@
   <meta name="keywords" content="cpp算法" />
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="我们平时书写的算术表达式都是中序表达式，例如  (1 + 2) x 3/4 - 5  而对应的后缀表达式就是  12+3x4/5-  如何由中序表达式变为后缀表达式呢？具体做法如下：  建立符号栈s 从左向右扫描中序表达式 碰到数字，直接输出 碰到运算符 如果s为空或者栈顶元素为左括号，则压入s，回到从左向右扫描中序表达式 运算符的优先级大于s栈顶运算符的优先级，压入s，回到从左向右扫描中序表达式">
 <meta name="keywords" content="cpp,算法">
@@ -59,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -414,6 +442,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

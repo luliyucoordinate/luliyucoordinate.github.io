@@ -9,7 +9,13 @@
   <meta name="keywords" content="cpp转载引用折叠" />
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="转自 Effective Modern C++ 条款28 理解引用折叠 条款23提起过把一个实参传递给模板函数时，无论实参是左值还是右值，推断出来的模板参数都会含有编码信息。那条款没有提起，只有模板形参是通用引用时，这件事才会发生，不过对于这疏忽，理由很充分：条款24才介绍通用引用。把这些关于通用引用和左值/右值编码信息综合，意味着这个模板， 12template&amp;lt;typename T&amp;gt">
 <meta name="keywords" content="cpp,转载,引用折叠">
@@ -59,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -336,6 +364,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

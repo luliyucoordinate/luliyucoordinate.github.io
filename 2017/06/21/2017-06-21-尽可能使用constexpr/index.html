@@ -9,7 +9,13 @@
   <meta name="keywords" content="cpp转载constexpr" />
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="以下内容转自尽可能使用constexpr 如果要选出C++11中最让人迷惑的新关键字，那么大概是constexpr。当constexpr用于对象时，它本质上就是加强版的const，但它用于函数时，它拥有不同的意思。constexpr再迷惑，也是值得的，因为当constexpr与你想要表达的一致时，你肯定会用它。在概念上，constexpr表明一个值不仅是常量，还是在编译期间可知。这概念只是拼图的一">
 <meta name="keywords" content="cpp,转载,constexpr">
@@ -59,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -304,6 +332,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

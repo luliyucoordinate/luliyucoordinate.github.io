@@ -7,7 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta property="og:type" content="website">
 <meta property="og:title" content="coordinate">
@@ -52,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -2782,13 +2810,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2017/04/12/2017-04-12-other issues/" class="archive-article-date">
+      <a href="/2017/04/12/2017-04-12-loki's allocator/" class="archive-article-date">
 		  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">4月 12, 2017</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
+      <a class="archive-article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
     </h1>
   
 
@@ -2802,13 +2830,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2017/04/12/2017-04-12-loki's allocator/" class="archive-article-date">
+      <a href="/2017/04/12/2017-04-12-other issues/" class="archive-article-date">
 		  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">4月 12, 2017</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
+      <a class="archive-article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
     </h1>
   
 
@@ -3496,7 +3524,7 @@
 
     	<ul class="clearfix widget-social-icons">   
     	
-   			<li><a href="https://github.com/iTimeTraveler" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a></li> 
+   			<li><a href="https://github.com/luliyucoordinate" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a></li> 
 
    		
    			<li><a href="" title="Weibo"><i class="fa fa-weibo" aria-hidden="true"></i></a></li> 
@@ -3703,6 +3731,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

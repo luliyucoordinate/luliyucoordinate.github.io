@@ -9,7 +9,13 @@
   <meta name="keywords" content="cppstl" />
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="Chunk123pData_: unsigned char*firstAvailableBlock_: unsigned char//第一个可用的编号blocksAvailable_: unsigned char//剩余可用的数目 123456789101112131415161718192021222324252627282930313233343536void FixedAllocator::">
 <meta name="keywords" content="cpp,stl">
@@ -59,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -190,19 +218,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/04/12/2017-04-12-other issues/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/13/2017-04-13-cpp2.0新特性1/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          other issues
+          cpp2.0新特性(1)
         
       </div>
     </a>
   
   
-    <a href="/2017/04/11/2017-04-11-malloc and free/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/04/12/2017-04-12-other issues/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">malloc/free</div>
+      <div class="article-nav-title">other issues</div>
     </a>
   
 </nav>
@@ -266,6 +294,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

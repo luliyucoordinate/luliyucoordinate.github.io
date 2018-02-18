@@ -9,7 +9,13 @@
   <meta name="keywords" content="cppstl" />
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="当将元素加入容器中，容器必须分配更多的内存以足够保存这些元素，于是他们向他的模板参数allocator发出申请，该模板参数往往被另一个名为 allocator_type。甚至将chars添加到string class也是如此，因为string也算是一个正规的STL容器。每个元素类型为T的容器的Allocator模板默认为allocator。其接口只有大约20个public申明，包括嵌套的typed">
 <meta name="keywords" content="cpp,stl">
@@ -59,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -203,19 +231,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/04/13/2017-04-13-cpp2.0新特性1/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/12/2017-04-12-loki's allocator/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          cpp2.0新特性(1)
+          loki::allocator
         
       </div>
     </a>
   
   
-    <a href="/2017/04/12/2017-04-12-loki's allocator/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/04/11/2017-04-11-malloc and free/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">loki::allocator</div>
+      <div class="article-nav-title">malloc/free</div>
     </a>
   
 </nav>
@@ -279,6 +307,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

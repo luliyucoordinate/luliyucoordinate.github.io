@@ -7,7 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
+    <meta name="google-site-verification" content="true" />
   
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
   
   <meta property="og:type" content="website">
 <meta property="og:title" content="Categories">
@@ -53,10 +59,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -114,9 +142,9 @@
         <!-- 
         <div id='tag_cloud' class="tags">
             
-                <a href="#Eassy" title="Eassy" rel="3">Eassy</a>
-            
                 <a href="#linux" title="linux" rel="12">linux</a>
+            
+                <a href="#Eassy" title="Eassy" rel="3">Eassy</a>
             
                 <a href="#signal" title="signal" rel="2">signal</a>
             
@@ -124,19 +152,19 @@
             
                 <a href="#pipe" title="pipe" rel="2">pipe</a>
             
+                <a href="#thread" title="thread" rel="2">thread</a>
+            
                 <a href="#network" title="network" rel="4">network</a>
             
                 <a href="#process" title="process" rel="1">process</a>
             
                 <a href="#shell" title="shell" rel="1">shell</a>
             
-                <a href="#thread" title="thread" rel="2">thread</a>
+                <a href="#hook" title="hook" rel="1">hook</a>
             
                 <a href="#QT" title="QT" rel="3">QT</a>
             
                 <a href="#cpp" title="cpp" rel="90">cpp</a>
-            
-                <a href="#hook" title="hook" rel="1">hook</a>
             
                 <a href="#sql" title="sql" rel="2">sql</a>
             
@@ -152,9 +180,9 @@
             
                 <a href="#仿函数" title="仿函数" rel="1">仿函数</a>
             
-                <a href="#分配器" title="分配器" rel="1">分配器</a>
-            
                 <a href="#适配器" title="适配器" rel="1">适配器</a>
+            
+                <a href="#分配器" title="分配器" rel="1">分配器</a>
             
                 <a href="#cpp第二版" title="cpp第二版" rel="3">cpp第二版</a>
             
@@ -164,19 +192,19 @@
             
                 <a href="#原理" title="原理" rel="15">原理</a>
             
+                <a href="#vmware" title="vmware" rel="1">vmware</a>
+            
                 <a href="#计算机网络" title="计算机网络" rel="2">计算机网络</a>
             
-                <a href="#vmware" title="vmware" rel="1">vmware</a>
+                <a href="#game" title="game" rel="1">game</a>
+            
+                <a href="#贪吃蛇" title="贪吃蛇" rel="1">贪吃蛇</a>
             
                 <a href="#转载" title="转载" rel="11">转载</a>
             
                 <a href="#缓冲区溢出" title="缓冲区溢出" rel="1">缓冲区溢出</a>
             
                 <a href="#漏洞" title="漏洞" rel="1">漏洞</a>
-            
-                <a href="#game" title="game" rel="1">game</a>
-            
-                <a href="#贪吃蛇" title="贪吃蛇" rel="1">贪吃蛇</a>
             
                 <a href="#lvalue" title="lvalue" rel="1">lvalue</a>
             
@@ -188,13 +216,19 @@
             
                 <a href="#prvalue" title="prvalue" rel="1">prvalue</a>
             
+                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
+            
+                <a href="#多态" title="多态" rel="1">多态</a>
+            
                 <a href="#upcasting" title="upcasting" rel="1">upcasting</a>
             
                 <a href="#downcasting" title="downcasting" rel="1">downcasting</a>
             
-                <a href="#多态" title="多态" rel="1">多态</a>
+                <a href="#Fibonacci" title="Fibonacci" rel="1">Fibonacci</a>
             
-                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
+                <a href="#array" title="array" rel="1">array</a>
+            
+                <a href="#lambda" title="lambda" rel="1">lambda</a>
             
                 <a href="#c#" title="c#" rel="1">c#</a>
             
@@ -204,29 +238,21 @@
             
                 <a href="#auto" title="auto" rel="2">auto</a>
             
-                <a href="#Fibonacci" title="Fibonacci" rel="1">Fibonacci</a>
-            
-                <a href="#array" title="array" rel="1">array</a>
-            
-                <a href="#lambda" title="lambda" rel="1">lambda</a>
-            
                 <a href="#move" title="move" rel="1">move</a>
             
                 <a href="#forward" title="forward" rel="1">forward</a>
             
+                <a href="#constexpr" title="constexpr" rel="1">constexpr</a>
+            
                 <a href="#Aggregate" title="Aggregate" rel="1">Aggregate</a>
             
                 <a href="#POD" title="POD" rel="1">POD</a>
-            
-                <a href="#constexpr" title="constexpr" rel="1">constexpr</a>
             
                 <a href="#trie树" title="trie树" rel="1">trie树</a>
             
                 <a href="#字典树" title="字典树" rel="1">字典树</a>
             
                 <a href="#oj" title="oj" rel="1">oj</a>
-            
-                <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
             
                 <a href="#cin" title="cin" rel="1">cin</a>
             
@@ -236,19 +262,15 @@
             
                 <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
             
+                <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
+            
                 <a href="#default" title="default" rel="1">default</a>
             
                 <a href="#piecewise_construct" title="piecewise_construct" rel="1">piecewise_construct</a>
             
-                <a href="#map" title="map" rel="1">map</a>
-            
                 <a href="#error" title="error" rel="3">error</a>
             
                 <a href="#unordered_multimap" title="unordered_multimap" rel="1">unordered_multimap</a>
-            
-                <a href="#sql注入" title="sql注入" rel="1">sql注入</a>
-            
-                <a href="#mysql" title="mysql" rel="1">mysql</a>
             
                 <a href="#asp" title="asp" rel="1">asp</a>
             
@@ -258,13 +280,17 @@
             
                 <a href="#ExecuteGlobal" title="ExecuteGlobal" rel="1">ExecuteGlobal</a>
             
+                <a href="#map" title="map" rel="1">map</a>
+            
                 <a href="#python" title="python" rel="26">python</a>
             
                 <a href="#requests" title="requests" rel="2">requests</a>
             
-                <a href="#re" title="re" rel="3">re</a>
+                <a href="#sql注入" title="sql注入" rel="1">sql注入</a>
             
-                <a href="#pip" title="pip" rel="1">pip</a>
+                <a href="#mysql" title="mysql" rel="1">mysql</a>
+            
+                <a href="#re" title="re" rel="3">re</a>
             
                 <a href="#木马" title="木马" rel="1">木马</a>
             
@@ -274,23 +300,25 @@
             
                 <a href="#正则表达式" title="正则表达式" rel="1">正则表达式</a>
             
+                <a href="#pip" title="pip" rel="1">pip</a>
+            
+                <a href="#PIL" title="PIL" rel="1">PIL</a>
+            
                 <a href="#threading" title="threading" rel="1">threading</a>
             
                 <a href="#pytesseract" title="pytesseract" rel="1">pytesseract</a>
             
                 <a href="#排列组合" title="排列组合" rel="1">排列组合</a>
             
-                <a href="#PIL" title="PIL" rel="1">PIL</a>
-            
                 <a href="#vector" title="vector" rel="1">vector</a>
-            
-                <a href="#mismatch" title="mismatch" rel="1">mismatch</a>
-            
-                <a href="#algorithm" title="algorithm" rel="1">algorithm</a>
             
                 <a href="#advance" title="advance" rel="1">advance</a>
             
                 <a href="#next" title="next" rel="1">next</a>
+            
+                <a href="#mismatch" title="mismatch" rel="1">mismatch</a>
+            
+                <a href="#algorithm" title="algorithm" rel="1">algorithm</a>
             
                 <a href="#dd" title="dd" rel="1">dd</a>
             
@@ -322,11 +350,11 @@
             
                 <a href="#病毒" title="病毒" rel="1">病毒</a>
             
+                <a href="#numpy" title="numpy" rel="4">numpy</a>
+            
                 <a href="#office" title="office" rel="2">office</a>
             
                 <a href="#uninstall" title="uninstall" rel="2">uninstall</a>
-            
-                <a href="#numpy" title="numpy" rel="4">numpy</a>
             
                 <a href="#Dell" title="Dell" rel="3">Dell</a>
             
@@ -9433,7 +9461,7 @@
 
     	<ul class="clearfix widget-social-icons">   
     	
-   			<li><a href="https://github.com/iTimeTraveler" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a></li> 
+   			<li><a href="https://github.com/luliyucoordinate" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a></li> 
 
    		
    			<li><a href="" title="Weibo"><i class="fa fa-weibo" aria-hidden="true"></i></a></li> 
@@ -9640,6 +9668,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
