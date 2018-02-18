@@ -31,7 +31,7 @@
 <meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fn1zy29yxej20bq0h9dfz.jpg">
 <meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fn21bwz88oj20vp0fv74c.jpg">
 <meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fn21j8ocyxj20o60cajra.jpg">
-<meta property="og:updated_time" content="2018-02-18T08:46:29.814Z">
+<meta property="og:updated_time" content="2018-02-18T11:56:12.502Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="YOLOv2源码分析--reorg layer">
 <meta name="twitter:description" content="文章全部YOLOv2源码分析 reorg layer中最关键的代码如下 12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&amp;#123;    int b,i,j,k;    int out_c">
@@ -159,8 +159,6 @@
 <p>这一部分表述为数学公式就是</p>
 <ul>
 <li>$in_index=W_1+W<em>stride</em>(H_1+H<em>(C_1+C</em>B))$</li>
-</ul>
-<ul>
 <li>$C_2=C_1\%C_{out}$</li>
 <li>$offset = C_1/C_{out}$</li>
 <li>$W_2=W_1*stride+offset\%stride$</li>
