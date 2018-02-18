@@ -53,10 +53,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,https://source.unsplash.com/collection/954550/1920x1080,https://source.unsplash.com/collection/954550/1920x1081".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -130,13 +152,13 @@
             
                 <a href="#network" title="network" rel="4">network</a>
             
-                <a href="#thread" title="thread" rel="2">thread</a>
-            
                 <a href="#QT" title="QT" rel="3">QT</a>
             
                 <a href="#cpp" title="cpp" rel="90">cpp</a>
             
                 <a href="#hook" title="hook" rel="1">hook</a>
+            
+                <a href="#thread" title="thread" rel="2">thread</a>
             
                 <a href="#sql" title="sql" rel="2">sql</a>
             
@@ -146,15 +168,15 @@
             
                 <a href="#stl" title="stl" rel="12">stl</a>
             
-                <a href="#迭代器" title="迭代器" rel="4">迭代器</a>
-            
-                <a href="#仿函数" title="仿函数" rel="1">仿函数</a>
-            
                 <a href="#算法" title="算法" rel="6">算法</a>
             
                 <a href="#适配器" title="适配器" rel="1">适配器</a>
             
+                <a href="#仿函数" title="仿函数" rel="1">仿函数</a>
+            
                 <a href="#分配器" title="分配器" rel="1">分配器</a>
+            
+                <a href="#迭代器" title="迭代器" rel="4">迭代器</a>
             
                 <a href="#cpp第二版" title="cpp第二版" rel="3">cpp第二版</a>
             
@@ -188,17 +210,21 @@
             
                 <a href="#prvalue" title="prvalue" rel="1">prvalue</a>
             
+                <a href="#多态" title="多态" rel="1">多态</a>
+            
+                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
+            
                 <a href="#upcasting" title="upcasting" rel="1">upcasting</a>
             
                 <a href="#downcasting" title="downcasting" rel="1">downcasting</a>
-            
-                <a href="#多态" title="多态" rel="1">多态</a>
             
                 <a href="#c#" title="c#" rel="1">c#</a>
             
                 <a href="#模式识别" title="模式识别" rel="1">模式识别</a>
             
                 <a href="#人工智能" title="人工智能" rel="1">人工智能</a>
+            
+                <a href="#constexpr" title="constexpr" rel="1">constexpr</a>
             
                 <a href="#Fibonacci" title="Fibonacci" rel="1">Fibonacci</a>
             
@@ -208,19 +234,15 @@
             
                 <a href="#auto" title="auto" rel="2">auto</a>
             
-                <a href="#constexpr" title="constexpr" rel="1">constexpr</a>
-            
                 <a href="#move" title="move" rel="1">move</a>
             
                 <a href="#forward" title="forward" rel="1">forward</a>
             
-                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
+                <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
             
                 <a href="#Aggregate" title="Aggregate" rel="1">Aggregate</a>
             
                 <a href="#POD" title="POD" rel="1">POD</a>
-            
-                <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
             
                 <a href="#trie树" title="trie树" rel="1">trie树</a>
             
@@ -228,15 +250,15 @@
             
                 <a href="#oj" title="oj" rel="1">oj</a>
             
-                <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
-            
                 <a href="#auto&amp;" title="auto&amp;" rel="1">auto&amp;</a>
             
                 <a href="#auto&amp;&amp;" title="auto&amp;&amp;" rel="1">auto&amp;&amp;</a>
             
+                <a href="#cin" title="cin" rel="1">cin</a>
+            
                 <a href="#default" title="default" rel="1">default</a>
             
-                <a href="#cin" title="cin" rel="1">cin</a>
+                <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
             
                 <a href="#piecewise_construct" title="piecewise_construct" rel="1">piecewise_construct</a>
             
@@ -246,14 +268,6 @@
             
                 <a href="#map" title="map" rel="1">map</a>
             
-                <a href="#sql注入" title="sql注入" rel="1">sql注入</a>
-            
-                <a href="#mysql" title="mysql" rel="1">mysql</a>
-            
-                <a href="#python" title="python" rel="26">python</a>
-            
-                <a href="#re" title="re" rel="3">re</a>
-            
                 <a href="#asp" title="asp" rel="1">asp</a>
             
                 <a href="#Eval" title="Eval" rel="1">Eval</a>
@@ -262,9 +276,17 @@
             
                 <a href="#ExecuteGlobal" title="ExecuteGlobal" rel="1">ExecuteGlobal</a>
             
+                <a href="#sql注入" title="sql注入" rel="1">sql注入</a>
+            
+                <a href="#mysql" title="mysql" rel="1">mysql</a>
+            
+                <a href="#python" title="python" rel="26">python</a>
+            
                 <a href="#requests" title="requests" rel="2">requests</a>
             
                 <a href="#pip" title="pip" rel="1">pip</a>
+            
+                <a href="#re" title="re" rel="3">re</a>
             
                 <a href="#木马" title="木马" rel="1">木马</a>
             
@@ -282,8 +304,6 @@
             
                 <a href="#排列组合" title="排列组合" rel="1">排列组合</a>
             
-                <a href="#vector" title="vector" rel="1">vector</a>
-            
                 <a href="#mismatch" title="mismatch" rel="1">mismatch</a>
             
                 <a href="#algorithm" title="algorithm" rel="1">algorithm</a>
@@ -291,6 +311,8 @@
                 <a href="#advance" title="advance" rel="1">advance</a>
             
                 <a href="#next" title="next" rel="1">next</a>
+            
+                <a href="#vector" title="vector" rel="1">vector</a>
             
                 <a href="#dd" title="dd" rel="1">dd</a>
             
@@ -352,13 +374,13 @@
             
                 <a href="#estimator" title="estimator" rel="3">estimator</a>
             
-                <a href="#YOLO" title="YOLO" rel="4">YOLO</a>
-            
-                <a href="#darknet" title="darknet" rel="4">darknet</a>
-            
                 <a href="#identity" title="identity" rel="1">identity</a>
             
                 <a href="#IOU" title="IOU" rel="1">IOU</a>
+            
+                <a href="#YOLO" title="YOLO" rel="4">YOLO</a>
+            
+                <a href="#darknet" title="darknet" rel="4">darknet</a>
             
         </div> 
         -->
@@ -3154,13 +3176,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2017/04/12/2017-04-12-other issues/" class="archive-article-date">
+      <a href="/2017/04/12/2017-04-12-loki's allocator/" class="archive-article-date">
 		  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">4月 12, 2017</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
+      <a class="archive-article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
     </h1>
   
 
@@ -3173,13 +3195,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2017/04/12/2017-04-12-loki's allocator/" class="archive-article-date">
+      <a href="/2017/04/12/2017-04-12-other issues/" class="archive-article-date">
 		  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">4月 12, 2017</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
+      <a class="archive-article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
     </h1>
   
 
@@ -7128,13 +7150,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2017/04/12/2017-04-12-other issues/" class="archive-article-date">
+      <a href="/2017/04/12/2017-04-12-loki's allocator/" class="archive-article-date">
 		  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">4月 12, 2017</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
+      <a class="archive-article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
     </h1>
   
 
@@ -7147,13 +7169,13 @@
   <div class="archive-article-inner">
     <header class="archive-article-header">
 
-      <a href="/2017/04/12/2017-04-12-loki's allocator/" class="archive-article-date">
+      <a href="/2017/04/12/2017-04-12-other issues/" class="archive-article-date">
 		  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">4月 12, 2017</time>
 	  </a>
       
   
     <h1 class="thumb" itemprop="name">
-      <a class="archive-article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
+      <a class="archive-article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
     </h1>
   
 
@@ -9640,6 +9662,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
