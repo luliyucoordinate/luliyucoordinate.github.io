@@ -17,18 +17,18 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="首先我们看这样这个问题 123456int main ( )&amp;#123;   if (&quot;&quot;)      cout &amp;lt;&amp;lt; &quot;hello&quot;; // executes!   return 0;&amp;#125; 这对于其他非c++的程序员来说是很困惑的。为什么空的字符串是True？ 这个问题其实归根到底是NULL与空字符串的区别。 空字符串实际上是const char[1]，里面包含了\0字符，这">
+  <meta name="description" content="首先我们看这样这个问题 123456int main ( )&amp;#123;   if (&quot;&quot;)      cout &amp;lt;&amp;lt; &quot;hello&quot;; // executes!   return 0;&amp;#125;">
 <meta name="keywords" content="c++,空字符串">
 <meta property="og:type" content="article">
 <meta property="og:title" content="c++中空字符串解释为True的困惑">
 <meta property="og:url" content="http://coordinate.wang/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="首先我们看这样这个问题 123456int main ( )&amp;#123;   if (&quot;&quot;)      cout &amp;lt;&amp;lt; &quot;hello&quot;; // executes!   return 0;&amp;#125; 这对于其他非c++的程序员来说是很困惑的。为什么空的字符串是True？ 这个问题其实归根到底是NULL与空字符串的区别。 空字符串实际上是const char[1]，里面包含了\0字符，这">
+<meta property="og:description" content="首先我们看这样这个问题 123456int main ( )&amp;#123;   if (&quot;&quot;)      cout &amp;lt;&amp;lt; &quot;hello&quot;; // executes!   return 0;&amp;#125;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-02-27T11:02:53.693Z">
+<meta property="og:updated_time" content="2018-02-27T11:21:05.603Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="c++中空字符串解释为True的困惑">
-<meta name="twitter:description" content="首先我们看这样这个问题 123456int main ( )&amp;#123;   if (&quot;&quot;)      cout &amp;lt;&amp;lt; &quot;hello&quot;; // executes!   return 0;&amp;#125; 这对于其他非c++的程序员来说是很困惑的。为什么空的字符串是True？ 这个问题其实归根到底是NULL与空字符串的区别。 空字符串实际上是const char[1]，里面包含了\0字符，这">
+<meta name="twitter:description" content="首先我们看这样这个问题 123456int main ( )&amp;#123;   if (&quot;&quot;)      cout &amp;lt;&amp;lt; &quot;hello&quot;; // executes!   return 0;&amp;#125;">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -169,6 +169,7 @@
       
         <p>首先我们看这样这个问题</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="string">""</span>)</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"hello"</span>; <span class="comment">// executes!</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>这对于其他非c++的程序员来说是很困惑的。为什么空的字符串是True？</p>
 <p>这个问题其实归根到底是NULL与空字符串的区别。</p>
 <p>空字符串实际上是<code>const char[1]</code>，里面包含了<code>\0</code>字符，这不是NULL，自然是True。</p>
