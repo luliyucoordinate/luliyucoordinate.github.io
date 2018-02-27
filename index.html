@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -262,19 +284,20 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>首先我们看这样这个问题</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">( )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">if</span> (<span class="string">""</span>)</span><br><span class="line">      <span class="built_in">cout</span> &lt;&lt; <span class="string">"hello"</span>; <span class="comment">// executes!</span></span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这对于其他非c++的程序员来说是很困惑的。为什么空的字符串是True？</p>
+<p>这个问题其实归根到底是NULL与空字符串的区别。</p>
+<p>空字符串实际上是<code>const char[1]</code>，里面包含了<code>\0</code>字符，这不是NULL，自然是True。</p>
+<p>那么c++中到底什么表示True，什么表示False呢？</p>
+<ul>
+<li>A prvalue of arithmetic, unscoped enumeration, pointer, or pointer to member type can be converted to a prvalue of type bool. A zero value, null pointer value, or null member pointer value is converted to false; any other value is converted to true. A prvalue of type std::nullptr_t can be converted to a prvalue of type bool; the resulting value is false.</li>
+</ul>
+<p>上面摘自c++11草案中的描述。也就是0，空指针或空成员指针都为false，除此以外都是true。显然空字符串都不是上面的三者之一。</p>
+<p>回顾上面程序的代码，其实这个代码的写法也是不好的，因为字符串不是一个布尔类型，把它当作布尔类型去使用，这本身就是不好的。比较好的做法是</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> str = <span class="string">""</span>;</span><br><span class="line"><span class="keyword">if</span>(!str.empty())&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>而且这是c++98就有的特性了。</p>
 
-          
-          <div class="entry-summary">
-          首先我们看这样这个问题
-123456int main ( )&#123;   if ("")      cout &lt;&lt; "hello"; // executes!   return 0;&#125;
-这对于其他非c++的程序员来说是很困惑的。为什么空的字符串是True？
-
-        
-          <p class="article-more-link">
-            <a href="/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -1010,6 +1033,9 @@ create_graph（bool，可选） - 如果为True，则将构造派生图，允许
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

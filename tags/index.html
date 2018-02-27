@@ -59,10 +59,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -126,15 +148,15 @@
             
                 <a href="#Eassy" title="Eassy" rel="3">Eassy</a>
             
-                <a href="#thread" title="thread" rel="2">thread</a>
+                <a href="#signal" title="signal" rel="2">signal</a>
             
                 <a href="#c" title="c" rel="20">c</a>
             
                 <a href="#pipe" title="pipe" rel="2">pipe</a>
             
-                <a href="#process" title="process" rel="1">process</a>
+                <a href="#thread" title="thread" rel="2">thread</a>
             
-                <a href="#signal" title="signal" rel="2">signal</a>
+                <a href="#process" title="process" rel="1">process</a>
             
                 <a href="#shell" title="shell" rel="1">shell</a>
             
@@ -154,13 +176,13 @@
             
                 <a href="#stl" title="stl" rel="12">stl</a>
             
-                <a href="#算法" title="算法" rel="6">算法</a>
-            
                 <a href="#迭代器" title="迭代器" rel="4">迭代器</a>
             
-                <a href="#适配器" title="适配器" rel="1">适配器</a>
+                <a href="#算法" title="算法" rel="6">算法</a>
             
                 <a href="#仿函数" title="仿函数" rel="1">仿函数</a>
+            
+                <a href="#适配器" title="适配器" rel="1">适配器</a>
             
                 <a href="#分配器" title="分配器" rel="1">分配器</a>
             
@@ -196,13 +218,13 @@
             
                 <a href="#prvalue" title="prvalue" rel="1">prvalue</a>
             
-                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
-            
                 <a href="#多态" title="多态" rel="1">多态</a>
             
                 <a href="#upcasting" title="upcasting" rel="1">upcasting</a>
             
                 <a href="#downcasting" title="downcasting" rel="1">downcasting</a>
+            
+                <a href="#内存模型" title="内存模型" rel="1">内存模型</a>
             
                 <a href="#c#" title="c#" rel="1">c#</a>
             
@@ -218,17 +240,25 @@
             
                 <a href="#auto" title="auto" rel="2">auto</a>
             
+                <a href="#constexpr" title="constexpr" rel="1">constexpr</a>
+            
                 <a href="#move" title="move" rel="1">move</a>
             
                 <a href="#forward" title="forward" rel="1">forward</a>
             
-                <a href="#constexpr" title="constexpr" rel="1">constexpr</a>
-            
-                <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
-            
                 <a href="#Aggregate" title="Aggregate" rel="1">Aggregate</a>
             
                 <a href="#POD" title="POD" rel="1">POD</a>
+            
+                <a href="#回文字符串" title="回文字符串" rel="1">回文字符串</a>
+            
+                <a href="#cin" title="cin" rel="1">cin</a>
+            
+                <a href="#auto&amp;" title="auto&amp;" rel="1">auto&amp;</a>
+            
+                <a href="#auto&amp;&amp;" title="auto&amp;&amp;" rel="1">auto&amp;&amp;</a>
+            
+                <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
             
                 <a href="#trie树" title="trie树" rel="1">trie树</a>
             
@@ -236,15 +266,7 @@
             
                 <a href="#oj" title="oj" rel="1">oj</a>
             
-                <a href="#cin" title="cin" rel="1">cin</a>
-            
                 <a href="#default" title="default" rel="1">default</a>
-            
-                <a href="#auto&amp;" title="auto&amp;" rel="1">auto&amp;</a>
-            
-                <a href="#auto&amp;&amp;" title="auto&amp;&amp;" rel="1">auto&amp;&amp;</a>
-            
-                <a href="#引用折叠" title="引用折叠" rel="1">引用折叠</a>
             
                 <a href="#piecewise_construct" title="piecewise_construct" rel="1">piecewise_construct</a>
             
@@ -270,53 +292,53 @@
             
                 <a href="#mysql" title="mysql" rel="1">mysql</a>
             
-                <a href="#pip" title="pip" rel="1">pip</a>
-            
                 <a href="#re" title="re" rel="3">re</a>
             
-                <a href="#反斜杠" title="反斜杠" rel="1">反斜杠</a>
-            
-                <a href="#正则表达式" title="正则表达式" rel="1">正则表达式</a>
+                <a href="#pip" title="pip" rel="1">pip</a>
             
                 <a href="#木马" title="木马" rel="1">木马</a>
             
                 <a href="#php" title="php" rel="1">php</a>
             
-                <a href="#PIL" title="PIL" rel="1">PIL</a>
+                <a href="#反斜杠" title="反斜杠" rel="1">反斜杠</a>
+            
+                <a href="#正则表达式" title="正则表达式" rel="1">正则表达式</a>
             
                 <a href="#threading" title="threading" rel="1">threading</a>
             
                 <a href="#pytesseract" title="pytesseract" rel="1">pytesseract</a>
             
+                <a href="#PIL" title="PIL" rel="1">PIL</a>
+            
                 <a href="#排列组合" title="排列组合" rel="1">排列组合</a>
             
                 <a href="#vector" title="vector" rel="1">vector</a>
-            
-                <a href="#mismatch" title="mismatch" rel="1">mismatch</a>
-            
-                <a href="#algorithm" title="algorithm" rel="1">algorithm</a>
-            
-                <a href="#quit" title="quit" rel="1">quit</a>
-            
-                <a href="#wait" title="wait" rel="1">wait</a>
             
                 <a href="#advance" title="advance" rel="1">advance</a>
             
                 <a href="#next" title="next" rel="1">next</a>
             
+                <a href="#mismatch" title="mismatch" rel="1">mismatch</a>
+            
+                <a href="#algorithm" title="algorithm" rel="1">algorithm</a>
+            
                 <a href="#dd" title="dd" rel="1">dd</a>
             
-                <a href="#Kolakoski" title="Kolakoski" rel="1">Kolakoski</a>
+                <a href="#quit" title="quit" rel="1">quit</a>
             
-                <a href="#机器学习" title="机器学习" rel="2">机器学习</a>
-            
-                <a href="#决策树算法" title="决策树算法" rel="1">决策树算法</a>
+                <a href="#wait" title="wait" rel="1">wait</a>
             
                 <a href="#acm" title="acm" rel="1">acm</a>
             
                 <a href="#贪心算法" title="贪心算法" rel="1">贪心算法</a>
             
                 <a href="#笔试" title="笔试" rel="3">笔试</a>
+            
+                <a href="#Kolakoski" title="Kolakoski" rel="1">Kolakoski</a>
+            
+                <a href="#机器学习" title="机器学习" rel="2">机器学习</a>
+            
+                <a href="#决策树算法" title="决策树算法" rel="1">决策树算法</a>
             
                 <a href="#深度学习" title="深度学习" rel="1">深度学习</a>
             
@@ -370,17 +392,17 @@
             
                 <a href="#pytorch" title="pytorch" rel="1">pytorch</a>
             
-                <a href="#windows" title="windows" rel="2">windows</a>
-            
-                <a href="#dict" title="dict" rel="1">dict</a>
-            
                 <a href="#yolo" title="yolo" rel="1">yolo</a>
+            
+                <a href="#windows" title="windows" rel="2">windows</a>
             
                 <a href="#字符串令牌" title="字符串令牌" rel="1">字符串令牌</a>
             
                 <a href="#c++" title="c++" rel="1">c++</a>
             
                 <a href="#空字符串" title="空字符串" rel="1">空字符串</a>
+            
+                <a href="#dict" title="dict" rel="1">dict</a>
             
         </div> 
         -->
@@ -10444,6 +10466,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

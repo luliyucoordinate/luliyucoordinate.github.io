@@ -65,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -164,29 +186,26 @@
 
       
         
-	<section id="comments" class="comment">
-	  <div id="disqus_thread">
-	  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	  </div>
-	</section>
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="coordinate">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
 
-	<script type="text/javascript">
-	var disqus_shortname = 'luliyucoordinate';
-	(function(){
-	  var dsq = document.createElement('script');
-	  dsq.type = 'text/javascript';
-	  dsq.async = true;
-	  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	}());
-	(function(){
-	  var dsq = document.createElement('script');
-	  dsq.type = 'text/javascript';
-	  dsq.async = true;
-	  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-	  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	}());
-	</script>
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
 
 
 
@@ -198,19 +217,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/04/13/2017-04-13-cpp2.0新特性1/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/04/12/2017-04-12-other issues/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
       <div class="article-nav-title">
         
-          cpp2.0新特性(1)
+          other issues
         
       </div>
     </a>
   
   
-    <a href="/2017/04/12/2017-04-12-other issues/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2017/04/11/2017-04-11-malloc and free/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">other issues</div>
+      <div class="article-nav-title">malloc/free</div>
     </a>
   
 </nav>
@@ -274,6 +293,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
