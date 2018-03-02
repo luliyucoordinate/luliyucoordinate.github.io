@@ -6,7 +6,7 @@
   <title>linux Day10 | coordinate</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="linuxcnetwork" />
+  <meta name="keywords" content="linuxnetworkc" />
   
   
     <meta name="google-site-verification" content="true" />
@@ -18,7 +18,7 @@
     <meta name="360-site-verification" content="true" />
   
   <meta name="description" content="阻塞socket阻塞调用是指调用结果返回以前，当前线程会被挂起。函数只有在得到结果之后才会返回。对于文件操作read，fread函数调用会将线程阻塞。对于socket，accpet与recv，recvfrom函数调用会将线程阻塞。为了避免整个进程阻塞后挂起，所以在阻塞模式下，往往需要采用多线程技术。一个进程可以并发的线程数量是有限的，在处理客户端连接时，通过线程并发处理socket并不方便，效率也">
-<meta name="keywords" content="linux,c,network">
+<meta name="keywords" content="linux,network,c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux Day10">
 <meta property="og:url" content="http://coordinate.wang/2017/03/14/2017-03-14-linux-day10/index.html">
@@ -65,10 +65,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -278,6 +300,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

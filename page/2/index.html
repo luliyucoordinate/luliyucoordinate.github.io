@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -107,6 +129,137 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-2018-01-01-YOLOv2源码分析--reorg layer"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/">YOLOv2源码分析--reorg layer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" class="article-date">
+	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">一月 1, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          文章全部YOLOv2源码分析
+reorg layer中最关键的代码如下
+12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&#123;    int b,i,j,k;    int out_c = c/(stride*stride);    for(b = 0; b &lt; batch; ++b)&#123;        for(k = 0; k &lt; c; ++k)&#123;            for(j = 0; j &lt; h; ++j)&#123;                for(i = 0; i &lt; w; ++i)&#123;                    int in_index  = i + w*(j + h*(k + c*b));                    int c2 = k % out_c;                    int offset = k / out_c;                    int w2 = i*stride + offset % stride;                    int h2 = j*stride + offset / stride;                    int out_index = w2 + w*stride*(h2 + h*stride*(c2 + out_c*b));                    if(forward) out[out_index] = x[in_index];                    else out[in_index] = x[out_index];                &#125;            &#125;        &#125;    &#125;&#125;
+
+        
+          <p class="article-more-link">
+            <a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-12-30-torch.autograd.backward中的参数问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/">torch.autograd.backward中的参数问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" class="article-date">
+	  <time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">十二月 30, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False)
+给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=True。那么此函数需要指定grad_variables，它的长度应该和variables的长度匹配，里面保存了相关variable的梯度(对于不需要gradient tensor的variable，None是可取的)。
+此函数累积leaf variables计算的梯度。你可能需要在调用此函数之前将leaf variable的梯度置零。
+参数：
+
+variables（变量的序列） - 被求微分的叶子节点，即 ys 。
+grad_variables（（张量，变量）的序列或无） - 对应variable的梯度。仅当variable不是标量且需要求梯度的时候使用。
+retain_graph（bool，可选） - 如果为False，则用于释放计算grad的图。请注意，在几乎所有情况下，没有必要将此选项设置为True，通常可以以更有效的方式解决。默认值为create_graph的值。
+create_graph（bool，可选） - 如果为True，则将构造派生图，允许计算更高阶的派生产品。默认为False。
+
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/">pytorch</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-2017-12-29-numpy.stack最通俗的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -609,136 +762,6 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-16-YOLOv2代码分析（一）"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/">YOLOv2代码分析（一）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/" class="article-date">
-	  <time datetime="2017-12-15T16:00:00.000Z" itemprop="datePublished">十二月 16, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-          
-          <div class="entry-summary">
-          0x00 写在开头写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。
-0x01 从main函数开始12345678910int main(int argc, char **argv)&#123;    //test_resize("data/bad.jpg");    //test_box();    //test_convolutional_layer();    if(argc &lt; 2)&#123;        fprintf(stderr, "usage: %s &lt;function&gt;\n", argv[0]);//如果参数小于2就打印出错信息        return 0;//出错后返回    &#125;    gpu_index = find_int_arg(argc, argv, "-i", 0);
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/#more">阅读全文</a>
-          </p>
-        </div>
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-12-15-目标检测中的IOU计算问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/">目标检测中的IOU计算问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/" class="article-date">
-	  <time datetime="2017-12-14T16:00:00.000Z" itemprop="datePublished">十二月 15, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-          
-          <div class="entry-summary">
-          在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。
-
-
-那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？
-
-
-IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为
-
-$IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTruth}$
-
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/#more">阅读全文</a>
-          </p>
-        </div>
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOU/">IOU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -843,6 +866,30 @@ $IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTr
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
+              <span>三月 1, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
+              <span>二月 21, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
               <span>二月 10, 2018</span>
             </div>
@@ -885,30 +932,6 @@ $IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTr
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a></h6>
-              <span>一月 15, 2018</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a></h6>
-              <span>一月 9, 2018</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -918,7 +941,7 @@ $IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTr
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -928,7 +951,7 @@ $IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTr
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -938,7 +961,7 @@ $IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTr
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1003,6 +1026,9 @@ $IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTr
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -107,6 +129,121 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-2017-08-04-深度探索c++对象模型(1)"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/08/04/2017-08-04-深度探索c++对象模型(1)/">深度探索c++对象模型(1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/04/2017-08-04-深度探索c++对象模型(1)/" class="article-date">
+	  <time datetime="2017-08-03T16:00:00.000Z" itemprop="datePublished">八月 4, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>C++在布局以及存取时间上主要的额外负担是由virtual引起的，包括virtual function机制和virtual base class，此外，还有一些多重继承下的额外负担。</p>
+<p>在C中将一个一个元素的数组放在struct的末尾，可以令每个struct的对象拥有可变数组。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">mumble</span> &#123;</span>  </span><br><span class="line">    <span class="comment">/* stuff */</span>  </span><br><span class="line">    <span class="keyword">char</span> pc[ <span class="number">1</span> ];  </span><br><span class="line">&#125;;  </span><br><span class="line"><span class="comment">// grab a string from file or standard input  </span></span><br><span class="line"><span class="comment">// allocate memory both for struct &amp; string  </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">mumble</span> *<span class="title">pmumb1</span> = ( <span class="title">struct</span> <span class="title">mumble</span>* )  </span></span><br><span class="line"><span class="class">    <span class="title">malloc</span>(<span class="title">sizeof</span>(<span class="title">struct</span> <span class="title">mumble</span>)+<span class="title">strlen</span>(<span class="title">string</span>)+1);</span>  </span><br><span class="line"><span class="built_in">strcpy</span>(pmumb1-&gt;pc, <span class="built_in">string</span> );</span><br></pre></td></tr></table></figure>
+<p>指针 <code>pmumb1</code>  指向的是 <code>malloc</code> 所分配的整个内存，而 <code>pmumb1-&gt;pc</code> 指向的是这块内存的第一个字节，因为  <code>malloc`  操作为整个 string 分配了足够的内存，所以在</code>strcpy<code>时，虽然溢出了 pc 的内存范围，但没有溢出</code>struct<code>的内存范围，使得</code>strcpy<code>的结果是合理的和可控的。这样一来，相当于</code>struct`  拥有了可变大小的数组，更加灵活。这是一个很有意思的小技巧，但是别在C++中使用。</p>
+<p>C++通过下面的方法支持多态：</p>
+<ul>
+<li>经由一组隐含的转化操作。例如把一个derived class指针转化为一个指向其public base type的指针</li>
+<li>经由virtual function机制</li>
+<li>经由dynamic_cast和typeid运算符</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-08-03-13位字母排列组合的base64解码"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/08/03/2017-08-03-13位字母排列组合的base64解码/">13位字母排列组合的base64解码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/03/2017-08-03-13位字母排列组合的base64解码/" class="article-date">
+	  <time datetime="2017-08-02T16:00:00.000Z" itemprop="datePublished">八月 3, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天碰到这样一个问题：小明今天去妹纸家开 Party, 而妹纸却给他出了一个谜语, 说只要他能答出来, 她就会答应小明一个要求。这是妹纸给小明的谜语序列:<code>AGV5IULSB3ZLVSE=</code></p>
+<p>第一眼看到这个字符串，认为是base64加密，随即解密后是一串乱码，问题果然没有这么简单。再仔细看，发现字符串全是英文大写，所以猜测可能将小写改为了大写，总共有8192 种变化</p>
+<p>先看这样的做法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">basepass</span><span class="params">(res, arr, pos)</span>:</span></span><br><span class="line">	res.append(<span class="string">''</span>.join(arr))</span><br><span class="line">	i = pos</span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> xrange(i, len(arr)):</span><br><span class="line">		<span class="keyword">if</span> arr[i] &gt;= <span class="string">'A'</span> <span class="keyword">and</span> arr[i] &lt;= <span class="string">'Z'</span>:</span><br><span class="line">            <span class="comment">#这个解法非常妙，有点类似于排列的做法</span></span><br><span class="line">			arr[i] = arr[i].lower() 	<span class="comment">#先挑选一个字母变为小写</span></span><br><span class="line">			basepass(res, arr, i + <span class="number">1</span>)	<span class="comment">#从剩余的子母中挑选一个字母变为小写</span></span><br><span class="line">			arr[i] = arr[i].upper()		<span class="comment">#原先变为小写的字母变为大写</span></span><br><span class="line"></span><br><span class="line">arr = list(<span class="string">'AGV5IULSB3ZLVSE='</span>)</span><br><span class="line">res = []</span><br><span class="line">basepass(res, arr, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">res_decode = map(b64decode, res)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> res_decode:</span><br><span class="line">	<span class="keyword">if</span> re.findall(<span class="string">r'\\x'</span>, repr(i)):		<span class="comment">#这里有一个陷阱，可以参看我的另一篇文章</span></span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		<span class="keyword">print</span> i</span><br></pre></td></tr></table></figure>
+<p>另一种做法是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64,re</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> combinations</span><br><span class="line">s=list(<span class="string">'AGV5IULSB3ZLVSE='</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> list(combinations([x <span class="keyword">for</span> x <span class="keyword">in</span> range(len(s))], i)): <span class="comment">#combinations是一个组合函数</span></span><br><span class="line">        a=list(s)</span><br><span class="line">        <span class="keyword">for</span> k <span class="keyword">in</span> j:</span><br><span class="line">           a[k]= a[k].lower()</span><br><span class="line"></span><br><span class="line">        r=repr(base64.b64decode(<span class="string">''</span>.join(a)))</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'\\x'</span> <span class="keyword">not</span> <span class="keyword">in</span> r:</span><br><span class="line">            <span class="keyword">print</span> r[<span class="number">1</span>:<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/排列组合/">排列组合</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-2017-08-02-第100篇"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -576,185 +713,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-07-23-python re的简单运用"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/07/23/2017-07-23-python re的简单运用/">python re的简单运用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/07/23/2017-07-23-python re的简单运用/" class="article-date">
-	  <time datetime="2017-07-22T16:00:00.000Z" itemprop="datePublished">七月 23, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="0x00-引言"><a href="#0x00-引言" class="headerlink" title="0x00 引言"></a>0x00 引言</h2><p>本文主要对编写脚本时出现的问题做一些小结，想要学习关于re的详细知识的话，可以关闭这个页面了。</p>
-<h2 id="0x01-re-complie"><a href="#0x01-re-complie" class="headerlink" title="0x01 re.complie"></a>0x01 re.complie</h2><p>语法：<strong>re.compile(strPattern[, flag])</strong></p>
-<p> 第一个参数<code>strPattern</code>为正则表达式，第二个参数<code>flag</code>是匹配模式，取值可以使用按位或运算符’|’表示同时生效，比如<code>re.I | re.M</code>。另外，你也可以在regex字符串中指定模式，比如：<code>re.compile(&#39;pattern&#39;, re.I | re.M)</code> 与<code>re.compile(&#39;(?im)pattern&#39;)</code> 是等价的。</p>
-<p>flag参数可选值有：</p>
-<table>
-<thead>
-<tr>
-<th>简写</th>
-<th>全名</th>
-<th>注释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>I</strong></td>
-<td>IGNORECASE</td>
-<td>忽略大小写</td>
-</tr>
-<tr>
-<td><strong>M</strong></td>
-<td>MULTILINE</td>
-<td>多行模式</td>
-</tr>
-<tr>
-<td><strong>S</strong></td>
-<td>DOTALL</td>
-<td>单选模式——点任意匹配模式</td>
-</tr>
-<tr>
-<td><strong>L</strong></td>
-<td>LOCALE</td>
-<td>使预定字符类 \w \W \b \B \s \S 取决于当前区域设定</td>
-</tr>
-<tr>
-<td><strong>U</strong></td>
-<td>UNICODE</td>
-<td>使预定字符类 \w \W \b \B \s \S \d \D 取决于unicode定义的字符属性</td>
-</tr>
-<tr>
-<td><strong>X</strong></td>
-<td>VERBOSE</td>
-<td>详细模式。该模式下正则表达式可以是多行，忽略空白字符，并可以加入注释。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="0x02-re-findall"><a href="#0x02-re-findall" class="headerlink" title="0x02 re.findall"></a>0x02 re.findall</h2><p>语法：<strong>re.findall(pattern, string[, flags])</strong></p>
-<p>正则 re.findall  的简单用法（返回string中所有与pattern相匹配的全部字串，返回形式为数组）</p>
-<p>例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">p = re.compile(<span class="string">r'\d+'</span>)	</span><br><span class="line">/*\d是匹配一个数字 +表示匹配前面的子表达式一次或多次。例如，<span class="string">'zo+'</span> 能匹配 <span class="string">"zo"</span> 以及 <span class="string">"zoo"</span>，但不能匹配 <span class="string">"z"</span>。+ 等价于 &#123;<span class="number">1</span>,&#125;。*/</span><br><span class="line"><span class="keyword">print</span> p.findall(<span class="string">'one1two2three3four4'</span>)</span><br></pre></td></tr></table></figure>
-<p>结果为[‘1’, ‘2’, ‘3’, ‘4’]</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/re/">re</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-07-22-python requests的简单运用"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/07/22/2017-07-22-python requests的简单运用/">python requests的简单运用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/07/22/2017-07-22-python requests的简单运用/" class="article-date">
-	  <time datetime="2017-07-21T16:00:00.000Z" itemprop="datePublished">七月 22, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="0x01-无参数请求"><a href="#0x01-无参数请求" class="headerlink" title="0x01 无参数请求"></a>0x01 无参数请求</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">r = requests.get(<span class="string">'http://www.baidu.com'</span>)</span><br><span class="line">r = requests.post(<span class="string">"http://httpbin.org/post"</span>)</span><br><span class="line">r = requests.put(<span class="string">"http://httpbin.org/put"</span>)</span><br><span class="line">r = requests.delete(<span class="string">"http://httpbin.org/delete"</span>)</span><br><span class="line">r = requests.head(<span class="string">"http://httpbin.org/get"</span>)</span><br><span class="line">r = requests.options(<span class="string">"http://httpbin.org/get"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="0x02-在URL中传递参数"><a href="#0x02-在URL中传递参数" class="headerlink" title="0x02 在URL中传递参数"></a>0x02 在URL中传递参数</h2><p>有时候我们要在URL中添加参数，例如百度搜索时word后面添加的搜索词</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">payload = &#123;<span class="string">'word'</span>: <span class="string">'黄皮子坟'</span>&#125;</span><br><span class="line">r = requests.get(<span class="string">"http://www.baidu.com/s"</span>, params=payload)</span><br><span class="line"><span class="keyword">print</span> r.url</span><br></pre></td></tr></table></figure>
-<p>结果为 <a href="http://www.baidu.com/s?word=%E9%BB%84%E7%9A%AE%E5%AD%90%E5%9D%9F" target="_blank" rel="noopener">http://www.baidu.com/s?word=%E9%BB%84%E7%9A%AE%E5%AD%90%E5%9D%9F</a></p>
-<p>可以通过<code>r.text</code>来获取网页的内容</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> r.text</span><br></pre></td></tr></table></figure>
-<p>内容太多，这里就不打出来了，读者可以自己尝试。</p>
-<p>可以通过<code>r.headers</code>来获取响应头内容。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> r.headers</span><br></pre></td></tr></table></figure>
-<p>结果为{‘BDQID’: ‘0x8582eb7400002a8b’, ‘X-Powered-By’: ‘HPHP’, ‘Transfer-Encoding’: ‘chunked’,…}</p>
-<p>请求头内容可以用<code>r.request.headers</code>来获取</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print r.request.headers</span><br></pre></td></tr></table></figure>
-<p>结果为{‘Connection’: ‘keep-alive’, ‘Accept-Encoding’: ‘gzip, deflate’, ‘Accept’: ‘<em>/</em>‘, ‘User-Agent’: ‘python-requests/2.18.2’}</p>
-<h2 id="0x03-使用session"><a href="#0x03-使用session" class="headerlink" title="0x03 使用session"></a>0x03 使用session</h2><p>先初始化一个<code>session</code>对象，<code>s = requests.Session()</code>，然后使用这个<code>session</code>对象来进行访问，<code>r = s.post(url,data = user)</code>。</p>
-<p>下面这个例子用来模拟登陆<a href="https://www.v2ex.com/" target="_blank" rel="noopener">V2EX</a>，问题的关键在于抓取post数据包</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"></span><br><span class="line">url = <span class="string">r"https://www.v2ex.com/signin"</span></span><br><span class="line">v2ex_session = requests.Session()</span><br><span class="line"></span><br><span class="line">f = v2ex_session.get(url)</span><br><span class="line">soup = BeautifulSoup(f.content,<span class="string">"html.parser"</span>)</span><br><span class="line">once = soup.find(<span class="string">'input'</span>,&#123;<span class="string">'name'</span>:<span class="string">'once'</span>&#125;)[<span class="string">'value'</span>]</span><br><span class="line">u = soup.find(<span class="string">'input'</span>,&#123;<span class="string">'placeholder'</span>:<span class="string">'用户名或电子邮箱地址'</span>&#125;)[<span class="string">'name'</span>]</span><br><span class="line">p = soup.find(<span class="string">'input'</span>,&#123;<span class="string">'type'</span>:<span class="string">'password'</span>&#125;)[<span class="string">'name'</span>]</span><br><span class="line"></span><br><span class="line">user = &#123;u:<span class="string">'username'</span>, p:<span class="string">'password'</span>, <span class="string">'once'</span>: once, <span class="string">'next'</span>: <span class="string">'/'</span>&#125;</span><br><span class="line">v2ex_session.headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Safari/602.1.50"</span>&#125;</span><br><span class="line">v2ex_session.headers.update(&#123;<span class="string">'referer'</span>: url&#125;)	<span class="comment">#要注意这里referer</span></span><br><span class="line">v2ex_session.post(url, data = user)</span><br><span class="line">f = v2ex_session.get(<span class="string">'http://www.v2ex.com/settings'</span>)</span><br><span class="line"><span class="keyword">print</span> f.content</span><br></pre></td></tr></table></figure>
-<h2 id="0x04-cookie的使用"><a href="#0x04-cookie的使用" class="headerlink" title="0x04 cookie的使用"></a>0x04 cookie的使用</h2><p>使用cookies解决登录问题</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cookies=&#123;&#125;  </span><br><span class="line">line = <span class="string">'cookie的内容'</span>	<span class="comment">#抓包获取</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> raw_cookies.split(<span class="string">';'</span>):  </span><br><span class="line">    key,value=line.split(<span class="string">'='</span>,<span class="number">1</span>)	<span class="comment">#1代表只分一次，得到两个数据  </span></span><br><span class="line">    cookies[key]=value</span><br><span class="line">url = <span class="string">r"https://www.v2ex.com/signin"</span></span><br><span class="line">v2ex_session = requests.Session()</span><br><span class="line">v2ex_session.headers = &#123;<span class="string">'User-Agent'</span>: <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/602.1.50 (KHTML, like Gecko) Version/10.0 Safari/602.1.50"</span>&#125;</span><br><span class="line">v2ex_session.headers.update(&#123;<span class="string">'referer'</span>: url&#125;)	<span class="comment">#要注意这里referer</span></span><br><span class="line">f = v2ex_session.get(url,cookies=cookies)  </span><br><span class="line">f = v2ex_session.get(<span class="string">'http://www.v2ex.com/settings'</span>)</span><br><span class="line"><span class="keyword">print</span> f.content</span><br></pre></td></tr></table></figure>
-<p>但是貌似有出现了问题，因为网站使用的https连接</p>
-<p><code>http</code>和<code>https</code>的区别：</p>
-<ol>
-<li>url的前面是<code>https://</code>而不是<code>http://</code>，使用<code>ssl</code>进行加密/身份认证，并且<code>http</code>的默认端口是80，<code>https</code>的默认端口是443。</li>
-<li>因为有ssl的认证和加密，所以具体的底层的通信过程中会有不同，<code>https</code>的这一层在建立连接的时候，需要设置<code>socket</code>属性，<code>socket</code>属性的生成需要使用具体的方法调用，方法调用的参数需要指定：<code>ca_certs</code>=服务器端给提供的公钥证书即可。</li>
-</ol>
-<p>然后如果还有客户端认证的话，那客户端也可以提供出自己的<code>key_file</code>，<code>cert_file</code>。</p>
-<p>什么是ssl？</p>
-<p>ssl的全称是(Secure Sockets Layer)安全套接层，另外还有TLS（Transport Layer Secure，传输层安全），这两种协议都是为网络提供安全和数据完整性的一种安全协议，在传输层对网络连接进行加密。</p>
-<p>为什么要用这个？</p>
-<p>防止数据以及网络连接的传输内容被截获，所以涉及到个人或者重要的信息等，都需要进行建立ssl连接，通过https的请求方式加密处理。</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/requests/">requests</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -859,6 +817,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
+              <span>三月 1, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
+              <span>二月 21, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
               <span>二月 10, 2018</span>
             </div>
@@ -901,30 +883,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a></h6>
-              <span>一月 15, 2018</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a></h6>
-              <span>一月 9, 2018</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -934,7 +892,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -944,7 +902,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -954,7 +912,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1019,6 +977,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

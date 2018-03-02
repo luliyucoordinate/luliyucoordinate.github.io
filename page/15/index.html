@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -107,6 +129,159 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-2017-04-23-STL容器2vector"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/04/23/2017-04-23-STL容器2vector/">STL容器（2）vector</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/23/2017-04-23-STL容器2vector/" class="article-date">
+	  <time datetime="2017-04-22T16:00:00.000Z" itemprop="datePublished">四月 23, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h1><p>定义于头文件\&lt;vector></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;T&gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vector</span>;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Vector的能力"><a href="#Vector的能力" class="headerlink" title="Vector的能力"></a>Vector的能力</h2><p>Vector支持随机访问，因此只要知道位置，就可以在常亮时间内访问任意元素。vector提供随机访问迭代器，所以适用于任意STL算法。capacity函数返回vector实际容纳量，如果超过这个量，vector必须重新分配内部内存。一旦内存重新分配，vector元素相关的所有reference、pointer和iterator都会失效，内存重新分配很耗时间。<br>你可以使用reserve函数保存适当容量，避免重新分配：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">v.reserve(<span class="number">80</span>);<span class="comment">//reserve mempry for 80 elements</span></span><br></pre></td></tr></table></figure>
+<p>vector不能使用reserve缩减容量，调用reverse所给的实参如果小于当前vector的容量，不会引发任何效果。，既然vector的容量不会缩减，我们就可以知道，及时删除元素，其reference、pointer和iterator也会继续有效，继续指向动作发生前的位置。然而安插动作可能会使reference、pointer和iterator实效，因为会使vector重排。<br>C++11引入一个新的函数shrink_to_fit：这个函数不具有强制力的要求，可以缩减容量以符合当前的元素个数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v.shrink_to_fit();<span class="comment">//注意不具有强制性</span></span><br></pre></td></tr></table></figure>
+<p>在c++11之前有一个小技巧实现这个功能。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shrinkCapacity</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;&amp; v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; tmp(v);</span><br><span class="line">	v.swap(tmp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你甚至可以像这样使用：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;(v).swap(v);</span><br></pre></td></tr></table></figure>
+<p>但是要注意的是，这些做法都会使reference、pointer和iterator换了只想对象。</p>
+<h2 id="Vector的操作"><a href="#Vector的操作" class="headerlink" title="Vector的操作"></a>Vector的操作</h2><p>元素访问<br>at 访问指定的元素，同时进行越界检查<br>operator[] 访问指定的元素<br>front 访问第一个元素<br>back 访问最后一个元素<br>data 返回指向内存中数组第一个元素的指针<br>当pop_back调用时，确保容器不为空是程序员的责任。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt;coll;</span><br><span class="line"><span class="keyword">if</span>(!coll.empty())</span><br><span class="line">&#123;</span><br><span class="line">	coll.pop_back();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于效能，以下几种情况你可以预期安插动作和移除动作会快一些：  </p>
+<ol>
+<li>在容器的尾部安插或移除元素</li>
+<li>容器的容量一开始就很大</li>
+<li>安插多个元素调用一次肯定是最快的  </li>
+</ol>
+<p>Vector并能没有提供任何函数可以直接移除“与某个值相等”的所有元素。但是可以通过以下做法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt; coll;</span><br><span class="line">coll.erase(remove(coll.begin(),coll.end(),</span><br><span class="line">					val),</span><br><span class="line">			coll.end());</span><br></pre></td></tr></table></figure>
+<p>如果只要一出第一个元素，可以这么做：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt; coll;</span><br><span class="line">pos = find(coll.begin(),coll.end(),</span><br><span class="line">			val);</span><br><span class="line"><span class="keyword">if</span>(pos != coll.end())</span><br><span class="line">&#123;</span><br><span class="line">	coll.erase();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="将vector当做C-Style-Array使用"><a href="#将vector当做C-Style-Array使用" class="headerlink" title="将vector当做C-Style Array使用"></a>将vector当做C-Style Array使用</h2><p>reserve是容器预留空间，但并不真正创建元素对象，在创建对象之前，不能引用容器内的元素，因此当加入新的元素时，需要用push_back()/insert()函数。<br>resize是改变容器的大小，并且创建对象，因此，调用这个函数之后，就可以引用容器内的对象了，因此当加入新的元素时，用operator[]操作符，或者用迭代器来引用元素对象。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; v;</span><br><span class="line">v.resize(<span class="number">41</span>);</span><br><span class="line"><span class="built_in">strcpy</span>(&amp;v[<span class="number">0</span>],<span class="string">"hello world"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, &amp;v[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+<p>初次接触这两个接口也许会混淆，其实接口的命名就是对功能的绝佳描述，resize就是重新分配大小，reserve就是预留一定的空间。这两个接口即存在差别，也有共同点。下面就它们的细节进行分析。<br>为实现resize的语义，resize接口做了两个保证：<br>一是保证区间[0, new_size)范围内数据有效，如果下标index在此区间内，vector[indext]是合法的。<br>二是保证区间[0, new_size)范围以外数据无效，如果下标index在区间外，vector[indext]是非法的。<br>reserve只是保证vector的空间大小(capacity)最少达到它的参数所指定的大小n。在区间[0, n)范围内，如果下标是index，vector[index]这种访问有可能是合法的，也有可能是非法的，视具体情况而定。<br>resize和reserve接口的共同点是它们都保证了vector的空间大小(capacity)最少达到它的参数所指定的大小。</p>
+<h2 id="Class-vector"><a href="#Class-vector" class="headerlink" title="Class vector"></a>Class vector<bool></bool></h2><p>vector<bool>特化版的内部只是用1bit存放元素，空间节省8倍。C++的最小可定址值是以byte为单位的，所以reference和iterator做特殊处理<br>vector<bool>无法满足其他vector的所有规定，例如vector<bool>::reference并不是一个lvalue，vector<bool>::iterator也不是一个随机访问迭代器，而且它的操作速度会比一般的vector慢因为他是bit操作。<br>flip函数用来取补数（complement）。注意，你可以对vector内的所有bit或单一bit调用filp，后者很值得注意，因为你也许会以为subscript操作符返回bool在对此基础类型调用filp是不可能的。然而vector<bool>运用了一个名为proxy的技巧：面对一个vector<bool>，subscript操作符的返回类型实际上是个辅助类，一旦你要求返回值为bool，便会触发一个自动类型转换函数。<br>所有用于元素访问的函数，返回的都是reference类型。所以可以这么写：</bool></bool></bool></bool></bool></bool></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c.front().filp();</span><br><span class="line">c[<span class="number">5</span>] = c.back();</span><br></pre></td></tr></table></figure>
+<p>只有vector<bool>的non-const容器才会用到内部的proxy类型reference。而用来处理那些const成员函数，返回类型都是const reference，那就是bool。</bool></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-04-22-STL容器1array"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/04/22/2017-04-22-STL容器1array/">STL容器（1）array</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/04/22/2017-04-22-STL容器1array/" class="article-date">
+	  <time datetime="2017-04-21T16:00:00.000Z" itemprop="datePublished">四月 22, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h1><p>为了使用array，首先必须加头文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>该类型被定义为一个class template，在命名空间std中：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">size_t</span> N&gt;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Array</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要注意的是Array并不支持分配器，也就是说不允许指定自己的allocator</p>
+<h2 id="Array的能力"><a href="#Array的能力" class="headerlink" title="Array的能力"></a>Array的能力</h2><p>Array会把元素复制到其内的static C-style array中。这些元素总是拥有一个明确次序。Array允许随机访问，你可以在常量时间内访问任何元素。Array的迭代器属于随机访问迭代器，所以你可以使用任意的STL算法。<br>关于初始化，class array有一些独特的语法。注意，array是唯一一个“无任何东西被指定为初值时，会被与初始化”的容器。这意味着对于基础类型，初值可能不明确，而不是0。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,4&gt; x;elements of x have undefined value</span><br></pre></td></tr></table></figure>
+<p>这里要提一些什么是明确的初始化，对于明确的初始化，基础类型会被设定初值为0：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i1;<span class="comment">//undefined value</span></span><br><span class="line"><span class="keyword">int</span> i2 = <span class="keyword">int</span>();<span class="comment">//initialized with zero</span></span><br><span class="line"><span class="keyword">int</span> i3&#123;&#125;;<span class="comment">//initialized with zero</span></span><br></pre></td></tr></table></figure>
+<p>array满足聚合体要求，因此可以使用处置列来设定array，聚合体（aggregate）是一个class或array，不带用户提供的构造函数，也没有private和protected的nostatic的数据成员，也没有base class ，也没有virtual函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; c = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果初值列内的元素个数多余array的大小，这样的表达式就不对：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; c1 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;<span class="comment">//ERROR too many values</span></span><br></pre></td></tr></table></figure>
+<p>由于没有提供初值列而写的构造函数和assignment操作符，因此“在array声明期间完成初始化”是使用初值列的唯一途径。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; a(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);<span class="comment">//ERROR </span></span><br><span class="line"><span class="built_in">std</span>::vecotr&lt;<span class="keyword">int</span>&gt; v(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<p>swap拥有线性复杂度并有以下的影响：iterator和reference不会随着元素的置换而改变所指向的元素。所以置换后，iterator和reference指向那个原本容器，但指向不同元素。</p>
+<h2 id="Array的操作"><a href="#Array的操作" class="headerlink" title="Array的操作"></a>Array的操作</h2><p>如果使用操作符=和swap()，两个array必须具备相同的类型，意思是两者的元素类型和大小必须相同。<br>想要访问array内的所有元素，必须使用range-based for循环，或者特定的操作符或迭代器。通常只有使用at()会执行范围检查。如果超出范围，at()会抛出一个out_of_range异常，其它函数不会做检查。对于一个空的array调用operator[]、front和back会导致不明确的行为。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;Elem,0&gt; c;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; c.front();<span class="comment">//RUNTIME ERROR</span></span><br></pre></td></tr></table></figure>
+<h2 id="将array当做C-Style-Array"><a href="#将array当做C-Style-Array" class="headerlink" title="将array当做C-Style Array"></a>将array当做C-Style Array</h2><p>如果想要访问array的元素，你不一定使用表达式&amp;a[0]，因为成员函数data()也具备相同用途：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">char</span>,41&gt; a;</span><br><span class="line"><span class="built_in">strcpy</span>(a.data(),<span class="string">"hello"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>，a.data());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>，&amp;a[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
+<p>但是你必须确保array的大小足够容纳复制进来的数据，而且如果你把其中的内容当做一个C-string来看，你必须放置一个’\0’元素于尾端。<br>注意，绝对不要用迭代器表现“第一元素的地址”。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, a.begin());<span class="comment">//ERROR</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, a.data());<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
+<h2 id="Tuple接口"><a href="#Tuple接口" class="headerlink" title="Tuple接口"></a>Tuple接口</h2><p>Array提供tuple接口。因此可以使用tuple_size&lt;&gt;::value去的元素个数，用tuple_element&lt;&gt;::type取得某个特定元素类型，用get取得某个特定元素。例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,5&gt; FiveStrings;</span><br><span class="line">FiveStrings a = &#123; <span class="string">"hello"</span>,<span class="string">"how"</span>,<span class="string">"are"</span>,<span class="string">"you"</span>,<span class="string">"hehe"</span>&#125;;</span><br><span class="line"><span class="built_in">std</span>::tuple_size&lt;FiveStrings&gt;::value <span class="comment">//5</span></span><br><span class="line"><span class="built_in">std</span>::tuple_element&lt;<span class="number">1</span>,FiveStrings&gt;::type <span class="comment">//std::string</span></span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="number">1</span>&gt;(a) <span class="comment">//std::string("how")</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-2017-04-20-标准模板库2"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -870,129 +1045,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-04-12-loki&#39;s allocator"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/04/12/2017-04-12-loki's allocator/">loki::allocator</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/04/12/2017-04-12-loki's allocator/" class="article-date">
-	  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">四月 12, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Chunk"><a href="#Chunk" class="headerlink" title="Chunk"></a>Chunk</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pData_: <span class="keyword">unsigned</span> <span class="keyword">char</span>*</span><br><span class="line">firstAvailableBlock_: <span class="keyword">unsigned</span> <span class="keyword">char</span><span class="comment">//第一个可用的编号</span></span><br><span class="line">blocksAvailable_: <span class="keyword">unsigned</span> <span class="keyword">char</span><span class="comment">//剩余可用的数目</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Init(<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize,<span class="keyword">unsigned</span> <span class="keyword">char</span> blocks)</span><br><span class="line">&#123;</span><br><span class="line">	pData = <span class="keyword">new</span> <span class="keyword">unsigned</span> <span class="keyword">char</span>[blockSize * blocks];</span><br><span class="line">	Reset(blockSize, blocks);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Reset(<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize,<span class="keyword">unsigned</span> <span class="keyword">char</span> blocks)</span><br><span class="line">&#123;</span><br><span class="line">	firstAvailableBlock_ = <span class="number">0</span>;</span><br><span class="line">	blocksAvailable_ = blocks;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* p = pData_;</span><br><span class="line">	<span class="keyword">for</span>(; i!=blocks; p+=blockSize)</span><br><span class="line">		*p =++i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Release()</span><br><span class="line">&#123; </span><br><span class="line">	<span class="keyword">delete</span>[] pData;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Allocate(<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(!blocksAvailable_) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span>* pResult = </span><br><span class="line">		pData_ + (firstAvailableBlock_ * blockSize);</span><br><span class="line">	firstAvailableBlock_ = *pResult;</span><br><span class="line">	--blocksAvailable_;</span><br><span class="line">	<span class="keyword">return</span> pResult;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Chunk::Deallocate(<span class="keyword">void</span>* p,<span class="built_in">std</span>::<span class="keyword">size_t</span> blockSize)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> * toRelease = <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>*&gt;(p);</span><br><span class="line">	*toRelease = firstAvailableBlock_;</span><br><span class="line">	firstAvailableBlock_ = <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt;(</span><br><span class="line">						(toRelease - pData_)/blockSize);</span><br><span class="line">	++blocksAvailable_;		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="FixedAllocator"><a href="#FixedAllocator" class="headerlink" title="FixedAllocator"></a>FixedAllocator</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chunks_:<span class="built_in">vector</span>&lt;Chunk&gt;</span><br><span class="line">allocChunk_: Chunk*</span><br><span class="line">deallocChunk_: Chunk*</span><br></pre></td></tr></table></figure>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *FixedAllocator::Allocate()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(allocChunk == <span class="number">0</span> || allocChunk_-&gt;blocksAvailable_ == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		Chunks::iterator i = chunks_.begin();</span><br><span class="line">		<span class="keyword">for</span>(;; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(i == chunks_.end())</span><br><span class="line">			&#123;</span><br><span class="line">				chunks_.push_back(Chunk());</span><br><span class="line">				Chunk&amp; newChunk = chunks_.back();</span><br><span class="line">				newChunk.Init(blockSize_, numBlocks_);</span><br><span class="line">				allocChunk_ = &amp;newChunk;<span class="comment">//指向上次给出去的chunk</span></span><br><span class="line">				deallocChunk_ = &amp;chunks_.front();<span class="comment">//指向上一次的回收</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(i-&gt;blocksAvailable_&gt; <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				allocChunk_ = &amp;*i;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> allocChunk_-&gt;Allocate(blockSize_);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::Deallocate(<span class="keyword">void</span> *p)</span><br><span class="line">&#123;</span><br><span class="line">	deallocChunk_ = VicinityFind(p);</span><br><span class="line">	DoDealllocate(p);</span><br><span class="line">&#125;</span><br><span class="line">FixedAllocator::Chunk* FixedAllocator::VicinityFind(<span class="keyword">void</span> *p)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> chunkLength = numBlocks_ * blockSize_;</span><br><span class="line">	</span><br><span class="line">	Chunk* lo = deallocChunk_;</span><br><span class="line">	Chunk* hi = deallocChunk_ + <span class="number">1</span>;</span><br><span class="line">	Chunk* loBound = &amp;chunks_.front();</span><br><span class="line">	Chunk* hiBound = &amp;chunks_.back() + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(;;)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(lo)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(p &gt;= lo-&gt;pData_ &amp;&amp; p&lt; lo-&gt;pData_ + chunkLength)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">return</span> lo;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(lo == loBound) lo = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span> --lo;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(hi)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(p &gt;= hi-&gt;pData_&amp;&amp; p &lt;hi-&gt;pData_ + chunkLength)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">return</span> hi;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>( ++ hi == hiBound) hi = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">void</span> FixedAllocator::DoDeallocate(<span class="keyword">void</span> *p)</span><br><span class="line">&#123;</span><br><span class="line">	deallocChunk_-&gt;Deallocate(p, blockSize_);</span><br><span class="line"><span class="comment">//是否等于开始的登记值</span></span><br><span class="line">	<span class="keyword">if</span>(deallocChunk_-&gt;blocksAvailable == numBlocks)</span><br><span class="line">	&#123;</span><br><span class="line">		Chunk&amp; lastChunk == chunks_.back();</span><br><span class="line"><span class="comment">//这里的做法与vc SBH defer类似</span></span><br><span class="line"><span class="comment">//__sbh_pHeaderDefer是一个指针，指向一个全回收group所属的Header。这个group原</span></span><br><span class="line"><span class="comment">//本应被释放，但暂时保留。当再有第二个全回收group出现时，SBH才释放Defer </span></span><br><span class="line"><span class="comment">//group，并将新出现的全回收group设为defer。如果尚未出现第二个group而又从Defer </span></span><br><span class="line"><span class="comment">//group取出block完成分配，Defer指针会被取消(设为NULL);</span></span><br><span class="line"><span class="comment">//__sbh_indGroupDefer是个索引，指出Region中哪个group是Defer。</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(&amp;lastChunk == deallocChunk_)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(chunks_.size() &gt;<span class="number">1</span> &amp;&amp;</span><br><span class="line">				deallocChunk_[<span class="number">-1</span>].blocksAvailable_ == numBlocks)</span><br><span class="line">			&#123;</span><br><span class="line">				lastChunk.Release();</span><br><span class="line">				chunks_.pop_back();</span><br><span class="line">				allocChunk_ = deallocChunk_ = &amp;chunks_.front();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(lastChunk.blocksAvailable == numBlocks)</span><br><span class="line">		&#123;</span><br><span class="line">			lastChunk.Release();</span><br><span class="line">			chunks_.pop_back();</span><br><span class="line">			allocChunk_ = deallocChunk_;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::swap(*deallocChunk_, lastChunk);</span><br><span class="line">			allocChunk_ = &amp;chunks_.back();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="SmallObjAllocator"><a href="#SmallObjAllocator" class="headerlink" title="SmallObjAllocator"></a>SmallObjAllocator</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pool_: <span class="built_in">vector</span>&lt;FixedAllocator&gt;</span><br><span class="line">pLastAlloc: FixedAllocator</span><br><span class="line">pLastDealloc: FixedAllocator</span><br><span class="line">chunkSize: <span class="keyword">size_t</span></span><br><span class="line">maxObjectSize: <span class="keyword">size_t</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-04-12-other issues"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/04/12/2017-04-12-other issues/">other issues</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/04/12/2017-04-12-other issues/" class="article-date">
-	  <time datetime="2017-04-11T16:00:00.000Z" itemprop="datePublished">四月 12, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当将元素加入容器中，容器必须分配更多的内存以足够保存这些元素，于是他们向他的模板参数allocator发出申请，该模板参数往往被另一个名为 allocator_type。甚至将chars添加到string class也是如此，因为string也算是一个正规的STL容器。每个元素类型为T的容器的Allocator模板默认为allocator<t>。其接口只有大约20个public申明，包括嵌套的typedefs和成员函数。最重要的两个成员函数是：</t></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">T* <span class="title">allocate</span><span class="params">(size_type n, <span class="keyword">const</span> <span class="keyword">void</span>* hint = <span class="number">0</span>)</span></span>;</span><br><span class="line"><span class="function">Void <span class="title">deallocate</span><span class="params">(T* p, size_type n)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>N指的是客户申请的元素个数，不是指空间总量。这些空间是通过调用::operator new获得，但何时需要并无具体指定。  </p>
-<p>最容易满足需求的做法就是每当容器需要内存就调用operator new，每当容器释放内存就调用operator delete。这种做法比起分配大块内存并缓存然后小块小块的使用当然较慢，优势则是可以在极大范围的硬件和操作系统有效运作。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::new_allocator</span><br></pre></td></tr></table></figure>
-<p>实现出简洁的operator new 和operator delete。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::malloc_allocator</span><br></pre></td></tr></table></figure>
-<p>实现上例唯一不同的是，它使用c函数std::malloc和std::free  </p>
-<p>另外一种做法就是使用智能型allocator，将分配所得的内存加以缓存。这种额外机制可以数种形式呈现：可以是个bitmap index，用以索引至一个以2的指数倍成长的篮子。也可以是个相较之下比较简易的fixed-size pooling cache这里所说的cache被程序内的所有容器共享，而operators new和operator delete不经常<br>被调用，这可带来速度上的优势。使用这个技巧的allocators包括：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::bitmap_allocator</span><br></pre></td></tr></table></figure>
-<p>一个高效能的allocator，使用bit-map追踪被使用和未使用的内存块。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__gnu_cxx::pool_allocator</span><br><span class="line">__gnu_cxx::__mt_alloc</span><br></pre></td></tr></table></figure>
-<p>Class allocator 只拥有typedef,constructor,和rebind等成员。它继承自一个high-speed extension allocators。也因此，所有分配器和归还都取决于该base class，而这个base class也许是终端用户无法碰触和操控的。很难挑选出某个分配策略说他可以提供最大共同利益而不至于令某些行为过度优势。事实上，就算要挑选何种典型动作以测量速度，都是一种困难。<br>GNU C++提供三项综合测试用以C++allocators之间的速度比较：<br>Insertion进过多次iterations后各种STL容器将拥有某个极大量。分别测试sequence和associative容器。多线程环境中的insertion and erasure 。这个测试展示allocator归还内存，测量线程之间对内存的竞争。A threaded producer/consumer model分别测试sequence和associative容器。</p>
-<p>另外两个智能allocator：<br><strong>gnu_cxx::debug_allocator<br>这个是一个外覆器(wrapper)，可包含于任何allocator之上。他把客户的申请量添加一些，然后由allocator回应，并以那个一小块额外内存放置size信息。一旦deallocate()收到一个pointer，就会检查size并以assert()保证吻合。  
-</strong>gnu_cxx::array_allocator<br>允许分配一个已知固定大小的内存块，内存来自std::array objects。用上这个allocator，大小固定的容器就无需在调用::operator new 和::operator delete。这就允许我们使用STL abstractions而无需再运行期添加额外开销。甚至在program startup情况下也可使用。注意他是静态的，所以他不需要调用delete。</p>
-<h2 id="Array-allocator"><a href="#Array-allocator" class="headerlink" title="Array allocator"></a>Array allocator</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//array内的第二个参数表示array的大小</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Tp,<span class="keyword">typename</span> _Array = <span class="built_in">std</span>::tr1::<span class="built_in">array</span>&lt;_Tp,<span class="number">1</span>&gt;&gt;</span><br><span class="line">class array_allocator:<span class="keyword">public</span> array_allocator_base&lt;_Tp&gt;</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">typedef</span> <span class="keyword">size_t</span> size_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Tp value_type;</span><br><span class="line">	<span class="keyword">typedef</span> _Array array_type;</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	array_type* _M_array;</span><br><span class="line">	size_type _M_used;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	array_allocator(array_type* __array = <span class="literal">NULL</span>)<span class="keyword">throw</span>()</span><br><span class="line">		:_M_array(__array), _M_used(size_type())&#123;&#125;</span><br><span class="line">		...</span><br><span class="line">	pointer</span><br><span class="line">	allocate(size_type __n,<span class="keyword">const</span> <span class="keyword">void</span>* =<span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(_M_array == <span class="number">0</span>|| _M_used + __n&gt;_M_array &gt; size())</span><br><span class="line">			<span class="built_in">std</span>::__throw_bad_alloc();</span><br><span class="line">		pointer __ret = _M_array-&gt;begin() + _M_used();</span><br><span class="line">		_M_used += __n;</span><br><span class="line">		<span class="keyword">return</span> __ret;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">debug_allocator</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Alloc&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">debug_allocator</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	size_type _M_extra;<span class="comment">//额外的空间，记录整个区块的大小</span></span><br><span class="line">	_Alloc _M_allocator;</span><br><span class="line">	</span><br><span class="line">	size_type _S_extra()</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">size_t</span> __obj_size = <span class="keyword">sizeof</span>(value_type);</span><br><span class="line">		<span class="keyword">return</span> (<span class="keyword">sizeof</span>(size_type) + __obj_size - <span class="number">1</span>)/__obj_size;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	debug_allocator(<span class="keyword">const</span> _Alloc&amp; __a)</span><br><span class="line">		:_M_allocator(__a), _M_extra(_S_extra())&#123;&#125;</span><br><span class="line">	<span class="function">pointer <span class="title">allocate</span><span class="params">(size_type __n)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		pointer __res = _M_allocator.allocate(__n + __m_extra);</span><br><span class="line">		size_type *__ps = <span class="keyword">reinterpret_cast</span>&lt;size_type*&gt;(__res);</span><br><span class="line">		*__ps = __n;</span><br><span class="line">		<span class="keyword">return</span> __res + _M_extra;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">(pointer __p,size_type __n)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">using</span> <span class="built_in">std</span>::__throw_runtine_error;</span><br><span class="line">		<span class="keyword">if</span>(__p)</span><br><span class="line">		&#123;</span><br><span class="line">			pointer __real_p = __p + _m_extra;</span><br><span class="line">			<span class="keyword">if</span>(*<span class="keyword">reinterpret_cast</span>&lt;size_type*&gt;(__real_p) != __n)</span><br><span class="line">				__throw_runtime_error</span><br><span class="line">					(<span class="string">"debug_allocator::deallocate wrong size"</span>);</span><br><span class="line">			_M_allocator.deallocate(__ + _M_extra);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			__throw_runtime_error</span><br><span class="line">				(<span class="string">"debug_allocator::deallocate wrong size"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="bitmap-allocator"><a href="#bitmap-allocator" class="headerlink" title="bitmap_allocator"></a>bitmap_allocator</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> _Tp&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">bitmap_allocator</span>:</span><span class="keyword">private</span> free_list</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function">pointer <span class="title">allocate</span><span class="params">(size_type __n)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(__n &gt; <span class="keyword">this</span>-&gt;max_size())</span><br><span class="line">			<span class="built_in">std</span>::__throw_bad_alloc();</span><br><span class="line">		<span class="keyword">if</span>(__builtin_expect(__n == <span class="number">1</span>,<span class="literal">true</span>))</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">this</span>-&gt;_M_allocate_single_object();</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">const</span> size_type __b = __n * <span class="keyword">sizeof</span>(value_type);</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">reinterpret_cast</span>&lt;pointer&gt;(::<span class="keyword">operator</span> <span class="keyword">new</span>(__b));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">deallocate</span><span class="params">(pointer __p,size_type __n)</span><span class="title">throw</span><span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(__builtin_expect(__p !=<span class="number">0</span>,<span class="literal">true</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span>(__builtin_expect(__n == <span class="number">1</span>,tue))</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">this</span>-&gt;_M_delaoocate_single_object(__p);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				::<span class="keyword">operator</span> <span class="keyword">delete</span>(_p);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>Vector的元素排列将以super block size为依据，新进者若大于最末者，便直接delete新进者，否则delete最末者后再insert新进者，若没有到达64则insert到适当位置。</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/stl/">stl</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1097,6 +1149,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
+              <span>三月 1, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
+              <span>二月 21, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
               <span>二月 10, 2018</span>
             </div>
@@ -1139,30 +1215,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a></h6>
-              <span>一月 15, 2018</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a></h6>
-              <span>一月 9, 2018</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1172,7 +1224,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -1182,7 +1234,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -1192,7 +1244,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1257,6 +1309,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

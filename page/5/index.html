@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -107,6 +129,140 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-2017-11-6-虚函数表到底是怎么存放的"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/">虚函数表到底是怎么存放的</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/" class="article-date">
+	  <time datetime="2017-11-05T16:00:00.000Z" itemprop="datePublished">十一月 6, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          
+“when VTABLE is get created in Memory , In compiletime or runtime?”
+Compile time. The vtable is simple an array of function pointers that gets stored in the executable. It never changes and this array is shared by all instances of a given class. Each instance of a class that has virtual methods contains one vtable pointer (for single inheritance), usually stored at offset 0, before all data members. This pointer is initialized at construction time to point to the vtable for that class.
+
+
+“当VTABLE被创建在内存中，在编译时或运行时？“
+编译时。 vtable是一个简单的函数指针数组，存储在可执行文件中。 它永远不会改变，并且这个数组被给定类的所有实例共享。 具有虚拟方法的类的每个实例都包含一个vtable指针（用于单个继承），通常存储在所有数据成员之前的偏移量0处。 这个指针在构造时被初始化，指向该类的虚表。
+
+“If the class contain one virtual function , then what is the size of class?”
+The class has the same size if it has 1 or 100 virtual functions, size of the class data members + size of the vtable pointer (4 bytes for x86, 8 bytes for x64) (for single inheritance).
+
+
+“如果这个类包含一个虚拟函数，那么类的大小是多少？”
+如果具有1或100个虚拟函数，类数据成员的大小+ vtable指针的大小（x86为4个字节，x64为8个字节）（单个继承），则该类具有相同的大小。
+
+        
+          <p class="article-more-link">
+            <a href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vfptr/">vfptr</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-11-5-纯虚函数调用"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/11/05/2017-11-5-纯虚函数调用/">纯虚函数的调用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/11/05/2017-11-5-纯虚函数调用/" class="article-date">
+	  <time datetime="2017-11-04T16:00:00.000Z" itemprop="datePublished">十一月 5, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子
+123456789101112131415161718192021222324class Abstract_base&#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &#123; return _mumble; &#125;protected:	char *_mumble;&#125;;class Concrete_derived :public Abstract_base&#123;public:	void Concrete_deriverd() &#123;&#125;;	virtual void interface();&#125;;inline void Abstract_base::interface()&#123;    function      //...&#125;inline void Concrete_derived::interface()&#123;    Abstract_base::interface();//静态调用&#125;
+
+        
+          <p class="article-more-link">
+            <a href="/2017/11/05/2017-11-5-纯虚函数调用/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-2017-11-4-关于重载、隐藏、重写的一些思考（2）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -670,173 +826,6 @@ When two or more different declarations are specified for a single name in the s
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-10-11-VS2015+opencv3.3环境配置(win10)，超详细！！！"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/11/2017-10-11-VS2015+opencv3.3环境配置(win10)，超详细！！！/">VS2015+opencv3.3环境配置(win10)，超详细！！！</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/10/11/2017-10-11-VS2015+opencv3.3环境配置(win10)，超详细！！！/" class="article-date">
-	  <time datetime="2017-10-10T16:00:00.000Z" itemprop="datePublished">十月 11, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/图像处理/">图像处理</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先<a href="https://sourceforge.net/projects/opencvlibrary/files/opencv-win/3.3.0/opencv-3.3.0-vc14.exe/download" target="_blank" rel="noopener">下载opencv3.3</a>，然后安装。</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9n8sdkj20ns0c43z8.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9n8sdkj20ns0c43z8.jpg" class="img-fluid"><br></a></p>
-<p>安装完成后，接下来配置环境变量。具体步骤如下：右击此电脑-》点击属性-》点击更改设置-》点击高级-》点击环境变量-》点击Path-》点击编辑，如果还是不清楚的话<a href="https://jingyan.baidu.com/article/6079ad0e99bb8228ff86db2b.html" target="_blank" rel="noopener">点击这里</a></p>
-<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkda9nnk93j20m20ll75b.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkda9nnk93j20m20ll75b.jpg" class="img-fluid"><br></a></p>
-<p>点击新建，将我们安装opencv3.3的位置下的<code>bulid\x64\vc14\bin</code> 加入。</p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9o3q8pj20it0ig0tz.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9o3q8pj20it0ig0tz.jpg" class="img-fluid"><br></a></p>
-<p>打开VS2015，新建一个项目文件</p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9oil46j21cp0sfaeu.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9oil46j21cp0sfaeu.jpg" class="img-fluid"><br></a></p>
-<p>新建一个win32控制台应用程序，名称可以自己取一个</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9p13z2j20wq0mpabn.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9p13z2j20wq0mpabn.jpg" class="img-fluid"><br></a></p>
-<p>勾选上空项目</p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9pe0iej20oo0jnjrp.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9pe0iej20oo0jnjrp.jpg" class="img-fluid"><br></a></p>
-<p>右击源文件文件夹，添加新文件，文件名自己随便取一个</p>
-<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkda9ps55fj21bj0rqtb9.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkda9ps55fj21bj0rqtb9.jpg" class="img-fluid"><br></a></p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9q4sw8j20wq0mp0tn.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9q4sw8j20wq0mp0tn.jpg" class="img-fluid"><br></a></p>
-<p>点击视图-》点击其他窗口打开属性管理器</p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9qx2maj21ff0u0dlq.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9qx2maj21ff0u0dlq.jpg" class="img-fluid"><br></a></p>
-<p>在属性管理器栏中，选中Debug|Win64中的Microsoft.Cpp.x64.user，右键点击属性进入属性界面</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9r9m1sj21ff0u077x.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9r9m1sj21ff0u077x.jpg" class="img-fluid"><br></a></p>
-<p>点击VC++目录-》点击包含目录-》点击编辑</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9rniuhj20uf0kc400.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9rniuhj20uf0kc400.jpg" class="img-fluid"><br></a></p>
-<p>将之前的安装目录下的这三个目录添加进去</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">F:\openCV\opencv\build\include</span><br><span class="line">F:\openCV\opencv\build\include\opencv</span><br><span class="line">F:\openCV\opencv\build\include\opencv2</span><br></pre></td></tr></table></figure>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9s0627j20en0ew3yy.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9s0627j20en0ew3yy.jpg" class="img-fluid"><br></a></p>
-<p>做好这个后，回到VC++目录-》点击库目录-》点击编辑</p>
-<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9scu1xj20uf0kcgn2.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9scu1xj20uf0kcgn2.jpg" class="img-fluid"><br></a></p>
-<p>将之前的安装目录下的这个目录添加进去</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\openCV\opencv\build\x64\vc14\lib</span><br></pre></td></tr></table></figure>
-<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9srx3aj20en0ewjrv.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9srx3aj20en0ewjrv.jpg" class="img-fluid"><br></a></p>
-<p>在<code>F:\openCV\opencv\build\x64\vc14\lib</code>目录下有这样两个文件<code>opencv_world330.lib</code>和<code>opencv_world330d.lib</code>，文件的区别是一个没有<code>d</code>结尾的对应的时release版，以<code>d</code>结尾的文件对应的是debug版。</p>
-<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkda9tj6wbj20j50kwaay.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fkda9tj6wbj20j50kwaay.jpg" class="img-fluid"><br></a></p>
-<p>做好这个后，回到初始的目录，点击链接器-》点击输入-》点击附加依赖项-》点击编辑</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9t4zfxj20uf0kcabj.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9t4zfxj20uf0kcabj.jpg" class="img-fluid"><br></a></p>
-<p>我这里将debug版（<code>opencv_world330d.lib</code>）添加进去，当然你也可以添加release版。</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9tuwslj20en0ewjrn.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9tuwslj20en0ewjrn.jpg" class="img-fluid"><br></a></p>
-<p>接着你要设置VS2015是x64和debug</p>
-<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9u8qsfj20su04q3z2.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fkda9u8qsfj20su04q3z2.jpg" class="img-fluid"><br></a></p>
-<p>所有东西都配置好了，接下来测试能不能用opencv。代码如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;  </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;  </span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">	Mat img = imread(<span class="string">"avatar.jpg"</span>);</span><br><span class="line">	<span class="comment">// 在窗口中显示avatar  </span></span><br><span class="line">	imshow(<span class="string">"avatar"</span>, img);</span><br><span class="line">	<span class="comment">// 等待6000 ms后窗口自动关闭    </span></span><br><span class="line">	waitKey(<span class="number">6000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我在运行时发现爆出如下错误：</p>
-<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9uk8kxj20jg0bgaaa.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9uk8kxj20jg0bgaaa.jpg" class="img-fluid"><br></a></p>
-<p>原来我把测试图片的位置放错了。正确的做法是：</p>
-<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9uws7cj216u0p4t9m.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fkda9uws7cj216u0p4t9m.jpg" class="img-fluid"><br></a></p>
-<p>最后程序正常运行^_^!!!</p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9vbrz5j21810pogom.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fkda9vbrz5j21810pogom.jpg" class="img-fluid"><br></a></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/图像处理/">图像处理</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/opencv/">opencv</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-10-10-python和C语言中的全局变量的区别"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/10/2017-10-10-python和C语言中的全局变量的区别/">python和C语言中的全局变量的区别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/10/10/2017-10-10-python和C语言中的全局变量的区别/" class="article-date">
-	  <time datetime="2017-10-09T16:00:00.000Z" itemprop="datePublished">十月 10, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>问题的引出：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">5</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Func</span><span class="params">()</span>:</span></span><br><span class="line">	x *= x</span><br><span class="line">	print(x)</span><br><span class="line">Func()</span><br></pre></td></tr></table></figure>
-<p>报错信息</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;new 2.py&quot;, line 5, in &lt;module&gt;</span><br><span class="line">    Func()</span><br><span class="line">  File &quot;new 2.py&quot;, line 3, in Func</span><br><span class="line">    x *= x</span><br><span class="line">UnboundLocalError: local variable &apos;x&apos; referenced before assignment</span><br></pre></td></tr></table></figure>
-<p>这里为什么说x在赋值前被引用错误呢？明明我声明了一个全局变量x啊(这是一个c/c++程序员的想法^_^!!!)，在c语言中这样做确实没有问题。如下：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    x *= x;</span><br><span class="line">    print(<span class="string">"%d"</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fun();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但是为什么在python里面就行不通了呢？</p>
-<p>python里面的变量有些类似于C语言中的指针变量，你这样一想的话，有些问题就明白了。比如说为什么python里面的list可以容纳不同类型的变量？又比如说python里面变量声明时不区分类型？另外，还要知道的一点是，python在赋值时，会为数值分配一块内存空间，然后通过变量去指向这块内存空间。如果修改变量的值，实际上就是变量指向了不同的内存空间。如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">1802679360</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>id(a)</span><br><span class="line"><span class="number">1802679424</span></span><br></pre></td></tr></table></figure>
-<p>ok，回到原来的问题。<code>x*=x</code> 相当于<code>x = x*x</code> ，也就是左边的x指向了右边生成的内存空间，这里要注意，前后x指向的内存发生了变化，如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">5</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Func</span><span class="params">()</span>:</span></span><br><span class="line">	<span class="keyword">global</span> x</span><br><span class="line">	print(id(x))</span><br><span class="line">	x*=x</span><br><span class="line">	print(id(x))</span><br><span class="line">	print(x)</span><br><span class="line">Func()</span><br></pre></td></tr></table></figure>
-<p>结果是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1802679488</span><br><span class="line">1802680128</span><br><span class="line">25</span><br></pre></td></tr></table></figure>
-<p>当这个变量在右边的时候相当于取内存操作，python里面如果要对一个全局变量取内存操作的话，必须要提前声明这个变量是<code>global</code> 的，也就是上面代码里的做法。关键问题来了，我函数里的x不可以取外面x的内存里的东西吗？可以！！！</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">5</span></span><br><span class="line">print(id(x))</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Func</span><span class="params">()</span>:</span></span><br><span class="line">	print(id(x))</span><br><span class="line">	print(x)</span><br><span class="line">Func()</span><br></pre></td></tr></table></figure>
-<p>结果是</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1802679488</span></span><br><span class="line"><span class="number">1802679488</span></span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
-<p>并没有出现问题，而且前后的x是同一个，而且我没有声明global。分析这个例子和上面的例子不难发现问题所在，问题出现在这个<strong>赋值操作</strong>上。所以我们大致总结为以下几点：</p>
-<ul>
-<li>如果函数中出现赋值操作，则左边的变量会被标记为局部变量，如果变量名和函数外的变量名重名，函数外的变量将会被屏蔽。这时如果想要使用函数外的变量的话，要做global声明。</li>
-<li>如果函数中没有出现赋值操作，那么函数中可以直接使用全局变量</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -941,6 +930,30 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
+              <span>三月 1, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
+              <span>二月 21, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
               <span>二月 10, 2018</span>
             </div>
@@ -983,30 +996,6 @@ When two or more different declarations are specified for a single name in the s
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a></h6>
-              <span>一月 15, 2018</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a></h6>
-              <span>一月 9, 2018</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1016,7 +1005,7 @@ When two or more different declarations are specified for a single name in the s
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -1026,7 +1015,7 @@ When two or more different declarations are specified for a single name in the s
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -1036,7 +1025,7 @@ When two or more different declarations are specified for a single name in the s
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1101,6 +1090,9 @@ When two or more different declarations are specified for a single name in the s
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

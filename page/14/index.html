@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -107,6 +129,129 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-2017-05-07-运算电路基础2"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/05/07/2017-05-07-运算电路基础2/">运算电路基础（2）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/07/2017-05-07-运算电路基础2/" class="article-date">
+	  <time datetime="2017-05-06T16:00:00.000Z" itemprop="datePublished">五月 7, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="C语言中的各类计算"><a href="#C语言中的各类计算" class="headerlink" title="C语言中的各类计算"></a>C语言中的各类计算</h1><h2 id="C语言中涉及的运算"><a href="#C语言中涉及的运算" class="headerlink" title="C语言中涉及的运算"></a>C语言中涉及的运算</h2><p>从运算符无法区分逻辑移位和算数移位，由数的类型决定。<br>如果是无符号数，那么是逻辑左（右）移。具体规则是：高（低）位移出，低（高）位补0，左移可能溢出。如果左移时高位是1，就发生溢出。<br>如果是带符号数，那么是算数左（右）移。具体规则如下：左移，高位移出，低位补0，可能发生溢出。如果移出的位不等于新的符号位，则发生溢出。右移，低位移出，高位补符，可能发生有效数据丢失。<br>位扩展和位截断运算，没有专门操作运算符，根据类型转换前、后数据长短确定是扩展还是截断。扩展就是短转长，无符号数（前面补0），带符号数（前面补符号）。截断就是长转短，可能发生溢出。例子：  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">short</span> si = <span class="number">-32768</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> usi = si;</span><br><span class="line"><span class="keyword">int</span> i = si;</span><br><span class="line"><span class="keyword">unsigned</span> ui = usi;</span><br></pre></td></tr></table></figure>
+<p>分析结果<br>si = -32768  8000<br>usi = 32768  8000<br>i = -32768  ffff 8000<br>ui = 32768  0000 8000<br>溢出的例子：<br>int i = 32768<br>short si = (short) i;<br>int j = si;<br>最后的结果是i与j不相等，j=-32768，原因是对i截断时发生溢出，超出了16位带符号数能表示的最大值。  </p>
+<h2 id="条件标志位"><a href="#条件标志位" class="headerlink" title="条件标志位"></a>条件标志位</h2><p>零标志ZF、溢出标志OF、进借位标志CF、符号标志SF称为条件标志。条件标志在运算电路中产生，被记录到专门的寄存器中。存放标志的寄存器通常称为程序/状态寄存器或标志寄存器。每个标志对应标志寄存器的一个标志位。<br>OF：若a与b同号但与sum不同，则1，否则0；C_n⊕C_(n-1)<br>SF：sum最高位<br>ZF：如sum为0，则1，否则0<br>CF：cout⊕sub<br>例子：<br>若n=8，计算107+46=?<br>107    0110 1011<br>46     0010 1110<br>溢出标志OF=1、零标志ZF=0、符号标志SF=1、进位标志CF=0<br>作为无符号数运算的结果是未发生溢出，看CF<br>作为带符号数运算的结果是发生溢出，看OF<br>做减法用来比较大小，规则：<br>无符号数：CF=0时，大于<br>带符号数：OF=SF时，大于<br>例子：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> x = <span class="number">134</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> y = <span class="number">246</span>;</span><br><span class="line"><span class="keyword">int</span> m = x;</span><br><span class="line"><span class="keyword">int</span> n = y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> z1 = x-y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> z2 = x+y;</span><br><span class="line"><span class="keyword">int</span> k1 = m-n;</span><br><span class="line"><span class="keyword">int</span> k2 = m+n;</span><br></pre></td></tr></table></figure>
+<p>x和m的机器码是一样的1000 0110，y和n的机器数一样1111 0110，z1和k1的机器数是一样的1001 0000，CF=1，OF=0，SF=1，z2和k2的机器数是一样的0111 1100，CF=1，OF=1，SF=0<br>z1的值是144，是错误的值。k1的值是-112<br>z2的值是124，是错误的值。k2的值是124，也是错误的值。  </p>
+<h2 id="判断溢出的程序"><a href="#判断溢出的程序" class="headerlink" title="判断溢出的程序"></a>判断溢出的程序</h2><p>对于无符号数<br>发生溢出时，一定满足result&lt;x  and  result&gt;y,否则，若$$x+y-2^n&gt;=x$$，则$y&gt;=2^n$，显然是错误的。  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x,<span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> sum = x + y;</span><br><span class="line">	<span class="keyword">return</span> sum &gt;= x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">usub_ok</span><span class="params">(<span class="keyword">unsigned</span> x,<span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> uadd_ok(x,-y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对与带符号数<br>带符号数的溢出包括正溢出和负溢出  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sum = x + y;</span><br><span class="line">	<span class="keyword">int</span> neg_over = x&lt;<span class="number">0</span> &amp;&amp; y&lt;<span class="number">0</span> &amp;&amp; sum&gt;=<span class="number">0</span>;<span class="comment">//负溢出</span></span><br><span class="line">	<span class="keyword">int</span> pos_over = x&gt;=<span class="number">0</span> &amp;&amp; y&gt;=<span class="number">0</span> &amp;&amp; xum&lt;<span class="number">0</span>;<span class="comment">//正溢出</span></span><br><span class="line">	<span class="keyword">return</span> !neg_over &amp;&amp; !pos_over;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tsub_ok</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> tadd_ok(x,-y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当x=0，y=0x80000000时，判断减法函数是错误的</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-05-06-运算电路基础1"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/05/06/2017-05-06-运算电路基础1/">运算电路基础（1）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/05/06/2017-05-06-运算电路基础1/" class="article-date">
+	  <time datetime="2017-05-05T16:00:00.000Z" itemprop="datePublished">五月 6, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="数字逻辑电路基础"><a href="#数字逻辑电路基础" class="headerlink" title="数字逻辑电路基础"></a>数字逻辑电路基础</h1><h2 id="组合逻辑部件"><a href="#组合逻辑部件" class="headerlink" title="组合逻辑部件"></a>组合逻辑部件</h2><p>根据电路是否具有存储功能，将逻辑电路划分为两种类型<br>组合逻辑电路：没有存储功能，其输出仅依赖于输入<br>时序逻辑电路：具有存储功能，其输出不仅依赖于当前输入，还依赖于存储单元的当前状态</p>
+<h2 id="多路选择器"><a href="#多路选择器" class="headerlink" title="多路选择器"></a>多路选择器</h2><p>K路选择器应该有k路输入，因而控制端S的位数应该是$log_2 K$</p>
+<h2 id="一位加法器"><a href="#一位加法器" class="headerlink" title="一位加法器"></a>一位加法器</h2><p>一位加法器称为全加器。两个加数A和B，低位进位为cin和为F,向高位的位为cout<br>化简后逻辑表达式为<br>F = A⊕B⊕cin<br>cout = A•B + A•cin + B•cin</p>
+<h2 id="n位带符号数加法器"><a href="#n位带符号数加法器" class="headerlink" title="n位带符号数加法器"></a>n位带符号数加法器</h2><p>程序中经常比较大小，通过做减法得到的标识信息实现</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg" class="img-fluid"><br></a></p>
+<p>溢出标志OF:<br>OF = C_n⊕C_(n-1)<br>符号标志SF:<br>SF = F_(n-1)<br>0标志ZF=1当且仅当F=0；<br>进位借位标志CF:<br>CF = cout⊕cin</p>
+<h2 id="算数逻辑单元"><a href="#算数逻辑单元" class="headerlink" title="算数逻辑单元"></a>算数逻辑单元</h2><p>进行基本的算术运算和逻辑运算：无符号整数加减、带符号整数加减、与或非异或等逻辑运算<br>核心电路是带标志加法器<br>有一个操作控制端（ALUop），用来决定ALU所执行的处理功能。ALUop的位数k决定了操作的种类，例如，当位数k为3时，ALU最多只有2^3=8种操作。</p>
+<p><table border="1" align="left"><br>    <tr><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>    </tr><br>    <tr><br>        <td>000       a+b</td><br>        <td>010       a&amp;b</td><br>        <td>100       ~a</td><br>        <td>110       a </td><br>    </tr><br>    <tr><br>        <td>001       a-b</td><br>        <td>011       a|b</td><br>        <td>101       a⊕b</td><br>        <td>      未用    </td><br>    </tr><br></table><br><br><br><br><br><br></p>
+<p><a href="https://link.zhihu.com/?target=http://fanfeilong.github.io/exceltk0.0.4.7z" target="_blank" rel="noopener">好用的md表格轮子</a></p>
+<h1 id="从c表达式到逻辑电路"><a href="#从c表达式到逻辑电路" class="headerlink" title="从c表达式到逻辑电路"></a>从c表达式到逻辑电路</h1><h2 id="从c表达式到运算类指令"><a href="#从c表达式到运算类指令" class="headerlink" title="从c表达式到运算类指令"></a>从c表达式到运算类指令</h2><p>基本数据类型：无符号数（二进制）、带符号整数（补码）、浮点数（IEEE 754）、字符串（ASCII）<br>基本算术运算符中的算术运算符在底层都是减法实现。<br>对于c赋值语句y = (x&gt;&gt;2)+k;是通过转换为指令序列，通过执行运算类指令实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sarw $2,%ax;//将操作数“2”和“R[ax]”送移位器运算</span><br><span class="line">addw %bx,%ax;//将R[ax]和R[bx]送整数加减运算器中运算</span><br></pre></td></tr></table></figure>
+<h2 id="数据的运算"><a href="#数据的运算" class="headerlink" title="数据的运算"></a>数据的运算</h2><p>指令集中涉及到的运算<br>涉及到的定点运算：带符号整数（取负、符号扩展、加、减、乘、除、算术移位）、无符号整数（0扩展、加、减、乘、除、逻辑移位）、逻辑操作（与、或、非）<br>涉及到的浮点数运算：加、减、乘、除</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-2017-05-05-浮点数的表示"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -675,159 +820,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-04-23-STL容器2vector"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/04/23/2017-04-23-STL容器2vector/">STL容器（2）vector</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/04/23/2017-04-23-STL容器2vector/" class="article-date">
-	  <time datetime="2017-04-22T16:00:00.000Z" itemprop="datePublished">四月 23, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Vector"><a href="#Vector" class="headerlink" title="Vector"></a>Vector</h1><p>定义于头文件\&lt;vector></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">T</span>,</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Allocator</span> = <span class="title">std</span>:</span>:allocator&lt;T&gt;&gt; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">vector</span>;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Vector的能力"><a href="#Vector的能力" class="headerlink" title="Vector的能力"></a>Vector的能力</h2><p>Vector支持随机访问，因此只要知道位置，就可以在常亮时间内访问任意元素。vector提供随机访问迭代器，所以适用于任意STL算法。capacity函数返回vector实际容纳量，如果超过这个量，vector必须重新分配内部内存。一旦内存重新分配，vector元素相关的所有reference、pointer和iterator都会失效，内存重新分配很耗时间。<br>你可以使用reserve函数保存适当容量，避免重新分配：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line">v.reserve(<span class="number">80</span>);<span class="comment">//reserve mempry for 80 elements</span></span><br></pre></td></tr></table></figure>
-<p>vector不能使用reserve缩减容量，调用reverse所给的实参如果小于当前vector的容量，不会引发任何效果。，既然vector的容量不会缩减，我们就可以知道，及时删除元素，其reference、pointer和iterator也会继续有效，继续指向动作发生前的位置。然而安插动作可能会使reference、pointer和iterator实效，因为会使vector重排。<br>C++11引入一个新的函数shrink_to_fit：这个函数不具有强制力的要求，可以缩减容量以符合当前的元素个数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v.shrink_to_fit();<span class="comment">//注意不具有强制性</span></span><br></pre></td></tr></table></figure>
-<p>在c++11之前有一个小技巧实现这个功能。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">shrinkCapacity</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;&amp; v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt; tmp(v);</span><br><span class="line">	v.swap(tmp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>你甚至可以像这样使用：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;T&gt;(v).swap(v);</span><br></pre></td></tr></table></figure>
-<p>但是要注意的是，这些做法都会使reference、pointer和iterator换了只想对象。</p>
-<h2 id="Vector的操作"><a href="#Vector的操作" class="headerlink" title="Vector的操作"></a>Vector的操作</h2><p>元素访问<br>at 访问指定的元素，同时进行越界检查<br>operator[] 访问指定的元素<br>front 访问第一个元素<br>back 访问最后一个元素<br>data 返回指向内存中数组第一个元素的指针<br>当pop_back调用时，确保容器不为空是程序员的责任。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt;coll;</span><br><span class="line"><span class="keyword">if</span>(!coll.empty())</span><br><span class="line">&#123;</span><br><span class="line">	coll.pop_back();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>关于效能，以下几种情况你可以预期安插动作和移除动作会快一些：  </p>
-<ol>
-<li>在容器的尾部安插或移除元素</li>
-<li>容器的容量一开始就很大</li>
-<li>安插多个元素调用一次肯定是最快的  </li>
-</ol>
-<p>Vector并能没有提供任何函数可以直接移除“与某个值相等”的所有元素。但是可以通过以下做法。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt; coll;</span><br><span class="line">coll.erase(remove(coll.begin(),coll.end(),</span><br><span class="line">					val),</span><br><span class="line">			coll.end());</span><br></pre></td></tr></table></figure>
-<p>如果只要一出第一个元素，可以这么做：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Elem&gt; coll;</span><br><span class="line">pos = find(coll.begin(),coll.end(),</span><br><span class="line">			val);</span><br><span class="line"><span class="keyword">if</span>(pos != coll.end())</span><br><span class="line">&#123;</span><br><span class="line">	coll.erase();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="将vector当做C-Style-Array使用"><a href="#将vector当做C-Style-Array使用" class="headerlink" title="将vector当做C-Style Array使用"></a>将vector当做C-Style Array使用</h2><p>reserve是容器预留空间，但并不真正创建元素对象，在创建对象之前，不能引用容器内的元素，因此当加入新的元素时，需要用push_back()/insert()函数。<br>resize是改变容器的大小，并且创建对象，因此，调用这个函数之后，就可以引用容器内的对象了，因此当加入新的元素时，用operator[]操作符，或者用迭代器来引用元素对象。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt; v;</span><br><span class="line">v.resize(<span class="number">41</span>);</span><br><span class="line"><span class="built_in">strcpy</span>(&amp;v[<span class="number">0</span>],<span class="string">"hello world"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, &amp;v[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
-<p>初次接触这两个接口也许会混淆，其实接口的命名就是对功能的绝佳描述，resize就是重新分配大小，reserve就是预留一定的空间。这两个接口即存在差别，也有共同点。下面就它们的细节进行分析。<br>为实现resize的语义，resize接口做了两个保证：<br>一是保证区间[0, new_size)范围内数据有效，如果下标index在此区间内，vector[indext]是合法的。<br>二是保证区间[0, new_size)范围以外数据无效，如果下标index在区间外，vector[indext]是非法的。<br>reserve只是保证vector的空间大小(capacity)最少达到它的参数所指定的大小n。在区间[0, n)范围内，如果下标是index，vector[index]这种访问有可能是合法的，也有可能是非法的，视具体情况而定。<br>resize和reserve接口的共同点是它们都保证了vector的空间大小(capacity)最少达到它的参数所指定的大小。</p>
-<h2 id="Class-vector"><a href="#Class-vector" class="headerlink" title="Class vector"></a>Class vector<bool></bool></h2><p>vector<bool>特化版的内部只是用1bit存放元素，空间节省8倍。C++的最小可定址值是以byte为单位的，所以reference和iterator做特殊处理<br>vector<bool>无法满足其他vector的所有规定，例如vector<bool>::reference并不是一个lvalue，vector<bool>::iterator也不是一个随机访问迭代器，而且它的操作速度会比一般的vector慢因为他是bit操作。<br>flip函数用来取补数（complement）。注意，你可以对vector内的所有bit或单一bit调用filp，后者很值得注意，因为你也许会以为subscript操作符返回bool在对此基础类型调用filp是不可能的。然而vector<bool>运用了一个名为proxy的技巧：面对一个vector<bool>，subscript操作符的返回类型实际上是个辅助类，一旦你要求返回值为bool，便会触发一个自动类型转换函数。<br>所有用于元素访问的函数，返回的都是reference类型。所以可以这么写：</bool></bool></bool></bool></bool></bool></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c.front().filp();</span><br><span class="line">c[<span class="number">5</span>] = c.back();</span><br></pre></td></tr></table></figure>
-<p>只有vector<bool>的non-const容器才会用到内部的proxy类型reference。而用来处理那些const成员函数，返回类型都是const reference，那就是bool。</bool></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-04-22-STL容器1array"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/04/22/2017-04-22-STL容器1array/">STL容器（1）array</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/04/22/2017-04-22-STL容器1array/" class="article-date">
-	  <time datetime="2017-04-21T16:00:00.000Z" itemprop="datePublished">四月 22, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h1><p>为了使用array，首先必须加头文件</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;array&gt;</span></span></span><br></pre></td></tr></table></figure>
-<p>该类型被定义为一个class template，在命名空间std中：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">size_t</span> N&gt;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Array</span>;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要注意的是Array并不支持分配器，也就是说不允许指定自己的allocator</p>
-<h2 id="Array的能力"><a href="#Array的能力" class="headerlink" title="Array的能力"></a>Array的能力</h2><p>Array会把元素复制到其内的static C-style array中。这些元素总是拥有一个明确次序。Array允许随机访问，你可以在常量时间内访问任何元素。Array的迭代器属于随机访问迭代器，所以你可以使用任意的STL算法。<br>关于初始化，class array有一些独特的语法。注意，array是唯一一个“无任何东西被指定为初值时，会被与初始化”的容器。这意味着对于基础类型，初值可能不明确，而不是0。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,4&gt; x;elements of x have undefined value</span><br></pre></td></tr></table></figure>
-<p>这里要提一些什么是明确的初始化，对于明确的初始化，基础类型会被设定初值为0：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i1;<span class="comment">//undefined value</span></span><br><span class="line"><span class="keyword">int</span> i2 = <span class="keyword">int</span>();<span class="comment">//initialized with zero</span></span><br><span class="line"><span class="keyword">int</span> i3&#123;&#125;;<span class="comment">//initialized with zero</span></span><br></pre></td></tr></table></figure>
-<p>array满足聚合体要求，因此可以使用处置列来设定array，聚合体（aggregate）是一个class或array，不带用户提供的构造函数，也没有private和protected的nostatic的数据成员，也没有base class ，也没有virtual函数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; c = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
-<p>如果初值列内的元素个数多余array的大小，这样的表达式就不对：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; c1 = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>&#125;;<span class="comment">//ERROR too many values</span></span><br></pre></td></tr></table></figure>
-<p>由于没有提供初值列而写的构造函数和assignment操作符，因此“在array声明期间完成初始化”是使用初值列的唯一途径。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">int</span>,3&gt; a(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);<span class="comment">//ERROR </span></span><br><span class="line"><span class="built_in">std</span>::vecotr&lt;<span class="keyword">int</span>&gt; v(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;);<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
-<p>swap拥有线性复杂度并有以下的影响：iterator和reference不会随着元素的置换而改变所指向的元素。所以置换后，iterator和reference指向那个原本容器，但指向不同元素。</p>
-<h2 id="Array的操作"><a href="#Array的操作" class="headerlink" title="Array的操作"></a>Array的操作</h2><p>如果使用操作符=和swap()，两个array必须具备相同的类型，意思是两者的元素类型和大小必须相同。<br>想要访问array内的所有元素，必须使用range-based for循环，或者特定的操作符或迭代器。通常只有使用at()会执行范围检查。如果超出范围，at()会抛出一个out_of_range异常，其它函数不会做检查。对于一个空的array调用operator[]、front和back会导致不明确的行为。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;Elem,0&gt; c;</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; c.front();<span class="comment">//RUNTIME ERROR</span></span><br></pre></td></tr></table></figure>
-<h2 id="将array当做C-Style-Array"><a href="#将array当做C-Style-Array" class="headerlink" title="将array当做C-Style Array"></a>将array当做C-Style Array</h2><p>如果想要访问array的元素，你不一定使用表达式&amp;a[0]，因为成员函数data()也具备相同用途：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="keyword">char</span>,41&gt; a;</span><br><span class="line"><span class="built_in">strcpy</span>(a.data(),<span class="string">"hello"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>，a.data());</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>，&amp;a[<span class="number">0</span>]);</span><br></pre></td></tr></table></figure>
-<p>但是你必须确保array的大小足够容纳复制进来的数据，而且如果你把其中的内容当做一个C-string来看，你必须放置一个’\0’元素于尾端。<br>注意，绝对不要用迭代器表现“第一元素的地址”。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, a.begin());<span class="comment">//ERROR</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%s\n"</span>, a.data());<span class="comment">//OK</span></span><br></pre></td></tr></table></figure>
-<h2 id="Tuple接口"><a href="#Tuple接口" class="headerlink" title="Tuple接口"></a>Tuple接口</h2><p>Array提供tuple接口。因此可以使用tuple_size&lt;&gt;::value去的元素个数，用tuple_element&lt;&gt;::type取得某个特定元素类型，用get取得某个特定元素。例如：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">std</span>::<span class="built_in">array</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,5&gt; FiveStrings;</span><br><span class="line">FiveStrings a = &#123; <span class="string">"hello"</span>,<span class="string">"how"</span>,<span class="string">"are"</span>,<span class="string">"you"</span>,<span class="string">"hehe"</span>&#125;;</span><br><span class="line"><span class="built_in">std</span>::tuple_size&lt;FiveStrings&gt;::value <span class="comment">//5</span></span><br><span class="line"><span class="built_in">std</span>::tuple_element&lt;<span class="number">1</span>,FiveStrings&gt;::type <span class="comment">//std::string</span></span><br><span class="line"><span class="built_in">std</span>::get&lt;<span class="number">1</span>&gt;(a) <span class="comment">//std::string("how")</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp标准库/">cpp标准库</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -932,6 +924,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
+              <span>三月 1, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
+              <span>二月 21, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
               <span>二月 10, 2018</span>
             </div>
@@ -974,30 +990,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a></h6>
-              <span>一月 15, 2018</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a></h6>
-              <span>一月 9, 2018</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1007,7 +999,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -1017,7 +1009,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -1027,7 +1019,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1092,6 +1084,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>

@@ -58,10 +58,32 @@
 
 
   
+  
+  <div class="site-header-image">
+    <img id="originBg" width="100%" alt="Hike News" src="">
+  </div>
+
+  <div id="header-blur" class="site-header-image blur" style="position: absolute; top:0; height: 207px; min-height: 207px; min-width: 100%;">
+    <img id="blurBg" width="100%" style="top: 96%" alt="Hike News" src="">
+  </div>
+
+  <script>
+        var imgUrls = "css/images/pose01.jpg,css/images/pose02.jpg,css/images/pose03.jpg".split(",");
+        var random = Math.floor((Math.random() * imgUrls.length ));
+        if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+          document.getElementById("originBg").src=imgUrls[random];
+          document.getElementById("blurBg").src=imgUrls[random];
+        } else {
+          document.getElementById("originBg").src='/' + imgUrls[random];
+          document.getElementById("blurBg").src='/' + imgUrls[random];
+        }
+    </script>
+
+
 
 
 <header id="allheader" class="site-header" role="banner" 
-   >
+   style="width: 100%; position: absolute; top:0; background: rgba(255,255,255,.8);"  >
   <div class="clearfix container">
       <div class="site-branding">
 
@@ -107,6 +129,186 @@
       <div id="content" class="outer">
         
           <section id="main">
+  
+    <article id="post-2017-03-17-QT1"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/03/17/2017-03-17-QT1/">QT</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/17/2017-03-17-QT1/" class="article-date">
+	  <time datetime="2017-03-16T16:00:00.000Z" itemprop="datePublished">三月 17, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Qt"><a href="#Qt" class="headerlink" title="Qt"></a>Qt</h1><h2 id="Qt图形界面"><a href="#Qt图形界面" class="headerlink" title="Qt图形界面"></a>Qt图形界面</h2><p>界面设计，双击dialog.ui进入</p>
+<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fdq5vuoq99j21f60u0436.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fdq5vuoq99j21f60u0436.jpg" class="img-fluid"><br></a></p>
+<p>属性窗口</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vv8mb2j209a0ef0t4.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vv8mb2j209a0ef0t4.jpg" class="img-fluid"><br></a></p>
+<p>右点击控件Go to slot，点击clicked</p>
+<p><a href="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vwbyg5j20ec06ajrd.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659gy1fdq5vwbyg5j20ec06ajrd.jpg" class="img-fluid"><br></a></p>
+<p>头文件中增加<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">on_pushButton_clicked</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>cpp文件中增加</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Widget::on_pushButton_clicked()</span><br><span class="line">&#123;</span><br><span class="line">    QString s1 = ui-&gt;lineEdit-&gt;text();</span><br><span class="line">    QString s2 = ui-&gt;lineEdit_2-&gt;text();</span><br><span class="line">    <span class="keyword">int</span> a = s1.toInt() + s2.toInt();</span><br><span class="line">    ui-&gt;label-&gt;setText(QString::number(a));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>再把文件打包给别人使用时，要删除文件夹内的pro文件</p>
+<h2 id="qt代码实现界面"><a href="#qt代码实现界面" class="headerlink" title="qt代码实现界面"></a>qt代码实现界面</h2><p>头文件<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDialog&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QPushButton&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QLineEdit&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QLabel&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QGridLayout&gt;</span></span></span><br></pre></td></tr></table></figure></p>
+<p>Cpp文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">btn1 = <span class="keyword">new</span> QPushButton(<span class="keyword">this</span>);</span><br><span class="line">edit1 = <span class="keyword">new</span> QLineEdit(<span class="keyword">this</span>);</span><br><span class="line">edit2 = <span class="keyword">new</span> QLineEdit(<span class="keyword">this</span>);</span><br><span class="line">label1 = <span class="keyword">new</span> QLabel(<span class="keyword">this</span>);</span><br><span class="line">btn1-&gt;setText(<span class="string">"sum"</span>);</span><br><span class="line">QGridLayout *layout = <span class="keyword">new</span> QGridLayout(<span class="keyword">this</span>);</span><br><span class="line"><span class="comment">// QGridLayout *layout = new QGridLayout();</span></span><br><span class="line"><span class="comment">//this-&gt;setLayout(layout);</span></span><br><span class="line">layout-&gt;addWidget(edit1, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">layout-&gt;addWidget(edit2, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">layout-&gt;addWidget(btn1, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">layout-&gt;addWidget(label1, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">connect(btn1, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(add()));</span><br></pre></td></tr></table></figure>
+<p>在qt中使用相关的容器控件不需要delete<br>要注意的是如果控件变量没有附加到widget<br>如btn1 = new QPushButton();<br>并且没有写layout-&gt;addWidget(btn1, 0, 0);<br>那就要写delete</p>
+<h2 id="控件的事件响应函数"><a href="#控件的事件响应函数" class="headerlink" title="控件的事件响应函数"></a>控件的事件响应函数</h2><p>头文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> slots:</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>cpp文件</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">connect(btn1, SIGNAL(clicked()), <span class="keyword">this</span>, SLOT(add()));</span><br><span class="line"></span><br><span class="line">QString().isNULL();             <span class="comment">//true</span></span><br><span class="line">QString().isEmpty();            <span class="comment">//true</span></span><br><span class="line">QString(“”).isNULL();           <span class="comment">//false</span></span><br><span class="line">QString(“”).isEmpty();          <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<p>一个NULL字符串一定是一个空字符串，但一个空字符串不一定是一个NULL字符串<br>null表示未指向任何对象<br>而””，表示一个没有内容的字符串</p>
+<h2 id="QDateTime类"><a href="#QDateTime类" class="headerlink" title="QDateTime类"></a>QDateTime类</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;QDateTime&gt;</span><br></pre></td></tr></table></figure>
+<p>可以使用这个类获取系统时间。通过QDateTime::currentDateTime()来获取本地系统的时间和日期信号。<br>可以通过date()和time()来返回datetime中的日期和时间</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">QDateTime *dateTime = <span class="keyword">new</span> QDateTime(QDateTime::currentDateTime());</span><br><span class="line">QString s = dataTime-&gt;date().toString();</span><br></pre></td></tr></table></figure>
+<h2 id="QTimer类"><a href="#QTimer类" class="headerlink" title="QTimer类"></a>QTimer类</h2><p>新建定时器</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">QTimer *time_clock = <span class="keyword">new</span> QTimer(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure>
+<p>链接这个定时期的信号和槽，利用定时器的timeout()</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">connect(time_clock, SIGNAL(timeout()), <span class="keyword">this</span>, SLOT(slottimedone()));</span><br><span class="line">time_clock-&gt;start(<span class="number">2000</span>);</span><br></pre></td></tr></table></figure>
+<p>开启定时器，并设置定时周期<br>定时器定时有两种，start(int time)和setSingleShot(true)。<br>其中第一个函数表示每隔”time”秒就会重启定时器，利用stop()将定时器关掉，而后者表示近启动一次。前者比较常用。</p>
+<h2 id="创建窗口"><a href="#创建窗口" class="headerlink" title="创建窗口"></a>创建窗口</h2><p>如果Widget未使用父级进行创建，则在显示视为窗口或顶层Wiget。<br>由于顶层Widget没有父级对象类来确保对其不再使用时就删除，所以需要开发人员在应用程序中对其进行追踪。<br>在本例中，使用QWiget创建和显示具有默认大小的窗口</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">QWidget *window = <span class="keyword">new</span> QWidget();    <span class="comment">//注意一个问题，此时是在堆里面的</span></span><br><span class="line">window-&gt;resize(<span class="number">320</span>, <span class="number">240</span>);</span><br><span class="line">window-&gt;show();</span><br><span class="line">QPushButton *button = <span class="keyword">new</span> QPushButton(tr(“press me”), window);</span><br><span class="line">button-&gt;move(<span class="number">100</span>, <span class="number">100</span>);</span><br><span class="line">button-&gt;show();</span><br></pre></td></tr></table></figure>
+<p>针对于上面的问题<br>下面的方式，是在栈里面，所以效果是一闪而过</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">QWidget window;</span><br><span class="line">window.resize(<span class="number">320</span>, <span class="number">240</span>)</span><br><span class="line">window.show();</span><br></pre></td></tr></table></figure>
+<p>widget适合非模式的对话框，dialog适合模式的对话框</p>
+<h1 id="字符图形界面"><a href="#字符图形界面" class="headerlink" title="字符图形界面"></a>字符图形界面</h1><p>-lcurses 编译时要加这个库文件<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">       initscr();         <span class="comment">//begin graphic model</span></span><br><span class="line">       neocho();              <span class="comment">//not echo</span></span><br><span class="line">       chartemp[<span class="number">128</span>];</span><br><span class="line">       chars[<span class="number">128</span>];</span><br><span class="line">       intseq = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">while</span>(<span class="built_in">scanf</span>(<span class="string">"%s"</span>,s))&#123;</span><br><span class="line">              <span class="keyword">if</span>(stramp(s,<span class="string">"exit"</span>) == <span class="number">0</span>)&#123;</span><br><span class="line">                     <span class="keyword">break</span>;</span><br><span class="line">              &#125;</span><br><span class="line">              clear();    <span class="comment">//cls</span></span><br><span class="line">              <span class="built_in">sprintf</span>(temp,<span class="string">"please input:\n"</span>);</span><br><span class="line">              mvaddstr(<span class="number">0</span>,<span class="number">0</span>, temp);   <span class="comment">//print at the specifiedcoordinate</span></span><br><span class="line">              inti = <span class="number">0</span>;</span><br><span class="line">              <span class="keyword">for</span>(;i &lt; <span class="number">10</span>; ++i)&#123;</span><br><span class="line">                     <span class="built_in">sprintf</span>(temp,<span class="string">"%s %d %s "</span>,s seq++,s);</span><br><span class="line">                     mvaddr(i+ <span class="number">1</span>, <span class="number">0</span>, temp);</span><br><span class="line">	     	   &#125;</span><br><span class="line">              movd(<span class="number">0</span>,<span class="number">13</span>);  <span class="comment">//move cursor to the specifiedcoordinate</span></span><br><span class="line">              refresh();        <span class="comment">//refresh </span></span><br><span class="line">       &#125;</span><br><span class="line">       endwin();</span><br><span class="line">       return0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iconv --list                 //查看字符编码</span><br><span class="line">&lt;iconv.h&gt;</span><br><span class="line">iconv_t iconv_open(const char *tocode,const char *fromcode);      //linux转化字符集</span><br><span class="line">size_t iconv(iconv_t cd, char **inbuf,size_t *inbytesleft,</span><br><span class="line">             char **outbuf, size_t *outbytesleft);</span><br></pre></td></tr></table></figure>
+<p>iconv_close()       最后要调用close函数<br>第一步<br>iconv_open(目标字符集，源字符集)<br>第二步<br>iconv()实现字符集转化<br>第三部<br>iconv_close()关闭iconv  </p>
+<p>建立文件链接<br>ln libGL.so.1 libGL.so</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">abc</span>&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">const</span> <span class="keyword">char</span>*<span class="title">getp</span><span class="params">()</span></span>&#123;    <span class="comment">//注意要返回const，以防别人外部修改私有变量</span></span><br><span class="line">   		 <span class="keyword">return</span> p;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">char</span> *p;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果将const char <em>强转为char </em>，c++会复制一个空间出来<br>如char <em>s = (char </em>)p;<br>p是一个const char *类型，则p与s所指向的空间不同</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/QT/">QT</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QT/">QT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-03-16-linux-day11"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/03/16/2017-03-16-linux-day11/">linux Day11</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/03/16/2017-03-16-linux-day11/" class="article-date">
+	  <time datetime="2017-03-15T16:00:00.000Z" itemprop="datePublished">三月 16, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Windows-hook"><a href="#Windows-hook" class="headerlink" title="Windows hook"></a>Windows hook</h1><p>WH_KEYBOARD键盘钩子<br>WH_MOUSE鼠标钩子<br>WH_CALLWNDPROC窗口回掉函数钩子  </p>
+<p>键盘hook消息说明<br>wParam参数<br>虚拟键盘代码：是一种与设备无关的键盘编码，在windows.h消息中定义，14表示caps lock建，11表示ctrl，12表示alt，8表示退格键<br>lParam参数<br>0-15位：用户按一个键的重复次数<br>16-23位：给出OEM键盘扫描码<br>24位：是否为增强键盘上的扩展键，1表示是，0表示否<br>25-28位：保留<br>29位：给出关联码，表示是否使用alt，如果使用为1<br>30位：给出前一次敲击状态<br>31位：给出转换状态，1：表示按键，2：表示放键  </p>
+<p>鼠标hook消息说明<br>wParam参数<br>包含鼠标按键与键盘组合使用标记，用来识别鼠标按键和键盘按键上shift与ctrl键的组合状态<br>lParam参数<br>鼠标点坐标位置，低位表示横坐标，高位表示纵坐标，可以使用windows。h中的HIWORD和LOWORD这两个宏来获得这两个坐标</p>
+<h1 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h1><h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><p>当用户登录时，实际上是进入到一个shell的程序中</p>
+<h2 id="交互模式"><a href="#交互模式" class="headerlink" title="交互模式"></a>交互模式</h2><p>Shell受到用户输入的指令后，就开始执行这个指令，并把结果显示到屏幕上，结束后shell又会显示系统提示符，等待用户输入下一个指令。</p>
+<h2 id="后台模式"><a href="#后台模式" class="headerlink" title="后台模式"></a>后台模式</h2><p>后台运行的符号为&amp;，在命令后面加上&amp;符号，就可以将程序饭在后台执行。<br>在后台中的程序通过fg命令调回前台<br>程序已经在前台运行，执行ctrl+z就可以放入后台<br>如果有多个进程在后台执行，执行jobs命令，能够列出所有后台进程，中括号中的数字就是jobs的代号，通过fg %number就可以恢复指定的后台进程。</p>
+<h2 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h2><p>通过&gt;&lt;将标准输入输出重定向</p>
+<h2 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h2><p>通过管道符号 | 完成一系列命令的顺序处理</p>
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><p>通配符的作用是在处理文件的时候用通配符模糊匹配一个或多个字符</p>
+<h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><p>Shell是一个很大的程序，为了使工作环境符合用户的习惯或者应用的需要，可以让用户设置shell使用环境变量<br>Shell scripts<br>Shell最重要的也是最负责的就是shell scrpits。Shell除了解释命令以外还有一个重要的功能就是程序设计语言，可以通过shell scripts进行程序设计，完成更加复杂的功能。</p>
+<h2 id="Shell变量"><a href="#Shell变量" class="headerlink" title="Shell变量"></a>Shell变量</h2><p>预定义变量：通常用户自行定义的特殊用途变量，有效返回限于定义变量的script中。<br>环境变量：通常用来定义系统重要的设置，主要功能为提供程序执行时的参考。<br>varName=value shell定义变量不需要定义变量类型，只需要=使用变量，变量名前加$，不加$表示字符串<br>set查看所有已经设置的变量<br>unset varName删除设置的变量<br>环境变量使用export命令<br>export varName=value<br>env显示当前环境变量<br>export –n varName删除设置的环境变量</p>
+<h2 id="环境变量的作用域"><a href="#环境变量的作用域" class="headerlink" title="环境变量的作用域"></a>环境变量的作用域</h2><p>在.bash_profile中定义的变量在用户登陆后一直有效。<br>在普通脚本文件中定义的变量只在脚本内部有效</p>
+<h2 id="几个常用的环境变量"><a href="#几个常用的环境变量" class="headerlink" title="几个常用的环境变量"></a>几个常用的环境变量</h2><p>PWD显示当前路径<br>UID用户ID<br>BASH_VERSION bash的版本号<br>HOSTTYPE显示计算机平台<br>OSTYPE显示操作系统种类<br>PATH系统命令，文件查找路径<br>HOME用户的home目录</p>
+<h2 id="bash设置文件"><a href="#bash设置文件" class="headerlink" title="bash设置文件"></a>bash设置文件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/profile</span><br></pre></td></tr></table></figure>
+<p>这是系统的shell设置文件，用户可以将系统最重要的环境变量定义到这个文件中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>用户个人的bash设置文件，用户登录的时候bash就会读取该用户目录下的.bash_file文件  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`/.bashrc</span><br></pre></td></tr></table></figure>
+<p>每次启动shell时都会读取这个文件  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!  /bin/sh</span><br><span class="line">a=5</span><br><span class="line">b=3</span><br><span class="line">echo a=$a</span><br><span class="line">echo b=$b</span><br><span class="line">if (test “$a” = “$b”) then 注意等号前后都有空格</span><br><span class="line">	echo a=b</span><br><span class="line">else</span><br><span class="line">	echo a!=b</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>#代表注释，出现！表示指定程序解析shell的命令，shell不需要编译<br>$后面数字的话标识参数<br>$i代表第i个参数，但是i不可以超过10(&lt;10)如果超过10，shift能使引用数位移，如此就可以将引用过的数移掉<br>$#代表参数个数<br>$*代表所有参数<br>$？上一个命令的返回值<br><code></code>不是字符串而是shell指令，’ ‘and“ ”字符串<br>PDATE=<code>date</code><br>expr用来取计算的结果，expr是一个命令可以直接使用，用的时候加参数<br>expr 4 + 3<br>var=<code>expr $a + $b</code>  注意+前后有空格</p>
+<h2 id="read命令用于从终端或文件读取输入"><a href="#read命令用于从终端或文件读取输入" class="headerlink" title="read命令用于从终端或文件读取输入"></a>read命令用于从终端或文件读取输入</h2><p>read命令读取输入一行，直至遇到换行<br>行尾的换行符在读入时被转化为一个空字符<br>如果read命令后有变量名，输入内容赋给该变量，如果read命令后未跟变量名，读入的行将被赋值给内置REPLY<br>//用户输入两个数字，计算两个数字的和</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>! /bin/sh</span><br><span class="line">read a</span><br><span class="line">echo 'a=' $a</span><br><span class="line">read b</span><br><span class="line">echo 'b=' $b</span><br><span class="line">c=`expr $a + $b`</span><br><span class="line">echo $c</span><br></pre></td></tr></table></figure>
+<h2 id="if条件语句"><a href="#if条件语句" class="headerlink" title="if条件语句"></a>if条件语句</h2><p>if条件语句后test是一个固定关键字<br>第二种</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if [ -option expr ]; then</span><br><span class="line">	commands</span><br><span class="line">else</span><br><span class="line">	commands</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<p>-d file文件存在并且是个目录<br>-e file文件存在<br>-r file文件存在并且可读<br>-w file文件存在并且可写<br>-x file</p>
+<h2 id="while循环语句"><a href="#while循环语句" class="headerlink" title="while循环语句"></a>while循环语句</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while [ expr ];</span><br><span class="line">do</span><br><span class="line">	commands</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>expr为真时一直继续直到为假<br>一个循环5次的例子</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>! /bin/sh</span><br><span class="line">times=0</span><br><span class="line">while [ "$times" != "5" ];</span><br><span class="line">do</span><br><span class="line">        echo $times</span><br><span class="line">        times=$[$times + 1]</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>case分支<br>case “string” in<br>pattern_1)<br>    commands<br>    ;;相当于break<br>Pattern_2)<br>    commands<br>    ;;<br><em>)<br>    Commands<br>    ;;<br>esac<br>当有条件语句中的string等于pattern字符串，执行pattern下面的指令<br>当没有条件时，最后执行</em>)<br>//多重分支的例子</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>! /bin/sh</span><br><span class="line">case "$1" in</span><br><span class="line">start)</span><br><span class="line">        echo "is start"</span><br><span class="line">        ;;</span><br><span class="line">stop)</span><br><span class="line">        echo "is stop"</span><br><span class="line">        ;;</span><br><span class="line">*)</span><br><span class="line">        echo "is nothing"</span><br><span class="line">esac</span><br></pre></td></tr></table></figure>
+<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for varname in list ;</span><br><span class="line">do</span><br><span class="line">commands</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<p>list可以是一串字符或数字<br>for没执行一次循环就将varname指定为list中的一个值，直到list这个数组结束</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>! /bin/sh</span><br><span class="line">sum=0</span><br><span class="line">for I in 1 2 3 4 5</span><br><span class="line">do</span><br><span class="line">sum=$[$sum + i]</span><br><span class="line">echo $sum</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h2 id="exit语句"><a href="#exit语句" class="headerlink" title="exit语句"></a>exit语句</h2><p>exit code 与C语言类似</p>
+<h2 id="语句"><a href="#语句" class="headerlink" title=":语句"></a>:语句</h2><p>代表空语句，本身没有任何作用，但又是合法语句，经常用来填补程序设计的空缺</p>
+<h2 id="自定义函数"><a href="#自定义函数" class="headerlink" title="自定义函数"></a>自定义函数</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function funname</span><br><span class="line">&#123;</span><br><span class="line">	commands</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function func</span><br><span class="line">&#123;</span><br><span class="line">	echo “function”</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Func<br>函数中使用参数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">funciotn func </span><br><span class="line">&#123;</span><br><span class="line">	echo “function”</span><br><span class="line">	a=$1代表这个函数的参数</span><br><span class="line">	b=$2</span><br><span class="line">	echo `expr $a + $b`</span><br><span class="line">&#125;</span><br><span class="line">func 3 5</span><br></pre></td></tr></table></figure>
+<h1 id="积累"><a href="#积累" class="headerlink" title="积累"></a>积累</h1><p>文件类型：<br>-：普通文件 (f)<br>d：目录文件<br>b：块设备文件 (block)<br>c：字符设备文件 (character)<br>l：符号链接文件(symbolic link file)<br>p：命令管道文件(pipe)<br>s：套接字文件(socket)<br>文件权限: 9位，每3位一组，每一组：rwx(读，写，执行)，当改组不具有某一权限用-代替。<br>第一组为: 文件拥有者的权限， 该文件的拥有者可以读写，但不可执行；<br>第二组为: 同群组的权限<br>第三组为: 其他非本群组的权限</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hook/">hook</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/network/">network</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
   
     <article id="post-2017-03-14-linux-day10"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
@@ -745,157 +947,6 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-02-linux-day2"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/02/2017-03-02-linux-day2/">linux Day2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/03/02/2017-03-02-linux-day2/" class="article-date">
-	  <time datetime="2017-03-01T16:00:00.000Z" itemprop="datePublished">三月 2, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="int-main-int-argc-char-argv"><a href="#int-main-int-argc-char-argv" class="headerlink" title="int main(int argc,char *argv[])"></a>int main(int argc,char *argv[])</h1><p>argc        代表参数个数<br>a.out 1 2   表示三个参数<br>argv        表示指向参数的指针数组  </p>
-<h1 id="数组指针与指针数组"><a href="#数组指针与指针数组" class="headerlink" title="数组指针与指针数组"></a>数组指针与指针数组</h1><p>int (<em>p)[]    数组指针（行指针）类似于函数指针<br>int </em>p[]      指针数组</p>
-<h1 id="gcc指令"><a href="#gcc指令" class="headerlink" title="gcc指令"></a>gcc指令</h1><p>gcc &ndash;o hello hello.c           编译hello.c 文件生成hello文件<br>gcc &ndash;o hello1.c &ndash;E hello.c     只进行预编译，预编译将结果输出到hello1.c文件中<br>gcc &ndash;o hello.o &ndash;c hello1.c     只进行编译不链接<br>gcc &ndash;o hello hello.o           连接<br>-o filename                    输出文件名<br>-g                             包含调试信息<br>-I                             连接指定库文件<br>-O                             优化编译后的代码<br>-w                             关闭所有警告<br>-Wall                          开启所有警告<br>编译c++文件<br>连接的时候 gcc &ndash;o hello hello.o &ndash;lstdc++</p>
-<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>预编译-&gt;编译-&gt;连接<br>预编译：头文件<br>编译：生成目标代理 *.o<br>连接：连接库代码，生成可执行文件  </p>
-<p>ldd+执行文件   查看用到哪些库文件<br>nm+执行文件   列出某些文件中的符号<br>c++在编译完代码后函数名称会发生改变，主要是由于函数重载，所以c++写不了dll文件  </p>
-<h1 id="安装文件"><a href="#安装文件" class="headerlink" title="安装文件"></a>安装文件</h1><p>rpm &ndash;ivh     安装软件<br>rpm &ndash;e       卸载软件</p>
-<h1 id="makefile规则"><a href="#makefile规则" class="headerlink" title="makefile规则"></a>makefile规则</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">start:hello.o            表示需要依赖 .o文件</span><br><span class="line">        gcc &amp;ndash;o hello hello.o</span><br><span class="line">        @echo &amp;lsquo;--------------------------&amp;lsquo;        表示只输出结果</span><br><span class="line">hello.o:</span><br><span class="line">        gcc &amp;ndash;o hello.o &amp;ndash;c hello.c</span><br></pre></td></tr></table></figure>
-<p>注意不是空格键而是tab键<br>make执行文件<br>make target 执行表号下的语句  </p>
-<p>变量varname=some_text<br>$(varname)引用该变量<br>例如：CC=gcc<br>gcc 改为 $(CC)  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CC=gcc  </span><br><span class="line">SRCS=hello.c</span><br><span class="line">OBJS=$(SRCS:.c=.o)    将SRCS变量中的.c 替代为 .o</span><br><span class="line">EXEC=hello</span><br></pre></td></tr></table></figure>
-<p>模式规则<br>.SUFFIXES:.c .o   便是两个文件有关联<br>表示任意x.c文件与x.o文件 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- .c.o:  任何x.o文件都从x.c编译而来</span><br></pre></td></tr></table></figure>
-<p>例子：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.SUFFIXES:.c .o    //.c和.o建立关联</span><br><span class="line">CC=gcc</span><br><span class="line">SRCS=hello.c\</span><br><span class="line">        add.c    //同时编译两个.c文件</span><br><span class="line">OBJS=$(SRCS:.c=.o)    将SRCS变量中的.c 替代为 .o //ORJS=hello.o add.o</span><br><span class="line">EXEC=hello</span><br><span class="line">start:$(OBJS)    //依赖hello.o add.o</span><br><span class="line">        $(CC)  &amp;ndash;o  $(EXEC)  $(OBJS)</span><br><span class="line">        @echo  &amp;lsquo;---------------------ok---------------------&amp;lsquo;</span><br><span class="line">.c.o:</span><br><span class="line">        $(CC)  -o  $@  -c  $&amp;lt;    //自动根据$(OBJS) 中.o的数量循环编译, 直到编</span><br><span class="line">&amp;nbsp;                                //译完所有的.c文件</span><br><span class="line">clean:</span><br><span class="line">        Rm  &amp;ndash;f  $(OBJS)</span><br></pre></td></tr></table></figure>
-<h1 id="常见的make错误"><a href="#常见的make错误" class="headerlink" title="常见的make错误"></a>常见的make错误</h1><p>No rule to make target &lsquo;target&rsquo; .Stop<br>没有规则可以用<br>;target; is up to date<br>target 相关文件没有变化<br>command : Command not found<br>make找不到命令<br>missing separator. Stop.<br>空格与tab的问题</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-03-01-linux-day1"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/01/2017-03-01-linux-day1/">linux Day1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/03/01/2017-03-01-linux-day1/" class="article-date">
-	  <time datetime="2017-02-28T16:00:00.000Z" itemprop="datePublished">三月 1, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="关机"><a href="#关机" class="headerlink" title="关机"></a>关机</h1><p>shutdown &ndash;h now<br>poweroff</p>
-<h1 id="显示文件"><a href="#显示文件" class="headerlink" title="显示文件"></a>显示文件</h1><p>ls &ndash;a       显示所有文件<br>ls &ndash;l       详细显示文件<br>ls &ndash;al      组合使用<br>dir /a            windows 平台  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 表示常规文件；d 表示目录；c 便是字符设备文件；b 表示块设备文件；s 表示管道文件；l 表示连接文件</span><br></pre></td></tr></table></figure>
-<p>ls | more 表示分页显示<br>ls &gt; 文件    创建文件</p>
-<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>cd ..      回到上一级<br>cd         回到起始目录<br>cd /       回到根目录<br>pwd        显示目录<br>cat+文件   看文件内容</p>
-<h1 id="查找文件内容"><a href="#查找文件内容" class="headerlink" title="查找文件内容"></a>查找文件内容</h1><p>grep+参数+内容+文件<br>-n    显示所在行<br>-v    显示出所在行外的所有行</p>
-<h1 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h1><p>find +目录 &ndash;name       查找目录下是否有这个名字的文件<br>find+目录 &ndash;user        查找目录下是否与这个人的文件</p>
-<h1 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h1><p>rm+参数+文件    移除文件<br>-f             不显示删除信息<br>-r             删文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*              删除所有文件</span><br></pre></td></tr></table></figure></p>
-<h1 id="拷贝文件"><a href="#拷贝文件" class="headerlink" title="拷贝文件"></a>拷贝文件</h1><p>cp+目标文件+生成文件</p>
-<h1 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h1><p>mv+移动文件+目标文件 用此条命令可以改变移动文件的名字</p>
-<h1 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h1><p>ps &ndash;a    查看所有进程<br>ps &ndash;u    显示进程所有信息<br>ps &ndash;x    显示没有控制终端的进程<br>top      显示类似任务管理器</p>
-<h1 id="查看当前用户"><a href="#查看当前用户" class="headerlink" title="查看当前用户"></a>查看当前用户</h1><p>whoami</p>
-<h1 id="查看登陆用户"><a href="#查看登陆用户" class="headerlink" title="查看登陆用户"></a>查看登陆用户</h1><p>who</p>
-<h1 id="归档管理"><a href="#归档管理" class="headerlink" title="归档管理"></a>归档管理</h1><p>tar+参数+打包文件名+文件<br>-cvf    打包<br>-xvf    解包  </p>
-<h1 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h1><p>gzip+文件            压缩文件<br>gzip &ndash;d + 文件       解压文件</p>
-<h1 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h1><p>man+命令 man+参数+命令</p>
-<ol>
-<li>General commands</li>
-<li>System calls</li>
-<li>Library functions, covering in particular the C standard library</li>
-<li>Special files (usually devices, those found in /dev) and drivers</li>
-<li>File formats and conventions</li>
-<li>Games and screensavers</li>
-<li>Miscellanea</li>
-<li>System administration commands and daemons</li>
-</ol>
-<h1 id="建立用户"><a href="#建立用户" class="headerlink" title="建立用户"></a>建立用户</h1><p>useradd &ndash;d /home/test5 tes5<br>passwd test5                 建立密码<br>su &ndash; test5             切换到test5用户<br>su &ndash;                   切换到root</p>
-<h1 id="让linux在当前目录寻找"><a href="#让linux在当前目录寻找" class="headerlink" title="让linux在当前目录寻找"></a>让linux在当前目录寻找</h1><ol>
-<li>cd</li>
-<li>vi .bash_profile</li>
-<li>在path后面加:.代表在当前目录寻找</li>
-<li>:wq</li>
-<li>让文件生效 . .bash_profile 每个用户都有各自的profile文件</li>
-</ol>
-<h1 id="网络设置"><a href="#网络设置" class="headerlink" title="网络设置"></a>网络设置</h1><p>nmtui     图形化设置界面</p>
-<h1 id="清屏操作"><a href="#清屏操作" class="headerlink" title="清屏操作"></a>清屏操作</h1><p>clear<br>cls       windows 平台</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
 
 
   <nav id="page-nav">
@@ -1000,6 +1051,30 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
+              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
+              <span>三月 1, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
+              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
+              <span>二月 21, 2018</span>
+            </div>
+
+          </li>
+        
+          <li class="clearfix">
+
+            
+              <div class="widget-entry-summary" style="margin: 0;">
+            
+
               <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
               <span>二月 10, 2018</span>
             </div>
@@ -1042,30 +1117,6 @@
 
           </li>
         
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a></h6>
-              <span>一月 15, 2018</span>
-            </div>
-
-          </li>
-        
-          <li class="clearfix">
-
-            
-              <div class="widget-entry-summary" style="margin: 0;">
-            
-
-              <h6 style="margin: 0;"><a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a></h6>
-              <span>一月 9, 2018</span>
-            </div>
-
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1075,7 +1126,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -1085,7 +1136,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -1095,7 +1146,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1160,6 +1211,9 @@
 
 
     <!-- headerblur min height -->
+    
+      var headerblur = document.getElementById("header-blur");
+      headerblur.style.minHeight = window.getComputedStyle(document.getElementById("allheader"), null).height;
     
     
 </script>
