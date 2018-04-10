@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>关于python中super的困惑（3） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="python" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="我这次带来了新的问题，至于上次文末那个问题，我们还是 我们看这样的一个代码">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于python中super的困惑（3）">
+<meta property="og:url" content="http://coordinate.wang/2018/03/08/2018-03-10-关于python中super的困惑（3）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="我这次带来了新的问题，至于上次文末那个问题，我们还是 我们看这样的一个代码">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-10T01:56:53.391Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于python中super的困惑（3）">
+<meta name="twitter:description" content="我这次带来了新的问题，至于上次文末那个问题，我们还是 我们看这样的一个代码">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-03-10-关于python中super的困惑（3）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      关于python中super的困惑（3）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/08/2018-03-10-关于python中super的困惑（3）/" class="article-date">
+	  <time datetime="2018-03-07T16:00:00.000Z" itemprop="datePublished">三月 8, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我这次带来了新的问题，至于上次文末那个问题，我们还是</p>
+<p>我们看这样的一个代码</p>
+<a id="more"></a>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    <span class="comment"># Getter function</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self._name</span><br><span class="line">    <span class="comment"># Setter function</span></span><br><span class="line"><span class="meta">    @name.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(value, str):</span><br><span class="line">            <span class="keyword">raise</span> TypeError(<span class="string">'Expected a string'</span>)</span><br><span class="line">        self._name = value</span><br><span class="line">    <span class="comment"># Deleter function</span></span><br><span class="line"><span class="meta">    @name.deleter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">raise</span> AttributeError(<span class="string">"Can't delete attribute"</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubPerson</span><span class="params">(Person)</span>:</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'Getting name'</span>)</span><br><span class="line">        <span class="keyword">return</span> super().name</span><br><span class="line"><span class="meta">    @name.setter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        print(<span class="string">'Setting name to'</span>, value)</span><br><span class="line">        super(SubPerson, SubPerson).name.__set__(self, value)</span><br><span class="line"><span class="meta">    @name.deleter</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">name</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'Deleting name'</span>)</span><br><span class="line">        super(SubPerson, SubPerson).name.__delete__(self)</span><br><span class="line">        </span><br><span class="line">s = SubPerson(<span class="string">'Guido'</span>)</span><br><span class="line">print(s.name)</span><br><span class="line">s.name = <span class="string">'fa'</span></span><br><span class="line">print(s.name)</span><br></pre></td></tr></table></figure>
+<p>输出结果为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Setting name to Guido</span><br><span class="line">Getting name</span><br><span class="line">Guido</span><br><span class="line">Setting name to fa</span><br><span class="line">Getting name</span><br><span class="line">fa</span><br></pre></td></tr></table></figure>
+<p>我们注意到这里<code>super(SubPerson, SubPerson).name.__set__(self, value)</code>，这是为什么？</p>
+<p>并且我们将上面的结构变成这样<code>super(SubPerson, self).name.__set__(self, value)</code>，结果出现如下错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AttributeError: <span class="string">'SubPerson'</span> object has no attribute <span class="string">'_name'</span></span><br></pre></td></tr></table></figure>
+<p>这是为什么呢？我们先思考后者为什么报错。</p>
+<p>分析这个问题之前，你要对<code>python</code>的<code>MRO</code>列表有所了解。如果不清楚的话，你可以看这篇 <a href="http://blog.csdn.net/qq_17550379/article/details/79487433" target="_blank" rel="noopener">python super中的mro表</a></p>
+<p>我们先打印<code>SubPerson</code>的<code>MRO</code>列表</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SubPerson.__mro__</span><br><span class="line">Out[<span class="number">18</span>]: (__main__.SubPerson, __main__.Person, object)</span><br></pre></td></tr></table></figure>
+<p>也就是说，我们获取<code>MRO</code>列表中<code>SubPerson</code>后面一个类<code>Person</code>的信息。如果这个时候你认为调用了<code>Person.__dict__</code>，那你应该看一下我写的这篇<a href="http://blog.csdn.net/qq_17550379/article/details/79508630" target="_blank" rel="noopener">super(type, self)与super(type1, type2)的区别</a>。你应该就知道了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">super(SubPerson, SubPerson).name == Person.name</span><br><span class="line">Out[<span class="number">117</span>]: <span class="keyword">True</span></span><br><span class="line">super(SubPerson, s).name == Person.name</span><br><span class="line">Out[<span class="number">118</span>]: <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>那么会在<code>Person.__dict__</code>中查找<code>name</code>，这会调用<code>__get__</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Person.__dict__</span><br><span class="line">Out[<span class="number">46</span>]: </span><br><span class="line">mappingproxy(&#123;<span class="string">'__dict__'</span>: &lt;attribute <span class="string">'__dict__'</span> of <span class="string">'Person'</span> objects&gt;,</span><br><span class="line">              <span class="string">'__doc__'</span>: <span class="keyword">None</span>,</span><br><span class="line">              <span class="string">'__init__'</span>: &lt;function __main__.Person.__init__&gt;,</span><br><span class="line">              <span class="string">'__module__'</span>: <span class="string">'__main__'</span>,</span><br><span class="line">              <span class="string">'__weakref__'</span>: &lt;attribute <span class="string">'__weakref__'</span> of <span class="string">'Person'</span> objects&gt;,</span><br><span class="line">              <span class="string">'name'</span>: &lt;property at <span class="number">0x255cde5fea8</span>&gt;&#125;)</span><br></pre></td></tr></table></figure>
+<p>我们看到<code>__get__</code>方法中<code>return self._name</code>，我们并没有<code>_name</code>这个属性，那么就报错了。</p>
+<p>接着我们来思考<code>super(SubPerson, SubPerson).name</code>的问题。</p>
+<p>我们首先用上面<code>super(SubPerson, SubPerson).name.__set__(self, value)</code>这个例子，看<code>s.name</code>到底是怎么被执行的。首先<code>print(&#39;Getting name&#39;)</code>，接着<code>super().name</code>，也就是<code>super(SubPerson, self).name</code>（这里的<code>self</code>就是<code>SubPerson</code>类的实例）。根据前面分析的结果，接着会调用<code>Person.name</code>，接着就是<code>return self._name</code>。这个时候你就会困惑了？我们明明没有给<code>self._name</code>赋初值啊（<code>self.name = name</code>）？到底发生了什么？</p>
+<p>我们这个时候回到<code>s = SubPerson(&#39;Guido&#39;)</code>，看看到底发生了什么。首先<code>self.name = name</code>，要注意了，这里很关键，我们知道这里的<code>self</code>是一个<code>SubPerson</code>的对象，接着调用<strong>SubPerson的setter方法</strong>。接着这句话<code>print(&#39;Setting name to&#39;, value)</code>就被执行了，输出结果是<code>Setting name to Guido</code>。接着根据上面的分析就是调用<code>Person.name.__set__(self, value)</code>，通过调用<code>Person.__dict__[&#39;name&#39;].__get__(None, Person)</code>这个时候<code>self._name</code>被设置了（<code>self._name = value</code>）。所以当我们调用<code>s.name</code>时，会成功执行。</p>
+<p>接着，如果<code>super(SubPerson, self).name.__set__(self, value)</code>话，那么<code>super(SubPerson, self).name</code>会先在<code>type(s).__dict__</code>中查找<code>name</code>，结果会调用<code>__get__</code>方法，最后会调用<code>return self._name</code>，我们还没有<code>_name</code>属性，自然就报错了。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/10/2018-03-07-python super中的mro表/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python中的super到底是怎么样的（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">super(type, self)与super(type1, type2)的区别</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

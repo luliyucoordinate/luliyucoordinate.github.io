@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="tensorflowcuda" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="关于如何安装Ubuntu16.04以及显卡驱动、网卡驱动问题，你可以阅读这三篇篇 Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录（解决显卡驱动、系统安装） Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置（解决cuda9和tensorflow1.4/1.3不兼容） 深度学习主机配置：Ubuntu">
+<meta name="keywords" content="tensorflow,cuda">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置">
+<meta property="og:url" content="http://coordinate.wang/2018/03/17/2018-03-17-Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="关于如何安装Ubuntu16.04以及显卡驱动、网卡驱动问题，你可以阅读这三篇篇 Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录（解决显卡驱动、系统安装） Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置（解决cuda9和tensorflow1.4/1.3不兼容） 深度学习主机配置：Ubuntu">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpftsh0k50j20fc06adg6.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpfu2vpnqlj20wd0ekwgr.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpfuq74i6xj20f50jzgmm.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpfuh6kwm9j20dq01yglt.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpfv2m366rj218o05vjrm.jpg">
+<meta property="og:updated_time" content="2018-04-10T01:57:59.727Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置">
+<meta name="twitter:description" content="关于如何安装Ubuntu16.04以及显卡驱动、网卡驱动问题，你可以阅读这三篇篇 Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录（解决显卡驱动、系统安装） Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置（解决cuda9和tensorflow1.4/1.3不兼容） 深度学习主机配置：Ubuntu">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpftsh0k50j20fc06adg6.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-03-17-Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/17/2018-03-17-Ubuntu16.04+1080ti+cuda9.0+cudnn7.04+tensorflow1.6配置/" class="article-date">
+	  <time datetime="2018-03-16T16:00:00.000Z" itemprop="datePublished">三月 17, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于如何安装<code>Ubuntu16.04</code>以及显卡驱动、网卡驱动问题，你可以阅读这三篇篇</p>
+<p><a href="http://blog.csdn.net/qq_17550379/article/details/78546850" target="_blank" rel="noopener">Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录</a>（解决显卡驱动、系统安装）</p>
+<p><a href="http://blog.csdn.net/qq_17550379/article/details/78547648" target="_blank" rel="noopener">Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置</a>（解决cuda9和tensorflow1.4/1.3不兼容）</p>
+<p><a href="http://blog.csdn.net/qq_17550379/article/details/78655862" target="_blank" rel="noopener">深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3</a>（解决Ubuntu16.04无线网卡驱动）</p>
+<p>请对照选项，解决相应的问题。这里我要强调一点<code>显卡驱动</code>现在可以安装<code>387</code>（推荐安装）。这里要说的一点是：<strong>请查清楚对应显卡驱动的稳定版本</strong></p>
+<a id="more"></a>
+<p><strong>我这篇文章的目的是希望给你提供一个正确的安装思路，不是对于一些问题的特解，而是一个更加广泛的解决思路</strong>。</p>
+<p>首先，我要先说几个重点</p>
+<ul>
+<li>不要安装非长期支持的<code>Ubuntu</code>版本（17.04，17.10）</li>
+<li><code>tensorflow</code>版本请和<code>cuda</code>、<code>cudnn</code>配套</li>
+</ul>
+<p>关于第一点，如果你安装了非长期支持的版本（非<code>LTS</code>），那么你会面临的问题就会非常多。一般非长期支持版本的支持时间为1年，而长期版本的支持时间为5年。如果过了这个时间的话，不会得到软件更新支持。所以对于那些安装了这些版本的人，我建议你们还是重装系统，免得以后麻烦。这里要说的是，关于<code>Ubuntu 18.04LTS</code>的发布问题。我同要不推荐你安装，因为由于系统版本过新，所以相应的<code>tensorflow</code>和<code>cuda</code>都还没有支持。</p>
+<p>关于第二点问题，这是本次安装的重点。你可以看到我在文章的标题写的也很详细。这是因为，你一定要对应版本匹配，否则会出现一些问题。</p>
+<p>我们这里使用<code>cuda9.0</code>，注意不是<strong>cuda9.1</strong>。因为如果你通过搜索访问<code>cuda</code>的话，<code>nvidia</code>官方默认会提供给你的是最新的发布版本，但是<code>tensorflow</code>一般都还没有支持最新版本。这也是我要强调的：<strong>请查清楚你的tensorflow版本对应的cuda版本</strong></p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpftsh0k50j20fc06adg6.jpg"><br></center>
+
+<p>你可以通过在<code>nvidia</code>开发者官网内搜索，找到你想要的版本</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpfu2vpnqlj20wd0ekwgr.jpg"><br></center>
+
+<p>这里关于<code>cudnn</code>的安装同样，我们这里选择<code>cudnn7.04</code>的原因是：这是<code>tensorflow1.6</code>可以支持的最高版本。</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpfuq74i6xj20f50jzgmm.jpg"><br></center>
+
+<p>如果你安装错了，可以通过如下命令消除</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /usr/local/cuda/include/cudnn.h </span><br><span class="line">sudo rm /usr/local/cuda/lib64/libcudnn*</span><br></pre></td></tr></table></figure>
+<p>对于上面的方法，根据你安装文件夹的不同做相应调整。</p>
+<p>安装<code>cuda</code>时一个有用的操作：我们在安装好<code>cuda</code>后，会编辑相应的<code>.bashrc</code>文件，我推荐你这样去写</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>cuda</span><br><span class="line">export PATH=/usr/local/cuda/bin$&#123;PATH:+:$&#123;PATH&#125;&#125; </span><br><span class="line">export LD_LIBRARY_PATH=/usr/local/cuda/lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125; </span><br><span class="line">export CUDA_HOME=/usr/local/cuda</span><br></pre></td></tr></table></figure>
+<p>你注意到，我在写的时候<code>export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}</code>，我没有将<code>cuda</code>写成相应的<code>cuda</code>版本。如<code>export PATH=/usr/local/cuda9.0/bin${PATH:+:${PATH}}</code>。这样写的好处是，我们只要将<code>usr/local</code>目录下的不同版本的<code>cuda</code>通过软连接，去链接就可以了，不用再每次安装不同的<code>cuda</code>后，去修改相应的<code>.bashrc</code>文件。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpfuh6kwm9j20dq01yglt.jpg"><br></center>
+
+<p>通过如下命令建立一个<code>cuda-&gt;cuda-9.0</code>的连接。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s cuda-9.0 cuda</span><br></pre></td></tr></table></figure>
+<p>还要提醒你要注意的一点是，安装<code>tensorflow</code>时，不要忘记后面的<code>-gpu</code>选项。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install tensorflow-gpu</span><br></pre></td></tr></table></figure>
+<p>最后我要说的是，不要认为现在装好了就万事大吉了，因为如果<code>cuda</code>和<code>tensorflow</code>都支持了<code>Ubuntu 18.04LTS</code>的话，你最好重装系统，安装<code>Ubuntu 18.04LTS</code>。因为很多后来发表的文章对应的代码，都会使用最新的软件编写(●’◡’●)。另外，我也不推荐你使用<code>python 2.7</code>，因为<code>python2.7</code>到2020年，就不再支持相应的维护了。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpfv2m366rj218o05vjrm.jpg"><br></center>
+
+<p>所以以上软件，你最好安装对应的<code>python 3.x</code>版本。</p>
+<p>都2018年了，你不用<code>python 3.x</code>，你不用<code>c++11/14/17</code>，还在用那些过时的东西，你是真的<strong>out</strong>了。当然了，学习的过程肯定是从古典到现代的^_^ !!!</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/index/">index</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cuda/">cuda</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/18/2018-03-18-python-子类中扩展property/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python 子类中扩展 property
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/13/2018-03-13-深入理解python-super/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">深入理解python super</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

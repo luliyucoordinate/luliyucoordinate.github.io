@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-22-YOLOv2代码分析（六）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/">深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3</a>
+      <a class="article-title" href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/">YOLOv2代码分析（六）</a>
     </h1>
   
 
@@ -124,13 +124,13 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/" class="article-date">
-	  <time datetime="2017-11-27T16:00:00.000Z" itemprop="datePublished">十一月 28, 2017</time>
+	<a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/" class="article-date">
+	  <time datetime="2017-12-21T16:00:00.000Z" itemprop="datePublished">十二月 22, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
@@ -140,15 +140,12 @@
 
           
           <div class="entry-summary">
-          由于在Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3配置后，工作过程中出现了一些问题，比较好的做法是等待tensorflow1.5的发布，但是我没有时间去等QAQ。所以重装系统，QAQ。
-和之前装机的方法一样，只是这里的系统是ubuntu16.04。系统安装好后，我们修改源。好，第一个坑出现了。
-无线网卡驱动装好系统后，无线网卡无法使用（主要是我这里有线需要拨号上网，对就是这么的原始QAQ，dsl一直出问题）
-我的网卡型号是Killer Wireless-AC 1535下载驱动
-12sudo dpkg -i linux-firmware*.debsudo modprobe -r ath10k_pci &amp;&amp; sudo modprobe ath10k_pci
+          我们再次回到了parse_network_cfg函数
+1234//parse_network_cfgelse if(lt == ACTIVE)&#123;          l = parse_activation(options, params);      &#125;
 
         
           <p class="article-more-link">
-            <a href="/2017/11/28/2017-11-28-深度学习主机配置：Ubuntu16.04+1080ti+cuda8+cudnn6+tensorflow1.3/#more">阅读全文</a>
+            <a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/#more">阅读全文</a>
           </p>
         </div>
       
@@ -156,11 +153,11 @@
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/1080ti/">1080ti</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dell/">Dell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cuda/">cuda</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cudnn/">cudnn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -172,7 +169,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-21-YOLOv2代码分析（五）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -180,7 +177,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/">深度学习主机配置：Ubuntu17.04+1080ti+cuda9+cudnn7+tensorflow1.4/1.3</a>
+      <a class="article-title" href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/">YOLOv2代码分析（五）</a>
     </h1>
   
 
@@ -188,13 +185,13 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/" class="article-date">
-	  <time datetime="2017-11-14T16:00:00.000Z" itemprop="datePublished">十一月 15, 2017</time>
+	<a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/" class="article-date">
+	  <time datetime="2017-12-20T16:00:00.000Z" itemprop="datePublished">十二月 21, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
@@ -204,15 +201,12 @@
 
           
           <div class="entry-summary">
-          在此之前你应该已经装好了Ubuntu17.04，如果你对于装系统有什么疑问的话，请看这篇Dell Alienware Aurora R6 （1080ti）安装Ubuntu17.04记录
-首先我们要先安装pip源
-1sudo apt-get install python-pip
-接着cd到根目录，使用
-1ls -la
+          #0x01 make_convolutional_layer
+终于又回到了make_convolutional_layer这个函数
 
         
           <p class="article-more-link">
-            <a href="/2017/11/15/2017-11-15-深度学习主机配置Ubuntu17_04+1080ti+cuda9+cudnn7+tensorflow/#more">阅读全文</a>
+            <a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/#more">阅读全文</a>
           </p>
         </div>
       
@@ -220,11 +214,11 @@
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/1080ti/">1080ti</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dell/">Dell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cuda/">cuda</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cudnn/">cudnn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -236,7 +230,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-20-YOLOv2代码分析（四）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -244,7 +238,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/14/2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录/">Dell Alienware Aurora R6（1080ti）安装Ubuntu17.04记录</a>
+      <a class="article-title" href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/">YOLOv2代码分析（四）</a>
     </h1>
   
 
@@ -252,13 +246,13 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/14/2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录/" class="article-date">
-	  <time datetime="2017-11-13T16:00:00.000Z" itemprop="datePublished">十一月 14, 2017</time>
+	<a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/" class="article-date">
+	  <time datetime="2017-12-19T16:00:00.000Z" itemprop="datePublished">十二月 20, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
@@ -268,16 +262,12 @@
 
           
           <div class="entry-summary">
-          写这篇文章的时候，我内心是非常舒畅的，电脑是昨天下午到的，今天终于把Ubuntu17.04配置好了。希望我这篇文章对各位有一些启发。
-首先我要强调，网络上的一些指导性教程都是有时限的，也就是说可能对你的机器不适用，但是如果你理解了其中的原理的话，万变不离其宗！！！
-bios的设置先说一下第一个比较头疼的问题，bios的设置（我这里是F2打开）。secure boot选项要设置为disabled，至少我是这样做的，我后来也没有测试设置成enabled会有什么问题。这一点我保留意见，大家可以自己尝试一下。
-接下来是关于uefi和legacy的问题，很多教程中都是使用legacy，但是经过我的尝试，我这里选择uefi，uefi是一种新的装机手法，而legacy是老的。所以对于那些10年之后的电脑，我强烈推荐你使用uefi。
-接着是AHCI和RAID的问题，对于双硬盘的主机都可能会面对的问题。如果你要安装ubuntu的话，必须使用AHCI。
-别的都不变，save and reset。
+          0x01 backward_convolutional_layer12345678void backward_convolutional_layer(convolutional_layer l, network net)&#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/l.groups;	//每组卷积核的元素个数    int k = l.out_w*l.out_h;			//输出图像的元素个数    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);
+这里出现了一个gradient_array函数，我们看看这个函数有什么作用。
 
         
           <p class="article-more-link">
-            <a href="/2017/11/14/2017-11-14-Dell-Alienware-Aurora-R6-安装Ubuntu17.04记录/#more">阅读全文</a>
+            <a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/#more">阅读全文</a>
           </p>
         </div>
       
@@ -285,11 +275,11 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dell/">Dell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ubuntu/">Ubuntu</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -301,7 +291,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-13-解决office-word-2016-、2013等一直正在启动的问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-19-YOLOv2代码分析（三）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -309,7 +299,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/13/2017-11-13-解决office-word-2016-、2013等一直正在启动的问题/">解决office word 2016 、2013等一直正在启动的问题</a>
+      <a class="article-title" href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/">YOLOv2代码分析（三）</a>
     </h1>
   
 
@@ -317,120 +307,13 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     
     <div class="article-meta">
       
-	<a href="/2017/11/13/2017-11-13-解决office-word-2016-、2013等一直正在启动的问题/" class="article-date">
-	  <time datetime="2017-11-12T16:00:00.000Z" itemprop="datePublished">十一月 13, 2017</time>
+	<a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/" class="article-date">
+	  <time datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished">十二月 19, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>相信很多人都碰到过这个问题，我当时认为是office损坏问题，卸了重装，结果问题还在。官方给出的解决方法就是重装office，呵呵！！！后来意外发现了这个解决方案。</p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1flg8hddy0ij20n60kkgoa.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1flg8hddy0ij20n60kkgoa.jpg" class="img-fluid"><br></a></p>
-<p>打开任务管理器，关闭其中的<code>spoolsv.exe</code>进程，你会发现word就可以打开了。</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/office/">office</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/uninstall/">uninstall</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-11-12-使用QT和opencv3.3进行目标检测(YOLO)"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/12/2017-11-12-使用QT和opencv3.3进行目标检测(YOLO)/">使用QT和opencv3.3进行目标检测(YOLO)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/11/12/2017-11-12-使用QT和opencv3.3进行目标检测(YOLO)/" class="article-date">
-	  <time datetime="2017-11-11T16:00:00.000Z" itemprop="datePublished">十一月 12, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这篇文章先放个图，准备有时间写</p>
-<p><a href="http://wx4.sinaimg.cn/large/af2d2659ly1fldwa4261og20vw0lgb2j.gif" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/large/af2d2659ly1fldwa4261og20vw0lgb2j.gif" class="img-fluid"><br></a></p>
-<p>我这里使用的是YOLO2的方法实现的，没有使用cudnn加速，所以速度上慢了点，不过对于高端的显卡来说，我觉得可以做到视屏级的图片产生速度。并且我这里并没有训练好数据，只是一个测试，但是效果还不错。</p>
-<p>据说点赞可以加快编辑进度哦^_^!!!</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-11-11-numpy.array切片和索引操作"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/11/2017-11-11-numpy.array切片和索引操作/">numpy.array切片和索引操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/11/11/2017-11-11-numpy.array切片和索引操作/" class="article-date">
-	  <time datetime="2017-11-10T16:00:00.000Z" itemprop="datePublished">十一月 11, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
@@ -440,13 +323,14 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 
           
           <div class="entry-summary">
-          基本索引操作
-12345import numpy as nparr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])print arr[2]#第2行的数组print arr[0][2]#第0行第2列的值print arr[0, 2] # 普通Python数组不能用，同上
-123[7 8 9]33
+          接着上一讲没有讲完的make_convolutional_layer函数
+0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = update_convolutional_layer;
+上来就是三坐大山^_^，我们先从第一个forward_convolutional_layer开始。
+0x0101 forward_convolutional_layer12345void forward_convolutional_layer(convolutional_layer l, network net)&#123;//传入卷积层参数和网络的总参数    int i, j;    fill_cpu(l.outputs*l.batch, 0, l.output, 1);
 
         
           <p class="article-more-link">
-            <a href="/2017/11/11/2017-11-11-numpy.array切片和索引操作/#more">阅读全文</a>
+            <a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/#more">阅读全文</a>
           </p>
         </div>
       
@@ -454,11 +338,11 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -470,7 +354,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-10-如何有效地卸载office"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-17-YOLOv2代码分析（二）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -478,7 +362,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/10/2017-11-10-如何有效地卸载office/">如何有效地卸载office</a>
+      <a class="article-title" href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/">YOLOv2代码分析（二）</a>
     </h1>
   
 
@@ -486,67 +370,13 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     
     <div class="article-meta">
       
-	<a href="/2017/11/10/2017-11-10-如何有效地卸载office/" class="article-date">
-	  <time datetime="2017-11-09T16:00:00.000Z" itemprop="datePublished">十一月 10, 2017</time>
+	<a href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/" class="article-date">
+	  <time datetime="2017-12-16T16:00:00.000Z" itemprop="datePublished">十二月 17, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在平时office的卸载时经常出现一些论七八糟的问题。</p>
-<p>这里给出一个统一的答案，就是使用官方的<a href="https://support.office.com/en-us/article/Uninstall-Office-from-a-PC-9dd49b83-264a-477a-8fcc-2fdf5dbf61d8?ui=en-US&amp;rs=en-US&amp;ad=US#OfficeVersion=____________2016" target="_blank" rel="noopener">卸载工具</a></p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1flbm2gr17ij20s20ec0tu.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1flbm2gr17ij20s20ec0tu.jpg" class="img-fluid"><br></a></p>
-<p>下载完按步骤操作即可，这时候你只要开着电脑，泡杯咖啡，等它卸载完成。最后要记得重启电脑。^_^!!!</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/office/">office</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/uninstall/">uninstall</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-11-9-numpy.array-的创建"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/09/2017-11-9-numpy.array-的创建/">numpy.array 的创建</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/11/09/2017-11-9-numpy.array-的创建/" class="article-date">
-	  <time datetime="2017-11-08T16:00:00.000Z" itemprop="datePublished">十一月 9, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
@@ -556,14 +386,14 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 
           
           <div class="entry-summary">
-          通过array将数据（列表、元祖、数组等序列类型）转化为numpy array
-12345import numpy as npdata = (1, 2, 3.1)data2 = [1, 2, 3.1]arr = np.array(data)arr2 = np.array(data2)
-通过zeros创建全为0的numpy array
-12np.zeros(3) # 生成包含3个0的一维数组np.zeros((3, 3)) # 生成3*3的二维数组
+          0x01 parse_network_cfg我们继续前面没有说完的parse_network_cfg
+123//parse_network_cfgnode *n = sections-&gt;front;   if(!n) error("Config file has no sections");
+我么先要了解一下list结构
+12345678910typedef struct list&#123;    int size;    node *front;    node *back;&#125; list;typedef struct node&#123;    void *val;    struct node *next;    struct node *prev;&#125; node;
 
         
           <p class="article-more-link">
-            <a href="/2017/11/09/2017-11-9-numpy.array-的创建/#more">阅读全文</a>
+            <a href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/#more">阅读全文</a>
           </p>
         </div>
       
@@ -571,11 +401,11 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -587,7 +417,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-8-numpy.array-和-array以及list的效率对比"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-16-YOLOv2代码分析（一）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -595,7 +425,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/08/2017-11-8-numpy.array-和-array以及list的效率对比/">numpy.array 和 array以及list的效率对比</a>
+      <a class="article-title" href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/">YOLOv2代码分析（一）</a>
     </h1>
   
 
@@ -603,33 +433,40 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     
     <div class="article-meta">
       
-	<a href="/2017/11/08/2017-11-8-numpy.array-和-array以及list的效率对比/" class="article-date">
-	  <time datetime="2017-11-07T16:00:00.000Z" itemprop="datePublished">十一月 8, 2017</time>
+	<a href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/" class="article-date">
+	  <time datetime="2017-12-15T16:00:00.000Z" itemprop="datePublished">十二月 16, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> timeit</span><br><span class="line"></span><br><span class="line">common_for = <span class="string">"""</span></span><br><span class="line"><span class="string">for d in data:</span></span><br><span class="line"><span class="string">    s += d</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">common_sum = <span class="string">"""</span></span><br><span class="line"><span class="string">sum(data)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">common_numpy_sum = <span class="string">"""</span></span><br><span class="line"><span class="string">numpy.sum(data)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_list</span><span class="params">(n, loops)</span>:</span></span><br><span class="line">    list_setup = <span class="string">"""</span></span><br><span class="line"><span class="string">import numpy</span></span><br><span class="line"><span class="string">data = [1] * &#123;0&#125;#生成n个数的列表</span></span><br><span class="line"><span class="string">s = 0</span></span><br><span class="line"><span class="string">"""</span>.format(n)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'list:'</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_for, list_setup, number = loops)<span class="comment">#'common_for'是要执行语句 list_setup导入执行语句需要的数据，loops表示执行语句最后要执行的次数</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_sum, list_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_numpy_sum, list_setup, number = loops)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_array</span><span class="params">(n, loops)</span>:</span></span><br><span class="line">    array_setup = <span class="string">"""</span></span><br><span class="line"><span class="string">import numpy</span></span><br><span class="line"><span class="string">import array</span></span><br><span class="line"><span class="string">data = array.array('L', [1] * &#123;0&#125;)#unsigned long，这里的初始化必须先给类型</span></span><br><span class="line"><span class="string">s = 0</span></span><br><span class="line"><span class="string">"""</span>.format(n)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'array:'</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_for, array_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_sum, array_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_numpy_sum, array_setup, number = loops)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_numpy</span><span class="params">(n, loops)</span>:</span></span><br><span class="line">    numpy_setup = <span class="string">"""</span></span><br><span class="line"><span class="string">import numpy</span></span><br><span class="line"><span class="string">data = numpy.array([1] * &#123;0&#125;)</span></span><br><span class="line"><span class="string">s = 0</span></span><br><span class="line"><span class="string">"""</span>.format(n)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'numpy:'</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_for, numpy_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_sum, numpy_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_numpy_sum, numpy_setup, number = loops)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    timeit_list(<span class="number">50000</span>, <span class="number">500</span>)</span><br><span class="line">    timeit_array(<span class="number">50000</span>, <span class="number">500</span>)</span><br><span class="line">    timeit_numpy(<span class="number">50000</span>, <span class="number">500</span>)</span><br></pre></td></tr></table></figure>
-<p>我这里的结果是</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">list:</span><br><span class="line"><span class="number">0.743401847752</span></span><br><span class="line"><span class="number">0.244681626678</span></span><br><span class="line"><span class="number">1.00076942461</span></span><br><span class="line">array:</span><br><span class="line"><span class="number">1.83873936113</span></span><br><span class="line"><span class="number">1.36051825384</span></span><br><span class="line"><span class="number">4.02721759923</span></span><br><span class="line">numpy:</span><br><span class="line"><span class="number">3.86211620789</span></span><br><span class="line"><span class="number">3.34397739435</span></span><br><span class="line"><span class="number">0.0103776763518</span></span><br></pre></td></tr></table></figure>
-<p>所以对于numpy，我们尽量使用它的内置函数吧！</p>
+        
 
+          
+          <div class="entry-summary">
+          0x00 写在开头写这一系列文章主要是想解析yolov2的具体实现，因为在作者的论文中有很多地方没有进行详细表述，所以不看源代码的话很难知道幕后具体做了什么。另一点是学习一下别人的思路，因为你要知道作者的代码相当于自己写了一个小型框架（函数的接口设计的可能不是非常好）。
+0x01 从main函数开始12345678910int main(int argc, char **argv)&#123;    //test_resize("data/bad.jpg");    //test_box();    //test_convolutional_layer();    if(argc &lt; 2)&#123;        fprintf(stderr, "usage: %s &lt;function&gt;\n", argv[0]);//如果参数小于2就打印出错信息        return 0;//出错后返回    &#125;    gpu_index = find_int_arg(argc, argv, "-i", 0);
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/16/2017-12-16-YOLOv2代码分析（一）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -641,7 +478,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-7-静态绑定和动态绑定总结"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-15-目标检测中的IOU计算问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -649,7 +486,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/07/2017-11-7-静态绑定和动态绑定总结/">静态绑定和动态绑定总结</a>
+      <a class="article-title" href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/">目标检测中的IOU计算问题</a>
     </h1>
   
 
@@ -657,30 +494,242 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     
     <div class="article-meta">
       
-	<a href="/2017/11/07/2017-11-7-静态绑定和动态绑定总结/" class="article-date">
-	  <time datetime="2017-11-06T16:00:00.000Z" itemprop="datePublished">十一月 7, 2017</time>
+	<a href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/" class="article-date">
+	  <time datetime="2017-12-14T16:00:00.000Z" itemprop="datePublished">十二月 15, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl7a7htnodj20su0d1wfw.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl7a7htnodj20su0d1wfw.jpg" class="img-fluid"><br></a></p>
+        
 
+          
+          <div class="entry-summary">
+          在目标检测中我们有一个基本的操作，形象表述就是画框框，我们要通过我们画的框把我们要标注的目标给框出来，如下面那个狗。我们既可以说这个狗被框出来了，但是也可以说没有，因为你可以观察到左边和上面是存在一些缝隙的。
+
+
+那问题就出现了。什么样的框才算把目标给框住了呢？这个时候就有了IOU这个评价指标。什么是IOU？
+
+
+IOU想要描述的时黄框（检测到的结果）和绿框（标注的结果）重合的程度。用公式表示为
+
+$IOU = \frac{DetectionResult\bigcap GroundTruth}{DetectionResult\bigcup GroundTruth}$
+
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/15/2017-12-15-目标检测中的IOU计算问题/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binding/">binding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IOU/">IOU</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-12-13-tf.identity的作用"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/13/2017-12-13-tf.identity的作用/">tf.identity的作用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/13/2017-12-13-tf.identity的作用/" class="article-date">
+	  <time datetime="2017-12-12T16:00:00.000Z" itemprop="datePublished">十二月 13, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          还是从一个例子开始讲起
+1234567891011x = tf.Variable(0.0)x_plus_1 = tf.assign_add(x, 1)#对x进行加1操作#tf.control_dependencies的作用是:在执行y=x前，先执行x_plus_1with tf.control_dependencies([x_plus_1]):    y = xinit = tf.initialize_all_variables()with tf.Session() as session:    init.run()    for i in xrange(5):        print(y.eval())
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/13/2017-12-13-tf.identity的作用/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/identity/">identity</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-12-06-TensorBoard图形可视化"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/06/2017-12-06-TensorBoard图形可视化/">TensorBoard计算图可视化</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/06/2017-12-06-TensorBoard图形可视化/" class="article-date">
+	  <time datetime="2017-12-05T16:00:00.000Z" itemprop="datePublished">十二月 6, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          TensorFlow计算图功能强大但复杂。 图表可视化可以帮助您理解和调试它们。 这是一个可视化工作的例子。
+
+
+
+命名空间和节点典型的TensorFlow图可能有成千上万个节点 - 太多的节点很难一次看到，甚至无法使用标准的图形工具进行布局。 为简化起见，变量名声明在作用域内，可视化使用这些信息来定义图中节点上的层次结构。 默认情况下，只显示该层次结构的顶部。 下面是一个使用tf.name_scope在hidden名称范围下定义三个操作的示例：
+123456import tensorflow as tfwith tf.name_scope('hidden') as scope:  a = tf.constant(5, name='alpha')  W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0), name='weights')  b = tf.Variable(tf.zeros([1]), name='biases')
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/06/2017-12-06-TensorBoard图形可视化/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/estimator/">estimator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-12-05-TensorBoard可视化学习"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/12/05/2017-12-05-TensorBoard可视化学习/">TensorBoard可视化学习</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/12/05/2017-12-05-TensorBoard可视化学习/" class="article-date">
+	  <time datetime="2017-12-04T16:00:00.000Z" itemprop="datePublished">十二月 5, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          您将使用TensorFlow进行的计算 - 如训练大量的深度神经网络 - 可能会很复杂且令人困惑。 为了便于理解，调试和优化TensorFlow程序，我们包含了一套名为TensorBoard的可视化工具。 您可以使用TensorBoard来显示您的TensorFlow图形，绘制关于图形执行的量化指标，并显示其他数据，如图像。 当完全配置TensorBoard时，看起来像这样：
+
+
+
+序列化数据TensorBoard通过读取TensorFlow事件文件进行操作，TensorFlow事件文件包含运行TensorFlow时可以生成的摘要数据。以下是TensorBoard中汇总数据的一般生命周期。
+首先，创建您希望从中收集摘要数据的TensorFlow图，然后决定使用摘要操作注解哪些节点。
+例如，假设您正在训练用于识别MNIST数字的卷积神经网络。您想记录学习率随时间的变化，以及目标函数如何变化。通过将tf.summary.scalar 操作分别附加到输出学习率和损失来收集这些信息。然后，给每个标量附上有意义的标签，如“学习率”或“损失函数”。
+也许你也想看到特定层的激活分布，或梯度或权重的分布。通过将tf.summary.histogram操作附加到梯度输出和保存您权重的变量来收集这些数据。
+有关所有可用摘要操作的详细信息，请查看有关摘要操作的文档。
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/05/2017-12-05-TensorBoard可视化学习/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/estimator/">estimator</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li></ul>
 
       
     </footer>
@@ -696,7 +745,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/3/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/5/">下一页</a>
   </nav>
 
 </section>
@@ -796,8 +845,8 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
-              <span>三月 1, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
+              <span>四月 9, 2018</span>
             </div>
 
           </li>
@@ -808,8 +857,8 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
-              <span>二月 21, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
+              <span>四月 7, 2018</span>
             </div>
 
           </li>
@@ -820,8 +869,8 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
-              <span>二月 10, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
+              <span>四月 4, 2018</span>
             </div>
 
           </li>
@@ -832,8 +881,8 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/09/2018-02-09-图片转字符画/">图片转化为字符画</a></h6>
-              <span>二月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
+              <span>四月 2, 2018</span>
             </div>
 
           </li>
@@ -844,8 +893,8 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/">c++中空字符串解释为True的困惑</a></h6>
-              <span>二月 5, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
+              <span>三月 31, 2018</span>
             </div>
 
           </li>
@@ -856,8 +905,8 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/01/26/2018-01-26-python字符串令牌解析/">python字符串令牌解析</a></h6>
-              <span>一月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
+              <span>三月 26, 2018</span>
             </div>
 
           </li>
@@ -871,7 +920,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -881,7 +930,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -891,7 +940,7 @@ bios的设置先说一下第一个比较头疼的问题，bios的设置（我这
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

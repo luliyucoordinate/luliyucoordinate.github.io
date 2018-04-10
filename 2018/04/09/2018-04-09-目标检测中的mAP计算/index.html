@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>目标检测中的mAP计算 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonmAP" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="0x00 基本概念在说明mAP这个概念之前，我们先要说一下两个新的概念：precision和recall。这是论文中经常提及的两个概念。我们举这样的一个例子： 我们现在有一个检测狗的任务，但是这个任务数据中包含了猫。那么我们这个时候就有一个问题，我们怎么描述一个物体被检测出来呢？为此，我们引入了IOU这个概念 目标检测中的IOU计算问题 我们规定IOU &amp;gt; 0.5表示物体被检测出来，否则没有">
+<meta name="keywords" content="python,mAP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="目标检测中的mAP计算">
+<meta property="og:url" content="http://coordinate.wang/2018/04/09/2018-04-09-目标检测中的mAP计算/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="0x00 基本概念在说明mAP这个概念之前，我们先要说一下两个新的概念：precision和recall。这是论文中经常提及的两个概念。我们举这样的一个例子： 我们现在有一个检测狗的任务，但是这个任务数据中包含了猫。那么我们这个时候就有一个问题，我们怎么描述一个物体被检测出来呢？为此，我们引入了IOU这个概念 目标检测中的IOU计算问题 我们规定IOU &amp;gt; 0.5表示物体被检测出来，否则没有">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq6jzkoo3nj20hm0fsaeg.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq6k9cizxrj20ed0e7td3.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq6lr2y0jaj20af0jqjus.jpg">
+<meta property="og:image" content="https://img.shields.io/github/forks/badges/shields.svg?style=social&label=Fork">
+<meta property="og:updated_time" content="2018-04-10T01:59:29.139Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="目标检测中的mAP计算">
+<meta name="twitter:description" content="0x00 基本概念在说明mAP这个概念之前，我们先要说一下两个新的概念：precision和recall。这是论文中经常提及的两个概念。我们举这样的一个例子： 我们现在有一个检测狗的任务，但是这个任务数据中包含了猫。那么我们这个时候就有一个问题，我们怎么描述一个物体被检测出来呢？为此，我们引入了IOU这个概念 目标检测中的IOU计算问题 我们规定IOU &amp;gt; 0.5表示物体被检测出来，否则没有">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq6jzkoo3nj20hm0fsaeg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-04-09-目标检测中的mAP计算" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      目标检测中的mAP计算
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/" class="article-date">
+	  <time datetime="2018-04-08T16:00:00.000Z" itemprop="datePublished">四月 9, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00-基本概念"><a href="#0x00-基本概念" class="headerlink" title="0x00 基本概念"></a>0x00 基本概念</h1><p>在说明<code>mAP</code>这个概念之前，我们先要说一下两个新的概念：<strong>precision</strong>和<strong>recall</strong>。这是论文中经常提及的两个概念。我们举这样的一个例子：</p>
+<p>我们现在有一个检测<code>狗</code>的任务，但是这个任务数据中包含了<code>猫</code>。那么我们这个时候就有一个问题，我们怎么描述一个物体被检测出来呢？为此，我们引入了<code>IOU</code>这个概念</p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/78815637" target="_blank" rel="noopener">目标检测中的IOU计算问题</a></p>
+<p>我们规定<code>IOU &gt; 0.5</code>表示物体被检测出来，否则没有。</p>
+<a id="more"></a>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq6jzkoo3nj20hm0fsaeg.jpg"><br></center>
+
+<p>现在我们有了这个指标，我们开始跑数据。假设我们已经把网络训练好了，接着找来一张图片测试（这张图片上有四个<code>狗</code>和三只<code>猫</code>），测试结果这样的（我们的目标是找图片中的<code>狗</code>）</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq6k9cizxrj20ed0e7td3.jpg"><br></center>
+
+<p>标注的数字表示<code>IOU</code>值，我们只选择<code>IOU &gt; 0.5</code>的物体。</p>
+<p>那么，这个时候问题又出现了，我们怎么描述我们检测的结果怎么样呢？这个时候就出现了<strong>precision</strong>和<strong>recall</strong>。我们先不急着说明这两个概念是什么，我们先看上面的结果，我们发现，我们要找的目标是<code>狗</code>，结果查找的目标中有<code>猫</code>，这显然不是我们希望看到的。我们希望通过一个指标去描述这个问题，所以我们提出了<strong>precision</strong>，<strong>precision</strong>是描述查找一个目标的精准率。我们还发现一个问题，就是我们漏找了，明明右上角是一只<code>狗</code>，结果没有找出来，为了表述这个问题，所以我们提出<strong>recall</strong>，<strong>recall</strong>是描述查找一个目标的漏检率，<strong>recall</strong>很多地方翻译为召回率，我更喜欢称它为漏检率或查全率。</p>
+<p>我们将被正确识别的<code>狗</code>，称为<strong>True positives</strong>。我们将被正确识别的<code>猫</code>称为<strong>True negatives</strong>。为什么会有这个概念？什么是被正确识别的<code>猫</code>？我们知道我们这里的目标是找<code>狗</code>，那么那些我们没有标注的<code>猫</code>，是不是从反向说明我们的查找准确率（<strong>precision</strong>）呢？接着，我们定义被错误识别为<code>狗</code>的<code>猫</code>为<strong>False positives</strong>。被错误识别为<code>猫</code>的<code>狗</code>称为<strong>False negatives</strong>（就是右上角的狗，受<code>IOU</code>指标影响）。这些概念很重要，不要记错了！！！</p>
+<p>接着我们就定义</p>
+<ul>
+<li>$precision=\frac{True positives}{True positives+False positives}$</li>
+<li>$recall=\frac{Truepositives}{Truepositives+Falsenegatives}$</li>
+</ul>
+<p>我们就很容易的计算出这里的$precision=\frac{3}{4}$，$recall=\frac{3}{4}$ 。最后说一点，如果我们把<code>IOU</code>标准设置为<code>IOU &gt; 0</code>的话，这个时候的<strong>recall</strong>会越来越接近于<code>1</code>，而相应的<strong>precision</strong>也会降低，这很容易理解。</p>
+<p>另外还有一个概念<strong>accuracy</strong></p>
+<ul>
+<li>$accuracy=\frac{Truepositives+Truenegatives}{Truepositives+Falsenegatives+Truenegatives+Falsepositives}$</li>
+</ul>
+<p>我们这里很容易计算出$accuracy=\frac{3+1}{3+1+2+1}=\frac{4}{7}$。最后放一张很经典的图片</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq6lr2y0jaj20af0jqjus.jpg"><br></center>
+
+<h1 id="0x01-代码"><a href="#0x01-代码" class="headerlink" title="0x01 代码"></a>0x01 代码</h1><p>我们这里使用的评估脚本是按照<code>VOC</code>数据集的标准来的，预测结果按如下格式：</p>
+<ul>
+<li><code>&lt;image identifier&gt; &lt;confidence&gt; &lt;left&gt; &lt;top&gt; &lt;right&gt; &lt;buttom&gt;</code></li>
+</ul>
+<p><code>VOC</code>数据集总共有20类，也就是说，我们最后要得到20个结果文件。例如，对于<code>car</code>，输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">comp3_det_test_car.txt:</span><br><span class="line">	000004 0.702732 89 112 516 466</span><br></pre></td></tr></table></figure>
+<p>得到这些文件后，我们可以通过以下脚本，计算对应的<code>mAP</code></p>
+<p><a href="https://github.com/luliyucoordinate/eval_voc" target="_blank" rel="noopener"><img src="https://img.shields.io/github/forks/badges/shields.svg?style=social&amp;label=Fork" alt="GitHub forks"></a></p>
+<p>我这里简单提一下脚本中的AP计算问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">voc_ap</span><span class="params">(rec, prec, use_07_metric=False)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> use_07_metric:</span><br><span class="line">        <span class="comment"># 11 point metric</span></span><br><span class="line">        ap = <span class="number">0.</span></span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> np.arange(<span class="number">0.</span>, <span class="number">1.1</span>, <span class="number">0.1</span>):</span><br><span class="line">            <span class="keyword">if</span> np.sum(rec &gt;= t) == <span class="number">0</span>:</span><br><span class="line">                p = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                p = np.max(prec[rec &gt;= t])</span><br><span class="line">            ap = ap + p / <span class="number">11.</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mrec = np.concatenate(([<span class="number">0.</span>], rec, [<span class="number">1.</span>]))</span><br><span class="line">        mpre = np.concatenate(([<span class="number">0.</span>], prec, [<span class="number">0.</span>]))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(mpre.size - <span class="number">1</span>, <span class="number">0</span>, <span class="number">-1</span>):</span><br><span class="line">            mpre[i - <span class="number">1</span>] = np.maximum(mpre[i - <span class="number">1</span>], mpre[i])</span><br><span class="line">        i = np.where(mrec[<span class="number">1</span>:] != mrec[:<span class="number">-1</span>])[<span class="number">0</span>]</span><br><span class="line">        ap = np.sum((mrec[i + <span class="number">1</span>] - mrec[i]) * mpre[i + <span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> ap</span><br></pre></td></tr></table></figure>
+<p>我们注意到这里的<code>AP</code>计算有两种</p>
+<ul>
+<li>11点插值法，这个算法的思路很简单。就是选取0,0.1,0.2…1，这样的11个点，分别对应不同的<strong>recall</strong>级别，根据不同的级别计算最大<strong>precision</strong>，然后求出它的平均值。</li>
+<li>第二种就是我们文中提到的方法</li>
+</ul>
+<p>reference:</p>
+<p><a href="http://www.pascal-network.org/challenges/VOC/voc2007/index.html" target="_blank" rel="noopener">The PASCAL Visual Object Classes Challenge (VOC2007)</a></p>
+<p>如有任何问题，希望大家指出，谢谢O(∩_∩)O</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mAP/">mAP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Iterative Visual Reasoning Beyond Convolutions论文笔记</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-基本概念"><span class="nav-number">1.</span> <span class="nav-text">0x00 基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-代码"><span class="nav-number">2.</span> <span class="nav-text">0x01 代码</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

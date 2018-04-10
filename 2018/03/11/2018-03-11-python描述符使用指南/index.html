@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>python描述符使用指南 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythondescriptor" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="#简介 通常，描述符是具有 ” 绑定行为 “ 的对象属性，其属性访问被描述符协议中的方法重写。这些方法是__get__()，__set__()和__delete__()。如果对象中定义了这些方法中的任何一种，则称它为描述符。 属性访问的默认行为是从对象的字典中获取，设置或删除属性。例如，a.x有一个以a.__dict__[&amp;#39;x&amp;#39;]开始的查找链，接着是type(a).__dict__">
+<meta name="keywords" content="python,descriptor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python描述符使用指南">
+<meta property="og:url" content="http://coordinate.wang/2018/03/11/2018-03-11-python描述符使用指南/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="#简介 通常，描述符是具有 ” 绑定行为 “ 的对象属性，其属性访问被描述符协议中的方法重写。这些方法是__get__()，__set__()和__delete__()。如果对象中定义了这些方法中的任何一种，则称它为描述符。 属性访问的默认行为是从对象的字典中获取，设置或删除属性。例如，a.x有一个以a.__dict__[&amp;#39;x&amp;#39;]开始的查找链，接着是type(a).__dict__">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-10T01:57:03.482Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python描述符使用指南">
+<meta name="twitter:description" content="#简介 通常，描述符是具有 ” 绑定行为 “ 的对象属性，其属性访问被描述符协议中的方法重写。这些方法是__get__()，__set__()和__delete__()。如果对象中定义了这些方法中的任何一种，则称它为描述符。 属性访问的默认行为是从对象的字典中获取，设置或删除属性。例如，a.x有一个以a.__dict__[&amp;#39;x&amp;#39;]开始的查找链，接着是type(a).__dict__">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-03-11-python描述符使用指南" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      python描述符使用指南
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/11/2018-03-11-python描述符使用指南/" class="article-date">
+	  <time datetime="2018-03-10T16:00:00.000Z" itemprop="datePublished">三月 11, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>#简介</p>
+<p>通常，描述符是具有 ” 绑定行为 “ 的对象属性，其属性访问被描述符协议中的方法重写。这些方法是<code>__get__()</code>，<code>__set__()</code>和<code>__delete__()</code>。如果对象中定义了这些方法中的任何一种，则称它为描述符。</p>
+<p>属性访问的默认行为是从对象的字典中获取，设置或删除属性。例如，<code>a.x</code>有一个以<code>a.__dict__[&#39;x&#39;]</code>开始的查找链，接着是<code>type(a).__dict__[&#39;x&#39;]</code>，然后是除了元类之外的<code>type(a)</code>的基类。如果查找的值是定义其中一个描述符方法的对象，则Python可以调用描述符方法重写默认行为。在优先链中发生这种情况取决于定义了哪些描述符方法。请注意，描述符仅针对<em>new style</em>对象或类进行调用（如果类继承自<code>object</code>或<code>type</code>，则该类为<em>new style</em>）。</p>
+<p>描述符是一个强大的通用协议。它们是属性，方法，静态方法，类方法和<code>super()</code>的工作机制。它们被用于整个Python本身，以实现版本2.2中引入的<em>new style</em>类。描述符简化了底层C代码，为日常Python程序提供了一套灵活的新工具。</p>
+<a id="more"></a>
+<p>#描述符协议</p>
+<ul>
+<li><code>descr.__get__(self, obj, type=None) --&gt; value</code></li>
+<li><code>descr.__set__(self, obj, value) --&gt; None</code></li>
+<li><code>descr.__delete__(self, obj) --&gt; None</code></li>
+</ul>
+<p>这就是所有的描述符方法。定义这些方法中的任何一个，就将对象视为描述符，并且可以在查找属性时重写默认行为。</p>
+<p>如果一个对象同时定义了<code>__get__()</code>和<code>__set__()</code>，它就被认为是一个数据描述符。只定义<code>__get__()</code>的描述符被称为非数据描述符（它们通常用于方法，但其他用途也是可能的）。</p>
+<p>数据和非数据描述符不同在于它们和实例字典的优先级。如果实例的字典中有一个与数据描述符同名的条目，则数据描述符优先。如果实例的字典中有一个与非数据描述符名称相同的条目，则字典条目优先。</p>
+<p>要创建一个只读数据描述符，同时定义<code>__get __</code>和<code>__set__</code>，并且定义<code>__set__</code>时引发<em>AttributeError</em>异常。</p>
+<p>#调用描述符</p>
+<p>描述符可以通过其方法名直接调用。例如，<code>d.__get__(obj)</code>。</p>
+<p>另外，更为常见的是描述符在属性访问时被自动调用。例如，<code>obj.d</code>在<code>obj</code>的字典中查找<code>d</code>。如果<code>d</code>定义了方法<code>__get__()</code>，则根据下面列出的优先规则<code>d.__get__(obj)</code>被调用。</p>
+<p>调用的细节取决于<code>obj</code>是一个对象还是一个类。无论哪种方式，描述符只适用于<em>new style</em>对象和类。如果一个类是<code>object</code>的一个子类，它就是<em>new style</em>。</p>
+<p>对于对象，机关在<code>object.__getattribute__()</code>中，通过<code>object.__getattribute__()</code>将<code>b.x</code>转换成<code>(b).__dict__[&#39;x&#39;].__get__(b，type(b))</code>。该实现通过优先级链工作，该优先级链说明数据描述符优先于实例变量，实例变量优先于非数据描述符，并且如果提供了<code>__getattr__()</code>，则赋予其最低优先级。完整的C实现可以在<code>Objects/object.c</code>中的<code>PyObject_GenericGetAttr()</code>中找到。</p>
+<p>对于类，机关在<code>type.__getattribute__()</code>中，它将<code>B.x</code>转换为<code>B.__dict__[&#39;x&#39;].__get__(None，B)</code>。在纯Python中，它看起来像：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattribute__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">    <span class="string">"Emulate type_getattro() in Objects/typeobject.c"</span></span><br><span class="line">    v = object.__getattribute__(self, key)</span><br><span class="line">    <span class="keyword">if</span> hasattr(v, <span class="string">'__get__'</span>):</span><br><span class="line">        <span class="keyword">return</span> v.__get__(<span class="keyword">None</span>, self)</span><br><span class="line">    <span class="keyword">return</span> v</span><br></pre></td></tr></table></figure>
+<p>需要记住的重点是：</p>
+<ul>
+<li>描述符由<code>__getattribute__()</code>方法调用</li>
+<li>覆盖<code>__getattribute__()</code>可防止描述符自动调用</li>
+<li><code>__getattribute__()</code>仅适用于<em>new style</em>类和对象</li>
+<li><code>object.__getattribute__()</code>和<code>type.__getattribute__()</code>对<code>__get__()</code>进行不同的调用。</li>
+<li>数据描述符总是重写实例字典。</li>
+<li>非数据描述符可能被实例字典重写。</li>
+</ul>
+<p><code>super()</code>返回的对象同样具有自定义<code>__getattribute__()</code>方法用于调用描述符。调用<code>super(B，obj).m()</code>会立即搜索<code>obj.__class__.__mro__</code>中<code>B</code>之后的基类<code>A</code>，然后返回<code>A.__dict__[&#39;m&#39;].__get__(obj，B)</code>。如果不是描述符，则原样返回<code>m</code>。如果不在字典中，<code>m</code>会继续调用<code>object.__getattribute__()</code>。</p>
+<p>注意，在Python 2.2中，如果<code>m</code>是一个数据描述符，<code>super(B，obj).m()</code>只会调用<code>__get__()</code>。在Python 2.3中，除非涉及<em>old style</em>类，否则非数据描述符也会调用。实现细节位于<code>Objects/typeobject.c</code>中的<code>super_getattro()</code>中。</p>
+<p>上面的细节表明描述符的机制嵌入在<code>object</code>，<code>type</code>和<code>super()</code>的<code>__getattribute__()</code>方法中。当它们从<code>object</code>派生时，或者它们具有提供类似功能的元类时，类继承此机制。同样，类可以通过重写<code>__getattribute__()</code>来关闭描述符调用。</p>
+<p>#示例</p>
+<p>以下代码创建一个类，其对象是数据描述符，这个描述符对于监视几个属性非常有用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RevealAccess</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"""A data descriptor that sets and returns values</span></span><br><span class="line"><span class="string">       normally and prints a message logging their access.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, initval=None, name=<span class="string">'var'</span>)</span>:</span></span><br><span class="line">        self.val = initval</span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, obj, objtype)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'Retrieving'</span>, self.name</span><br><span class="line">        <span class="keyword">return</span> self.val</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, obj, val)</span>:</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'Updating'</span>, self.name</span><br><span class="line">        self.val = val</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">... </span>    x = RevealAccess(<span class="number">10</span>, <span class="string">'var "x"'</span>)</span><br><span class="line"><span class="meta">... </span>    y = <span class="number">5</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m = MyClass()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.x</span><br><span class="line">Retrieving var <span class="string">"x"</span></span><br><span class="line"><span class="number">10</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.x = <span class="number">20</span></span><br><span class="line">Updating var <span class="string">"x"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.x</span><br><span class="line">Retrieving var <span class="string">"x"</span></span><br><span class="line"><span class="number">20</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.y</span><br><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+<p>协议很简单，并提供令人兴奋的可能性。几个用例非常常见，它们已被封装到单个函数调用中。属性，绑定和未绑定方法，静态方法和类方法都是基于描述符协议。</p>
+<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>调用<code>property()</code>是一种简洁的构建数据描述符的方法，可以在访问属性时触发函数调用。函数原型是：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">property(fget=None, fset=None, fdel=None, doc=None) -&gt; property attribute</span><br></pre></td></tr></table></figure>
+<p>下面例子展示了一个典型应用：定义托管属性<code>x</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getx</span><span class="params">(self)</span>:</span> <span class="keyword">return</span> self.__x</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setx</span><span class="params">(self, value)</span>:</span> self.__x = value</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delx</span><span class="params">(self)</span>:</span> <span class="keyword">del</span> self.__x</span><br><span class="line">    x = property(getx, setx, delx, <span class="string">"I'm the 'x' property."</span>)</span><br></pre></td></tr></table></figure>
+<p>为了了解<code>property()</code>是如何通过描述符协议实现的，下面是一个纯Python实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Property</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"Emulate PyProperty_Type() in Objects/descrobject.c"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fget=None, fset=None, fdel=None, doc=None)</span>:</span></span><br><span class="line">        self.fget = fget</span><br><span class="line">        self.fset = fset</span><br><span class="line">        self.fdel = fdel</span><br><span class="line">        <span class="keyword">if</span> doc <span class="keyword">is</span> <span class="keyword">None</span> <span class="keyword">and</span> fget <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            doc = fget.__doc__</span><br><span class="line">        self.__doc__ = doc</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, obj, objtype=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> obj <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> self</span><br><span class="line">        <span class="keyword">if</span> self.fget <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">"unreadable attribute"</span>)</span><br><span class="line">        <span class="keyword">return</span> self.fget(obj)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, obj, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.fset <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">"can't set attribute"</span>)</span><br><span class="line">        self.fset(obj, value)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delete__</span><span class="params">(self, obj)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.fdel <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> AttributeError(<span class="string">"can't delete attribute"</span>)</span><br><span class="line">        self.fdel(obj)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getter</span><span class="params">(self, fget)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> type(self)(fget, self.fset, self.fdel, self.__doc__)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setter</span><span class="params">(self, fset)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> type(self)(self.fget, fset, self.fdel, self.__doc__)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleter</span><span class="params">(self, fdel)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> type(self)(self.fget, self.fset, fdel, self.__doc__)</span><br></pre></td></tr></table></figure>
+<p>只要用户界面授予了属性访问权，然后后续更改需要干预的方法，<code>property()</code>内置函数就会有所帮助。</p>
+<p>例如，电子表格类可以通过<code>Cell(&#39;b10&#39;).value</code>对单元格值进行访问。对这个程序的后续改进需要在每次访问时重新计算单元格; 然而，程序员不想影响直接访问属性的现有客户端代码。 解决方案是对<code>value</code>属性的访问控制包装在属性数据描述符中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cell</span><span class="params">(object)</span>:</span></span><br><span class="line">    . . .</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getvalue</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"Recalculate the cell before returning value"</span></span><br><span class="line">        self.recalc()</span><br><span class="line">        <span class="keyword">return</span> self._value</span><br><span class="line">    value = property(getvalue)</span><br></pre></td></tr></table></figure>
+<h1 id="函数与方法"><a href="#函数与方法" class="headerlink" title="函数与方法"></a>函数与方法</h1><p>Python的面向对象功能建立在基于功能的环境之上。使用非数据描述符可以将两者无缝连接。</p>
+<p>类字典将方法作为函数存储。在类定义中，方法使用<code>def</code>和<code>lambda</code>编写，这是创建函数的常用工具。与常规函数的唯一区别是第一个参数是为对象实例保留的。 按照Python约定，实例引用称为<code>self</code>，但也可以称为<code>this</code>或任何其他变量名称。</p>
+<p>为了支持方法调用，函数在属性访问期间包含用于绑定方法的<code>__get__()</code>方法。 这意味着<strong>所有函数都是非数据描述符</strong>，它们返回绑定或未绑定的方法，具体取决于它们是从对象还是类调用。 在纯Python中，它的工作原理是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Function</span><span class="params">(object)</span>:</span></span><br><span class="line">    . . .</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, obj, objtype=None)</span>:</span></span><br><span class="line">        <span class="string">"Simulate func_descr_get() in Objects/funcobject.c"</span></span><br><span class="line">        <span class="keyword">return</span> types.MethodType(self, obj, objtype)</span><br></pre></td></tr></table></figure>
+<p>运行解释器显示了函数描述符在实际中的工作方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">D</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(self, x)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> x</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = D()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>D.__dict__[<span class="string">'f'</span>]  <span class="comment"># Stored internally as a function</span></span><br><span class="line">&lt;function f at <span class="number">0x00C45070</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>D.f              <span class="comment"># Get from a class becomes an unbound method</span></span><br><span class="line">&lt;unbound method D.f&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.f              <span class="comment"># Get from an instance becomes a bound method</span></span><br><span class="line">&lt;bound method D.f of &lt;__main__.D object at <span class="number">0x00B18C90</span>&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>输出结果表明绑定和未绑定的方法是两种不同的类型。 它们是在通过<code>C</code>实现的<code>Objects/classobject.c</code>文件中的<code>PyMethod_Type</code>对象，这个对象具有两个不同的表示，具体取决于<code>im_self</code>字段是否设置或<code>NULL</code>（在<code>C</code>中等效于<code>None</code>）。</p>
+<p>同样，调用方法对象的效果依赖于<code>im_self</code>字段。 如果设置（意思是绑定），则将原始函数（存储在<code>im_func</code>字段中）调用，并将第一个参数设置为实例。 如果未绑定，则所有参数都将不变地传递给原始函数。 <code>instancemethod_call()</code>的实际<code>C</code>实现稍微复杂一些，因为它包含一些类型检查。</p>
+<h1 id="静态方法和类方法"><a href="#静态方法和类方法" class="headerlink" title="静态方法和类方法"></a>静态方法和类方法</h1><p>非数据描述符为将函数绑定成方法这种常用模式提供了一种简单的机制。</p>
+<p>回顾一下，函数有一个<code>__get__()</code>方法，以便在属性访问时可以将函数转换为方法。非数据描述符将<code>obj.f(* args)</code>调用转换为<code>f(obj，* args)</code>。将<code>klass.f(* args)</code>调用变成<code>f(* args)</code>。</p>
+<p>该图表总结了绑定及其两个最有用的变体：</p>
+<table>
+<thead>
+<tr>
+<th>Transformation</th>
+<th>Called from an Object</th>
+<th>Called from a Class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>function</td>
+<td>f(obj, *args)</td>
+<td>f(*args)</td>
+</tr>
+<tr>
+<td>staticmethod</td>
+<td>f(*args)</td>
+<td>f(*args)</td>
+</tr>
+<tr>
+<td>classmethod</td>
+<td>f(type(obj), *args)</td>
+<td>f(klass, *args)</td>
+</tr>
+</tbody>
+</table>
+<p>静态方法原样返回函数。调用<code>c.f</code>或<code>C.f</code>相当于<code>object.__ getattribute__(c，&quot;f&quot;)</code>或<code>object.__getattribute__(C，&quot;f&quot;)</code>。因此，函数可以从对象或类中以相同的方式访问。</p>
+<p>不引用<code>self</code>的方法适合成为静态方法。</p>
+<p>例如，一个统计软件包可能包含实验数据的容器类。该类提供了用于计算数据的平均值，中值和其他描述性统计量。但是，可能有一些有用的功能在概念上是相关的，但不依赖于数据。例如，<code>erf(x)</code>是一个经常用到的例子，它出现在统计工作中，但不依赖于特定的数据集。它可以从对象或类中调用：<code>s.erf(1.5)-&gt; .9332</code>或<code>Sample.erf(1.5)-&gt; .9332</code>。</p>
+<p>由于静态方法将函数原样返回，因此下面的例子并不奇怪：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">E</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">print</span> x</span><br><span class="line"><span class="meta">... </span>    f = staticmethod(f)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> E.f(<span class="number">3</span>)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> E().f(<span class="number">3</span>)</span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>使用非数据描述符协议，<code>staticmethod()</code>的纯Python版本将如下所示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticMethod</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"Emulate PyStaticMethod_Type() in Objects/funcobject.c"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, f)</span>:</span></span><br><span class="line">        self.f = f</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, obj, objtype=None)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.f</span><br></pre></td></tr></table></figure>
+<p>与静态方法不同，类方法会在调用函数前将类引用添加到参数列表前。不管是对象还是类都是相同的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">E</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(klass, x)</span>:</span></span><br><span class="line"><span class="meta">... </span>         <span class="keyword">return</span> klass.__name__, x</span><br><span class="line"><span class="meta">... </span>    f = classmethod(f)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> E.f(<span class="number">3</span>)</span><br><span class="line">(<span class="string">'E'</span>, <span class="number">3</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> E().f(<span class="number">3</span>)</span><br><span class="line">(<span class="string">'E'</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>当函数只需要类引用而不需要其他数据的时候，这个行为就很有用了。类方法的一个用途是创建不同的类构造函数。在Python 2.3中，类方法<code>dict.fromkeys()</code>从一个<code>key</code>列表中创建一个新的词典。 纯Python的实现是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dict</span><span class="params">(object)</span>:</span></span><br><span class="line">    . . .</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fromkeys</span><span class="params">(klass, iterable, value=None)</span>:</span></span><br><span class="line">        <span class="string">"Emulate dict_fromkeys() in Objects/dictobject.c"</span></span><br><span class="line">        d = klass()</span><br><span class="line">        <span class="keyword">for</span> key <span class="keyword">in</span> iterable:</span><br><span class="line">            d[key] = value</span><br><span class="line">        <span class="keyword">return</span> d</span><br><span class="line">    fromkeys = classmethod(fromkeys)</span><br></pre></td></tr></table></figure>
+<p>现在可以像这样构建一个新的字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Dict.fromkeys(<span class="string">'abracadabra'</span>)</span><br><span class="line">&#123;<span class="string">'a'</span>: <span class="keyword">None</span>, <span class="string">'r'</span>: <span class="keyword">None</span>, <span class="string">'b'</span>: <span class="keyword">None</span>, <span class="string">'c'</span>: <span class="keyword">None</span>, <span class="string">'d'</span>: <span class="keyword">None</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>使用非数据描述符协议，<code>classmethod()</code>的纯Python版本看起来像这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassMethod</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="string">"Emulate PyClassMethod_Type() in Objects/funcobject.c"</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, f)</span>:</span></span><br><span class="line">        self.f = f</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, obj, klass=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> klass <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            klass = type(obj)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">newfunc</span><span class="params">(*args)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> self.f(klass, *args)</span><br><span class="line">        <span class="keyword">return</span> newfunc</span><br></pre></td></tr></table></figure>
+<h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a href="https://docs.python.org/2/howto/descriptor.html?highlight=descriptor" target="_blank" rel="noopener">https://docs.python.org/2/howto/descriptor.html?highlight=descriptor</a></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/descriptor/">descriptor</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/13/2018-03-13-深入理解python-super/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          深入理解python super
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/10/2018-03-07-python super中的mro表/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">python中的super到底是怎么样的（1）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#属性"><span class="nav-number">1.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数与方法"><span class="nav-number">2.</span> <span class="nav-text">函数与方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态方法和类方法"><span class="nav-number">3.</span> <span class="nav-text">静态方法和类方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">4.</span> <span class="nav-text">reference</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>寻找最大排列问题 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="算法python" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="有八个人去看电影。但是有一部分人只喜欢特殊的座位，大部分人不喜欢自己的座位。我们这要去抽象问题，ah和b都喜欢c的位置，而c喜欢a的位置。   现在我们开始思考这个问题。a和b都喜欢c的位置，那么我们要从a和b中挑选出一个  假设我们选b，那么我们删除a。这个时候我们发现c喜欢a的位置，但是a被删除了，所以我们这个时候也应该删除c，接着自然地我们同样要删除a。这个时候我们发现前三部分删完了，这并不">
+<meta name="keywords" content="算法,python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="寻找最大排列问题">
+<meta property="og:url" content="http://coordinate.wang/2018/03/06/2018-03-06-寻找最大排列问题/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="有八个人去看电影。但是有一部分人只喜欢特殊的座位，大部分人不喜欢自己的座位。我们这要去抽象问题，ah和b都喜欢c的位置，而c喜欢a的位置。   现在我们开始思考这个问题。a和b都喜欢c的位置，那么我们要从a和b中挑选出一个  假设我们选b，那么我们删除a。这个时候我们发现c喜欢a的位置，但是a被删除了，所以我们这个时候也应该删除c，接着自然地我们同样要删除a。这个时候我们发现前三部分删完了，这并不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fp2vcsr0l7j20ku08adgw.jpg">
+<meta property="og:updated_time" content="2018-04-10T01:56:21.325Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="寻找最大排列问题">
+<meta name="twitter:description" content="有八个人去看电影。但是有一部分人只喜欢特殊的座位，大部分人不喜欢自己的座位。我们这要去抽象问题，ah和b都喜欢c的位置，而c喜欢a的位置。   现在我们开始思考这个问题。a和b都喜欢c的位置，那么我们要从a和b中挑选出一个  假设我们选b，那么我们删除a。这个时候我们发现c喜欢a的位置，但是a被删除了，所以我们这个时候也应该删除c，接着自然地我们同样要删除a。这个时候我们发现前三部分删完了，这并不">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fp2vcsr0l7j20ku08adgw.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-03-06-寻找最大排列问题" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      寻找最大排列问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/06/2018-03-06-寻找最大排列问题/" class="article-date">
+	  <time datetime="2018-03-05T16:00:00.000Z" itemprop="datePublished">三月 6, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有八个人去看电影。但是有一部分人只喜欢特殊的座位，大部分人不喜欢自己的座位。我们这要去抽象问题，<code>a</code>h和<code>b</code>都喜欢<code>c</code>的位置，而<code>c</code>喜欢<code>a</code>的位置。</p>
+<center class="center"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fp2vcsr0l7j20ku08adgw.jpg"><br></center>
+
+<p>现在我们开始思考这个问题。<code>a</code>和<code>b</code>都喜欢<code>c</code>的位置，那么我们要从<code>a</code>和<code>b</code>中挑选出一个</p>
+<ul>
+<li>假设我们选<code>b</code>，那么我们删除<code>a</code>。这个时候我们发现<code>c</code>喜欢<code>a</code>的位置，但是<code>a</code>被删除了，所以我们这个时候也应该删除<code>c</code>，接着自然地我们同样要删除<code>a</code>。这个时候我们发现前三部分删完了，这并不是我们想要的，或者说这应该不是最优解。</li>
+<li>接着我们选<code>a</code>，那么我们删除<code>b</code>。因为没有人喜欢<code>b</code>，所以没有任何位置要删除。</li>
+</ul>
+<p>好的，我们回顾这个过程，我们会发现问题所在。因为最初<code>b</code>的位置没有人喜欢，所以一开始去除<code>b</code>是最好的做法。</p>
+<a id="more"></a>
+<p>好的，我们沿着这个思路继续思考，我们先将<code>b</code>和<code>g</code>删除。接着我们发现<code>g</code>删除后，<code>g</code>所指向的<code>h</code>就没有被指向了，接着我们很自然地去删除<code>h</code>。删除<code>h</code>后，我们发现<code>h</code>指向的<code>e</code>又没人指向了，所以这个时候我们就要删除<code>e</code>。删除<code>e</code>后，我们发现<code>e</code>指向的<code>d</code>又没人指向了，所以这个时候我们就要删除<code>d</code>。最后，我们得到的结果就是<code>a, c, f</code>。</p>
+<p>接着我们要做的就是将上述过程抽象成代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">A:最后剩余的座位</span></span><br><span class="line"><span class="string">B:所有人喜欢的座位集合</span></span><br><span class="line"><span class="string">C:没有人喜欢的座位</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">naive_max_perm</span><span class="params">(M, A=None)</span>:</span>  </span><br><span class="line">    <span class="keyword">if</span> A <span class="keyword">is</span> <span class="keyword">None</span>: <span class="comment"># The elt. set not supplied?  </span></span><br><span class="line">        A = set(range(len(M))) <span class="comment"># A = &#123;0, 1, ... , n-1&#125;  </span></span><br><span class="line">    <span class="keyword">if</span> len(A) == <span class="number">1</span>: </span><br><span class="line">        <span class="keyword">return</span> A <span class="comment"># Base case -- single-elt. A  </span></span><br><span class="line">    B = set(M[i] <span class="keyword">for</span> i <span class="keyword">in</span> A) <span class="comment"># The "pointed to" elements  </span></span><br><span class="line">    C = A - B <span class="comment"># "Not pointed to" elements  </span></span><br><span class="line">    <span class="keyword">if</span> C: <span class="comment"># Any useless elements?  </span></span><br><span class="line">        A.remove(C.pop()) <span class="comment"># Remove one of them  </span></span><br><span class="line">        <span class="keyword">return</span> naive_max_perm(M, A) <span class="comment"># Solve remaining problem  </span></span><br><span class="line">    <span class="keyword">return</span> A <span class="comment"># All useful -- return all</span></span><br></pre></td></tr></table></figure>
+<p>我们还有一个更加高效的做法，我们通过对于<code>所有人喜欢的座位集合</code>进行技术，例如<code>a:1</code>、<code>b:0</code>、<code>c:2</code>，这种做法减少了上面方案中间过程中创建<code>B</code>的开销。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_perm</span><span class="params">(M)</span>:</span>  </span><br><span class="line">    n = len(M) <span class="comment"># How many elements?  </span></span><br><span class="line">    A = set(range(n)) <span class="comment"># A = &#123;0, 1, ... , n-1&#125;   </span></span><br><span class="line">    count = Counter(M)  </span><br><span class="line">    Q = [i <span class="keyword">for</span> i <span class="keyword">in</span> A <span class="keyword">if</span> count[i] == <span class="number">0</span>] <span class="comment"># Useless elements  </span></span><br><span class="line">    <span class="keyword">while</span> Q: <span class="comment"># While useless elts. left...  </span></span><br><span class="line">        i = Q.pop() <span class="comment"># Get one  </span></span><br><span class="line">        A.remove(i) <span class="comment"># Remove it  </span></span><br><span class="line">        j = M[i] <span class="comment"># Who's it pointing to?  </span></span><br><span class="line">        count[j] -= <span class="number">1</span> <span class="comment"># Not anymore...  </span></span><br><span class="line">        <span class="keyword">if</span> count[j] == <span class="number">0</span>: <span class="comment"># Is j useless now?  </span></span><br><span class="line">            Q.append(j) <span class="comment"># Then deal w/it next  </span></span><br><span class="line">    <span class="keyword">return</span> A <span class="comment"># Return useful elts.</span></span><br></pre></td></tr></table></figure>
+<p>但是这种做法是如此的丑陋，远没有第一种做法美妙。</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          super(type, self)与super(type1, type2)的区别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/04/2018-03-04-棋盘缺一角问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">棋盘缺一角问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

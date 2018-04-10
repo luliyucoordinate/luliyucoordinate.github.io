@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>super(type, self)与super(type1, type2)的区别 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonsuper" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="好的，我最近通过一些实验发现，我的理解有一些问题。在此之前我们先关心一下python文档中是怎么描述super的  super(type[, object-or-type])  Return the superclass of type. If the second argument is omitted the super object returned is unbound. If the s">
+<meta name="keywords" content="python,super">
+<meta property="og:type" content="article">
+<meta property="og:title" content="super(type, self)与super(type1, type2)的区别">
+<meta property="og:url" content="http://coordinate.wang/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="好的，我最近通过一些实验发现，我的理解有一些问题。在此之前我们先关心一下python文档中是怎么描述super的  super(type[, object-or-type])  Return the superclass of type. If the second argument is omitted the super object returned is unbound. If the s">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-10T01:56:40.871Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="super(type, self)与super(type1, type2)的区别">
+<meta name="twitter:description" content="好的，我最近通过一些实验发现，我的理解有一些问题。在此之前我们先关心一下python文档中是怎么描述super的  super(type[, object-or-type])  Return the superclass of type. If the second argument is omitted the super object returned is unbound. If the s">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-03-08-super(type, self)与super(type1, type2)的区别" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      super(type, self)与super(type1, type2)的区别
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/" class="article-date">
+	  <time datetime="2018-03-07T16:00:00.000Z" itemprop="datePublished">三月 8, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>好的，我最近通过一些实验发现，我的理解有一些问题。在此之前我们先关心一下<code>python</code>文档中是怎么描述<code>super</code>的</p>
+<ul>
+<li>super(type[, object-or-type])<br>  Return the superclass of type. If the second argument is omitted the super object returned is unbound. If the second argument is an object, isinstance(obj, type) must be true. If the second argument is a type, issubclass(type2, type) must be true. super() only works for new-style classes.</li>
+</ul>
+<p>我之所以说我们之前 <a href="http://blog.csdn.net/qq_17550379/article/details/79487433" target="_blank" rel="noopener"> python super中的mro表</a>文章中还有一些问题没有解决，也是因为文档的第一句话<code>返回一个superclass类型</code>，但是我们这样测试的时候出现了问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">c = C()</span><br><span class="line">super(C, c) == A</span><br><span class="line">Out[<span class="number">18</span>]: <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>这就让我很困惑了，<strong>文档中的第一句描述是不对的</strong>。这其实很好理解</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A.__mro__</span><br><span class="line">Out[<span class="number">19</span>]: (__main__.A, __main__.Base, object)</span><br><span class="line">C.__mro__</span><br><span class="line">Out[<span class="number">20</span>]: (__main__.C, __main__.A, __main__.B, __main__.Base, object)</span><br></pre></td></tr></table></figure>
+<p>因为<code>A</code>的<code>mro</code>表中不包含<code>B</code>。好的，我们处理了第一个问题。</p>
+<p>我现在要提到的是两个新的概念<code>bound</code>和<code>unbound</code>，看这样的一个例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'name '</span>, self.name)</span><br><span class="line">a = Base(<span class="string">'a'</span>)</span><br></pre></td></tr></table></figure>
+<p>我们这样去做（python2.7下）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.func</span><br><span class="line">&lt;bound method Base.func of &lt;__main__.Base instance at <span class="number">0x03479440</span>&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Base.func</span><br><span class="line">&lt;unbound method Base.func&gt;</span><br></pre></td></tr></table></figure>
+<p>而在<code>python3.6</code>下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.func</span><br><span class="line">Out[<span class="number">35</span>]: &lt;bound method Base.func of &lt;__main__.Base object at <span class="number">0x0000026FBF418EF0</span>&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Base.func</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;ipython-input-36-5647957570f7&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    Base.func</span><br><span class="line">AttributeError: type object <span class="string">'Base'</span> has no attribute <span class="string">'func'</span></span><br></pre></td></tr></table></figure>
+<p>我们暂时不讨论这个变化，我们先在<code>python2.7</code>下看问题。字面上很容易理解<code>bound</code>就是绑定，我们通过实例去调用类的方法实际上是这样做的<code>Base.__dict__[&#39;func&#39;].__get__(a, Base)</code>，很容易验证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Base.__dict__[<span class="string">'func'</span>].__get__(a, Base) == a.func</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>而对于<code>unbound</code>操作来说</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Base.__dict__[<span class="string">'func'</span>].__get__(<span class="keyword">None</span>, Base) == Base.func</span><br><span class="line"><span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>你应该注意到了<code>bound</code>和<code>unbound</code>的区别，就是<code>__get__</code>操作的第一个参数是不是传入了一个实例对象。</p>
+<p>我们将上述的过程放到<code>python3.6</code>下同样也是成立的，以下是验证。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Base.__dict__[<span class="string">'func'</span>].__get__(a, Base) == a.func</span><br><span class="line">Out[<span class="number">46</span>]: <span class="keyword">True</span></span><br><span class="line">Base.__dict__[<span class="string">'func'</span>].__get__(<span class="keyword">None</span>, Base) == Base.func</span><br><span class="line">Out[<span class="number">47</span>]: <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>我们继续回到<code>super</code>的话题，我们这里给出<code>super</code>是什么。它是一个代理对象，用来访问<code>MRO</code>表中的方法。</p>
+<p>我们在<code>python2.7</code>下回答上一篇文章中没有提到的问题，<code>super(C, C)</code>和<code>super(C, c)</code>有什么关系</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, C)</span><br><span class="line">&lt;super: &lt;class 'C'&gt;, &lt;C object&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, c)</span><br><span class="line">&lt;super: &lt;class 'C'&gt;, &lt;C object&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, C).__init__ == A.__init__</span><br><span class="line"><span class="keyword">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, c).__init__ == A.__init__</span><br><span class="line"><span class="keyword">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, C) == super(C, c)</span><br><span class="line"><span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>我们发现这里出现一个然我们很困惑的东西，为什么<code>super(C, C)</code>和<code>super(C, c)</code>既相同又不相同？我想这应该是一个bug。我们到<code>python3.6</code>下验证</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">super(C, C)</span><br><span class="line">Out[<span class="number">89</span>]: &lt;super: __main__.C, __main__.C&gt;</span><br><span class="line">super(C, c)</span><br><span class="line">Out[<span class="number">90</span>]: &lt;super: __main__.C, &lt;__main__.C at <span class="number">0x26fbf253518</span>&gt;&gt;</span><br><span class="line">super(C, C).__init__ == A.__init__</span><br><span class="line">Out[<span class="number">91</span>]: <span class="keyword">True</span></span><br><span class="line">super(C, c).__init__ == A.__init__</span><br><span class="line">Out[<span class="number">92</span>]: <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>那么现在我们就应该猜到了<code>super(C, C).__init__</code>和<code>super(C, c).__init__</code>的区别，也就是一个<code>unbound</code>一个<code>bound</code>。很容易验证（<code>python 3.6</code>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">super(C, C).__init__</span><br><span class="line">Out[<span class="number">108</span>]: &lt;function __main__.A.__init__&gt;</span><br><span class="line">super(C, c).__init__</span><br><span class="line">Out[<span class="number">109</span>]: &lt;bound method A.__init__ of &lt;__main__.C object at <span class="number">0x0000026FBF253518</span>&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>但是在<code>python 2.7</code>下又出现了这样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, C).__init__</span><br><span class="line">&lt;unbound method C.__init__&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, c).__init__</span><br><span class="line">&lt;bound method C.__init__ of &lt;__main__.C object at <span class="number">0x039C0EF0</span>&gt;&gt;</span><br></pre></td></tr></table></figure>
+<p>原因可以看这篇<a href="http://blog.csdn.net/qq_17550379/article/details/79531891" target="_blank" rel="noopener">深入理解python super</a></p>
+<p>那么是否可以这样去做<code>super(C, C).__dict__[&#39;__init__&#39;].__get__(None, A)</code>，并不可以，这样做是错的！！！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>super(C, C).__dict__[<span class="string">'__init__'</span>].__get__(<span class="keyword">None</span>, A)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;ipython-input-96-07b8366bac1b&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    super(C, C).__dict__[<span class="string">'__init__'</span>].__get__(<span class="keyword">None</span>, A)</span><br><span class="line">TypeError: <span class="string">'getset_descriptor'</span> object <span class="keyword">is</span> <span class="keyword">not</span> subscriptable</span><br></pre></td></tr></table></figure>
+<p>究其原因，其实就像本文的一开头</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">super(C, C) == A</span><br><span class="line">Out[<span class="number">101</span>]: <span class="keyword">False</span></span><br><span class="line">super(C, c) == A</span><br><span class="line">Out[<span class="number">102</span>]: <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>原因我也说了，<code>super</code>返回的是一个代理对象，自然和对象本身不同。</p>
+<p>貌似没什么问题了，但是，，，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">python2<span class="number">.7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">print</span> super.__doc__</span><br><span class="line">super(type, obj) -&gt; bound super object; requires isinstance(obj, type)</span><br><span class="line">super(type) -&gt; unbound super object</span><br><span class="line">super(type, type2) -&gt; bound super object; requires issubclass(type2, type)</span><br><span class="line">Typical use to call a cooperative superclass method:</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">meth</span><span class="params">(self, arg)</span>:</span></span><br><span class="line">        super(C, self).meth(arg)</span><br><span class="line">python3<span class="number">.6</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(super.__doc__)</span><br><span class="line">super() -&gt; same as super(__class__, &lt;first argument&gt;)</span><br><span class="line">super(type) -&gt; unbound super object</span><br><span class="line">super(type, obj) -&gt; bound super object; requires isinstance(obj, type)</span><br><span class="line">super(type, type2) -&gt; bound super object; requires issubclass(type2, type)</span><br><span class="line">Typical use to call a cooperative superclass method:</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">meth</span><span class="params">(self, arg)</span>:</span></span><br><span class="line">        super().meth(arg)</span><br><span class="line">This works <span class="keyword">for</span> <span class="class"><span class="keyword">class</span> <span class="title">methods</span> <span class="title">too</span>:</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cmeth</span><span class="params">(cls, arg)</span>:</span></span><br><span class="line">        super().cmeth(arg)</span><br></pre></td></tr></table></figure>
+<p>你也看到了<code>super(type, type2)</code>是一个<code>bound</code>，QAQ。看这篇<a href="http://blog.csdn.net/qq_17550379/article/details/79531891" target="_blank" rel="noopener">深入理解python super</a></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/python/">python</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/super/">super</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/08/2018-03-10-关于python中super的困惑（3）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          关于python中super的困惑（3）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/06/2018-03-06-寻找最大排列问题/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">寻找最大排列问题</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

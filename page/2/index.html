@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2018-01-01-YOLOv2源码分析--reorg layer"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-03-07-python super中的mro表"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/">YOLOv2源码分析--reorg layer</a>
+      <a class="article-title" href="/2018/03/10/2018-03-07-python super中的mro表/">python中的super到底是怎么样的（1）</a>
     </h1>
   
 
@@ -124,8 +124,8 @@
     
     <div class="article-meta">
       
-	<a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" class="article-date">
-	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">一月 1, 2018</time>
+	<a href="/2018/03/10/2018-03-07-python super中的mro表/" class="article-date">
+	  <time datetime="2018-03-09T16:00:00.000Z" itemprop="datePublished">三月 10, 2018</time>
 	</a>
 
       
@@ -140,13 +140,12 @@
 
           
           <div class="entry-summary">
-          文章全部YOLOv2源码分析
-reorg layer中最关键的代码如下
-12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&#123;    int b,i,j,k;    int out_c = c/(stride*stride);    for(b = 0; b &lt; batch; ++b)&#123;        for(k = 0; k &lt; c; ++k)&#123;            for(j = 0; j &lt; h; ++j)&#123;                for(i = 0; i &lt; w; ++i)&#123;                    int in_index  = i + w*(j + h*(k + c*b));                    int c2 = k % out_c;                    int offset = k / out_c;                    int w2 = i*stride + offset % stride;                    int h2 = j*stride + offset / stride;                    int out_index = w2 + w*stride*(h2 + h*stride*(c2 + out_c*b));                    if(forward) out[out_index] = x[in_index];                    else out[in_index] = x[out_index];                &#125;            &#125;        &#125;    &#125;&#125;
+          子类中调用父类的方法可以使用super函数
+12345678910class A:    def func(self):        print('A.func')        class B(A):    def func(self):        print('B.func')        super().func() print(A().func())print(B().func())
 
         
           <p class="article-more-link">
-            <a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/#more">阅读全文</a>
+            <a href="/2018/03/10/2018-03-07-python super中的mro表/#more">阅读全文</a>
           </p>
         </div>
       
@@ -158,7 +157,7 @@ reorg layer中最关键的代码如下
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -170,7 +169,7 @@ reorg layer中最关键的代码如下
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-30-torch.autograd.backward中的参数问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-03-10-关于python中super的困惑（3）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -178,7 +177,7 @@ reorg layer中最关键的代码如下
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/">torch.autograd.backward中的参数问题</a>
+      <a class="article-title" href="/2018/03/08/2018-03-10-关于python中super的困惑（3）/">关于python中super的困惑（3）</a>
     </h1>
   
 
@@ -186,77 +185,8 @@ reorg layer中最关键的代码如下
     
     <div class="article-meta">
       
-	<a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" class="article-date">
-	  <time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">十二月 30, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-
-          
-          <div class="entry-summary">
-          torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False)
-给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=True。那么此函数需要指定grad_variables，它的长度应该和variables的长度匹配，里面保存了相关variable的梯度(对于不需要gradient tensor的variable，None是可取的)。
-此函数累积leaf variables计算的梯度。你可能需要在调用此函数之前将leaf variable的梯度置零。
-参数：
-
-variables（变量的序列） - 被求微分的叶子节点，即 ys 。
-grad_variables（（张量，变量）的序列或无） - 对应variable的梯度。仅当variable不是标量且需要求梯度的时候使用。
-retain_graph（bool，可选） - 如果为False，则用于释放计算grad的图。请注意，在几乎所有情况下，没有必要将此选项设置为True，通常可以以更有效的方式解决。默认值为create_graph的值。
-create_graph（bool，可选） - 如果为True，则将构造派生图，允许计算更高阶的派生产品。默认为False。
-
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/#more">阅读全文</a>
-          </p>
-        </div>
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/">pytorch</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-12-29-numpy.stack最通俗的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/">numpy.stack最通俗的理解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/" class="article-date">
-	  <time datetime="2017-12-28T16:00:00.000Z" itemprop="datePublished">十二月 29, 2017</time>
+	<a href="/2018/03/08/2018-03-10-关于python中super的困惑（3）/" class="article-date">
+	  <time datetime="2018-03-07T16:00:00.000Z" itemprop="datePublished">三月 8, 2018</time>
 	</a>
 
       
@@ -271,19 +201,12 @@ create_graph（bool，可选） - 如果为True，则将构造派生图，允许
 
           
           <div class="entry-summary">
-          numpy.stack(arrays, axis=0)
-沿着新轴连接数组的序列。
-axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它将是第一个维度，如果axis=-1，它将是最后一个维度。
-
-参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。 
-返回： 堆叠：ndarray堆叠数组比输入数组多一个维。
-
-上面是官方给出的解释，很难理解。
-我们先从增加维度说起。
+          我这次带来了新的问题，至于上次文末那个问题，我们还是
+我们看这样的一个代码
 
         
           <p class="article-more-link">
-            <a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/#more">阅读全文</a>
+            <a href="/2018/03/08/2018-03-10-关于python中super的困惑（3）/#more">阅读全文</a>
           </p>
         </div>
       
@@ -295,7 +218,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -307,7 +230,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-25-YOLOv2代码分析（七）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-03-08-super(type, self)与super(type1, type2)的区别"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -315,7 +238,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/">YOLOv2代码分析（七）</a>
+      <a class="article-title" href="/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/">super(type, self)与super(type1, type2)的区别</a>
     </h1>
   
 
@@ -323,13 +246,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/" class="article-date">
-	  <time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">十二月 25, 2017</time>
+	<a href="/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/" class="article-date">
+	  <time datetime="2018-03-07T16:00:00.000Z" itemprop="datePublished">三月 8, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
@@ -339,14 +262,16 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          原本一开始上来我们是要说LSTM和CRNN的，因为我觉得这部分内容对于YOLOv2来说并没有那么重要，所以我打算放到最后去讲。
-我们再次回到了parse_network_cfg函数
-1234//parse_network_cfgelse if(lt == CONNECTED)&#123;          l = parse_connected(options, params);      &#125;
-接着看后面这个parse_connected函数
+          好的，我最近通过一些实验发现，我的理解有一些问题。在此之前我们先关心一下python文档中是怎么描述super的
+
+super(type[, object-or-type])  Return the superclass of type. If the second argument is omitted the super object returned is unbound. If the second argument is an object, isinstance(obj, type) must be true. If the second argument is a type, issubclass(type2, type) must be true. super() only works for new-style classes.
+
+我之所以说我们之前  python super中的mro表文章中还有一些问题没有解决，也是因为文档的第一句话返回一个superclass类型，但是我们这样测试的时候出现了问题
+123c = C()super(C, c) == AOut[18]: False
 
         
           <p class="article-more-link">
-            <a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/#more">阅读全文</a>
+            <a href="/2018/03/08/2018-03-08-super(type, self)与super(type1, type2)的区别/#more">阅读全文</a>
           </p>
         </div>
       
@@ -354,11 +279,11 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/super/">super</a></li></ul>
 
       
     </footer>
@@ -370,7 +295,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-24-YOLOv2参数解析"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-03-06-寻找最大排列问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -378,7 +303,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/24/2017-12-24-YOLOv2参数解析/">YOLOv2参数解析</a>
+      <a class="article-title" href="/2018/03/06/2018-03-06-寻找最大排列问题/">寻找最大排列问题</a>
     </h1>
   
 
@@ -386,13 +311,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/24/2017-12-24-YOLOv2参数解析/" class="article-date">
-	  <time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">十二月 24, 2017</time>
+	<a href="/2018/03/06/2018-03-06-寻找最大排列问题/" class="article-date">
+	  <time datetime="2018-03-05T16:00:00.000Z" itemprop="datePublished">三月 6, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
@@ -402,12 +327,19 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          前言其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章YOLOv2源码分析
-参数总结其实yolo v2的参数主要集中在两个结构体中一个是network，一个是layer
+          有八个人去看电影。但是有一部分人只喜欢特殊的座位，大部分人不喜欢自己的座位。我们这要去抽象问题，ah和b都喜欢c的位置，而c喜欢a的位置。
+
+
+现在我们开始思考这个问题。a和b都喜欢c的位置，那么我们要从a和b中挑选出一个
+
+假设我们选b，那么我们删除a。这个时候我们发现c喜欢a的位置，但是a被删除了，所以我们这个时候也应该删除c，接着自然地我们同样要删除a。这个时候我们发现前三部分删完了，这并不是我们想要的，或者说这应该不是最优解。
+接着我们选a，那么我们删除b。因为没有人喜欢b，所以没有任何位置要删除。
+
+好的，我们回顾这个过程，我们会发现问题所在。因为最初b的位置没有人喜欢，所以一开始去除b是最好的做法。
 
         
           <p class="article-more-link">
-            <a href="/2017/12/24/2017-12-24-YOLOv2参数解析/#more">阅读全文</a>
+            <a href="/2018/03/06/2018-03-06-寻找最大排列问题/#more">阅读全文</a>
           </p>
         </div>
       
@@ -415,11 +347,11 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
 
       
     </footer>
@@ -431,7 +363,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-22-YOLOv2代码分析（六）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-03-04-棋盘缺一角问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -439,7 +371,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/">YOLOv2代码分析（六）</a>
+      <a class="article-title" href="/2018/03/04/2018-03-04-棋盘缺一角问题/">棋盘缺一角问题</a>
     </h1>
   
 
@@ -447,13 +379,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/" class="article-date">
-	  <time datetime="2017-12-21T16:00:00.000Z" itemprop="datePublished">十二月 22, 2017</time>
+	<a href="/2018/03/04/2018-03-04-棋盘缺一角问题/" class="article-date">
+	  <time datetime="2018-03-03T16:00:00.000Z" itemprop="datePublished">三月 4, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
@@ -463,12 +395,15 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          我们再次回到了parse_network_cfg函数
-1234//parse_network_cfgelse if(lt == ACTIVE)&#123;          l = parse_activation(options, params);      &#125;
+          问题的描述很简单，就是一个国际象棋的棋盘缺少一个方格。我们能否使用右边L的图案拼出左边这种棋盘（并且右边的图形不可以重叠）
+
+
+这是一道智力测试题，但是我们可以通过程序非常简洁的处理这个问题。
+首先，我们希望问题的规模缩小，我们首先将棋盘分成四个部分
 
         
           <p class="article-more-link">
-            <a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/#more">阅读全文</a>
+            <a href="/2018/03/04/2018-03-04-棋盘缺一角问题/#more">阅读全文</a>
           </p>
         </div>
       
@@ -476,11 +411,11 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
 
       
     </footer>
@@ -492,7 +427,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-21-YOLOv2代码分析（五）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-03-01-关于时间复杂度的几个典型证明"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -500,7 +435,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/">YOLOv2代码分析（五）</a>
+      <a class="article-title" href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a>
     </h1>
   
 
@@ -508,13 +443,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/" class="article-date">
-	  <time datetime="2017-12-20T16:00:00.000Z" itemprop="datePublished">十二月 21, 2017</time>
+	<a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/" class="article-date">
+	  <time datetime="2018-02-28T16:00:00.000Z" itemprop="datePublished">三月 1, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
@@ -524,12 +459,19 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          #0x01 make_convolutional_layer
-终于又回到了make_convolutional_layer这个函数
+          0x01 证明$O(f)+O(g) = O(f+g)$令$F(n)=O(f)$，则存在自然数$n_1$、正数$c_1$，使得任意自然数$n\geq n_1$，有：
+
+$F(n)\leq c_1f(n)$
+
+同理，令$G(n)=O(g)$，存在自然数$n_2$，正数$c_2$，使得对任意自然数$n\geq n_2$，有：
+
+$G(n)\leq c_2g(n)$
+
+令$c_3=max(c_1,c_2)$，$n_3=max(n_1,n_2)$，则对所有的$n\geq  n_3$，有：
 
         
           <p class="article-more-link">
-            <a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/#more">阅读全文</a>
+            <a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/#more">阅读全文</a>
           </p>
         </div>
       
@@ -537,11 +479,11 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/时间复杂度/">时间复杂度</a></li></ul>
 
       
     </footer>
@@ -553,7 +495,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-20-YOLOv2代码分析（四）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-02-21-Python-Pickle任意代码执行漏洞"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -561,7 +503,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/">YOLOv2代码分析（四）</a>
+      <a class="article-title" href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a>
     </h1>
   
 
@@ -569,13 +511,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/" class="article-date">
-	  <time datetime="2017-12-19T16:00:00.000Z" itemprop="datePublished">十二月 20, 2017</time>
+	<a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/" class="article-date">
+	  <time datetime="2018-02-20T16:00:00.000Z" itemprop="datePublished">二月 21, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
@@ -585,12 +527,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          0x01 backward_convolutional_layer12345678void backward_convolutional_layer(convolutional_layer l, network net)&#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/l.groups;	//每组卷积核的元素个数    int k = l.out_w*l.out_h;			//输出图像的元素个数    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);
-这里出现了一个gradient_array函数，我们看看这个函数有什么作用。
+          我们通常使用pickle将python对象序列化，但是pickle在加载时有一个副作用就是它会自动加载相应模块并构造实例对象。这样就造成了一个很危险的代码，如果被黑客利用的话会造成非常严重的后果。
+我首先在python2.7下测试，通过如下代码生成payload
+1234567891011import pickleimport osclass gen(object):    def __reduce__(self):        s = """echo test &gt; payload.txt"""         return os.system, (s,)        p = gen()payload = pickle.dumps(p)with open('payload.pkl', 'wb') as f:    f.write(payload)
 
         
           <p class="article-more-link">
-            <a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/#more">阅读全文</a>
+            <a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/#more">阅读全文</a>
           </p>
         </div>
       
@@ -598,11 +541,11 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pickle/">Pickle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -614,7 +557,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-19-YOLOv2代码分析（三）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-02-10-python实现2048"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -622,7 +565,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/">YOLOv2代码分析（三）</a>
+      <a class="article-title" href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a>
     </h1>
   
 
@@ -630,13 +573,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/" class="article-date">
-	  <time datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished">十二月 19, 2017</time>
+	<a href="/2018/02/10/2018-02-10-python实现2048/" class="article-date">
+	  <time datetime="2018-02-09T16:00:00.000Z" itemprop="datePublished">二月 10, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
@@ -646,14 +589,12 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          接着上一讲没有讲完的make_convolutional_layer函数
-0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = update_convolutional_layer;
-上来就是三坐大山^_^，我们先从第一个forward_convolutional_layer开始。
-0x0101 forward_convolutional_layer12345void forward_convolutional_layer(convolutional_layer l, network net)&#123;//传入卷积层参数和网络的总参数    int i, j;    fill_cpu(l.outputs*l.batch, 0, l.output, 1);
+          Tkinter是 Python 的标准 GUI 库。Python 使用 Tkinter 可以快速的创建 GUI 应用程序。
+由于 Tkinter 是内置到 python 的安装包中、只要安装好 Python 之后就能import Tkinter` 库、而且 IDLE 也是用Tkinter编写而成、对于简单的图形界面Tkinter` 还是能应付自如。
 
         
           <p class="article-more-link">
-            <a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/#more">阅读全文</a>
+            <a href="/2018/02/10/2018-02-10-python实现2048/#more">阅读全文</a>
           </p>
         </div>
       
@@ -661,11 +602,11 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -677,7 +618,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-17-YOLOv2代码分析（二）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-02-09-图片转字符画"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -685,7 +626,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/">YOLOv2代码分析（二）</a>
+      <a class="article-title" href="/2018/02/09/2018-02-09-图片转字符画/">图片转化为字符画</a>
     </h1>
   
 
@@ -693,13 +634,13 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/" class="article-date">
-	  <time datetime="2017-12-16T16:00:00.000Z" itemprop="datePublished">十二月 17, 2017</time>
+	<a href="/2018/02/09/2018-02-09-图片转字符画/" class="article-date">
+	  <time datetime="2018-02-08T16:00:00.000Z" itemprop="datePublished">二月 9, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
@@ -709,14 +650,16 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
           
           <div class="entry-summary">
-          0x01 parse_network_cfg我们继续前面没有说完的parse_network_cfg
-123//parse_network_cfgnode *n = sections-&gt;front;   if(!n) error("Config file has no sections");
-我么先要了解一下list结构
-12345678910typedef struct list&#123;    int size;    node *front;    node *back;&#125; list;typedef struct node&#123;    void *val;    struct node *next;    struct node *prev;&#125; node;
+          我们在使用linux的软件的时候经常会看到这样的字符画。
+
+
+你千万别认为是像C语言那样一个个字符打上去的^_^！今天我将通过python实现一个图片转化为字符画的小工具。
+首先我们需要定义一些字符，我们这里定义了这些字符
+1ASSIIC_CHAR = list("123q$e@x")
 
         
           <p class="article-more-link">
-            <a href="/2017/12/17/2017-12-17-YOLOv2代码分析（二）/#more">阅读全文</a>
+            <a href="/2018/02/09/2018-02-09-图片转字符画/#more">阅读全文</a>
           </p>
         </div>
       
@@ -724,11 +667,72 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-02-05-c++中空字符串解释为True的困惑"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/">c++中空字符串解释为True的困惑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/" class="article-date">
+	  <time datetime="2018-02-04T16:00:00.000Z" itemprop="datePublished">二月 5, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+
+          
+          <div class="entry-summary">
+          首先我们看这样这个问题
+123456int main ( )&#123;   if ("")      cout &lt;&lt; "hello"; // executes!   return 0;&#125;
+
+        
+          <p class="article-more-link">
+            <a href="/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/#more">阅读全文</a>
+          </p>
+        </div>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/空字符串/">空字符串</a></li></ul>
 
       
     </footer>
@@ -744,7 +748,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
+    <a class="extend prev" rel="prev" href="/">上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/3/">下一页</a>
   </nav>
 
 </section>
@@ -844,8 +848,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/01/2018-03-01-关于时间复杂度的几个典型证明/">关于时间复杂度的几个典型证明</a></h6>
-              <span>三月 1, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
+              <span>四月 9, 2018</span>
             </div>
 
           </li>
@@ -856,8 +860,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/">Python Pickle任意代码执行漏洞</a></h6>
-              <span>二月 21, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
+              <span>四月 7, 2018</span>
             </div>
 
           </li>
@@ -868,8 +872,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/10/2018-02-10-python实现2048/">Python实现2048</a></h6>
-              <span>二月 10, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
+              <span>四月 4, 2018</span>
             </div>
 
           </li>
@@ -880,8 +884,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/09/2018-02-09-图片转字符画/">图片转化为字符画</a></h6>
-              <span>二月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
+              <span>四月 2, 2018</span>
             </div>
 
           </li>
@@ -892,8 +896,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/02/05/2018-02-05-c++中空字符串解释为True的困惑/">c++中空字符串解释为True的困惑</a></h6>
-              <span>二月 5, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
+              <span>三月 31, 2018</span>
             </div>
 
           </li>
@@ -904,8 +908,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/01/26/2018-01-26-python字符串令牌解析/">python字符串令牌解析</a></h6>
-              <span>一月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
+              <span>三月 26, 2018</span>
             </div>
 
           </li>
@@ -919,7 +923,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">77</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">25</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">19</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -929,7 +933,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 10.71px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 13.57px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -939,7 +943,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

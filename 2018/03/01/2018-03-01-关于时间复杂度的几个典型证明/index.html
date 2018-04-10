@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="0x01 证明$O(f)+O(g) = O(f+g)$令$F(n)=O(f)$，则存在自然数$n_1$、正数$c_1$，使得任意自然数$n\geq n_1$，有：  $F(n)\leq c_1f(n)$  同理，令$G(n)=O(g)$，存在自然数$n_2$，正数$c_2$，使得对任意自然数$n\geq n_2$，有：  $G(n)\leq c_2g(n)$  令$c_3=max(c_1,c_2)">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-02T08:58:31.602Z">
+<meta property="og:updated_time" content="2018-03-30T02:01:39.838Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于时间复杂度的几个典型证明">
 <meta name="twitter:description" content="0x01 证明$O(f)+O(g) = O(f+g)$令$F(n)=O(f)$，则存在自然数$n_1$、正数$c_1$，使得任意自然数$n\geq n_1$，有：  $F(n)\leq c_1f(n)$  同理，令$G(n)=O(g)$，存在自然数$n_2$，正数$c_2$，使得对任意自然数$n\geq n_2$，有：  $G(n)\leq c_2g(n)$  令$c_3=max(c_1,c_2)">
@@ -161,8 +161,9 @@
 </ul>
 <p>故：</p>
 <ul>
-<li>$O(f)+O(g)=f(n)+g(n)\leq c_3f(n)+c_3g(n)=c_3(f(n)+g(n))=O(f+g)$</li>
+<li>$O(f)+O(g)=F(n)+G(n)\leq c_3f(n)+c_3g(n)=c_3(f(n)+g(n))$</li>
 </ul>
+<p>即得证。</p>
 <h1 id="0x02-证明-theta-f-theta-g-theta-f-g"><a href="#0x02-证明-theta-f-theta-g-theta-f-g" class="headerlink" title="0x02 证明$\theta(f)+\theta(g) = \theta(f+g)$"></a>0x02 证明$\theta(f)+\theta(g) = \theta(f+g)$</h1><p>令$F(n)=\theta (f)$，则存在自然数$n_1$和正数$c_1$、$c_2$，使得任意自然数$n\geq n_1$，有：</p>
 <ul>
 <li>$c_1f(n)\leq F(n)\leq c_2f(n)$</li>
@@ -199,9 +200,9 @@
 </ul>
 <p>显然的</p>
 <ul>
-<li>$c_1 (f(n)+g(n)) \leq max(F(n), G(n)) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
+<li>$c_1’ (f(n)+g(n)) \leq max(F(n), G(n)) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
 </ul>
-<p>这里$c_1$取$\frac {1}{2}$即可。</p>
+<p>这里$c_1’$取$\frac {1}{2}c_1$即可。</p>
 <h1 id="0x04-证明-theta-f-cdot-theta-g-theta-f-cdot-g"><a href="#0x04-证明-theta-f-cdot-theta-g-theta-f-cdot-g" class="headerlink" title="0x04 证明$\theta(f)\cdot \theta(g) = \theta(f\cdot g)$"></a>0x04 证明$\theta(f)\cdot \theta(g) = \theta(f\cdot g)$</h1><p>令$F(n)=\theta (f)$，则存在自然数$n_1$和正数$c_1$、$c_2$，使得任意自然数$n\geq n_1$，有：</p>
 <ul>
 <li>$c_1f(n)\leq F(n)\leq c_2f(n)$</li>
@@ -233,9 +234,9 @@
 </ul>
 <p>显然的</p>
 <ul>
-<li>$c_1 (f(n)+g(n)) \leq \theta(max(f(n), g(n))) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
+<li>$c_1’ (f(n)+g(n)) \leq \theta(max(f(n), g(n))) \leq F(n) + G(n) \leq c_2 (f(n) + g(n))$</li>
 </ul>
-<p>这里$c_1​$取$\frac {1}{2}​$即可。</p>
+<p>这里$c_1’$取$\frac {1}{2}c_1$即可。</p>
 
       
     </div>
@@ -277,6 +278,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/03/04/2018-03-04-棋盘缺一角问题/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          棋盘缺一角问题
+        
+      </div>
+    </a>
   
   
     <a href="/2018/02/21/2018-02-21-Python-Pickle任意代码执行漏洞/" id="article-nav-older" class="article-nav-link-wrap">

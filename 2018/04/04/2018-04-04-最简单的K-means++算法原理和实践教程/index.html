@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>最简单的K-means++算法原理和实践教程 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonK-means++" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="在之前的最简单的K-means算法原理和实践教程最后我提到了这样的一个问题，你可以通过一些实验发现，K-means算法的最后聚类结果和初始化k个中心的位置有着极大的关系。 而我们在前文中提到过一些不同的初始化方法（前文中使用的是第一种初始化方法）。我们这里的K-mean++算法使用的初始化方法，实际是第三种：  随机地选择第一个点，或取所有点的质心作为第一个点。然后，对于每个后继初始质心，选择离已">
+<meta name="keywords" content="python,K-means++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最简单的K-means++算法原理和实践教程">
+<meta property="og:url" content="http://coordinate.wang/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="在之前的最简单的K-means算法原理和实践教程最后我提到了这样的一个问题，你可以通过一些实验发现，K-means算法的最后聚类结果和初始化k个中心的位置有着极大的关系。 而我们在前文中提到过一些不同的初始化方法（前文中使用的是第一种初始化方法）。我们这里的K-mean++算法使用的初始化方法，实际是第三种：  随机地选择第一个点，或取所有点的质心作为第一个点。然后，对于每个后继初始质心，选择离已">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpzirizi8vj20af070wed.jpg">
+<meta property="og:updated_time" content="2018-04-10T01:59:11.972Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最简单的K-means++算法原理和实践教程">
+<meta name="twitter:description" content="在之前的最简单的K-means算法原理和实践教程最后我提到了这样的一个问题，你可以通过一些实验发现，K-means算法的最后聚类结果和初始化k个中心的位置有着极大的关系。 而我们在前文中提到过一些不同的初始化方法（前文中使用的是第一种初始化方法）。我们这里的K-mean++算法使用的初始化方法，实际是第三种：  随机地选择第一个点，或取所有点的质心作为第一个点。然后，对于每个后继初始质心，选择离已">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpzirizi8vj20af070wed.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-04-04-最简单的K-means++算法原理和实践教程" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      最简单的K-means++算法原理和实践教程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/" class="article-date">
+	  <time datetime="2018-04-03T16:00:00.000Z" itemprop="datePublished">四月 4, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在之前的<a href="https://blog.csdn.net/qq_17550379/article/details/79794193" target="_blank" rel="noopener">最简单的K-means算法原理和实践教程</a>最后我提到了这样的一个问题，你可以通过一些实验发现，<code>K-means</code>算法的最后聚类结果和初始化<code>k</code>个中心的位置有着极大的关系。</p>
+<p>而我们在前文中提到过一些不同的初始化方法（前文中使用的是第一种初始化方法）。我们这里的<code>K-mean++</code>算法使用的初始化方法，实际是第三种：</p>
+<ul>
+<li>随机地选择第一个点，或取所有点的质心作为第一个点。然后，对于每个后继初始质心，选择离已经选取过的初始质心最远的点。使用这种方法，确保了选择的初始质心不仅是随机的，而且是散开的。但是，这种方法可能选中离群点。此外，求离当前初始质心集最远的点开销也非常大。为了克服这个问题，通常该方法用于点样本。由于离群点很少（多了就不是离群点了），它们多半不会在随机样本中出现。计算量也大幅减少。</li>
+</ul>
+<a id="more"></a>
+<p>我们知道之前的<code>K-means</code>算法思路是这样子的：</p>
+<ol>
+<li>选取k个初始中心点 $C = {c_1, . . . , c_k}$.</li>
+<li>对于每一个$ i \in {1, . . . , k}$, 将 $C_i$ 设置为 $X$中比所有 $j \neq i$都靠近的点 $c_j$ 的集合.</li>
+<li>对于每一个 $i \in {1, . . . , k}$, 将 $c_i$ 设置为 $C_i$中所有点的质心:$c_i = \frac{1}{\left| C_i \right|}\sum_{x\in C_i}{x}$</li>
+<li>重复(2)(3)，直到所有$C$值的变化小于给定阈值或者达到最大迭代次数。</li>
+</ol>
+<p>现在的<code>K-means++</code>算法思路是这样子的</p>
+<ol>
+<li>从$X$中随机选取一个中心点 $c_1$.</li>
+<li>计算$X$中的每一个样本点与$c_1$之间的距离，通过计算概率$\frac{D(x’)^2}{\sum_{x\in X}{D(x)^2}}$($D(x)$表示每个样本点到最近中心的距离)， 选出概率最大的值对应的点作为下一个中心$c_i = x’ \in X$</li>
+<li>重复步骤(2)，直到我们选择了所有k个中心</li>
+<li>对k个初始化的中心，利用<code>K-means</code>算法计算最终的中心。</li>
+</ol>
+<p>沿着上述算法思路，我们可以很快的给出对应的code</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">_k_init(data, k, x_squared_norms, random_state, n_local_trials=None)</span></span><br><span class="line"><span class="string">作用：根据k-means++初始化质心</span></span><br><span class="line"><span class="string">data : 输入数据</span></span><br><span class="line"><span class="string">k : 中心数</span></span><br><span class="line"><span class="string">x_squared_norms : 每个数据点的2范数的平方</span></span><br><span class="line"><span class="string">random_state : 随机数生成器，用于初始化中心</span></span><br><span class="line"><span class="string">n_local_trials :通过一种特别的方式对K-means聚类选择初始簇中心,从而加快收敛速度</span></span><br><span class="line"><span class="string">'''</span>      </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__k_init</span><span class="params">(self, x_squared_norms, random_state, n_local_trials=None)</span>:</span></span><br><span class="line"></span><br><span class="line">    n_samples, n_features = self.data.shape</span><br><span class="line"></span><br><span class="line">    centers = np.empty((self.k, n_features), dtype=self.data.dtype)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> x_squared_norms <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>, <span class="string">'x_squared_norms None in _k_init'</span></span><br><span class="line">    <span class="keyword">if</span> n_local_trials <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="comment"># This is what Arthur/Vassilvitskii tried, but did not report</span></span><br><span class="line">        <span class="comment"># specific results for other than mentioning in the conclusion</span></span><br><span class="line">        <span class="comment"># that it helped.</span></span><br><span class="line">        n_local_trials = <span class="number">2</span> + int(np.log(self.k))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 随机的选择第一个中心</span></span><br><span class="line">    center_id = random_state.randint(n_samples)</span><br><span class="line">    <span class="keyword">if</span> sp.issparse(self.data):</span><br><span class="line">        centers[<span class="number">0</span>] = self.data[center_id].toarray()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        centers[<span class="number">0</span>] = self.data[center_id]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化最近距离的列表，并计算当前概率</span></span><br><span class="line">    closest_dist_sq = euclidean_distances(</span><br><span class="line">        centers[<span class="number">0</span>, np.newaxis], self.data, Y_norm_squared=x_squared_norms,</span><br><span class="line">        squared=<span class="keyword">True</span>)<span class="comment">#计算X与中心的距离的平方得到距离矩阵</span></span><br><span class="line">    current_pot = closest_dist_sq.sum()<span class="comment">#距离矩阵的和</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 选择其余n_clusters-1点</span></span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> range(<span class="number">1</span>, self.k):</span><br><span class="line">        <span class="comment"># 通过概率的比例选择中心点候选点</span></span><br><span class="line">        <span class="comment"># 离已经存在的中心最近的距离的平方</span></span><br><span class="line">        rand_vals = random_state.random_sample(n_local_trials) * current_pot</span><br><span class="line">        <span class="comment">#将rand_vals插入原有序数组距离矩阵的累积求和矩阵中，并返回插入元素的索引值</span></span><br><span class="line">        candidate_ids = np.searchsorted(stable_cumsum(closest_dist_sq),</span><br><span class="line">                                        rand_vals)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 计算离中心候选点的距离</span></span><br><span class="line">        distance_to_candidates = euclidean_distances(</span><br><span class="line">            self.data[candidate_ids], self.data, Y_norm_squared=x_squared_norms, squared=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 决定哪个中心候选点是最好</span></span><br><span class="line">        best_candidate = <span class="keyword">None</span></span><br><span class="line">        best_pot = <span class="keyword">None</span></span><br><span class="line">        best_dist_sq = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">for</span> trial <span class="keyword">in</span> range(n_local_trials):</span><br><span class="line">            <span class="comment"># Compute potential when including center candidate</span></span><br><span class="line">            <span class="comment">#多个数组的对应位置上元素大小的比较：返回每个索引位置上的最小值</span></span><br><span class="line">            new_dist_sq = np.minimum(closest_dist_sq,</span><br><span class="line">                                     distance_to_candidates[trial])</span><br><span class="line">            new_pot = new_dist_sq.sum()<span class="comment">#求和</span></span><br><span class="line"></span><br><span class="line">            <span class="comment"># 如果是到目前为止最好的实验结果则存储该结果</span></span><br><span class="line">            <span class="keyword">if</span> (best_candidate <span class="keyword">is</span> <span class="keyword">None</span>) <span class="keyword">or</span> (new_pot &lt; best_pot):</span><br><span class="line">                best_candidate = candidate_ids[trial]</span><br><span class="line">                best_pot = new_pot</span><br><span class="line">                best_dist_sq = new_dist_sq</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Permanently add best center candidate found in local tries</span></span><br><span class="line">        <span class="comment">#把从试验中选出的最好的中心候选点添加到中心点集中</span></span><br><span class="line">        <span class="keyword">if</span> sp.issparse(self.data):</span><br><span class="line">            centers[c] = self.data[best_candidate].toarray()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            centers[c] = self.data[best_candidate]</span><br><span class="line">        current_pot = best_pot</span><br><span class="line">        closest_dist_sq = best_dist_sq</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> centers</span><br></pre></td></tr></table></figure>
+<p>以上代码作为<code>K-means</code>初始化部分，选用的是<code>scikit-learn</code>中的做法。</p>
+<p>所以如果我们要使用<code>K-means</code>算法就很简单了，只要安装了<code>scikit-learn</code>，通过下面的代码就可以解决了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">X = np.array([[<span class="number">1</span>,<span class="number">3</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">kmeans = KMeans(n_clusters=<span class="number">2</span>, init=<span class="string">'k-means++'</span>).fit_predict(X)</span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=kmeans, s=<span class="number">100</span>)</span><br><span class="line">plt.show()</span><br><span class="line">print(kmeans)</span><br></pre></td></tr></table></figure>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpzirizi8vj20af070wed.jpg"><br></center>
+
+<p>reference:</p>
+<p>Arthur D, Vassilvitskii S. k-means++:the advantages of careful seeding[C]// Eighteenth Acm-Siam Symposium on Discrete Algorithms. Society for Industrial and Applied Mathematics, 2007:1027-1035.</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/K-means/">K-means++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Iterative Visual Reasoning Beyond Convolutions论文笔记
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">最简单的K-means算法原理和实践教程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

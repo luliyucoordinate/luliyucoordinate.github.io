@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Iterative Visual Reasoning Beyond Convolutions论文笔记 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Li Fei FeiGoogle" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="论文地址：Iterative Visual Reasoning Beyond Convolutions 0x00 论文简述我们碰到过很多这样的问题：如果一个物体很小，或者目标很模糊，或者这个物体被遮住一部分，那么我们在做目标检测时，我们现在的算法会忽略这些目标。但是人类可以通过周边的事物以及物体的大致形状推断出这个目标的类型。如图：">
+<meta name="keywords" content="Li Fei Fei,Google">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Iterative Visual Reasoning Beyond Convolutions论文笔记">
+<meta property="og:url" content="http://coordinate.wang/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="论文地址：Iterative Visual Reasoning Beyond Convolutions 0x00 论文简述我们碰到过很多这样的问题：如果一个物体很小，或者目标很模糊，或者这个物体被遮住一部分，那么我们在做目标检测时，我们现在的算法会忽略这些目标。但是人类可以通过周边的事物以及物体的大致形状推断出这个目标的类型。如图：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq4c4qlwkwj20fy0lidta.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq4c4tt7ezj214709cn5x.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq4c4wkpesj209h066dgj.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq4c4zoodnj20ak04eq3n.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq4c52kqq0j202n05odfq.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq4c5awm1aj204q087aaf.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq4c5d7lo6j20hl0ep41b.jpg">
+<meta property="og:updated_time" content="2018-04-10T01:59:21.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Iterative Visual Reasoning Beyond Convolutions论文笔记">
+<meta name="twitter:description" content="论文地址：Iterative Visual Reasoning Beyond Convolutions 0x00 论文简述我们碰到过很多这样的问题：如果一个物体很小，或者目标很模糊，或者这个物体被遮住一部分，那么我们在做目标检测时，我们现在的算法会忽略这些目标。但是人类可以通过周边的事物以及物体的大致形状推断出这个目标的类型。如图：">
+<meta name="twitter:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq4c4qlwkwj20fy0lidta.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Iterative Visual Reasoning Beyond Convolutions论文笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/" class="article-date">
+	  <time datetime="2018-04-06T16:00:00.000Z" itemprop="datePublished">四月 7, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>论文地址：<a href="https://arxiv.org/abs/1803.11189v1" target="_blank" rel="noopener">Iterative Visual Reasoning Beyond Convolutions</a></p>
+<h1 id="0x00-论文简述"><a href="#0x00-论文简述" class="headerlink" title="0x00 论文简述"></a>0x00 论文简述</h1><p>我们碰到过很多这样的问题：如果一个物体很小，或者目标很模糊，或者这个物体被遮住一部分，那么我们在做目标检测时，我们现在的算法会忽略这些目标。但是人类可以通过周边的事物以及物体的大致形状推断出这个目标的类型。如图：</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq4c4qlwkwj20fy0lidta.jpg" width="300" height="400"><br></center>
+
+<a id="more"></a>
+<p>上图左上角中的窗户，从左往右第一个窗户，由于被电线杆遮住一部分，变得很难辨认，但是我们可以从后面的窗户去推测出这是一个窗户。我们还可以看到，中间的车中坐着一个人（但是这是经过我们推测出来的），但是图像上很模糊。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fq4c4tt7ezj214709cn5x.jpg"><br></center>
+
+<p>这篇文章主要提出了一种空间推理和语义推理的通用框架。算法核心有两个部分构成。</p>
+<ul>
+<li>基于空间记忆的局部模块，通过卷积网络进行像素级的局部推理</li>
+<li>基于图结构的全局模块，用于全局推理</li>
+</ul>
+<h1 id="0x01-局部模块"><a href="#0x01-局部模块" class="headerlink" title="0x01 局部模块"></a>0x01 局部模块</h1><p>局部模块中：</p>
+<ul>
+<li>空间存储器$s_i$，该模块用于存储先前的并行更新认知。该模块是一个三维张量（高度H，宽度W和深度D=512）</li>
+<li>推理模块卷积网络C，由三个<code>3*3</code>的卷积核和两个4096的全连接层组成。</li>
+</ul>
+<p>给定一个未更新的图像区域r，先通过特征提取，然后使用双线性插值将其调整为大小（<code>7*7</code>）的方阵h。因为高层的特征是覆盖整个区域的向量，所以我们将这个向量附加到所有位置，通过<code>1*1</code>的卷积核来提取特征，并且输出$f_r$。记忆存储器$s_i$中的相同区域也提取出来，调整为<code>7*7</code>，标记为$s_r$。这一步后，我们使用GRU：</p>
+<ul>
+<li>$s_r’ = u\circ s_r + (1-u)\circ \sigma(W_f f_r+W_s(z\circ s_r)+b)$</li>
+</ul>
+<p>其中，$s_r’$是$r$更新后的记忆，$u$是更新后的门，$z$是重置门，$W_f$，$W_s$和$b$分别是卷积的权重和偏向，$\circ$表示<code>entry-wise</code>矩阵内积，$\sigma$表示激活函数。更新后，$s_r’$通过提取特征和尺寸调整重新放回$S$</p>
+<h1 id="0x02-全局模块"><a href="#0x02-全局模块" class="headerlink" title="0x02 全局模块"></a>0x02 全局模块</h1><p>全局模块由三部分组成：</p>
+<ul>
+<li>我们将不同的类别表示为节点，建立边来获取他们之间的联系，这部分称为知识图</li>
+<li>每个节点代表图像的某个区域，这部分称为区域图</li>
+<li>将不同的区域分配给不同的类，这部分称为分配图</li>
+</ul>
+<p>对于每个节点之间，定义三条边，分别表示：</p>
+<ul>
+<li>相对位置</li>
+<li>一个区域是否属于某个类。</li>
+<li>构建类间的关系。“is-kind-of”蛋糕和食物。”is-part-of”车轮和车。”相似” 豹和猎豹。</li>
+</ul>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq4c4wkpesj209h066dgj.jpg"><br></center>
+
+<p>如图所示，四个节点之间通过不同的边连接。每个节点表示一个输入特征向量$M_i$。中间的$A_j$表示连接矩阵，用来描述各边$M_i$之间的关系，我们通过训练学习到一组权重$W$。最后的输出为$G$。</p>
+<p>接着就是推理的过程。我们假设输入是$M_r$和$M_c$（类别），它们的深度D=512。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq4c4zoodnj20ak04eq3n.jpg"><br></center>
+
+<p>输出$G^{spatial}_r$可以表示为</p>
+<ul>
+<li>$G^{spatial}<em>r = \sum</em>{e \in \epsilon_{r \rightarrow r}} {A_e M_r W_e}$</li>
+</ul>
+<p>$A_e$就是前面的连接矩阵，$M_r$是输入矩阵，$W_e$就是前面的权重矩阵。</p>
+<p>将不同区域映射到不同类得到矩阵$A_{e \rightarrow c}$ 和矩阵$W_{e \rightarrow c}$</p>
+<ul>
+<li>$G^{semantic}<em>r = \sum</em>{e \in \epsilon_{c \rightarrow c}} {A_e \sigma (A_{e_{r \rightarrow c}}M_rW_{e_{r \rightarrow c}} +M_cW_c)W_e}$</li>
+</ul>
+<p>最后的输出</p>
+<ul>
+<li>$G_r = \sigma(G^{spatial}<em>r+\sigma(A</em>{e_{c \rightarrow r}}G^{semantic}_cW_{e_{c \rightarrow r}}))$</li>
+</ul>
+<h1 id="0x03-融合"><a href="#0x03-融合" class="headerlink" title="0x03 融合"></a>0x03 融合</h1><p>通过加入<code>cross-feed</code>连接。将局部特征和全局特征连接，并且利用<code>GRU</code>更新输出$S_i$和$M_i$</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fq4c52kqq0j202n05odfq.jpg"><br></center>
+
+<p>文章使用了attention（注意力机制），通过attention值（也就是图中的$a_i$）表示当前预测与其他模块预测的相对置信度。通过$a_i$和$f$的融合，实际上是一种加权表示。最后的输出表示为</p>
+<ul>
+<li>$f = \sum_n{w_nf_n} $     where    $w_n=\frac{exp(-a_n)}{\sum_{n’} exp(-a’_n)}$</li>
+</ul>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq4c5awm1aj204q087aaf.jpg"><br></center>
+
+<h1 id="0x04-结果"><a href="#0x04-结果" class="headerlink" title="0x04 结果"></a>0x04 结果</h1><p>通过这种结构获得的收益远高于增加网络的深度。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fq4c5d7lo6j20hl0ep41b.jpg" width="300" height="300"><br></center>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Google/">Google</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Li-Fei-Fei/">Li Fei Fei</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          目标检测中的mAP计算
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">最简单的K-means++算法原理和实践教程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-论文简述"><span class="nav-number">1.</span> <span class="nav-text">0x00 论文简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-局部模块"><span class="nav-number">2.</span> <span class="nav-text">0x01 局部模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-全局模块"><span class="nav-number">3.</span> <span class="nav-text">0x02 全局模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-融合"><span class="nav-number">4.</span> <span class="nav-text">0x03 融合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-结果"><span class="nav-number">5.</span> <span class="nav-text">0x04 结果</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

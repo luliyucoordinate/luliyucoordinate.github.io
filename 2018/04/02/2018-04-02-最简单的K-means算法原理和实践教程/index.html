@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>最简单的K-means算法原理和实践教程 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonK-means" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="0x00 算法简介K-means算法是传统的机器学习算法中非监督学习算法中的一种。 算法思想：从空间中K个点为中心进行分类，对最靠近他们的对象归类。通过不断的迭代，依次得到不同类的中心，直到最后所有类的中心不再变化。 0x01 算法流程输入：k，data[n]。">
+<meta name="keywords" content="python,K-means">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最简单的K-means算法原理和实践教程">
+<meta property="og:url" content="http://coordinate.wang/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="0x00 算法简介K-means算法是传统的机器学习算法中非监督学习算法中的一种。 算法思想：从空间中K个点为中心进行分类，对最靠近他们的对象归类。通过不断的迭代，依次得到不同类的中心，直到最后所有类的中心不再变化。 0x01 算法流程输入：k，data[n]。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpygapyvb8j204n03ot8i.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygat5y82j204e03q0sk.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpygavtdjyj204h03l3yd.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpygayq9lzj204d03owec.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygbleunkg206405y0u5.gif">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygb23cazj20af070wed.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpygbiltovj20af070dfq.jpg">
+<meta property="og:updated_time" content="2018-04-10T01:58:49.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="最简单的K-means算法原理和实践教程">
+<meta name="twitter:description" content="0x00 算法简介K-means算法是传统的机器学习算法中非监督学习算法中的一种。 算法思想：从空间中K个点为中心进行分类，对最靠近他们的对象归类。通过不断的迭代，依次得到不同类的中心，直到最后所有类的中心不再变化。 0x01 算法流程输入：k，data[n]。">
+<meta name="twitter:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpygapyvb8j204n03ot8i.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-04-02-最简单的K-means算法原理和实践教程" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      最简单的K-means算法原理和实践教程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/" class="article-date">
+	  <time datetime="2018-04-01T16:00:00.000Z" itemprop="datePublished">四月 2, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0x00-算法简介"><a href="#0x00-算法简介" class="headerlink" title="0x00 算法简介"></a>0x00 算法简介</h1><p><code>K-means</code>算法是传统的机器学习算法中非监督学习算法中的一种。</p>
+<p>算法思想：从空间中K个点为中心进行分类，对最靠近他们的对象归类。通过不断的迭代，依次得到不同类的中心，直到最后所有类的中心不再变化。</p>
+<h1 id="0x01-算法流程"><a href="#0x01-算法流程" class="headerlink" title="0x01 算法流程"></a>0x01 算法流程</h1><p>输入：k，data[n]。 </p>
+<a id="more"></a>
+<p>输出：满足方差最小标准的k个聚类。</p>
+<ul>
+<li>选择k个初始中心点，例如c[0]=X[0] , … , c[k-1]=X[k-1]</li>
+<li>对于X[0]….X[n]，分别与c[0]…c[k-1]比较，假定与c[i]差值最少，就标记为i</li>
+<li>对于所有标记为i点，重新计算c[i]={ 所有标记为i的样本的每个特征的均值}</li>
+<li>重复(2)(3)，直到所有c[i]值的变化小于给定阈值或者达到最大迭代次数。</li>
+</ul>
+<p>在数据域内（以彩色显示）随机产生k个初始“中心”（在这种情况下，k = 3）。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpygapyvb8j204n03ot8i.jpg"><br></center>
+
+
+<p>通过将每个观察值与最近的中心相关联来创建k个群集。 这里的分区表示由中心生成的<code>Voronoi</code>图。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygat5y82j204e03q0sk.jpg"><br></center>
+
+<p>k个分类的中心成为新的中心。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpygavtdjyj204h03l3yd.jpg"><br></center>
+
+
+<p>重复步骤2和3直到收敛。</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpygayq9lzj204d03owec.jpg"><br></center>
+
+
+<center href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygbleunkg206405y0u5.gif" data-lightbox="roadtrip"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygbleunkg206405y0u5.gif" class="img-fluid"><br><br><br># 0x02 中心的初始化<br><br>选择适当的初始质心是基本<code>K-means</code>算法的关键步骤。常见的方法是随机的选取初始中心，但是这样分类的质量常常很差。处理选取初始质心问题的一种常用技术是：多次运行，每次使用一组不同的随机初始中心，然后选取具有最小<code>SSE</code>（误差的平方和）的分组集。这种策略简单，但是效果可能不好，这取决于数据集和寻找的分组的个数。<br><br>第二种有效的方法是，取一个样本，并使用层次聚类技术对它聚类。从层次聚类中提取K个分类，并用这些类的质心作为初始中心。该方法通常很有效，但仅对下列情况有效：<br><br>- 样本相对较小，例如数百到数千（层次聚类开销较大）<br>- K相对于样本大小较小<br><br>第三种选择初始中心的方法，随机地选择第一个点，或取所有点的质心作为第一个点。然后，对于每个后继初始质心，选择离已经选取过的初始质心最远的点。使用这种方法，确保了选择的初始质心不仅是随机的，而且是散开的。但是，这种方法可能选中离群点。此外，求离当前初始质心集最远的点开销也非常大。为了克服这个问题，通常该方法用于点样本。由于离群点很少（多了就不是离群点了），它们多半不会在随机样本中出现。计算量也大幅减少。<br><br>第四种方法是基于<code>Canopy Method</code>的聚类算法，将聚类过程分为两个阶段<br><br>- 聚类最耗费计算的地方是计算对象相似性的时候，<code>Canopy Method</code>在第一阶段选择简单、计算代价较低的方法计算对象相似性，将相似的对象放在一个子集中，这个子集被叫做<code>Canopy</code>，通过一系列计算得到若干<code>Canopy</code>，<code>Canopy</code>之间可以是重叠的，但不会存在某个对象不属于任何<code>Canopy</code>的情况，可以把这一阶段看做数据预处理<br>- 在各个<code>Canopy</code> 内使用传统的聚类方法(如<code>K-means</code>)，不属于同一<code>Canopy</code> 的对象之间不进行相似性计算。<br><br>从这个方法起码可以看出两点好处：首先，<code>Canopy</code>不要太大且<code>Canopy</code>之间重叠的不要太多的话会大大减少后续需要计算相似性的对象的个数；其次，类似于<code>K-means</code>这样的聚类方法是需要人为指出<code>K</code>的值的，通过第一步得到的<code>Canopy</code>个数完全可以作为这个<code>K</code>值，一定程度上减少了选择<code>K</code>的盲目性。<br><br># 0x03 实际计算<br><br>我们将通过实际的计算得到相应的结果，这里我们使用第一种初始化方法，我们这里<code>K=2</code>。首先，我们先假设<code>A(1, 3)</code>、<code>B(4, 3)</code>、<code>C(2, 4)</code>、<code>D(3,1 )</code>四个点，我们取<code>A</code>和<code>B</code>作为初始的中心<br><br><center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpygb23cazj20af070wed.jpg"><br></center>
+
+<p>我们可以得到坐标的矩阵$\left[\begin{matrix}1 &amp; 4 &amp; 2 &amp; 3\3 &amp; 3 &amp; 4 &amp; 1 \end{matrix}\right]$</p>
+<p>由我们前面的假设我们此时的中心为</p>
+<ul>
+<li>$e_1=(1,3)$ $e_2=(4,3)$</li>
+</ul>
+<p>我们分别计算各点离各中心点的欧氏距离，例如<code>A</code>和<code>B</code>的距离</p>
+<ul>
+<li>$AB = \sqrt{(1-4)^2 +(3 - 3)^2} = 3$</li>
+</ul>
+<p>同样的，<code>A</code>剩余各点的距离分别是<code>[0, 3, 1.41, 2.83]</code>，而<code>B</code>和各点的距离<code>[3, 0, 2.24, 2.24]</code>，最后得到一个距离矩阵</p>
+<ul>
+<li>$D=\left[\begin{matrix}0 &amp; 3 &amp; 1.41 &amp; 2.83\3 &amp; 0 &amp; 2.24 &amp; 2.24 \end{matrix}\right]$</li>
+</ul>
+<p>通过这个距离矩阵，我们得到相应的分组矩阵（我们将距离两个中心点最小的距离标记为1）</p>
+<ul>
+<li>$G =\left[\begin{matrix}1 &amp; 0 &amp; 1 &amp; 0\0 &amp; 1 &amp; 0 &amp; 1 \end{matrix}\right]$</li>
+</ul>
+<p>通过分组矩阵和坐标矩阵，我们可以计算出新的中心点的位置，例如，我们看到分组矩阵中，<code>A</code>和<code>C</code>分为一组，那么我们通过计算<code>A</code>和<code>C</code>中点的坐标（$(\frac{1 + 2}{2}, \frac{3 + 4}{2})$）。最后我们得到了新的中心点</p>
+<ul>
+<li>$e_1=(1.5, 3.5)$ $e_2=(3.5, 2)$</li>
+</ul>
+<p>对应的结果如下图</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1fpygbiltovj20af070dfq.jpg"><br></center>
+
+<p>接着我们重复上述过程，我们计算出新的距离矩阵</p>
+<ul>
+<li>$D=\left[\begin{matrix}0.71 &amp; 2.55 &amp; 0.71 &amp; 2.92\2.69 &amp; 1.12 &amp; 2.5 &amp; 1.12 \end{matrix}\right]$</li>
+</ul>
+<p>同样的，我们算出对应的分组矩阵</p>
+<ul>
+<li>$G =\left[\begin{matrix}1 &amp; 0 &amp; 1 &amp; 0\0 &amp; 1 &amp; 0 &amp; 1 \end{matrix}\right]$</li>
+</ul>
+<p>通过分组矩阵和坐标矩阵，我们可以计算出新的中心点的位置</p>
+<ul>
+<li>$e_1=(1.5, 3.5)$ $e_2=(3.5, 2)$</li>
+</ul>
+<p>我们发现中心点的位置没变，那么迭代结束。</p>
+<h1 id="0x04-代码"><a href="#0x04-代码" class="headerlink" title="0x04 代码"></a>0x04 代码</h1><p><code>python3.x</code>环境写的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">K_means</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, data, k, max_iterations)</span>:</span></span><br><span class="line">        self.data = data</span><br><span class="line">        self.k = k</span><br><span class="line">        self.max_iterations = max_iterations</span><br><span class="line">        self.iterations = <span class="number">0</span></span><br><span class="line">        self.centroids = <span class="keyword">None</span></span><br><span class="line">        self.oldCentroids = <span class="keyword">None</span></span><br><span class="line">        self.dataSet = <span class="keyword">None</span></span><br><span class="line">    </span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    shouldStop(oldCentroids, centroids, iterations, max_iterations)</span></span><br><span class="line"><span class="string">    作用：判断迭代停止</span></span><br><span class="line"><span class="string">    oldCentroids：旧的中心点</span></span><br><span class="line"><span class="string">    centroids：新的中心点</span></span><br><span class="line"><span class="string">    iterations：已经迭代的次数</span></span><br><span class="line"><span class="string">    max_iterations：最大迭代次数</span></span><br><span class="line"><span class="string">    return:bool True停止 False继续</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__shouldStop</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.iterations &gt; self.max_iterations:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> np.array_equal(self.oldCentroids, self.centroids)</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    getLabelFromClosestCentroid(dataSetRow, centroids)</span></span><br><span class="line"><span class="string">    作用：获取最近中心点的类别</span></span><br><span class="line"><span class="string">    dataSetRow：</span></span><br><span class="line"><span class="string">    centroids：</span></span><br><span class="line"><span class="string">    return：对应的类别</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getLabelFromClosestCentroid</span><span class="params">(self, dataSetRow)</span>:</span>   </span><br><span class="line">        label = self.centroids[<span class="number">0</span>, <span class="number">-1</span>]<span class="comment">#获取第一个中心点的类别</span></span><br><span class="line">        minDist = np.linalg.norm(dataSetRow - self.centroids[<span class="number">0</span>, :<span class="number">-1</span>])<span class="comment">#求欧氏距离，这个函数是二范数</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, self.centroids.shape[<span class="number">0</span>]):</span><br><span class="line">            dist = np.linalg.norm(dataSetRow - self.centroids[i, :<span class="number">-1</span>])</span><br><span class="line">            <span class="keyword">if</span> dist &lt; minDist:</span><br><span class="line">                minDist = dist</span><br><span class="line">                label = self.centroids[i, <span class="number">-1</span>]</span><br><span class="line">        print(<span class="string">"minDist: "</span>, minDist)</span><br><span class="line">        <span class="keyword">return</span> label</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    updateLabels(dataSet, centroids)</span></span><br><span class="line"><span class="string">    作用：更新分类信息</span></span><br><span class="line"><span class="string">    dataSet：数据</span></span><br><span class="line"><span class="string">    centroids：中心点</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__updateLabels</span><span class="params">(self)</span>:</span></span><br><span class="line">        numPoints, numDim = self.dataSet.shape</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, numPoints):</span><br><span class="line">            self.dataSet[i, <span class="number">-1</span>] = self.__getLabelFromClosestCentroid(self.dataSet[i, :<span class="number">-1</span>])</span><br><span class="line">    </span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    getCentroids(dataSet, k)</span></span><br><span class="line"><span class="string">    作用：计算中心点</span></span><br><span class="line"><span class="string">    dataSet：数据</span></span><br><span class="line"><span class="string">    k：k类</span></span><br><span class="line"><span class="string">    return:中心点</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getCentroids</span><span class="params">(self)</span>:</span></span><br><span class="line">        result = np.zeros((self.k, self.dataSet.shape[<span class="number">1</span>]))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, self.k + <span class="number">1</span>):</span><br><span class="line">            oneCluster = self.dataSet[self.dataSet[:, <span class="number">-1</span>] == i, :<span class="number">-1</span>]</span><br><span class="line">            result[i - <span class="number">1</span>, :<span class="number">-1</span>] = np.mean(oneCluster, axis = <span class="number">0</span>)</span><br><span class="line">            result[i - <span class="number">1</span>, <span class="number">-1</span>] = i</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">        </span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    K_means(data, k, max_Iterator)</span></span><br><span class="line"><span class="string">    作用：计算K_means聚类</span></span><br><span class="line"><span class="string">    data：输入的数据</span></span><br><span class="line"><span class="string">    k：聚类的个数</span></span><br><span class="line"><span class="string">    max_Iterator：最大的迭代次数</span></span><br><span class="line"><span class="string">    return：分类的结果</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self)</span>:</span></span><br><span class="line">        numPoints, numDim = self.data.shape<span class="comment">#点的个数，维度</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">#增加一列</span></span><br><span class="line">        self.dataSet = np.zeros((numPoints, numDim + <span class="number">1</span>))</span><br><span class="line">        self.dataSet[:, :<span class="number">-1</span>] = self.data</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#随机初始化中心点</span></span><br><span class="line">        self.centroids = self.dataSet[np.random.randint(numPoints, size=self.k), :]</span><br><span class="line">        self.centroids = self.dataSet[<span class="number">0</span>:<span class="number">2</span>, :]</span><br><span class="line">        <span class="comment">#初始化中心点的类别    </span></span><br><span class="line">        self.centroids[:, <span class="number">-1</span>] = range(<span class="number">1</span>, self.k + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.__shouldStop():</span><br><span class="line">            print(<span class="string">"iterations: "</span>, self.iterations)</span><br><span class="line">            print(<span class="string">"dataSet: "</span>, self.dataSet)</span><br><span class="line">            print(<span class="string">"centroids: "</span>, self.centroids)</span><br><span class="line">            <span class="comment">#复制初始化的中心点</span></span><br><span class="line">            self.oldCentroids = np.copy(self.centroids)</span><br><span class="line">            self.iterations += <span class="number">1</span></span><br><span class="line">            <span class="comment">#更新类别</span></span><br><span class="line">            self.__updateLabels()</span><br><span class="line">            <span class="comment">#计算新的中心点</span></span><br><span class="line">            self.centroids = self.__getCentroids()</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">return</span> self.dataSet</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    data = np.array([[<span class="number">1</span>,<span class="number">3</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">    k = <span class="number">2</span></span><br><span class="line">    max_iterations = <span class="number">10</span></span><br><span class="line">    p = K_means(data, k, max_iterations)</span><br><span class="line">    print(p.predict())</span><br></pre></td></tr></table></figure>
+<p>通过前面的学习，我想你应该对这个代码有所理解了吧O(∩_∩)O。<code>K-means</code>是一个机器学习中很原始的方法，很多人觉得这个办法已经过时了，那么我将在后续的教程里，介绍一些很前沿的技术中使用<code>K-means</code>的地方。</p>
+<p>最后我想介绍的是，如果你安装了<code>scikit-learn</code>的话，那么下面就很简单了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">X = np.array([[<span class="number">1</span>,<span class="number">3</span>], [<span class="number">4</span>, <span class="number">3</span>], [<span class="number">2</span>, <span class="number">4</span>], [<span class="number">3</span>, <span class="number">1</span>]])</span><br><span class="line">kmeans = KMeans(n_clusters=<span class="number">2</span>, init=<span class="string">'random'</span>).fit_predict(X)</span><br><span class="line">plt.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>], c=kmeans, s=<span class="number">100</span>)</span><br><span class="line">plt.show()</span><br><span class="line">print(kmeans)</span><br></pre></td></tr></table></figure>
+<p>reference：</p>
+<p><a href="https://en.wikipedia.org/wiki/K-means_clustering" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/K-means_clustering</a></p>
+<p><a href="https://blog.csdn.net/qll125596718/article/details/8243404/" target="_blank" rel="noopener">https://blog.csdn.net/qll125596718/article/details/8243404/</a></p>
+<p><strong>文中如有任何问题，希望大家指出，谢谢！！！</strong></p>
+</center>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/K-means/">K-means</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          最简单的K-means++算法原理和实践教程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">为什么希尔排序表现出来的速度比归并排序快呢？</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-算法简介"><span class="nav-number">1.</span> <span class="nav-text">0x00 算法简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-算法流程"><span class="nav-number">2.</span> <span class="nav-text">0x01 算法流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-代码"><span class="nav-number">3.</span> <span class="nav-text">0x04 代码</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

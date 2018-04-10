@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>YOLOv3论文笔记 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonYOLOdarknet" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="论文地址：YOLOv3: An Incremental Improvement 项目地址：darknet 0x00 Foreword今天看到YOLOv3发布的信息，第一个反应就是，我×，我之前的模型还没有训练好，现在又出来一个(T_T)。 不过我对于YOLOv3的发布还是很激动的，因为我之前和大多数人一样，对于single-stage报以很小的期望了，但是今天的YOLOv3让我又重新对于singl">
+<meta name="keywords" content="c,python,YOLO,darknet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLOv3论文笔记">
+<meta property="og:url" content="http://coordinate.wang/2018/03/26/2018-03-26-YOLOv3论文笔记/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="论文地址：YOLOv3: An Incremental Improvement 项目地址：darknet 0x00 Foreword今天看到YOLOv3发布的信息，第一个反应就是，我×，我之前的模型还没有训练好，现在又出来一个(T_T)。 不过我对于YOLOv3的发布还是很激动的，因为我之前和大多数人一样，对于single-stage报以很小的期望了，但是今天的YOLOv3让我又重新对于singl">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpqdlggsclj20di0a7aak.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpqcmrfeqij207q0acmxv.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpqcmouibsj209f029aa6.jpg">
+<meta property="og:image" content="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpqcmtuwkvj2078079mxt.jpg">
+<meta property="og:updated_time" content="2018-04-10T01:58:14.700Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="YOLOv3论文笔记">
+<meta name="twitter:description" content="论文地址：YOLOv3: An Incremental Improvement 项目地址：darknet 0x00 Foreword今天看到YOLOv3发布的信息，第一个反应就是，我×，我之前的模型还没有训练好，现在又出来一个(T_T)。 不过我对于YOLOv3的发布还是很激动的，因为我之前和大多数人一样，对于single-stage报以很小的期望了，但是今天的YOLOv3让我又重新对于singl">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpqdlggsclj20di0a7aak.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-03-26-YOLOv3论文笔记" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      YOLOv3论文笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/" class="article-date">
+	  <time datetime="2018-03-25T16:00:00.000Z" itemprop="datePublished">三月 26, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>论文地址：<a href="https://pjreddie.com/media/files/papers/YOLOv3.pdf" target="_blank" rel="noopener">YOLOv3: An Incremental Improvement</a></p>
+<p>项目地址：<a href="https://github.com/pjreddie/darknet" target="_blank" rel="noopener">darknet</a></p>
+<h1 id="0x00-Foreword"><a href="#0x00-Foreword" class="headerlink" title="0x00 Foreword"></a>0x00 Foreword</h1><p>今天看到YOLOv3发布的信息，第一个反应就是，我×，我之前的模型还没有训练好，现在又出来一个(T_T)。</p>
+<p>不过我对于YOLOv3的发布还是很激动的，因为我之前和大多数人一样，对于<code>single-stage</code>报以很小的期望了，但是今天的YOLOv3让我又重新对于<code>single-stage</code>有了新的看法。</p>
+<a id="more"></a>
+<h1 id="0x01-Abstract"><a href="#0x01-Abstract" class="headerlink" title="0x01 Abstract"></a>0x01 Abstract</h1><p>关于<code>Bounding Box</code>的预测。同样使用在<code>YOLO 9000</code>中的维度聚类，找到最好的<code>boxes</code>的高宽。与传统的<code>K-means</code>聚类方法不同，作者使用的不是欧氏距离，而是使用的下面这种</p>
+<ul>
+<li>$d(box, centroid) = 1 - IOU(box, centroid)$</li>
+</ul>
+<p>这样做的目的是，使<code>error</code>和<code>box</code>的大小没有关系。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpqdlggsclj20di0a7aak.jpg"><br></center>
+
+<p>至于坐标预测计算也都是和<code>YOLOv2</code>相同。</p>
+<p>关于种类的预测，没有使用<code>softmax</code>，而是使用了<code>binary cross-entropy</code>。这种做法，对于重叠标签的数据会有所帮助（例如一个女性的图像，会标注女和人两个标签）。</p>
+<p>关于多尺度。作者参考了<code>FPN</code>的设计。作者在特征提取网络后增加了几个卷积层，最后预测一个包含三种信息的张量（<code>bounding box</code>，目标和目标种类）。对于不同尺度使用三个<code>anchor box</code>进行预测。对于刚才说的网络的倒数第二层做上采样。从网络的前面部分获取特征图，使其和上采样后的特征图融合。然后添加卷积层处理融合后的特征图。这种做法避免了<code>SSD</code>中的细粒度信息的损失。</p>
+<p>作者尝试了，通过预测常规方法的<code>anchor box</code>进行预测目标的位置，但是这种做法降低了模型的稳定。尝试通过线性激活函数代替<code>logistic</code>激活函数，结果也不是很好。尝试使用<code>Focal loss</code>，但是同样失败。</p>
+<h1 id="0x02-网络结构"><a href="#0x02-网络结构" class="headerlink" title="0x02 网络结构"></a>0x02 网络结构</h1><p>作者此次将网络的深度增加到了53层，称为<code>Darknet-53</code>。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1fpqcmrfeqij207q0acmxv.jpg"><br></center>
+
+<p>这个网络比之前的<code>Draknet-19</code>强大了许多，但是任然逊色于<code>ResNet-101</code>和<code>ResNet-152</code>。</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fpqcmouibsj209f029aa6.jpg"><br></center>
+
+<p><code>YOLOv3</code>虽然在精度上要比<code>FPN FRCN</code>低一些，但是速度上却快上很多，同时它无论是速度上还是精度上都超越了<code>RetinaNet</code>系列。</p>
+<center class="half"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fpqcmtuwkvj2078079mxt.jpg"><br></center>
+
+<p>总的来说，<code>YOLOv3</code>并不像之前的<code>YOLO</code>系列那样给我一种惊艳的感觉，这次带给我们更多的是一些激励，<code>single-stage</code>不一定会比<code>two-stage</code>差。</p>
+<p>后续我会对网络进行一些测试^_^！！！</p>
+<p>如有问题，希望大家指出，谢谢各位！！！</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          为什么希尔排序表现出来的速度比归并排序快呢？
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/03/18/2018-03-18-python-子类中扩展property/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">python 子类中扩展 property</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-Foreword"><span class="nav-number">1.</span> <span class="nav-text">0x00 Foreword</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-Abstract"><span class="nav-number">2.</span> <span class="nav-text">0x01 Abstract</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-网络结构"><span class="nav-number">3.</span> <span class="nav-text">0x02 网络结构</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>
