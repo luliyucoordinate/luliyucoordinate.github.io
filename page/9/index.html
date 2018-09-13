@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2017-08-31-机器学习中的基本概念"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-04-Leetcode-350两个数组的交集-II（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/31/2017-08-31-机器学习中的基本概念/">机器学习中的基本概念</a>
+      <a class="article-title" href="/2018/06/04/2018-06-04-Leetcode-350两个数组的交集-II（最详细解决方案！！！）/">Leetcode 350:两个数组的交集 II（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -124,8 +124,472 @@
     
     <div class="article-meta">
       
-	<a href="/2017/08/31/2017-08-31-机器学习中的基本概念/" class="article-date">
-	  <time datetime="2017-08-30T16:00:00.000Z" itemprop="datePublished">八月 31, 2017</time>
+	<a href="/2018/06/04/2018-06-04-Leetcode-350两个数组的交集-II（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-03T16:00:00.000Z" itemprop="datePublished">六月 4, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定两个数组，写一个方法来计算它们的交集。</p>
+<p><strong>例如:</strong><br>给定 <em>nums1</em> = <code>[1, 2, 2, 1]</code>, <em>nums2</em> = <code>[2, 2]</code>, 返回 <code>[2, 2]</code>.</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>输出结果中每个元素出现的次数，应与元素在两个数组中出现的次数一致。</li>
+<li>我们可以不考虑输出结果的顺序。</li>
+</ul>
+<p><strong>跟进:</strong></p>
+<ul>
+<li>如果给定的数组已经排好序呢？你将如何优化你的算法？</li>
+<li>如果 <em>nums1</em> 的大小比 <em>nums2</em> 小很多，哪种方法更优？</li>
+<li>如果<em>nums2</em>的元素存储在磁盘上，内存是有限的，你不能一次加载所有的元素到内存中，你该怎么办？</li>
+</ul>
+<p><strong>解题思路</strong></p>
+<p>我们对比<a href="https://blog.csdn.net/qq_17550379/article/details/80564079" target="_blank" rel="noopener">Leetcode 349:两个数组的交集</a>这个问题，发现在这个问题的基础上，我们多加了记录元素个数的功能，我们可以使用<code>map</code>实现它。</p>
+<p>我们这里可以这样做</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">intersect</span><span class="params">(self, nums1, nums2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums1: List[int]</span></span><br><span class="line"><span class="string">        :type nums2: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        record, result = &#123;&#125;, []</span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums1:</span><br><span class="line">            record[num] = record.get(num, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums2:</span><br><span class="line">            <span class="keyword">if</span> num <span class="keyword">in</span> record <span class="keyword">and</span> record[num]:</span><br><span class="line">                result.append(num)</span><br><span class="line">                record[num] -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>同样这里有一个<code>pythonic</code>的做法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">intersect</span><span class="params">(self, nums1, nums2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums1: List[int]</span></span><br><span class="line"><span class="string">        :type nums2: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line">        <span class="keyword">return</span> list((Counter(nums1) &amp; Counter(nums2)).elements())</span><br></pre></td></tr></table></figure>
+<p>在<code>python</code>中<code>map</code>的底层实现是通过<code>hash</code>表实现的，所以添加元素和搜索元素的时间复杂度都是<code>O(1)</code>级别的，那么上述的算法时间复杂度是<code>O(n)</code>这个级别的。而空间复杂度依旧是<code>O(n)</code>级别的。如果要使用<code>有序的map</code>，就要使用<code>collections.OrderedDict</code>。</p>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-06-04-Leetcode-202快乐数（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/04/2018-06-04-Leetcode-202快乐数（最详细解决方案！！！）/">Leetcode 202:快乐数（最详细解决方案！！！）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/04/2018-06-04-Leetcode-202快乐数（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-03T16:00:00.000Z" itemprop="datePublished">六月 4, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>编写一个算法来判断一个数是不是“快乐数”。</p>
+<p>一个“快乐数”定义为：对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和，然后重复这个过程直到这个数变为 1，也可能是无限循环但始终变不到 1。如果可以变为 1，那么这个数就是快乐数。</p>
+<p><strong>示例:</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: 19</span><br><span class="line">输出: true</span><br><span class="line">解释: </span><br><span class="line">1^2 + 9^2 = 82</span><br><span class="line">8^2 + 2^2 = 68</span><br><span class="line">6^2 + 8^2 = 100</span><br><span class="line">1^2 + 0^2 + 0^2 = 1</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>我们分析题目发现，我们计算<code>happy number</code>的过程中有可能出现重复的元素（无限循环），我们可以通过<code>set</code>记录<code>happy number</code>，如果出现重复返回<code>False</code>，否则继续下去，知道出现<code>1</code>。</p>
+<p>我们可以通过递归的办法很快速地解决这个问题</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_isHappy</span><span class="params">(self, n, sum_set)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">        num_sum = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">            k = n % <span class="number">10</span></span><br><span class="line">            num_sum += k**<span class="number">2</span></span><br><span class="line">            n //= <span class="number">10</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> num_sum <span class="keyword">in</span> sum_set:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            sum_set.add(num_sum)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self._isHappy(num_sum, sum_set)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isHappy</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        sum_set = set()</span><br><span class="line">        <span class="keyword">return</span> self._isHappy(n, sum_set)</span><br></pre></td></tr></table></figure>
+<p>我们也可以使用迭代的思路解决这个问题，而且更快。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isHappy</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        sum_set = set()</span><br><span class="line">        <span class="keyword">while</span> n != <span class="number">1</span>:</span><br><span class="line">            num_sum = <span class="number">0</span></span><br><span class="line">            <span class="keyword">while</span> n &gt; <span class="number">0</span>:</span><br><span class="line">                k = n % <span class="number">10</span></span><br><span class="line">                num_sum += k**<span class="number">2</span></span><br><span class="line">                n //= <span class="number">10</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> num_sum <span class="keyword">in</span> sum_set:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                sum_set.add(num_sum)</span><br><span class="line">            </span><br><span class="line">            n = num_sum</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-06-04-Leetcode-242有效的字母异位词（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/04/2018-06-04-Leetcode-242有效的字母异位词（最详细解决方案！！！）/">Leetcode 242:有效的字母异位词（最详细解决方案！！！）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/04/2018-06-04-Leetcode-242有效的字母异位词（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-03T16:00:00.000Z" itemprop="datePublished">六月 4, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定两个字符串 <em>s</em> 和 <em>t</em> ，编写一个函数来判断 <em>t</em> 是否是 <em>s</em> 的一个字母异位词。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;anagram&quot;, t = &quot;nagaram&quot;</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: s = &quot;rat&quot;, t = &quot;car&quot;</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong><br>你可以假设字符串只包含小写字母。</p>
+<p><strong>进阶:</strong><br>如果输入字符串包含 unicode 字符怎么办？你能否调整你的解法来应对这种情况？</p>
+<p><strong>解题思路</strong></p>
+<p>首先我们想到的解决思路就是将<code>s</code>的所有组合存入在一个容器中，然后判断<code>t</code>是不是这个容器中的元素即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span><span class="params">(self, s, t)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type t: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">from</span> itertools <span class="keyword">import</span> permutations</span><br><span class="line">        s_per = [<span class="string">''</span>.join(i) <span class="keyword">for</span> i <span class="keyword">in</span> permutations(s)]</span><br><span class="line">        <span class="keyword">if</span> t <span class="keyword">in</span> s_per:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>超级粗暴的解法(￣▽￣)”</p>
+<p>另外一种思路就是我们统计<code>s</code>中所有字符的个数，只要<code>t</code>中和<code>s</code>中字符都一样且数目都一样，那么就可以了。由于统计字符个数，所以我们可以使用<code>map</code>这个结构（当然也可以使用<code>collections.Counter</code>）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span><span class="params">(self, s, t)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type t: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        record_s = &#123;&#125;</span><br><span class="line">        record_t = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">            record_s[i] = record_s.get(i, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> t:</span><br><span class="line">            record_t[i] = record_t.get(i, <span class="number">0</span>) + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> record_s == record_t</span><br></pre></td></tr></table></figure>
+<p>一个更加<code>pythonic</code>的做法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span><span class="params">(self, s, t)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type t: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line">        <span class="keyword">return</span> Counter(s) == Counter(t)</span><br></pre></td></tr></table></figure>
+<p>这里提供一个更快的解法，是通过查表法实现的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span><span class="params">(self, s, t)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type t: str</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(ord(<span class="string">'a'</span>), ord(<span class="string">'z'</span>)+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> s.count(chr(i)) != t.count(chr(i)):</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-06-03-Leetcode-76最小覆盖子串（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/02/2018-06-03-Leetcode-76最小覆盖子串（最详细解决方案！！！）/">Leetcode 76:最小覆盖子串（最详细解决方案！！！）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/02/2018-06-03-Leetcode-76最小覆盖子串（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-01T16:00:00.000Z" itemprop="datePublished">六月 2, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个字符串 S 和一个字符串 T，请在 S 中找出包含 T 所有字母的最小子串。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: S = &quot;ADOBECODEBANC&quot;, T = &quot;ABC&quot;</span><br><span class="line">输出: &quot;BANC&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<ul>
+<li>如果 S 中不存这样的子串，则返回空字符串 <code>&quot;&quot;</code>。</li>
+<li>如果 S 中存在这样的子串，我们保证它是唯一的答案。</li>
+</ul>
+<p><strong>解题思路</strong></p>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-06-02-Leetcode-438找到字符串中所有字母异位词（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/02/2018-06-02-Leetcode-438找到字符串中所有字母异位词（最详细解决方案！！！）/">Leetcode 438:找到字符串中所有字母异位词（最详细解决方案！！！）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/02/2018-06-02-Leetcode-438找到字符串中所有字母异位词（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-01T16:00:00.000Z" itemprop="datePublished">六月 2, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定一个字符串 <strong>s</strong> 和一个非空字符串 <strong>p</strong>，找到 <strong>s</strong> 中所有是 <strong>p</strong> 的字母异位词的子串，返回这些子串的起始索引。</p>
+<p>字符串只包含小写英文字母，并且字符串 <strong>s</strong> 和 <strong>p</strong> 的长度都不超过 20100。</p>
+<p><strong>说明：</strong></p>
+<ul>
+<li>字母异位词指字母相同，但排列不同的字符串。</li>
+<li>不考虑答案输出的顺序。</li>
+</ul>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s: &quot;cbaebabacd&quot; p: &quot;abc&quot;</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">[0, 6]</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line">起始索引等于 0 的子串是 &quot;cba&quot;, 它是 &quot;abc&quot; 的字母异位词。</span><br><span class="line">起始索引等于 6 的子串是 &quot;bac&quot;, 它是 &quot;abc&quot; 的字母异位词。</span><br></pre></td></tr></table></figure>
+<p> <strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line">s: &quot;abab&quot; p: &quot;ab&quot;</span><br><span class="line"></span><br><span class="line">输出:</span><br><span class="line">[0, 1, 2]</span><br><span class="line"></span><br><span class="line">解释:</span><br><span class="line">起始索引等于 0 的子串是 &quot;ab&quot;, 它是 &quot;ab&quot; 的字母异位词。</span><br><span class="line">起始索引等于 1 的子串是 &quot;ba&quot;, 它是 &quot;ab&quot; 的字母异位词。</span><br><span class="line">起始索引等于 2 的子串是 &quot;ab&quot;, 它是 &quot;ab&quot; 的字母异位词。</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>首先想到的解法，就是将<code>p</code>的所有组合存到一个数组<code>p_per</code>中，接着扫描<code>s</code>，判断<code>s[i:i + p_len]</code>是否在这个数组中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findAnagrams</span><span class="params">(self, s, p)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type p: str</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">import</span> itertools</span><br><span class="line">        result = []</span><br><span class="line">        p_len, s_len = len(p), len(s)</span><br><span class="line">        <span class="keyword">if</span> s_len &lt; p_len:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line">        </span><br><span class="line">        p_per = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> itertools.permutations(p): <span class="comment">#通过itertools中的permutations产生所有组合</span></span><br><span class="line">            p_per.append(<span class="string">''</span>.join(i))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(s_len):</span><br><span class="line">            <span class="keyword">if</span> i + p_len &lt;= s_len <span class="keyword">and</span> s[i:i + p_len] <span class="keyword">in</span> p_per:</span><br><span class="line">                result.append(i)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>但是这种解法的空间复杂度很高<code>O(per(p)*len(p))</code>。而且如果输入<code>s</code>和<code>p</code>都非常长的情况会出现超时，因为<code>p</code>的组合数太多了。</p>
+<p>那么我们有没有即快速又节省空间的算法呢？</p>
+<p>其实我们通过分析发现，所谓的<code>字母异位词</code>，只要保证<code>p中的各个字母个数</code>在<code>s的字串中</code>相同即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findAnagrams</span><span class="params">(self, s, p)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type p: str</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line">        s_len, p_len = len(s), len(p)</span><br><span class="line">        pChar, sChar = Counter(p), Counter()</span><br><span class="line"></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(s_len):</span><br><span class="line">            sChar[s[i]] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> i &gt;= p_len:</span><br><span class="line">                sChar[s[i - p_len]] -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> sChar[s[i - p_len]] == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">del</span> sChar[s[i - p_len]]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> pChar == sChar:</span><br><span class="line">                result.append(i - p_len + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>我们通过分析发现上面算法的时间复杂度是<code>o(n^2)</code>级别的（<code>pChar == sChar</code>要花费<code>O(n)</code>的时间），我们有没有<code>O(n)</code>级别的算法呢？</p>
+<p>参照这篇<a href="https://blog.csdn.net/qq_17550379/article/details/80547777" target="_blank" rel="noopener">Leetcode 3:无重复字符的最长子串</a>文章最后提到的思路，我们可以很快速的解决这个问题。</p>
+<p>我们通过一个变量<code>count</code>记录<code>p</code>元素的个数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c  b  a  e  b  a  b  a  c  d</span><br><span class="line">l     r</span><br></pre></td></tr></table></figure>
+<p>窗口在移动的过程中，如果窗口中的元素在<code>p</code>中的话，那么我们记录变量<code>count--</code>（表示一个在<code>pChar</code>中的元素移入窗口）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c  b  a  e  b  a  b  a  c  d</span><br><span class="line">l        r</span><br></pre></td></tr></table></figure>
+<p>如果移动的过程中窗口右边超过了<code>p_len</code>，我们就要判断窗口左边的元素是不是在<code>p</code>中，如果在的话，那么<code>count++</code>（表示一个在<code>pChar</code>中的元素移除窗口）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">c  b  a  e  b  a  b  a  c  d</span><br><span class="line">   l     r</span><br></pre></td></tr></table></figure>
+<p>如果<code>count</code>变成了<code>0</code>，表示窗口中的元素，<code>pChar</code>中都有。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findAnagrams</span><span class="params">(self, s, p)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :type p: str</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line">        s_len, p_len = len(s), len(p)</span><br><span class="line">        count = p_len</span><br><span class="line">        pChar = Counter(p)</span><br><span class="line"></span><br><span class="line">        result = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(s_len):</span><br><span class="line">            <span class="keyword">if</span> pChar[s[i]] &gt;= <span class="number">1</span>:</span><br><span class="line">                count -= <span class="number">1</span></span><br><span class="line">            pChar[s[i]] -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> i &gt;= p_len:</span><br><span class="line">                <span class="keyword">if</span> pChar[s[i - p_len]] &gt;= <span class="number">0</span>:</span><br><span class="line">                    count += <span class="number">1</span></span><br><span class="line">                pChar[s[i - p_len]] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> count == <span class="number">0</span>:</span><br><span class="line">                result.append(i - p_len + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>对于这个算法有几点要注意，首先<code>count</code>表示<code>p</code>中的元素个数，如果<code>s</code>中的非<code>p</code>内元素，我们不用对<code>count</code>操作。另外，不论<code>s</code>中的元素是否在<code>p</code>中，我们都要对<code>pChar</code>操作（我们在<code>pChar</code>初始化的时候给与<code>p</code>中元素计数，这样就区分开来了<code>p</code>中元素和非<code>p</code>中元素）。</p>
+<p>现在这个算法的时间复杂度就是<code>O(n)</code>级别的了。</p>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-06-01-Leetcode-11盛最多水的容器（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/06/01/2018-06-01-Leetcode-11盛最多水的容器（最详细解决方案！！！）/">Leetcode 11:盛最多水的容器（最详细解决方案！！！）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/06/01/2018-06-01-Leetcode-11盛最多水的容器（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-05-31T16:00:00.000Z" itemprop="datePublished">六月 1, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定 <em>n</em> 个非负整数 <em>a</em>1，<em>a</em>2，…，<em>a</em>n，每个数代表坐标中的一个点 (<em>i</em>, <em>ai</em>) 。画 <em>n</em> 条垂直线，使得垂直线 <em>i</em> 的两个端点分别为 (<em>i</em>, <em>ai</em>) 和 (<em>i</em>, 0)。找出其中的两条线，使得它们与 <em>x</em> 轴共同构成的容器可以容纳最多的水。</p>
+<p><strong>注意：</strong>你不能倾斜容器，<em>n</em> 至少是2。</p>
+<p><strong>解题思路</strong></p>
+<p>参照这<a href="https://blog.csdn.net/qq_17550379/article/details/80514285" target="_blank" rel="noopener">Leetcode 125:验证回文串</a>、<a href="https://blog.csdn.net/qq_17550379/article/details/80513863" target="_blank" rel="noopener">Leetcode 344:验证回文串</a>、<a href="https://blog.csdn.net/qq_17550379/article/details/80512745" target="_blank" rel="noopener">Leetcode 167:两数之和 II - 输入有序数组</a>、<a href="https://blog.csdn.net/qq_17550379/article/details/80515302" target="_blank" rel="noopener">Leetcode 345:反转字符串中的元音字母</a>几篇文章中的解题思路。我们通过设置两个指针，分别指向数组的头和尾，计算容器可以容纳多少水，然后比较头指针和尾指针对应的高度，矮的那个前进或后退一步（很好理解）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxArea</span><span class="params">(self, height)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type height: List[int]</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        l = <span class="number">0</span></span><br><span class="line">        r = len(height) - <span class="number">1</span></span><br><span class="line">        contain = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> l &lt; r:</span><br><span class="line">            contain = max(contain, (r - l) * min(height[l], height[r]))</span><br><span class="line">            <span class="keyword">if</span> height[l] &gt; height[r]:</span><br><span class="line">                r -= <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> contain</span><br></pre></td></tr></table></figure>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-05-31-Leetcode-345反转字符串中的元音字母（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/05/31/2018-05-31-Leetcode-345反转字符串中的元音字母（最详细解决方案！！！）/">Leetcode 345:反转字符串中的元音字母（最详细解决方案！！！）</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/31/2018-05-31-Leetcode-345反转字符串中的元音字母（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-05-30T16:00:00.000Z" itemprop="datePublished">五月 31, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>编写一个函数，以字符串作为输入，反转该字符串中的元音字母。</p>
+<p><strong>示例 1：</strong><br>给定 s = “hello”, 返回 “holle”.</p>
+<p><strong>示例 2：</strong><br>给定 s = “leetcode”, 返回 “leotcede”.</p>
+<p><strong>注意:</strong><br>元音字母不包括 “y”.</p>
+<p><strong>解题思路</strong></p>
+<p>参照这<a href="https://blog.csdn.net/qq_17550379/article/details/80514285" target="_blank" rel="noopener">Leetcode 125:验证回文串</a>、<a href="https://blog.csdn.net/qq_17550379/article/details/80513863" target="_blank" rel="noopener">Leetcode 344:验证回文串</a>、<a href="https://blog.csdn.net/qq_17550379/article/details/80512745" target="_blank" rel="noopener">Leetcode 167:两数之和 II - 输入有序数组</a>几篇文章中的解题思路</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseVowels</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        vowels = [<span class="string">'a'</span>, <span class="string">'u'</span>, <span class="string">'e'</span>, <span class="string">'i'</span>, <span class="string">'o'</span>, <span class="string">'A'</span>, <span class="string">'U'</span>, <span class="string">'E'</span>, <span class="string">'I'</span>, <span class="string">'O'</span>]</span><br><span class="line">        l = <span class="number">0</span></span><br><span class="line">        r = len(s) - <span class="number">1</span></span><br><span class="line">        s = list(s)</span><br><span class="line">        <span class="keyword">while</span> l &lt; r:</span><br><span class="line">            <span class="keyword">if</span> s[l] <span class="keyword">not</span> <span class="keyword">in</span> vowels:</span><br><span class="line">                l += <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> s[r] <span class="keyword">not</span> <span class="keyword">in</span> vowels:</span><br><span class="line">                r -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            s[l], s[r] = s[r], s[l]</span><br><span class="line">            l += <span class="number">1</span></span><br><span class="line">            r -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>.join(s)</span><br></pre></td></tr></table></figure>
+<p>但是我们有一个更<code>pythonic</code>的做法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseVowels</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        vowels = [<span class="string">'a'</span>, <span class="string">'u'</span>, <span class="string">'e'</span>, <span class="string">'i'</span>, <span class="string">'o'</span>, <span class="string">'A'</span>, <span class="string">'U'</span>, <span class="string">'E'</span>, <span class="string">'I'</span>, <span class="string">'O'</span>]</span><br><span class="line">        p = [i <span class="keyword">for</span> i <span class="keyword">in</span> s <span class="keyword">if</span> i <span class="keyword">in</span> vowels]</span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>.join([i <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> vowels <span class="keyword">else</span> p.pop() <span class="keyword">for</span> i <span class="keyword">in</span> s])</span><br></pre></td></tr></table></figure>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2018-05-30-An-Analysis-of-Scale-Invariance-in-Object-Detection-–-SNIP论文笔记"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2018/05/30/2018-05-30-An-Analysis-of-Scale-Invariance-in-Object-Detection-–-SNIP论文笔记/">An Analysis of Scale Invariance in Object Detection – SNIP论文笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/30/2018-05-30-An-Analysis-of-Scale-Invariance-in-Object-Detection-–-SNIP论文笔记/" class="article-date">
+	  <time datetime="2018-05-29T16:00:00.000Z" itemprop="datePublished">五月 30, 2018</time>
 	</a>
 
       
@@ -136,26 +600,9 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>概念学习：概念学习是指从有关某个布尔函数的输入输出训练样例中推断出布尔函数</p>
-<p>概念定义在实例（instance）之上，这个集合表示为X。带学习的概念或目标函数成为目标概念，记作c。c(x) = 1，当享受运动时，c(x) = 0，不享受运行。c(x)记作y。</p>
-<p>x：每一个实例</p>
-<p>X：所有实例的集合</p>
-<p>学习目标：f: X-&gt;Y</p>
-<p>训练集/训练样例：进行训练，产生模型或者算法的数据集</p>
-<p>测试集/测试样例：专门进行测试已经学习好的模型或者算法的数据集</p>
-<p>特征向量（features）：属性的集合，常用一个向量表示，附属于一个实例</p>
-<p>标记：(label):c(x) 实例类别的标记 就是对于目标的记号</p>
-<p>正例（positive example）</p>
-<p>反例（negative example）</p>
-<p>分类（classification）:目标标记为类别型数据（category）</p>
-<p>回归（regression）：目标标记为连续性数值（continuous numeric value）</p>
-<p>有监督学习（supervised learning）：训练有类别标记（class label）训练集知道答案</p>
-<p>无监督学习（unsupervised learning）：无类别标记（class label）训练集不知道答案</p>
-<p>半监督学习（semi-supervised learning）：有类别标记的训练集+无标记的训练集</p>
-<p>机器学习步骤框架</p>
-<p>把数据拆分为训练集和测试集</p>
-<p>用训练集和训练集的特征向量来训练算法</p>
-<p>用学习来的算法运用在测试集上来评估算法（可能要涉及到调整参数（parameter tuning），用验证集（validation set））</p>
+        <p>论文地址：<a href="https://arxiv.org/abs/1711.08189" target="_blank" rel="noopener">An Analysis of Scale Invariance in Object Detection – SNIP</a></p>
+<p>项目地址：<a href="https://github.com/bharatsingh430/snip" target="_blank" rel="noopener">SNIP</a></p>
+<p>可惜的是到<strong>2018.5.18</strong>还没有代码放出。一切不给代码的论文，就是耍流氓(╬▔皿▔)凸！！！。</p>
 
       
     </div>
@@ -166,7 +613,7 @@
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SNIP/">SNIP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -178,7 +625,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-08-30-POJ 1017 packets"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-05-30-Leetcode-215数组中的第K个最大元素（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -186,7 +633,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/30/2017-08-30-POJ 1017 packets/">POJ 1017 packets</a>
+      <a class="article-title" href="/2018/05/30/2018-05-30-Leetcode-215数组中的第K个最大元素（最详细解决方案！！！）/">Leetcode 215:数组中的第K个最大元素（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -194,36 +641,46 @@
     
     <div class="article-meta">
       
-	<a href="/2017/08/30/2017-08-30-POJ 1017 packets/" class="article-date">
-	  <time datetime="2017-08-29T16:00:00.000Z" itemprop="datePublished">八月 30, 2017</time>
+	<a href="/2018/05/30/2018-05-30-Leetcode-215数组中的第K个最大元素（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-05-29T16:00:00.000Z" itemprop="datePublished">五月 30, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>A factory produces products packed in square packets of the same height h and of the sizes 1*1, 2*2, 3*3, 4*4, 5*5, 6*6. These products are always delivered to customers in the square parcels of the same height h as the products have and of the size 6*6. Because of the expenses it is the interest of the factory as well as of the customer to minimize the number of parcels necessary to deliver the ordered products from the factory to the customer. A good program solving the problem of finding the minimal number of parcels necessary to deliver the given products according to an order would save a lot of money. You are asked to make such a program.</p>
-<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h2><p>The input file consists of several lines specifying orders. Each line specifies one order. Orders are described by six integers separated by one space representing successively the number of packets of individual size from the smallest size 1*1 to the biggest size 6*6. The end of the input file is indicated by the line containing six zeros.</p>
-<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>The output file contains one line for each line in the input file. This line contains the minimal number of parcels into which the order from the corresponding line of the input file can be packed. There is no line in the output file corresponding to the last  line of the input file.</p>
-<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input"></a>Sample Input</h2><p>0 0 4 0 0 1<br>7 5 1 0 0 0<br>0 0 0 0 0 0 </p>
-<h2 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output"></a>Sample Output</h2><p>2<br>1</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; box(<span class="number">6</span>);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;</span><br><span class="line">	<span class="comment">//对于边长为3的板子，只有一块时，需要5个2*2，有两块时，需要3个，有三快时，需要1个，有四块时，需要0个</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mon&#123; <span class="number">0</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span> &#125;;</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> sum&#123;&#125;;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> temp;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">			box[i] = temp;</span><br><span class="line">			sum += temp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (sum == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//如果边长是3 4 5 6</span></span><br><span class="line">		<span class="keyword">int</span> ans = box[<span class="number">5</span>] + box[<span class="number">4</span>] + box[<span class="number">3</span>] + (box[<span class="number">2</span>] + <span class="number">3</span>) / <span class="number">4</span>;</span><br><span class="line">		<span class="comment">//需要边长为2的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_2 = box[<span class="number">3</span>] * <span class="number">5</span> + mon[(box[<span class="number">2</span>] % <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">//2*2 box数量剩余时，需要增加box的数量</span></span><br><span class="line">		<span class="keyword">if</span> (len_2 &lt; box[<span class="number">1</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">1</span>] - len_2 + <span class="number">8</span>) / <span class="number">9</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//需要边长为1的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_1 = ans * <span class="number">36</span> - box[<span class="number">5</span>] * <span class="number">36</span> - box[<span class="number">4</span>] * <span class="number">25</span> - box[<span class="number">3</span>] * <span class="number">16</span> - box[<span class="number">2</span>] * <span class="number">9</span> - box[<span class="number">1</span>] * <span class="number">4</span>;</span><br><span class="line">		<span class="keyword">if</span> (len_1 &lt; box[<span class="number">0</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">0</span>] - len_1 + <span class="number">35</span>) / <span class="number">36</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		result.push_back(ans);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//容器的最后一行一定是000000	</span></span><br><span class="line">	<span class="built_in">std</span>::copy(<span class="built_in">std</span>::begin(result), <span class="built_in">std</span>::end(result), <span class="built_in">std</span>::ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">"\n"</span>));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>因为平台不兼容C++14，所以我就写了下面这样的做法：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; box(<span class="number">6</span>);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;</span><br><span class="line">	<span class="comment">//对于边长为3的板子，只有一块时，需要5个2*2，有两块时，需要3个，有三快时，需要1个，有四块时，需要0个</span></span><br><span class="line">	<span class="keyword">int</span> mon[<span class="number">4</span>] = &#123; <span class="number">0</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> temp;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">			box[i] = temp;</span><br><span class="line">			sum += temp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (sum == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//如果边长是3 4 5 6</span></span><br><span class="line">		<span class="keyword">int</span> ans = box[<span class="number">5</span>] + box[<span class="number">4</span>] + box[<span class="number">3</span>] + (box[<span class="number">2</span>] + <span class="number">3</span>) / <span class="number">4</span>;</span><br><span class="line">		<span class="comment">//需要边长为2的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_2 = box[<span class="number">3</span>] * <span class="number">5</span> + mon[(box[<span class="number">2</span>] % <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">//2*2 box数量剩余时，需要增加box的数量</span></span><br><span class="line">		<span class="keyword">if</span> (len_2 &lt; box[<span class="number">1</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">1</span>] - len_2 + <span class="number">8</span>) / <span class="number">9</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//需要边长为1的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_1 = ans * <span class="number">36</span> - box[<span class="number">5</span>] * <span class="number">36</span> - box[<span class="number">4</span>] * <span class="number">25</span> - box[<span class="number">3</span>] * <span class="number">16</span> - box[<span class="number">2</span>] * <span class="number">9</span> - box[<span class="number">1</span>] * <span class="number">4</span>;</span><br><span class="line">		<span class="keyword">if</span> (len_1 &lt; box[<span class="number">0</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">0</span>] - len_1 + <span class="number">35</span>) / <span class="number">36</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		result.push_back(ans);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//容器的最后一行一定是000000	</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; result.size(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; result[i] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>在未排序的数组中找到第 <strong>k</strong> 个最大的元素。请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [3,2,1,5,6,4] 和 k = 2</span><br><span class="line">输出: 5</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: [3,2,3,1,2,4,5,5,6] 和 k = 4</span><br><span class="line">输出: 4</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<p>你可以假设 k 总是有效的，且 1 ≤ k ≤ 数组的长度。</p>
+<p><strong>解题思路</strong></p>
+<p>我们首先想到的办法就是，先对数组排序，然后直接取出第<code>k</code>大的元素即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        nums.sort(reverse=<span class="keyword">True</span>)</span><br><span class="line">        <span class="keyword">return</span> nums[k - <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>我们知道这种算法的时间复杂度很容易分析，是<code>O(nlogn)</code>级别。</p>
+<p>其实我们分析这个问题，我们发现这个问题实际上就是快速排序中的<code>partition</code>操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_partition</span><span class="params">(self, nums, l, r)</span>:</span></span><br><span class="line">        j = l</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(l + <span class="number">1</span>, r + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> nums[i] &gt; nums[l]:</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">                nums[i], nums[j] = nums[j], nums[i]</span><br><span class="line">        nums[l], nums[j] = nums[j], nums[l]</span><br><span class="line">        <span class="keyword">return</span> j</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_selection</span><span class="params">(self, nums, l, r, k)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> l == r:</span><br><span class="line">            <span class="keyword">return</span> nums[k]</span><br><span class="line"></span><br><span class="line">        p = self._partition(nums, l, r)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> k == p:</span><br><span class="line">            <span class="keyword">return</span> nums[p]</span><br><span class="line">        <span class="keyword">elif</span> k &lt; p:</span><br><span class="line">            <span class="keyword">return</span> self._selection(nums, l, p - <span class="number">1</span>, k)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self._selection(nums, p + <span class="number">1</span>, r, k)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span><span class="params">(self, nums, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> self._selection(nums, <span class="number">0</span>, len(nums) - <span class="number">1</span>, k - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>实际测试中发现这种递归的写法速度很慢，所以我们写了这种非递归版本。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/acm/">acm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/贪心算法/">贪心算法</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -235,7 +692,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-08-28-Kolakoski sequence"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-05-30-Leetcode-344验证回文串（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -243,7 +700,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/28/2017-08-28-Kolakoski sequence/">Kolakoski sequence</a>
+      <a class="article-title" href="/2018/05/30/2018-05-30-Leetcode-344验证回文串（最详细解决方案！！！）/">Leetcode 344:验证回文串（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -251,552 +708,40 @@
     
     <div class="article-meta">
       
-	<a href="/2017/08/28/2017-08-28-Kolakoski sequence/" class="article-date">
-	  <time datetime="2017-08-27T16:00:00.000Z" itemprop="datePublished">八月 28, 2017</time>
+	<a href="/2018/05/30/2018-05-30-Leetcode-344验证回文串（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-05-29T16:00:00.000Z" itemprop="datePublished">五月 30, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>Kolakoski序列是个自生成的无限序列。</p>
-<p>例如，当给定的整数组为[1,2]时，Kolakoski序列是这样的：</p>
-<p>[1,2,2,1,1,2,1,2,2,1,2,2,1,1,2……]</p>
-<p>如果我们将相邻的相同的数字分成一组，那么将会得到：</p>
-<p>[[1],[2,2],[1,1],[2],[1],[2,2],[1],[2,2],[1,1],[2]……..]</p>
-<p>可以看出，每组数字交替由1，2组成。</p>
-<p>接下来对每个分组求他的长度，得到：</p>
-<p>[1,2,2,1,1,2,1,2,2,1,2,2,1,1,2……]</p>
-<h2 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h2><p>输入有两行组成：</p>
-<p>第一行包括两个整数n，m</p>
-<p>第二行包括m个正整数a[]</p>
-<p>数据规模限制：</p>
-<p>0 &lt; n &lt; 10000    1 &lt; m &lt; 1000    0 &lt; a[i] &lt; 1000</p>
-<p>a[i] != a[i+1]     a[0] != a[m-1]</p>
-<h2 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h2><p>每行一个数字，共n行</p>
-<p>整数组a生成的Kolakoski序列的前n项</p>
-<h2 id="问题的解决"><a href="#问题的解决" class="headerlink" title="问题的解决"></a>问题的解决</h2><p>我觉得下面这个解法还不错</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;			//adjacent_find</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m, n;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter number n,m:\n"</span>;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; m;</span><br><span class="line">	<span class="keyword">if</span> (n &lt;= <span class="number">0</span> || n &gt;= <span class="number">10000</span> || m &lt;= <span class="number">1</span> || m &gt;= <span class="number">1000</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error"</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a(m);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter m numbers:\n"</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> temp;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">		a[i] = temp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (a[<span class="number">0</span>] == a[m - <span class="number">1</span>])</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error : a[0] == a[m - 1]"</span>;</span><br><span class="line">         <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//查找相邻元素有很多做法，我这里使用的标准库里的做法</span></span><br><span class="line">	<span class="keyword">auto</span>&amp;&amp; pan = <span class="built_in">std</span>::adjacent_find(<span class="built_in">std</span>::begin(a), <span class="built_in">std</span>::end(a));</span><br><span class="line">	<span class="keyword">if</span> (pan != a.end())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error : have the same adjacent element"</span>;</span><br><span class="line">         <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result&#123;&#125;;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n &amp;&amp; j &lt; n; ++i, ++j)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> curNum = a[i % m];</span><br><span class="line">		result.push_back(curNum);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> count = <span class="number">1</span>; count &lt; result[i] &amp;&amp; j &lt; n; ++count, ++j)</span><br><span class="line">		&#123;</span><br><span class="line">			result.push_back(curNum);</span><br><span class="line">		&#125;		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::copy(<span class="built_in">std</span>::begin(result), <span class="built_in">std</span>::end(result), <span class="built_in">std</span>::ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">"\n"</span>));</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kolakoski/">Kolakoski</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-27-vector iterator not dereferencable"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/27/2017-08-27-vector iterator not dereferencable/">vector iterator not dereferencable</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/27/2017-08-27-vector iterator not dereferencable/" class="article-date">
-	  <time datetime="2017-08-26T16:00:00.000Z" itemprop="datePublished">八月 27, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天碰到这样一个问题，在对如下问题编译时出现了这样的报错信息 <code>vector iterator not dereferencable</code>，这个报错信息非常的常见。以下是程序的出错片段：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_hands</span><span class="params">(Hands&amp; hands, Deck&amp; deck)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> d = dist();</span><br><span class="line">	<span class="comment">//每个人输出一个牌，最后全部放在deck中</span></span><br><span class="line">	<span class="keyword">while</span> (deck.size() != <span class="number">52</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Card&gt; tempHand;</span><br><span class="line">		Card maxCard&#123;&#125;;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; iter = <span class="built_in">std</span>::begin(hands); iter &lt; <span class="built_in">std</span>::end(hands); ++iter)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">size_t</span> max_index = (*iter).size() - <span class="number">1</span>;</span><br><span class="line">			d.param(Range&#123; <span class="number">0</span>, max_index &#125;);</span><br><span class="line">			<span class="keyword">auto</span> tIter = <span class="built_in">std</span>::begin(*iter);</span><br><span class="line">			<span class="built_in">std</span>::advance(tIter, d(rng()));</span><br><span class="line">			deck.push_back(*tIter);</span><br><span class="line">			tempHand.push_back(*tIter);</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *tIter &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">			(*iter).erase(tIter);			<span class="comment">//注意的是erase是传入的指针变量</span></span><br><span class="line">          	 Card tempCard = *tIter;		<span class="comment">//报错位置</span></span><br><span class="line">			maxCard = <span class="built_in">std</span>::max(maxCard, tempCard, [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; crd1, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; crd2) &#123;</span><br><span class="line">				<span class="keyword">return</span> crd1.first &lt; crd2.first || (crd1.first == crd2.first &amp;&amp; crd1.second &lt; crd2.second);</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"最大的牌是："</span> &lt;&lt; maxCard &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>其实这个问题很不应该，很明显可以看出我是在对 <code>tIter</code>做了 <code>erase</code> 操作后，又使用<code>*tIter</code> 。原因在于 <code>erase</code> 操作后原来的指针就不存在了，自然再去访问就会报错。</p>
-<p>还有一种情况就是访问越界，它也会造成这样的问题。</p>
+        <p>请编写一个函数，其功能是将输入的字符串反转过来。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：s = &quot;hello&quot;</span><br><span class="line">返回：&quot;olleh&quot;</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题没什么好说的，有一个<code>pythonic</code>式的解法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseString</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> s[::<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<p>但是我们这里同样可以参考<a href="https://blog.csdn.net/qq_17550379/article/details/80512745" target="_blank" rel="noopener">Leetcode 167:两数之和 II - 输入有序数组</a>中使用的<code>对撞指针</code>的思路。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseString</span><span class="params">(self, s)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type s: str</span></span><br><span class="line"><span class="string">        :rtype: str</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        l = <span class="number">0</span></span><br><span class="line">        r = len(s) - <span class="number">1</span></span><br><span class="line">        s = list(s)</span><br><span class="line">        <span class="keyword">while</span> l &lt; r:</span><br><span class="line">            s[l], s[r] = s[r], s[l]</span><br><span class="line">            l += <span class="number">1</span></span><br><span class="line">            r -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">''</span>.join(s)</span><br></pre></td></tr></table></figure>
+<p>但是这个解法在python看来很蠢(￣▽￣)”~~</p>
+<p>该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/">error</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-26-关于新的工作环境"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/26/2017-08-26-关于新的工作环境/">关于新的工作环境</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/26/2017-08-26-关于新的工作环境/" class="article-date">
-	  <time datetime="2017-08-25T16:00:00.000Z" itemprop="datePublished">八月 26, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>既来之，则安之！</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eassy/">Eassy</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-20-QT的线程结束问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/20/2017-08-20-QT的线程结束问题/">QT的线程结束问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/20/2017-08-20-QT的线程结束问题/" class="article-date">
-	  <time datetime="2017-08-19T16:00:00.000Z" itemprop="datePublished">八月 20, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/QT/">QT</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在QT中，线程退出主要有三种方式：</p>
-<ul>
-<li>void quit()   相当于exit(0)</li>
-<li>void exit(int returnCode  = 0)    调用exit后，thread将退出event loop，并从exec返回，exec的返回值就是returnCode。通常returnCode返回成功，其他值返回失败。</li>
-<li>void terminate()   强行终止线程</li>
-</ul>
-<p>主要用法：</p>
-<ul>
-<li><p>thread-&gt;quit();   thread-&gt;wait();</p>
-</li>
-<li><p>thread-&gt;terminate();  thread-&gt;wait();   注意这种方式并不是非常的实用</p>
-<p>要注意的是，在每次调用线程退出后，都要调用一次wait()函数。不然会出问题。</p>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/QT/">QT</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QT/">QT</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/quit/">quit</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/thread/">thread</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/wait/">wait</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-16-深度探索c++对象模型(5)"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/16/2017-08-16-深度探索c++对象模型(5)/">深度探索c++对象模型(5)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/16/2017-08-16-深度探索c++对象模型(5)/" class="article-date">
-	  <time datetime="2017-08-15T16:00:00.000Z" itemprop="datePublished">八月 16, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="关于虚拟构造函数"><a href="#关于虚拟构造函数" class="headerlink" title="关于虚拟构造函数"></a>关于虚拟构造函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Base1();</span><br><span class="line">	<span class="keyword">virtual</span> ~Base1();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">speakClearly</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Base1 *<span class="title">clone</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">//函数的返回类型是类本身</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">float</span> data_Base1;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Base2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Base2();</span><br><span class="line">	<span class="keyword">virtual</span> ~Base2();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mumble</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Base2 *<span class="title">clone</span><span class="params">()</span> <span class="keyword">const</span></span>; <span class="comment">//函数的返回类型是类本身</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">float</span> data_Base2;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Deriverd</span> :</span> <span class="keyword">public</span> Base1, <span class="keyword">public</span> Base2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="keyword">virtual</span> ~Deriverd();</span><br><span class="line">	<span class="function"><span class="keyword">virtual</span> Deriverd *<span class="title">clone</span><span class="params">()</span> <span class="keyword">const</span></span>;<span class="comment">//函数的返回类型是类本身</span></span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">	<span class="keyword">float</span> data_Derived;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>通过之前的<a href="http://www.coordinate.wang/cpp/2017/08/07/%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2c++%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B(4" target="_blank" rel="noopener">调试技巧</a>.html)我们可以得到</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">1&gt;  class Base1	size(8):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| data_Base1</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base1::$vftable@:</span><br><span class="line">1&gt;  	| &amp;Base1_meta</span><br><span class="line">1&gt;  	|  0</span><br><span class="line">1&gt;   0	| &amp;Base1::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base1::speakClearly</span><br><span class="line">1&gt;   2	| &amp;Base1::clone</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base1::&#123;dtor&#125; this adjustor: 0</span><br><span class="line">1&gt;  Base1::speakClearly this adjustor: 0</span><br><span class="line">1&gt;  Base1::clone this adjustor: 0</span><br><span class="line">1&gt;  Base1::__delDtor this adjustor: 0</span><br><span class="line">1&gt;  Base1::__vecDelDtor this adjustor: 0</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  class Base2	size(8):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| data_Base2</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base2::$vftable@:</span><br><span class="line">1&gt;  	| &amp;Base2_meta</span><br><span class="line">1&gt;  	|  0</span><br><span class="line">1&gt;   0	| &amp;Base2::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base2::mumble</span><br><span class="line">1&gt;   2	| &amp;Base2::clone        </span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Base2::&#123;dtor&#125; this adjustor: 0</span><br><span class="line">1&gt;  Base2::mumble this adjustor: 0</span><br><span class="line">1&gt;  Base2::clone this adjustor: 0</span><br><span class="line">1&gt;  Base2::__delDtor this adjustor: 0</span><br><span class="line">1&gt;  Base2::__vecDelDtor this adjustor: 0</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  class Deriverd	size(20):</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;   0	| +--- (base class Base1)</span><br><span class="line">1&gt;   0	| | &#123;vfptr&#125;</span><br><span class="line">1&gt;   4	| | data_Base1</span><br><span class="line">1&gt;  	| +---</span><br><span class="line">1&gt;   8	| +--- (base class Base2)</span><br><span class="line">1&gt;   8	| | &#123;vfptr&#125;</span><br><span class="line">1&gt;  12	| | data_Base2</span><br><span class="line">1&gt;  	| +---</span><br><span class="line">1&gt;  16	| data_Derived</span><br><span class="line">1&gt;  	+---</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Deriverd::$vftable@Base1@:</span><br><span class="line">1&gt;  	| &amp;Deriverd_meta</span><br><span class="line">1&gt;  	|  0</span><br><span class="line">1&gt;   0	| &amp;Deriverd::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base1::speakClearly</span><br><span class="line">1&gt;   2	| &amp;Deriverd::clone //注意一下这里，在Lippman的对象模型书里面在这下面有一个Base2::mumble</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Deriverd::$vftable@Base2@:</span><br><span class="line">1&gt;  	| -8</span><br><span class="line">1&gt;   0	| &amp;thunk: this-=8; goto Deriverd::&#123;dtor&#125;</span><br><span class="line">1&gt;   1	| &amp;Base2::mumble</span><br><span class="line">1&gt;   2	| &amp;thunk: this-=8; goto Base2* Deriverd::clone</span><br><span class="line">1&gt;   3	| &amp;thunk: this-=8; goto Deriverd* Deriverd::clone</span><br><span class="line">1&gt;</span><br><span class="line">1&gt;  Deriverd::&#123;dtor&#125; this adjustor: 0</span><br><span class="line">1&gt;  Deriverd::clone this adjustor: 0</span><br><span class="line">1&gt;  Deriverd::__delDtor this adjustor: 0</span><br><span class="line">1&gt;  Deriverd::__vecDelDtor this adjustor: 0</span><br></pre></td></tr></table></figure>
-<p>我们可以从上面的 <code>Deriverd::$vftable@Base2@</code> 可以看到里面使用了 <code>thunk</code> 的技法。</p>
-<p>如果我们通过如下的方式调用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Base2 *pb1 = <span class="keyword">new</span> Derived;</span><br><span class="line">Base2 *pb2 = pb1-&gt;clone();</span><br></pre></td></tr></table></figure>
-<p>当进行 <code>pb1-&gt;clone()</code> 时，会被调用指向 <code>Deriverd</code> 对象的起始地址，于是 <code>clone()</code>  的 <code>Derived</code> 版会被调用，它会传回一个指针，指向一个新的 <code>Derived</code> 对象，该对象的地址在被指定给pb2之前，必须先经过调整，以指向 <code>Base2subobject</code> </p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-14-linux的dd命令"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/14/2017-08-14-linux的dd命令/">linux的dd命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/14/2017-08-14-linux的dd命令/" class="article-date">
-	  <time datetime="2017-08-13T16:00:00.000Z" itemprop="datePublished">八月 14, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="dd命令"><a href="#dd命令" class="headerlink" title="dd命令"></a>dd命令</h2><ul>
-<li>语法格式</li>
-</ul>
-<p><code>dd   [option]</code></p>
-<ul>
-<li>dd指令选项详解</li>
-</ul>
-<p><code>if=file</code>：输入文件名，缺省为标准输入<br><code>of=file</code>：输出文件名，缺省为标准输出<br><code>ibs=bytes</code>：一次读入 bytes 个字节（即一个块大小为 bytes 个字节）<br><code>obs=bytes</code>：一次写 bytes 个字节（即一个块大小为 bytes 个字节）<br><code>bs=bytes</code>：同时设置读写块的大小为 bytes ，可代替 ibs 和 obs<br><code>cbs=bytes</code>：一次转换 bytes 个字节，即转换缓冲区大小<br><code>skip=blocks</code>：从输入文件开头跳过 blocks 个块后再开始复制<br><code>seek=blocks</code>：从输出文件开头跳过 blocks 个块后再开始复制。（通常只有当输出文件是磁盘或磁带时才有效）<br><code>count=blocks</code>：仅拷贝 blocks 个块，块大小等于 ibs 指定的字节数<br><code>conv=ASCII</code>：把EBCDIC码转换为ASCIl码。<br><code>conv=ebcdic</code>：把ASCIl码转换为EBCDIC码。<br><code>conv=ibm</code>：把ASCIl码转换为alternate EBCDIC码。<br><code>conv=block</code>：把变动位转换成固定字符。<br><code>conv=ublock</code>：把固定位转换成变动位。<br><code>conv=ucase</code>：把字母由小写转换为大写。<br><code>conv=lcase</code>：把字母由大写转换为小写。<br><code>conv=notrunc</code>：不截短输出文件。<br><code>conv=swab</code>：交换每一对输入字节。<br><code>conv=noerror</code>：出错时不停止处理。<br><code>conv=sync</code>：把每个输入记录的大小都调到ibs的大小（用NUL填充）。<br><code>iflag=FLAGS</code>：指定读的方式FLAGS，参见“FLAGS参数说明”<br><code>oflag=FLAGS</code>：指定写的方式FLAGS，参见“FLAGS参数说明”  </p>
-<ul>
-<li>FLAGS参数说明：</li>
-</ul>
-<p>append -append  mode  (makes  sense  only  for output; conv=notrunc sug-gested)<br><code>direct</code>：读写数据采用直接IO方式；<br><code>directory</code>：读写失败除非是directory；<br><code>dsync</code>：读写数据采用同步IO；<br><code>sync</code>：同上，但是针对是元数据<br><code>fullblock</code>：堆积满block（accumulate full blocks of input ）(iflag only)；<br><code>nonblock</code>：读写数据采用非阻塞IO方式<br><code>noatime</code>：读写数据不更新访问时间  </p>
-<h2 id="应用实例"><a href="#应用实例" class="headerlink" title="应用实例"></a>应用实例</h2><ul>
-<li><p>将本地的<code>/dev/hdb</code>整盘备份到<code>/dev/hdd</code></p>
-<p>dd if=/dev/hdb of=/dev/hdd</p>
-</li>
-<li><p>将<code>/dev/hdb</code>全盘数据备份到指定路径的<code>image</code>文件</p>
-<p>dd if=/dev/hdb of=/root/image</p>
-</li>
-<li><p>将备份文件恢复到指定盘</p>
-<p>dd if=/root/image of=/dev/hdb</p>
-</li>
-<li><p>备份<code>/dev/hdb</code>全盘数据，并利用gzip工具进行压缩，保存到指定路径</p>
-</li>
-</ul>
-<p>dd if=/dev/hdb | gzip &gt; /root/image.gz</p>
-<ul>
-<li><p>将压缩的备份文件恢复到指定盘</p>
-<p>gzip -dc /root/image.gz | dd of=/dev/hdb</p>
-</li>
-<li><p>备份与恢复<code>MBR</code></p>
-</li>
-</ul>
-<p>备份磁盘开始的512个字节大小的<code>MBR</code>信息到指定文件：</p>
-<p>dd if=/dev/hda of=/root/image count=1 bs=512</p>
-<p>count=1指仅拷贝一个块；bs=512指块大小为512个字节。</p>
-<p>恢复：</p>
-<p> dd if=/root/image of=/dev/had</p>
-<p>将备份的<code>MBR</code>信息写到磁盘开始部分</p>
-<ul>
-<li>备份软盘</li>
-</ul>
-<p>dd if=/dev/fd0 of=disk.img count=1 bs=1440k (即块大小为1.44M)</p>
-<ul>
-<li>拷贝内存内容到硬盘</li>
-</ul>
-<p>dd if=/dev/mem of=/root/mem.bin bs=1024 (指定块大小为1k)</p>
-<p>9.拷贝光盘内容到指定文件夹，并保存为<code>cd.iso</code>文件</p>
-<p>dd if=/dev/cdrom(hdc) of=/root/cd.iso</p>
-<ul>
-<li>增加<code>swap</code>分区文件大小</li>
-</ul>
-<p>第一步：创建一个大小为256M的文件：</p>
-<p> dd if=/dev/zero of=/swapfile bs=1024 count=262144</p>
-<p>第二步：把这个文件变成<code>swap</code>文件：</p>
-<p> mkswap /swapfile</p>
-<p>第三步：启用这个<code>swap</code>文件：</p>
-<p> swapon /swapfile</p>
-<p>第四步：编辑<code>/etc/fstab</code>文件，使在每次开机时自动加载<code>swap</code>文件：</p>
-<p>/swapfile swap swap default 0 0</p>
-<ul>
-<li>销毁磁盘数据</li>
-</ul>
-<p>dd if=/dev/urandom of=/dev/hda1</p>
-<p>注意：利用随机的数据填充硬盘，在某些必要的场合可以用来销毁数据。</p>
-<ul>
-<li><p>测试硬盘的读写速度</p>
-<p>dd if=/dev/zero bs=1024 count=1000000 of=/root/1Gb.file</p>
-<p>dd if=/root/1Gb.file bs=64k | dd of=/dev/null</p>
-</li>
-</ul>
-<p>通过以上两个命令输出的命令执行时间，可以计算出硬盘的读、写速度。</p>
-<ul>
-<li>确定硬盘的最佳块大小：</li>
-</ul>
-<p>dd if=/dev/zero bs=1024 count=1000000 of=/root/1Gb.file</p>
-<p>dd if=/dev/zero bs=2048 count=500000 of=/root/1Gb.file</p>
-<p>dd if=/dev/zero bs=4096 count=250000 of=/root/1Gb.file</p>
-<p>dd if=/dev/zero bs=8192 count=125000 of=/root/1Gb.file</p>
-<p>通过比较以上命令输出中所显示的命令执行时间，即可确定系统最佳的块大小。</p>
-<ul>
-<li>修复硬盘：</li>
-</ul>
-<p>dd if=/dev/sda of=/dev/sda 或dd if=/dev/hda of=/dev/hda</p>
-<p>当硬盘较长时间(一年以上)放置不使用后，磁盘上会产生<code>magnetic flux point</code>，当磁头读到这些区域时会遇到困难，并可能导致I/O错误。当这种情况影响到硬盘的第一个扇区时，可能导致硬盘报废。上边的命令有可能使这些数 据起死回生。并且这个过程是安全、高效的。</p>
-<ul>
-<li>利用<code>netcat</code>远程备份</li>
-</ul>
-<p>dd if=/dev/hda bs=16065b | netcat &lt; targethost-IP &gt; 1234</p>
-<p>在源主机上执行此命令备份<code>/dev/hda</code></p>
-<p>netcat -l -p 1234 | dd of=/dev/hdc bs=16065b</p>
-<p>在目的主机上执行此命令来接收数据并写入<code>/dev/hdc</code></p>
-<p>netcat -l -p 1234 | bzip2 &gt; partition.img</p>
-<p>netcat -l -p 1234 | gzip &gt; partition.img</p>
-<p>以上两条指令是目的主机指令的变化分别采用<code>bzip2</code>、<code>gzip</code>对数据进行压缩，并将备份文件保存在当前目录。</p>
-<ul>
-<li>将一个很大的视频文件中的第i个字节的值改成0x41（也就是大写字母A的ASCII值）</li>
-</ul>
-<p>echo A | dd of=bigfile seek=$i bs=1 count=1 conv=notrunc</p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dd/">dd</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-13-advance与next的区别"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/13/2017-08-13-advance与next的区别/">advance与next的区别</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/13/2017-08-13-advance与next的区别/" class="article-date">
-	  <time datetime="2017-08-12T16:00:00.000Z" itemprop="datePublished">八月 13, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="http://en.cppreference.com/w/cpp/iterator/advance" target="_blank" rel="noopener"><code>std::advance</code></a></p>
-<ul>
-<li>modifies its argument</li>
-<li>returns nothing</li>
-<li>works on input iterators or better (or bi-directional iterators if a negative distance is given)</li>
-</ul>
-<p><a href="http://en.cppreference.com/w/cpp/iterator/next" target="_blank" rel="noopener"><code>std::next</code></a></p>
-<ul>
-<li>leaves its argument unmodified</li>
-<li>returns a copy of the argument, advanced by the specified amount</li>
-<li>works on forward iterators or better (or bi-directional iterators if a negative distance is given))</li>
-</ul>
-<p>前向迭代器<a href="http://zh.cppreference.com/w/cpp/concept/ForwardIterator" target="_blank" rel="noopener"><code>ForwardIterator</code></a>  与输入迭代器<a href="http://zh.cppreference.com/w/cpp/concept/InputIterator" target="_blank" rel="noopener"><code>InputIterator</code></a> 的区别在于输入迭代器自增后之前和该迭代器相等的都失效了。前向迭代器能够保证两个迭代器实例a与b，如果a==b，则一定也满足++a=++b，而输入迭代器不能保证这一点。  </p>
-<p>constexpr与const的区别：constexpr表示在编译期就可以算出来（前提是为了算出它所依赖的东西也是在编译期可以算出来的）。而const只保证了运行时不直接被修改（但这个东西仍然可能是个动态变量）。</p>
-<p>例如，转自<a href="https://www.zhihu.com/question/35614219/answer/63681192" target="_blank" rel="noopener">知乎夏洋</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">int</span> N&gt; <span class="class"><span class="keyword">class</span> <span class="title">C</span>&#123;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="title">FivePlus</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">5</span> + x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  C&lt;x&gt; c1;            <span class="comment">// Error: x is not compile-time evaluable.</span></span><br><span class="line">  C&lt;FivePlus(<span class="number">6</span>)&gt; c2;  <span class="comment">// OK</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/advance/">advance</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/next/">next</a></li></ul>
-
-      
-    </footer>
-    <hr class="entry-footer-hr">
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-2017-08-12-mismatch函数中的范围问题"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/08/12/2017-08-12-mismatch函数中的范围问题/">mismatch函数中的范围问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2017/08/12/2017-08-12-mismatch函数中的范围问题/" class="article-date">
-	  <time datetime="2017-08-11T16:00:00.000Z" itemprop="datePublished">八月 12, 2017</time>
-	</a>
-
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
- 
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>关于mismatch主要要聊的是下面这样的几个问题：</p>
-<p>对于mismatch(iter1, end_iter1, iter2)</p>
-<ul>
-<li>返回pair\&lt;end_iter1, (iter2 + (end_iter1 - iter1))>，pair的成员second等于iter2加上第一序列的长度。如果第二序列比第一序列短，结果是未定义的。</li>
-</ul>
-<p>对于mismatch(iter1, end_iter1, iter2, end_iter2)</p>
-<ul>
-<li>当第一个序列比第二个序列长时，返回pair\&lt;end_iter1, (iter2 + (end_iter1 - iter1))>，所以成员second为iter2加上第一个序列的长度</li>
-<li>当第一个序列比第二个序列短时，返回pair\&lt;(end_iter1 + (end_iter2 - iter2)), iter2 >，所以成员first为iter1加上第一个序列的长度</li>
-<li>当第一个序列和第二个序列一样长时，返回pair\&lt;end_iter1, end_iter2></li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;                                      // For standard streams</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;                                        // For vector container</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;                                     // For equal() algorithm</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;                                        // For string class</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;                                      // For stream iterators</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br><span class="line"><span class="keyword">using</span> word_iter = <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;::iterator;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; words1&#123; <span class="string">"one"</span>, <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>, <span class="string">"five"</span>, <span class="string">"six"</span>, <span class="string">"seven"</span>, <span class="string">"eight"</span>, <span class="string">"nine"</span> &#125;;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; words2&#123; <span class="string">"two"</span>, <span class="string">"three"</span>, <span class="string">"four"</span>, <span class="string">"five"</span>, <span class="string">"six"</span>, <span class="string">"seven"</span>, <span class="string">"eight"</span>, <span class="string">"nine"</span>, <span class="string">"ten"</span> &#125;;</span><br><span class="line">	<span class="keyword">auto</span> iter1 = <span class="built_in">std</span>::begin(words1);</span><br><span class="line">	<span class="keyword">auto</span> end_iter1 = <span class="built_in">std</span>::end(words1);</span><br><span class="line">	<span class="keyword">auto</span> iter2 = <span class="built_in">std</span>::begin(words2);</span><br><span class="line">	<span class="keyword">auto</span> end_iter2 = <span class="built_in">std</span>::end(words2);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Lambda expression to output mismatch() result</span></span><br><span class="line">	<span class="keyword">auto</span> print_match = [](<span class="keyword">const</span> <span class="built_in">std</span>::pair&lt;word_iter, word_iter&gt;&amp; pr, <span class="keyword">const</span> word_iter&amp; end_iter)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (pr.first != end_iter)</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nFirst pair of words that differ are "</span></span><br><span class="line">			&lt;&lt; *pr.first &lt;&lt; <span class="string">" and "</span> &lt;&lt; *pr.second &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nRanges are identical."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Container - words1:  "</span>;</span><br><span class="line">	<span class="built_in">std</span>::copy(iter1, end_iter1, <span class="built_in">std</span>::ostream_iterator&lt;<span class="built_in">string</span>&gt;&#123;<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">" "</span>&#125;);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nContainer - words2:  "</span>;</span><br><span class="line">	<span class="built_in">std</span>::copy(iter2, end_iter2, <span class="built_in">std</span>::ostream_iterator&lt;<span class="built_in">string</span>&gt;&#123;<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">" "</span>&#125;);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare from words1[1] to end with words2:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter1 + <span class="number">1</span>, end_iter1, iter2), end_iter1);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare from words2[0] to second-to-last with words1:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter2, end_iter2 - <span class="number">1</span>, iter1), end_iter2 - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare from words1[1] to words1[5] with words2:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter1 + <span class="number">1</span>, iter1 + <span class="number">6</span>, iter2), iter1 + <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare first 6 from words1 with first 6 in words2:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter1, iter1 + <span class="number">6</span>, iter2, iter2 + <span class="number">6</span>), iter1 + <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare all words1 with words2:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter1, end_iter1, iter2), end_iter1);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare all of words2 with all of words1:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter2, end_iter2, iter1, end_iter1), end_iter2);</span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"\nCompare from words1[1] to end with words2[0] to second-to-last:"</span>;</span><br><span class="line">	print_match(<span class="built_in">std</span>::mismatch(iter1 + <span class="number">1</span>, end_iter1, iter2, end_iter2 - <span class="number">1</span>), end_iter1);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">auto</span>&amp; iptr = <span class="built_in">std</span>::mismatch(iter1 + <span class="number">1</span>, end_iter1, iter2, end_iter2);</span><br><span class="line"></span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果为</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Container - words1:  one two three four five six seven eight nine</span><br><span class="line">Container - words2:  two three four five six seven eight nine ten</span><br><span class="line"></span><br><span class="line">Compare from words1[<span class="number">1</span>] to end with words2:</span><br><span class="line">Ranges are identical.</span><br><span class="line"></span><br><span class="line">Compare from words2[<span class="number">0</span>] to second-to-last with words1:</span><br><span class="line">First pair of words that differ are two <span class="keyword">and</span> one</span><br><span class="line"></span><br><span class="line">Compare from words1[<span class="number">1</span>] to words1[<span class="number">5</span>] with words2:</span><br><span class="line">Ranges are identical.</span><br><span class="line"></span><br><span class="line">Compare first <span class="number">6</span> from words1 with first <span class="number">6</span> in words2:</span><br><span class="line">First pair of words that differ are one <span class="keyword">and</span> two</span><br><span class="line"></span><br><span class="line">Compare all words1 with words2:</span><br><span class="line">First pair of words that differ are one <span class="keyword">and</span> two</span><br><span class="line"></span><br><span class="line">Compare all of words2 with all of words1:</span><br><span class="line">First pair of words that differ are two <span class="keyword">and</span> one</span><br><span class="line"></span><br><span class="line">Compare from words1[<span class="number">1</span>] to end with words2[<span class="number">0</span>] to second-to-last:</span><br><span class="line">Ranges are identical.</span><br></pre></td></tr></table></figure>
-<p>查看iper，结果如下，first指向的是一个未知的字符串</p>
-<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1fih7xoittuj20m102cweh.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1fih7xoittuj20m102cweh.jpg" class="img-fluid"><br></a></p>
-
-      
-    </div>
-    <footer class="entry-meta entry-footer">
-      
-	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
-
-      
-  <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/algorithm/">algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mismatch/">mismatch</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -812,7 +757,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/8/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/10/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/8/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/10/">下一页</a>
   </nav>
 
 </section>
@@ -912,8 +857,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
-              <span>四月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-130-被围绕的区域（最详细的解法！！！）/">Leetcode 130：被围绕的区域（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -924,8 +869,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
-              <span>四月 7, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-200-岛屿的个数（最详细的解法！！！）/">Leetcode 200：岛屿的个数（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -936,8 +881,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
-              <span>四月 4, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-401-二进制手表（最详细的解法！！！）/">Leetcode 401：二进制手表（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -948,8 +893,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
-              <span>四月 2, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-79-单词搜索（最详细的解法！！！）/">Leetcode 79：单词搜索（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -960,8 +905,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
-              <span>三月 31, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/11/2018-09-11-Leetcode-90-子集 II（最详细的解法！！！）/">Leetcode 90：子集 II（最详细的解法！！！）</a></h6>
+              <span>九月 11, 2018</span>
             </div>
 
           </li>
@@ -972,8 +917,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
-              <span>三月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/10/2018-09-10-Leetcode-40-组合总和 II（最详细的解法！！！）/">Leetcode 40：组合总和 II（最详细的解法！！！）</a></h6>
+              <span>九月 10, 2018</span>
             </div>
 
           </li>
@@ -987,7 +932,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">35</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">112</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -997,7 +942,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.67px;">1080ti</a> <a href="/tags/ADL/" style="font-size: 10px;">ADL</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.33px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.33px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/JSON/" style="font-size: 10.67px;">JSON</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.67px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.67px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.33px;">QT</a> <a href="/tags/SNIP/" style="font-size: 10px;">SNIP</a> <a href="/tags/Ubuntu/" style="font-size: 11.33px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 14.67px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.67px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/big-file/" style="font-size: 10px;">big file</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 19.33px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 18.67px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 18px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 16.67px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.33px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.33px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.67px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 14.67px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.33px;">error</a> <a href="/tags/estimator/" style="font-size: 11.33px;">estimator</a> <a href="/tags/fire/" style="font-size: 10px;">fire</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.67px;">namehiding</a> <a href="/tags/network/" style="font-size: 12px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 17.33px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.67px;">numpy</a> <a href="/tags/office/" style="font-size: 10.67px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.67px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.67px;">overload</a> <a href="/tags/override/" style="font-size: 10.67px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.67px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/pytorch/" style="font-size: 11.33px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.33px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.33px;">re</a> <a href="/tags/requests/" style="font-size: 10.67px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.67px;">shell</a> <a href="/tags/signal/" style="font-size: 10.67px;">signal</a> <a href="/tags/sql/" style="font-size: 10.67px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16px;">stl</a> <a href="/tags/super/" style="font-size: 10.67px;">super</a> <a href="/tags/tensorflow/" style="font-size: 14.67px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.67px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.67px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 16.67px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.67px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.33px;">笔试</a> <a href="/tags/算法/" style="font-size: 14px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.67px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.33px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -1007,7 +952,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

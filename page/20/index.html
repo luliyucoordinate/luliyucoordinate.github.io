@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2017-03-07-linux-day7"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-09-22-深度探索c++对象模型(6)"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/07/2017-03-07-linux-day7/">linux Day7</a>
+      <a class="article-title" href="/2017/09/22/2017-09-22-深度探索c++对象模型(6)/">深度探索c++对象模型(6)</a>
     </h1>
   
 
@@ -124,62 +124,51 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/07/2017-03-07-linux-day7/" class="article-date">
-	  <time datetime="2017-03-06T16:00:00.000Z" itemprop="datePublished">三月 7, 2017</time>
+	<a href="/2017/09/22/2017-09-22-深度探索c++对象模型(6)/" class="article-date">
+	  <time datetime="2017-09-21T16:00:00.000Z" itemprop="datePublished">九月 22, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Sigaction函数"><a href="#Sigaction函数" class="headerlink" title="Sigaction函数"></a>Sigaction函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line"><span class="function">Int <span class="title">sigaction</span><span class="params">(<span class="keyword">int</span> signo, <span class="keyword">const</span> structsigactin *act,struct sigactin *oact)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>检查或修改与指定信号相关联的处理动作，该函数取代signal函数<br>参数signo是要检测或者要修改其具体操作的信号编号<br>act指针为空，则要修改其动作<br>oact指针为空，则系统由oact指针返回该信号的上一个动作</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span>&#123;</span></span><br><span class="line">	<span class="keyword">void</span> (*as_handler) (<span class="keyword">int</span>);</span><br><span class="line">	<span class="keyword">void</span> (*sa_sigaction)(<span class="keyword">int</span> , <span class="keyword">siginfo_t</span> *,<span class="keyword">void</span> *);</span><br><span class="line">	<span class="keyword">sigset_t</span> sa_mask;</span><br><span class="line">	<span class="keyword">int</span> sa_flags;</span><br><span class="line">	<span class="keyword">void</span> (*sa_restorer)(<span class="keyword">void</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int signal1(int signo, void (*fun)(int))&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">act</span>, <span class="title">oact</span>;</span></span><br><span class="line">	act.sa_handler = func;</span><br><span class="line">	sigemptyset(&amp;act.sa_mask);</span><br><span class="line">	act.sa_flags = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> sigaction(signo, &amp;act,&amp;oact);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="守护进程-daemon"><a href="#守护进程-daemon" class="headerlink" title="守护进程(daemon)"></a>守护进程(daemon)</h1><p>守护进程是一个后台进程，他无需用户输入就可以运行，经常提供某种服务<br>常见的守护进程有web服务器、邮件服务器以及数据库服务器<br>守护进程不能控制终端，所以任何输入或者输出都要做特殊处理<br>和多数程序一样，一个守护进程是从shell脚本或者命令行启动，但是他们不是交互式的，没有控制终端。<br>父进程在fork子进程退出后就消除了控制终端。<br>守护进程既不需要从标准输入设备都信息，也不需要标准输出。<br>下一步在子进程中调用setsid，取消进程和任何控制终端的关联。<br>下一步是让根目录称为子进程的当前目录，因为任何进程如果他的当前目录是在一个被安装的文件系统上，那么就会妨碍这个文件被卸载。<br>接下来设置umask为0，设置权限<br>如果一个进程继承父进程的umask055，他屏蔽了group和other的读和执行权。<br>如果守护进程接着创建一个文件，group和other用户操作就很麻烦。  </p>
-<p>总结为以下步骤：  </p>
-<ol>
-<li>父进程fork，执行exit退出</li>
-<li>子进程调用setsid</li>
-<li>让根目录“/”成为子进程的工作目录</li>
-<li>把子进程umask设置为0</li>
-<li>关闭不需要的文件描述符</li>
-</ol>
-<h1 id="setsid函数"><a href="#setsid函数" class="headerlink" title="setsid函数"></a>setsid函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pid_t</span> setsid()</span><br></pre></td></tr></table></figure>
-<p>setsid函数创建一个新的会话和一个新的进程组，然后守护进程成为他们的领导<br>setsid会保证新会话没有终端<br>如果调用进程已经是一个进程组的领导进程，setsid调用失败。<br>函数调用成功后，返回新会话ID，失败返回-1，设置errno</p>
-<h1 id="chdir函数"><a href="#chdir函数" class="headerlink" title="chdir函数"></a>chdir函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">chdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname)</span></span></span><br></pre></td></tr></table></figure>
-<p>chdir函数根据参数pathname设置当前工作(注意不一定是文件所在目录)，成功返回0，失败返回-1，设置errno</p>
-<h1 id="umask函数"><a href="#umask函数" class="headerlink" title="umask函数"></a>umask函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">mode_t</span> umask(<span class="keyword">mode_t</span> mask);</span><br></pre></td></tr></table></figure>
-<p>umask调用把守护进程的umask设置为0，这样取消来自父进程的umask</p>
-<h1 id="syslog提供服务"><a href="#syslog提供服务" class="headerlink" title="syslog提供服务"></a>syslog提供服务</h1><p>openlog打开日志</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;syslog.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">openlog</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *ident, <span class="keyword">int</span> option,<span class="keyword">int</span> facility)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>ident参数是要向消息中加入字符串，常用设置程序名<br>option有如下几个值<br>LOG_CONS      如果系统日志服务器不能写，写入控制台<br>LOG_NDELAY    立即打开链接，正常情况下，直到发送一条消息才打开链接<br>LOG_PERROR    打印到stderr<br>LOG_PID       每条消息包含进程PID<br>faciliticy设置消息类型，指定消息重要性。</p>
-<p>syslog写入日志</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">syslog</span><span class="params">(<span class="keyword">int</span> priority, <span class="keyword">const</span> <span class="keyword">char</span>*format, …)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>priority同facility<br>closelog关闭日志</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">close</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>openlog与closelog是可选项，因为调用syslog函数首次使用自动打开日志文件<br>red hat linux的日志文件在/var/log/messages<br>守护进程在linux中，可执行文件名后为d，没有扩展名</p>
-<h1 id="shell脚本结束守护进程"><a href="#shell脚本结束守护进程" class="headerlink" title="shell脚本结束守护进程"></a>shell脚本结束守护进程</h1><p>结束进程<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span>!/bin/sh</span><br><span class="line">WHOAMI=`whoami`</span><br><span class="line"> </span><br><span class="line">PID=`ps –u $WHOAMI | grep abc | awk ‘&#123;print $1&#125;’`</span><br><span class="line">if(test “$PID” != “”) then</span><br><span class="line">       kill $PID</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></p>
-<p>如果要确保程序只启动一次</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">\#!/bin/sh</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">WHOAMI=`whoami`</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">PID=`ps –u $WHOAMI | grep abc | awk ‘&#123;print $1&#125;’`</span><br><span class="line">if(test “$PID” = “”) then</span><br><span class="line">       ./abc</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
-<p>注意脚本文件的名称不要有’abc’字样，不然执行ps的时候会把脚本名称也print出来</p>
-<h1 id="自定义信号"><a href="#自定义信号" class="headerlink" title="自定义信号"></a>自定义信号</h1><p>捕获SIGUSR1信号<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">catch_Signal</span><span class="params">(<span class="keyword">int</span> Sign)</span></span>&#123;</span><br><span class="line">       <span class="keyword">switch</span>(Sign)&#123;</span><br><span class="line">       caseSIGINT:</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"SIGINTSignal\n"</span>);</span><br><span class="line">              <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">       caseSIGUSR1:</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"SIGUSR1Signal\n"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span>&#123;</span><br><span class="line">       signal(SIGINT,catch_Signal);</span><br><span class="line">       signal(SIGUSR1,catch_Signal);</span><br><span class="line">       <span class="built_in">printf</span>(<span class="string">"pid= %d\n"</span>, getpid());</span><br><span class="line">       <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">              sleep(<span class="number">1</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       return0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>发送SIGUSR1信号</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(argc,<span class="keyword">char</span> *argv[])</span></span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(argc&gt; <span class="number">1</span>)&#123;</span><br><span class="line">              kill(atoi(argv[<span class="number">1</span>]),SIGUSR1);</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"sentto %d\n"</span>, atoi(argv[<span class="number">1</span>]));</span><br><span class="line">       &#125;</span><br><span class="line">       return0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="类里面返回类型不同的重载方法"><a href="#类里面返回类型不同的重载方法" class="headerlink" title="类里面返回类型不同的重载方法"></a>类里面返回类型不同的重载方法</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Foo();</span><br><span class="line">	<span class="function"><span class="keyword">const</span> <span class="keyword">int</span> <span class="title">val</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">val</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="keyword">int</span> _val;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>我是用的编译器vs2015会报这样的错误 <code>无法重载仅含返回类型不同的函数</code> </p>
+<p>当仅需读 <code>_val</code> 时，调用 <code>const int val();</code> 当需要更改 <code>_val</code> 时，调用 <code>int val();</code> ，而现在由于C++不支持这种情况，那麽我们只能采取折衷的方案，第一种方法是，在读写的地方都使用 <code>int val();</code> ，对于仅需要读的地方，这样做破坏了程序的本意；第二种做法是在仅读的地方，调用 <code>const int val();</code> ，这样的话，在需要写的地方，就必须要强制类型转换，如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Foo test;  </span><br><span class="line">Foo *val = (Foo *)&amp;test.val();</span><br></pre></td></tr></table></figure>
+<p>那有没有一种方法是可以同时支持这种定义的呢？</p>
+<p>答案是有的，不过让人感觉很邪恶</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_DATA() \  </span></span><br><span class="line">    <span class="keyword">public</span>:\  </span><br><span class="line">    <span class="function"><span class="keyword">const</span> <span class="keyword">int</span> <span class="title">val</span><span class="params">()</span></span>;\</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">val</span><span class="params">()</span></span>; </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> &#123;</span>  </span><br><span class="line">    GET_DATA()  </span><br><span class="line"><span class="keyword">private</span>:  </span><br><span class="line">    <span class="keyword">int</span> _val;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>不过我最近在测试时发现，这种做法在vs2015上不可行了。</p>
+<p>但是不能放弃是吧，所以又有了这种<a href="http://dev.yesky.com/44/2518044.shtml" target="_blank" rel="noopener">做法</a> ，这种思路可以学习，但是在类里面实现的时候碰到了一些问题。</p>
+<p>然后还是不死心啊，所有就找啊找，终于又找到了一种方案</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getInt</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">1</span>; &#125;</span><br><span class="line">	<span class="function"><span class="keyword">char</span> <span class="title">getChar</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="string">'x'</span>; &#125;</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">Proxy</span></span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">		My* myOwner;</span><br><span class="line">	<span class="keyword">public</span></span><br><span class="line">		Proxy(My* owner) : myOwner(owner) &#123;&#125;</span><br><span class="line">		<span class="function"><span class="keyword">operator</span> <span class="title">int</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">		</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> myOwner-&gt;getInt();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="function"><span class="keyword">operator</span> <span class="title">char</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">		</span>&#123;</span><br><span class="line">			<span class="keyword">return</span> myOwner-&gt;getChar();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="function">Proxy <span class="title">get</span><span class="params">(My* i)</span> </span>&#123; <span class="keyword">return</span> Proxy(i); &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>还有这种方案</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">My</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">int</span>&amp;)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">get</span><span class="params">(<span class="keyword">int</span>, <span class="keyword">char</span>&amp;)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="placement-operator-new语义"><a href="#placement-operator-new语义" class="headerlink" title="placement operator new语义"></a>placement operator new语义</h2><p>对于placement <code>operator new()</code>, 它的第一个函数参数必须是<code>std::size_t</code>, 表示申请的内存的大小</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> * <span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span>)</span> <span class="title">throw</span><span class="params">(<span class="built_in">std</span>::bad_alloc)</span></span>;    <span class="comment">// 标准版本</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> * <span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span>, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="keyword">nothrow_t</span> &amp;)</span> <span class="title">throw</span><span class="params">()</span></span>; <span class="comment">// placement 版本</span></span><br></pre></td></tr></table></figure>
+<p>在用户自定义空间上构建对象, 是placement new的本意, 它也被做到C++标准中, 作为default placement:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> * <span class="keyword">operator</span> <span class="title">new</span> <span class="params">(<span class="built_in">std</span>::<span class="keyword">size_t</span>, <span class="keyword">void</span> * p)</span> <span class="title">throw</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> p ; &#125;</span><br></pre></td></tr></table></figure>
+<p>相应的 placement new expression 使用起来就是这样:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *buffer = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(ClassA));</span><br><span class="line">ClassA *ptr = <span class="keyword">new</span>(buffer)ClassA();</span><br></pre></td></tr></table></figure>
+<p>实际上就是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">operator new (sizeof(ClassA), this);</span><br></pre></td></tr></table></figure>
+<p>由于创建对象时，operator new只能通过new关键字隐式调用，无法通过命名空间限定调用的版本，所以一旦在类中定义了operator new的重载版本，所有类外定义的operator new重载都会失效。</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/process/">process</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shell/">shell</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/signal/">signal</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
 
       
     </footer>
@@ -191,7 +180,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-06-linux-day6"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-09-12-tensorflow入门(1)"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -199,7 +188,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/06/2017-03-06-linux-day6/">linux Day6</a>
+      <a class="article-title" href="/2017/09/12/2017-09-12-tensorflow入门(1)/">tensorflow入门(1)</a>
     </h1>
   
 
@@ -207,82 +196,68 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/06/2017-03-06-linux-day6/" class="article-date">
-	  <time datetime="2017-03-05T16:00:00.000Z" itemprop="datePublished">三月 6, 2017</time>
+	<a href="/2017/09/12/2017-09-12-tensorflow入门(1)/" class="article-date">
+	  <time datetime="2017-09-11T16:00:00.000Z" itemprop="datePublished">九月 12, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="结束进程"><a href="#结束进程" class="headerlink" title="结束进程"></a>结束进程</h1><p>有几个原因造成进程的终止：</p>
-<ol>
-<li>return</li>
-<li>exit函数</li>
-<li>_exit函数</li>
-<li>abort函数</li>
-<li>信号终止<br>前三者为正常。后两者不正常，无论为何终止，最后都会执行相同的内核代码，关闭文件，释放内存和其他清理工作。</li>
-</ol>
-<h1 id="exit"><a href="#exit" class="headerlink" title="exit"></a>exit</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int exit(int status)</span><br></pre></td></tr></table></figure>
-<p>使程序正常终止，返回父进程状态<br>与return的区别，可以函数中使用<br>abort </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void abort(void)</span><br></pre></td></tr></table></figure>
-<p>abort可以然程序产生core，用于分析崩溃文件<br>abort比较粗暴，作为最后的手段使用，碰到内存不足这样的问题时，无法用程序的方式处理时再使用。<br>该函数发送SIGABRT信号给调用进程，进程不该忽略这个信号。<br>即使进程捕获到这个信号，进程还是会异常退出。让进程捕获的意义在于，在进程中之前执行所需的清理操作。</p>
-<h1 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line">&lt;sys/types.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> sig)</span></span></span><br></pre></td></tr></table></figure>
-<p>Kill用来杀死其他进程，pid只要杀的进程，sig要发送的信号（杀死进程SIGKILL，ctrl+c的信号是SIGINT）</p>
-<h1 id="so文件"><a href="#so文件" class="headerlink" title="so文件"></a>so文件</h1><p>so文件在linux中为共享库，类似windows下的dll<br>so文件中的函数可以供多个进程调用<br>即使不同进程调用一个so文件，并不能实现通信，不在同一个内存空间<br>so文件的源文件中不需要main函数<br>编译的时候gcc需要加-fPIC选项，使gcc产生与位置无关的代码<br>连接的时候gcc需要加-shared选项，生成一个共享库文件<br>文件名要以lib开头，扩张名位.so  </p>
-<p>so文件的使用需要在.bash_profile中添加export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:.<br>或者将文件放入linux的系统目录/usr/lib/<br>在c文件中添加so文件，首先需要#include头文件<br>gcc链接时添加-L参数指明so文件路径，-l参数指明so文件名<br>例子： gcc –L. –ltest –o a a.o<br>-L.指在当前路径下找so文件<br>-ltest为要连接libtest.so这个库文件<br>-o a编译后的可执行文件名为a  </p>
-<p>当我们在cpp文件中包含头文件，用g++连接库文件时出错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(.test+0x19):undefined reference to`max(int, int)’</span><br><span class="line">(.test+0x19):undefined reference to `add(int,int)’</span><br></pre></td></tr></table></figure>
-<p>我们需要增加带有_cplusplus的预编译指令</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> ___cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">"C"</span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<h1 id="无名管道"><a href="#无名管道" class="headerlink" title="无名管道"></a>无名管道</h1><p>半双工，只能读或写，只能在相关的、有共同祖先的进程间使用(fork execve)</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fledes[<span class="number">2</span>])</span></span></span><br></pre></td></tr></table></figure>
-<p>如果成功建立管道，会打开两个文件描述符，保存在一个整数数组中<br>第一个文件描述符用于读取数据，第二个文件描述符用于写入数据<br>如果出错返回-1·同时设置errno<br>关闭一个管道用close()<br>读写管道与读写文件一样，调用write与read函数<br>管道是用来交换数据的，试图对一个管道两端进行读写操作是一个严重的错误，只存在一个读一个写。</p>
-<h1 id="有名管道"><a href="#有名管道" class="headerlink" title="有名管道"></a>有名管道</h1><p>有名管道(FIFO)<br>长久稳定，存在于文件系统中，可以让无关联的进程之间交换数据<br>一个shell命令可以建立有名管道<br>mkfifo[option] name                   mkfifo创建一个名为name的有名管道<br>mkfifo fifo1                          创建一个有名管道fifo1<br>cat &lt; fifo1                             通过cat命令从fifo1中读取数据<br>ls &gt; fifo1                                将ls命令的结果写入fifo1数据  </p>
-<p>创建fifo</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkfifo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, mode_tmode)</span></span></span><br></pre></td></tr></table></figure>
-<p>成功返回0，失败返回-1，设置变量errno</p>
-<p>删除fifo</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname)</span></span></span><br></pre></td></tr></table></figure>
-<p>成功返回0，失败返回-1，设置变量errno</p>
-<p>打开关闭fifo</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> flags)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> fd)</span></span></span><br></pre></td></tr></table></figure>
-<p>open中的参数flags为O_RDONLY 将阻塞open调用，一直到另一个进程为写入数据打开FIFO为止。<br>相同的，O_WRONLY也导致阻塞一直到为读出数据打开FIFO为止。</p>
-<h1 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h1><p>共享内存是由内核出于在多个进程间交换信息的目的留下的一块内存区。<br>如果段的权限设置恰当，每个要访问该断内存的进程都可以把它映射到自己的私有地址空间。<br>如果一个进程跟新了段中的数据，其他进程也可以看到。<br>一个进程创建的段，里一个进程也可以写。<br>每个进程都把它自己对共享内存的映像放入自己的地址空间。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;sys/ipc.h&gt;</span><br><span class="line">&lt;sys/shm.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shmget</span><span class="params">(<span class="keyword">key_t</span> key, <span class="keyword">size_t</span> size, intshm-flg)</span></span></span><br></pre></td></tr></table></figure>
-<p>参数key既可以是IC_PRIVATE(系统设置)，也可以是ftok函数的返回关键字<br>size指定段的大小<br>flags为8进制，设置权限0xxx<br>函数成功返回标识符，失败返回-1  </p>
-<p>通过ipcs –m 查看共享内存<br>通过ipcrm shm shmid删除共享内存<br>附加共享内存</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">shmat</span><span class="params">(<span class="keyword">int</span> shmid, <span class="keyword">const</span> vod *ahmaddr,<span class="keyword">int</span> shmflg)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shmdt</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *shmaddr)</span></span>;`</span><br></pre></td></tr></table></figure>
-<p>shmid是要附加共享内存的标识符，shmaddr总是设置为0(系统分配)。<br>参数shmflg可以为SHM_RDONLY，这意味着附加段是只读的。<br>成功返回被附加段的地址，失败-1，设置errno<br>函数shmdt是将附加在shmaddr的段从调用进程的地址空间分离出去，这个地址必须是shmat返回的。</p>
-<h1 id="捕获信号"><a href="#捕获信号" class="headerlink" title="捕获信号"></a>捕获信号</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pause</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>pause函数挂其他的进程直到消息到达。调用进程必须有能力处理送达的信号，否则信号的默认部署就会发生。<br>只有进程捕获到一个信号的时候pause才会返回，信号处理发生在pause返回前执行。<br>pause总是返回-1，errno变量设置为EINTR<br>每个进程能够决定响应除了SIGSTOP和SIGKILL之外的其他所有信号，这两个信号不能捕获或者忽略。<br>当一个进程调用fork的时候，其子进程继承父进程的信号处理方式，所有信号捕捉函数的地址在子进程中是有意义的。</p>
-<h1 id="signal函数"><a href="#signal函数" class="headerlink" title="signal函数"></a>signal函数</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line"><span class="keyword">void</span> (*signal(<span class="keyword">int</span> signo, <span class="keyword">void</span>(*func)(<span class="keyword">int</span>)))(<span class="keyword">int</span> );</span><br></pre></td></tr></table></figure>
-<p>linux/unix处理信号最常用的接口<br>signo为信号名，func接受此信号的调用函数，该函数的参数代表捕获到的信号值<br>kill –s +信号名+pid    可以看出kill是用来发信号的</p>
-<h1 id="发送信号"><a href="#发送信号" class="headerlink" title="发送信号"></a>发送信号</h1><p>使用kill命令<br>使用kill函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line">&lt;sys/typed.h&gt;</span><br><span class="line"><span class="function">Int <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid,<span class="keyword">int</span> sig)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>pid指定要发信号的进程，sig要发送的信号<br>使用raise函数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;signal.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rasie</span><span class="params">(<span class="keyword">int</span> signo)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>kill函数将信号发送给别的进程，raise函数允许进程向自身发送信号。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">raise(digno) = kill(getpid(), signo);</span><br></pre></td></tr></table></figure>
-<p>alarm函数设置一个定时器，当定时器到了就给自己发SIGALRM信号，alarm的默认行为是退出进程，所以必须要捕获。所以最好对每个可捕获的消息，都要写捕获函数。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;unistd.h&gt;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">alarm</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> seconds)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>seconds是计时器时间，一个进程只可以设置一次。再次把seconds设置为0，取消alarm。</p>
-<h1 id="作业控制信号"><a href="#作业控制信号" class="headerlink" title="作业控制信号"></a>作业控制信号</h1><p>SIGCHLD          子进程已停止或终止<br>SIGCONT          如果进程停止，使其继续进行<br>SIGSTOP          停止信号，无法捕获<br>SIGTTIN          后台进程组成员读控制终端<br>SIGTTOU          后台进程组成员写控制终端<br>除了SIFCHLD以外，大多数程序不处理这些信号。Shell程序一般需要处理这些信号。<br>信号用于大多数复杂的应用中。</p>
+        <h2 id="占位符"><a href="#占位符" class="headerlink" title="占位符"></a>占位符</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = tf.placeholder(<span class="string">"float"</span>, shape=[<span class="keyword">None</span>, <span class="number">784</span>])</span><br><span class="line">y_ = tf.placeholder(<span class="string">"float"</span>, shape=[<span class="keyword">None</span>, <span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+<p>这里的<code>x</code>和<code>y</code>是一个<code>占位符</code>，可以在TensorFlow运行某一计算时根据该占位符输入具体的值。</p>
+<p>输入<code>x</code>是一个2维的浮点数张量。这里，分配给它的<code>shape</code>为<code>[None, 784]</code>，<code>None</code>表示其值大小不定，在这里作为第一个维度值。输出类别值<code>y_</code>也是一个2维张量，其中每一行为一个10维的向量。</p>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line">sess = tf.InteractiveSession()</span><br><span class="line">W = tf.Variable(tf.zeros([<span class="number">784</span>,<span class="number">10</span>]))</span><br><span class="line">b = tf.Variable(tf.zeros([<span class="number">10</span>]))</span><br></pre></td></tr></table></figure>
+<p>我们在调用<code>tf.Variable</code>的时候传入初始值。在这个例子里，我们把<code>W</code>和<code>b</code>都初始化为零向量。<code>W</code>是一个784x10的矩阵（因为我们有784个特征和10个输出值）。<code>b</code>是一个10维的向量（因为我们有10个分类）。</p>
+<p>变量需要通过seesion初始化后，才能在session中使用。这一初始化步骤为，为初始值指定具体值（本例当中是全为零），并将其分配给每个变量,可以一次性为所有变量完成此操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sess.run(tf.initialize_all_variables())</span><br></pre></td></tr></table></figure>
+<p><strong>在tensorflow最新版本中变为了</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sess.run(tf.global_variables_initializer())</span><br></pre></td></tr></table></figure>
+<h2 id="卷积和池化"><a href="#卷积和池化" class="headerlink" title="卷积和池化"></a>卷积和池化</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">conv2d</span><span class="params">(x, W)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> tf.nn.conv2d(x, W, strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">max_pool_2x2</span><span class="params">(x)</span>:</span></span><br><span class="line">  <span class="keyword">return</span> tf.nn.max_pool(x, ksize=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>],</span><br><span class="line">                        strides=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">1</span>], padding=<span class="string">'SAME'</span>)</span><br></pre></td></tr></table></figure>
+<p>我们的卷积使用1步长（stride size），这里的stride包含四个参数[batch, height ,width, channels](即样本数目，样本的高度，样本的宽度，样本的通道数)。0边距（padding size）的模板，这里padding有两个参数。</p>
+<ul>
+<li><p><code>&quot;VALID&quot;</code> = without padding:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">inputs:         1  2  3  4  5 6  7  8  9   10  11 (12 13)</span><br><span class="line">                |________________|                dropped</span><br><span class="line">                              |_________________|</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>&quot;SAME&quot;</code> = with zero padding:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">            pad|                                        |pad</span><br><span class="line">inputs:      0 |1  2  3  4  5 6  7  8  9  10 11  12  13 |0  0</span><br><span class="line">             |________________|</span><br><span class="line">                            |_________________|</span><br><span class="line">                                           |________________|</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>保证输出和输入是同一个大小。我们的池化用简单传统的2x2大小的模板做max pooling。</p>
+<p><code>tf.nn.conv2d(input, filter, strides, padding, use_cudnn_on_gpu=None, name=None)</code></p>
+<p>除去name参数用以指定该操作的name，与方法有关的一共五个参数：</p>
+<ul>
+<li>第一个参数input：指需要做卷积的输入图像，它要求是一个Tensor，具有 <code>[batch, in_height, in_width, in_channels]</code> 这样的shape，具体含义是[训练时一个batch的图片数量, 图片高度, 图片宽度, 图像通道数]，注意这是一个4维的Tensor，要求类型为float32和float64其中之一</li>
+<li>第二个参数filter：相当于CNN中的卷积核，它要求是一个Tensor，具有 <code>[filter_height, filter_width, in_channels, out_channels]</code> 这样的shape，具体含义是[卷积核的高度，卷积核的宽度，图像通道数，卷积核个数]，要求类型与参数input相同，有一个地方需要注意，第三维in_channels，就是参数input的第四维</li>
+<li>第三个参数strides：卷积时在图像每一维的步长，这是一个一维的向量，长度4</li>
+<li>第四个参数padding：string类型的量，只能是”SAME”,”VALID”其中之一，这个值决定了不同的卷积方式（后面会介绍）</li>
+<li>第五个参数：<code>use_cudnn_on_gpu:bool</code> 类型，是否使用cudnn加速，默认为true</li>
+</ul>
+<p>结果返回一个Tensor，这个输出，就是我们常说的feature map</p>
+<p><code>tf.nn.max_pool(value, ksize, strides, padding, name=None)</code></p>
+<p>参数是四个，和卷积很类似：</p>
+<ul>
+<li>第一个参数value：需要池化的输入，一般池化层接在卷积层后面，所以输入通常是feature map，依然是<code>[batch, height, width, channels]这样的shape</code></li>
+<li>第二个参数ksize：池化窗口的大小，取一个四维向量，一般是<code>[1, height, width, 1]，因为我们不想在batch和channels上做池化，所以这两个维度设为了1</code></li>
+<li>第三个参数strides：和卷积类似，窗口在每一个维度上滑动的步长，一般也是<code>[1, stride,stride, 1]</code></li>
+<li>第四个参数padding：和卷积类似，可以取’VALID’ 或者’SAME’</li>
+</ul>
+<p>返回一个Tensor，类型不变，shape仍然是<code>[batch, height, width, channels]</code>这种形式</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pipe/">pipe</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/signal/">signal</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tensorflow/">tensorflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/深度学习/">深度学习</a></li></ul>
 
       
     </footer>
@@ -294,7 +269,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-05-linux-day5"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-09-08-接啤酒问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -302,7 +277,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/05/2017-03-05-linux-day5/">linux Day5</a>
+      <a class="article-title" href="/2017/09/08/2017-09-08-接啤酒问题/">接啤酒</a>
     </h1>
   
 
@@ -310,43 +285,38 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/05/2017-03-05-linux-day5/" class="article-date">
-	  <time datetime="2017-03-04T16:00:00.000Z" itemprop="datePublished">三月 5, 2017</time>
+	<a href="/2017/09/08/2017-09-08-接啤酒问题/" class="article-date">
+	  <time datetime="2017-09-07T16:00:00.000Z" itemprop="datePublished">九月 8, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="process"><a href="#process" class="headerlink" title="process"></a>process</h1><p>PID进程号  PPID父进程号   都为非零整数<br>所有的进程追述到init，Init进程是linux内核启动后第一个执行的进程，进程号1<br>getpid()获取pid      getppid()获取ppid</p>
-<h1 id="getlogin"><a href="#getlogin" class="headerlink" title="getlogin"></a>getlogin</h1><p>getlogin()获取登陆者信息<br>getpwnam()返回一个指向passwd结构的指针,返回的是/etc/passwd文件中与该登录名一致的信息<br>printf(&ldquo;user name = %s\n&rdquo;, ps-&gt;pw_name)</p>
-<p>创建进程</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">system</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="built_in">string</span>)</span></span></span><br></pre></td></tr></table></figure>
-<p>system函数传递给/bin/sh &ndash;c来执行string所指向的内容<br>没有找到/bin/sh返回127，出错返回-1，成功返回0，string为NULL返回非零</p>
-<h1 id="fork"><a href="#fork" class="headerlink" title="fork"></a>fork</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pid_t</span> fork(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
-<p>父进程中fork返回子进程的pid，子进程中fork返回0<br>fork创建的新进程是父进程的副本，区别在于没有继承父进程的超时设置，文件锁，未决信号<br>子进程中调用fork不会产生副本<br>注意一点：子进程fork之前的代码不执行，执行两次父进程一次，子进程一次<br>fork的主要用处：<br>服务端程序，tty 中显示？表示没有控制台程序<br>两个独立的进程，用同一个文件描述符</p>
-<h1 id="execve"><a href="#execve" class="headerlink" title="execve"></a>execve</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">execve</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">const</span> <span class="keyword">char</span> *argv, <span class="keyword">char</span> *<span class="keyword">const</span> envp[])</span></span>;</span><br></pre></td></tr></table></figure>
-<p>path 要执行的文件完整路径<br>argv传递给程序完整参数列表，包括argv[0]，一般是执行程序的名字<br>envp一般指向execed程序的环境指针，可以设为NULL<br>fork创建一个新进程，产生一个新的pid<br>execve用被执行的程序完全替代调用进程的映像<br>execve启动一个新程序，替代原有进程，所有被执行进程的pid不变，只是改变了代码</p>
-<h1 id="wait-waitpid"><a href="#wait-waitpid" class="headerlink" title="wait waitpid"></a>wait waitpid</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;sys/wait.h&gt;</span><br><span class="line"><span class="keyword">pid_t</span> wait(<span class="keyword">int</span> *status)</span><br><span class="line"><span class="keyword">pid_t</span> waitpid(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> *status, <span class="keyword">int</span> options);</span><br></pre></td></tr></table></figure>
-<p>status保存子进程的退出状态，退出返回的值WEXITSTATUS(status)<br>pid为等待进程的pid，接受如下几个值<br>-1            等待任何pgid等于pid的绝对子进程<br>1             等待任何子进程<br>0             等待任何pgid等于调用进程的子进程<br>&gt;0            等待pid等于pid的子进程  </p>
-<p>进程识别码(PID)：用来唯一标识进程。<br>进程组识别码(Process Group ID)：一个进程可以属于某个进程组。<br>可以发送信号给一组进程。对于进程组ID，一般来说，一个进程在shell下执行，shell程序就将该进程的PID赋给该进程的进程组ID，从该进程派生的子进程都拥有父进程所属的进程组ID，除非父进程将子进程的所属组ID设置成与该子进程的PID一样。</p>
-<p>僵尸进程：一个进程使用fork创建子进程，如果子进程退出，而父进程并没有调用wait或waitpid获取子进程的状态信息，那么子进程的进程描述符仍然保存在系统中。这种进程称之为僵死进程。</p>
-<p>孤儿进程：一个父进程退出，而它的一个或多个子进程还在运行，那么那些子进程将成为孤儿进程。孤儿进程将被init进程(进程号为1)所收养，并由init进程对它们完成状态收集工作。</p>
-
+        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>酒馆里有m个龙头可供顾客们接啤酒，每个龙头每秒的出酒量相等，都是1。现有n名顾客准备接酒，他们初始的接酒顺序已经确定。将这些顾客按接酒顺序从1到n编号，i号顾客的接酒量为w_i。接酒开始时，1到m号顾客各占一个龙头，并同时打开龙头接酒。当其中某个顾客j完成其接酒量要求wj后，下一名排队等候接酒的顾客k马上接替j顾客的位置开始接酒。这个换人的过程是瞬间完成的，且没有任何酒的浪费。即j顾客第x秒结束时完成接酒，则k顾客第x+1秒立刻开始接酒。若当前接酒人数n不足m，则只有n个龙头供酒，其它m-n个龙头关闭。现在给出n名顾客的接酒量，按照上述规则，问所有顾客都接完酒需要多少秒？</p>
+<h2 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h2><p>输入包括两行，第一行为以空格分割的两个数n和m, 分别表示接酒的人数和酒龙头个数，均为正整数。 </p>
+<p>第二行n个整数w_i，(1 &lt;= w_i &lt;= 100)表示每个顾客接酒量</p>
+<h2 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h2><p>如果输入合法输出接酒所需总时间(秒)。</p>
+<h2 id="样例输入"><a href="#样例输入" class="headerlink" title="样例输入"></a>样例输入</h2><p>5 3<br>4 4 1 2 1 </p>
+<h2 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h2><p>4</p>
+<p>这个问题最简单的做法是使用优先队列，但是我觉得我写的并不是非常的完美</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;functional&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> m, n;</span><br><span class="line">	<span class="built_in">std</span>::priority_queue&lt;<span class="keyword">int</span>, <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;, <span class="built_in">std</span>::greater&lt;<span class="keyword">int</span>&gt;&gt;  que;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; m)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; arr(n);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; arr[i];</span><br><span class="line">		&#125;		</span><br><span class="line">		<span class="keyword">if</span> (n &gt; m)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i)</span><br><span class="line">			&#123;</span><br><span class="line">				que.push(arr[i]);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &lt; n; ++i)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">int</span> temp = que.top();</span><br><span class="line">				que.pop();</span><br><span class="line">				que.push(arr[i] + temp);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">			&#123;</span><br><span class="line">				que.push(arr[i]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">while</span> ((que.size() - <span class="number">1</span>) != <span class="number">0</span>) que.pop();</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; que.top();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面这个使用了一种非常巧妙的方法</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> m, n;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; m)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">size_t</span>&gt; arr(n);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; arr[i];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">int</span> times = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> flag = <span class="number">0</span>;	<span class="comment">//标记是否有人接水</span></span><br><span class="line">			<span class="keyword">int</span> num = <span class="number">0</span>;	</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span> (arr[i] &gt; <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					flag = <span class="number">1</span>;</span><br><span class="line">					--arr[i];</span><br><span class="line">					++num;	<span class="comment">//当n &gt; m时，这时候人数大于龙头数</span></span><br><span class="line">					<span class="keyword">if</span> (num == m) <span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (flag) ++times;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; times &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔试/">笔试</a></li></ul>
 
       
     </footer>
@@ -358,7 +328,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-04-linux-day4"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-09-07-约瑟夫环问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -366,7 +336,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/04/2017-03-04-linux-day4/">linux Day4</a>
+      <a class="article-title" href="/2017/09/07/2017-09-07-约瑟夫环问题/">特殊约瑟夫环问题</a>
     </h1>
   
 
@@ -374,57 +344,41 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/04/2017-03-04-linux-day4/" class="article-date">
-	  <time datetime="2017-03-03T16:00:00.000Z" itemprop="datePublished">三月 4, 2017</time>
+	<a href="/2017/09/07/2017-09-07-约瑟夫环问题/" class="article-date">
+	  <time datetime="2017-09-06T16:00:00.000Z" itemprop="datePublished">九月 7, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="fstat"><a href="#fstat" class="headerlink" title="fstat"></a>fstat</h1><p>fstat获取文件信息</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fstat(<span class="keyword">int</span> fd, struct stat *buf)</span><br></pre></td></tr></table></figure>
-<p>stat获取文件信息</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stat</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, struct stat *buf)</span></span></span><br></pre></td></tr></table></figure>
-<p>stat结构主要描述文件的信息 ls的信息<br>stat.st_mode判断文件类型<br>S_ISREG(stat.st_mode)      regular file<br>S_ISDIR(stat.st_mode)       directory<br>stat.st_size代表文件大小</p>
-<h1 id="getpass"><a href="#getpass" class="headerlink" title="getpass"></a>getpass</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">getpass</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *prompt)</span></span></span><br></pre></td></tr></table></figure>
-<p>读写用户输入，不回显<br>prompt提示符   函数返回密码</p>
-<h1 id="fopen-fclose-fread-fwrite"><a href="#fopen-fclose-fread-fwrite" class="headerlink" title="fopen fclose fread fwrite"></a>fopen fclose fread fwrite</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FILE *p <span class="title">fopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* path, <span class="keyword">const</span> <span class="keyword">char</span> *mode)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fclose</span><span class="params">(FILE *stream)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>Mode:<br>r    open text file for reading<br>r+   open for writing and reading<br>w    truncate(缩短) file to zero length orcreate text file for writing binary system<br>wb   in the windows<br>w+   open for reading writing .the file is created if it does not exist<br>a    open for appending . the file is created if it does not exist<br>a+   open for writing and reading(writing at end of file )the file is created if it does not exist</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> fread(<span class="keyword">void</span> *ptr,<span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nmeb, FILE *stream)</span><br><span class="line"><span class="keyword">size_t</span> fwrite(<span class="keyword">void</span> *ptr,<span class="keyword">size_t</span> size, <span class="keyword">size_t</span> nmeb, FILE *stream)</span><br></pre></td></tr></table></figure>
-<p>ptr 指向那个缓冲区<br>size控制记录大小<br>nmemb记录数<br>函数返回记录或写的记录数</p>
-<p>库函数fopen fclose fread fwrite 尽量使用库函数，不要使用系统函数，便于移植</p>
-<h1 id="fprintf-fscanf-fgets-fputs"><a href="#fprintf-fscanf-fgets-fputs" class="headerlink" title="fprintf fscanf fgets fputs"></a>fprintf fscanf fgets fputs</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fprintf</span><span class="params">(FILE *stream, <span class="keyword">const</span> <span class="keyword">char</span> *format,...)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>与printf区别只是一个输入到标准输出文件，一个输出到普通文件</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fscanf</span><span class="params">(FILE *stream, <span class="keyword">const</span> <span class="keyword">char</span> *format,...)</span></span>;</span><br></pre></td></tr></table></figure>
-<p> 不会读取文件末尾的回车</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">fgets</span><span class="params">(<span class="keyword">char</span> *s, <span class="keyword">int</span> size, FILE *stream)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>fgets从文件读取一行，返回EOF代表文件结尾（会读取回车）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputs</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s,FILE *stream)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>fputs从文件写入一行</p>
-<h1 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">remove</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname)</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">remove</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *oldpath, <span class="keyword">const</span> <span class="keyword">char</span> *newpath)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>remove函数删除pathname指向的文件<br>rename修改文件名<br>执行成功返回0，执行失败返回-1，错误码保存在变量errno中</p>
-<h1 id="divWritelog"><a href="#divWritelog" class="headerlink" title="divWritelog"></a>divWritelog</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">writelog</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *<span class="built_in">log</span>)</span></span>&#123;</span><br><span class="line">       <span class="keyword">time_t</span> tDate;</span><br><span class="line">       <span class="class"><span class="keyword">struct</span> <span class="title">tm</span> *<span class="title">eventTime</span>;</span></span><br><span class="line">       time(&amp;amp;tDate);                      <span class="comment">//get the current system time</span></span><br><span class="line">       eventTime = localtime(&amp;amp;tDate);     <span class="comment">//make the time_t to the struct tm</span></span><br><span class="line">       <span class="keyword">int</span> iYear = eventTime-&amp;gt;tm_year + <span class="number">1900</span>;</span><br><span class="line">       <span class="keyword">int</span> iMon = eventTime-&amp;gt;tm_mon + <span class="number">1</span>;</span><br><span class="line">       <span class="keyword">int</span> iDay = eventTime-&amp;gt;tm_mday;</span><br><span class="line">       <span class="keyword">int</span> iHour = eventTime-&amp;gt;tm_hour;</span><br><span class="line">       <span class="keyword">int</span> iMin = eventTime-&amp;gt;tm_min;</span><br><span class="line">       <span class="keyword">int</span> iSec = eventTime-&amp;gt;tm_sec;</span><br><span class="line">       <span class="keyword">char</span> sDate[<span class="number">16</span>];</span><br><span class="line">       <span class="built_in">sprintf</span>(sDate, <span class="string">"%04d-%02d-%02d"</span>, iYear, iMon, iDay); <span class="comment">//right alignment</span></span><br><span class="line">       <span class="keyword">char</span> sTime[<span class="number">16</span>];</span><br><span class="line">       <span class="built_in">sprintf</span>(sTime, <span class="string">"%02d:%02d:%02d"</span>, iHour, iMin, iSec);</span><br><span class="line">       <span class="keyword">char</span> s[<span class="number">1024</span>];</span><br><span class="line">       <span class="built_in">sprintf</span>(s, <span class="string">"%s %s %s\n"</span>, sDate, sTime, <span class="built_in">log</span>);</span><br><span class="line">       FILE *fd = fopen(<span class="string">"my.log"</span>, <span class="string">"a+"</span>);</span><br><span class="line">       <span class="keyword">if</span>(fd == <span class="literal">NULL</span>)&#123;</span><br><span class="line">              <span class="built_in">printf</span>(<span class="string">"write og my.log error:%s \n"</span>, strerror(errno));</span><br><span class="line">       &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">              <span class="built_in">fputs</span>(s, fd);</span><br><span class="line">       &#125;</span><br><span class="line">       fclose(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="getcwd"><a href="#getcwd" class="headerlink" title="getcwd"></a>getcwd</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">getcwd</span><span class="params">(<span class="keyword">char</span> *buf, <span class="keyword">size_t</span> size)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>getcwd函数把当前工作目录的绝对路径名复制到buf，size表示buf的大小，buf不够返回NULL<br>执行程序时所在的目录，不一定是程序所在的目录<br>如果在根目录，则可以通过/1/main执行main程序<br>宿主目录：用户登录时的目录</p>
-<h1 id="opendir-readdir-closedir"><a href="#opendir-readdir-closedir" class="headerlink" title="opendir readdir closedir"></a>opendir readdir closedir</h1><p>opendir打开目录         DIR <em>opendir(const char </em>pathname)<br>readdir读取目录内容     struct dirent <em>readdir(DIR </em>dir)<br>closedir关闭目录        int close(DIR *dir)  </p>
-<p>&lt;dirent.h&gt;中声明,出错返回NULL</p>
-<h1 id="eclipse注释"><a href="#eclipse注释" class="headerlink" title="eclipse注释"></a>eclipse注释</h1><p>ctrl +/         注释文件与取消注释文件 //<br>ctrl+shift+/    注释文件    /**/<br>ctrl+shift+\    取消注释文件<br>ctrl+d          删除</p>
+        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>100个人围成一圈，每个人有一个编码，编号从1开始到100。他们从1开始依次报数，报到为M的人自动退出圈圈，然后下一个人接着从1开始报数，直到剩余人数小于M。请问最后剩余的人在原先的编号为多少？例如输入M=3时，输出为：“58,91”，输入M=4时，输出为：“34,45,97”</p>
+<h2 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h2><p>函数原型void NumberOffGame(int m, char * output);</p>
+<p>输入的m，m为大于1且小于100的整数。</p>
+<h2 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h2><p>输出output，其中output已经分配足够的内存空间，无需单独分配；如果m输入小于等于1，则输出“ERROR!”；如果m输入大于等于100，则输出“ERROR!”；否则按照编号从小到大的顺序，以”,”分个输出编号字符串，输出的字符串中标点符号均为半角字符。</p>
+<h2 id="样例输入"><a href="#样例输入" class="headerlink" title="样例输入"></a>样例输入</h2><p>3</p>
+<h2 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h2><p>58,91</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">NumberOffGame</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">char</span> * output)</span>	<span class="comment">//说实话我被这个接口的设计恶心到了</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; num;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		num.push_back(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(num.size() &gt;= m)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> goal = (count + m - <span class="number">1</span>) % num.size();</span><br><span class="line">		num.erase(<span class="built_in">std</span>::begin(num) + goal);</span><br><span class="line">		count = goal % num.size();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">char</span> temp[<span class="number">100</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">	<span class="keyword">int</span> out_size = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (num.size() == <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">snprintf</span>(output, <span class="number">10000</span>, <span class="string">"%d"</span>, num[<span class="number">0</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num.size(); ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">snprintf</span>(temp, <span class="number">100</span>, <span class="string">"%d"</span>, num[i]);</span><br><span class="line">			<span class="keyword">int</span> temp_size = <span class="built_in">std</span>::<span class="built_in">strlen</span>(temp);</span><br><span class="line">			<span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">while</span> (j &lt; temp_size)</span><br><span class="line">				&#123;</span><br><span class="line">					output[out_size] = temp[j++];</span><br><span class="line">					++out_size;</span><br><span class="line">				&#125;				</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				output[out_size++] = <span class="string">','</span>;</span><br><span class="line">				<span class="keyword">while</span> (j &lt; temp_size)</span><br><span class="line">				&#123;					</span><br><span class="line">					output[out_size] = temp[j++];</span><br><span class="line">					++out_size;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;		</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> m;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; m)</span><br><span class="line">	&#123;		</span><br><span class="line">		<span class="keyword">if</span> (m &lt;= <span class="number">1</span> || m &gt;= <span class="number">100</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR!"</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">char</span> output[<span class="number">10000</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">		</span><br><span class="line">		NumberOffGame(m, output);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; output &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我不太清楚c++14是否能更加的简洁，我后来又想了一个稍微简洁的版本</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> str_out;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">NumberOffGame</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">char</span> * output)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; num;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		num.push_back(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span>(num.size() &gt;= m)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> goal = (count + m - <span class="number">1</span>) % num.size();</span><br><span class="line">		num.erase(<span class="built_in">std</span>::begin(num) + goal);</span><br><span class="line">		count = goal % num.size();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num.size() - <span class="number">1</span>; ++i)</span><br><span class="line">	&#123;		</span><br><span class="line">		str_out += <span class="built_in">std</span>::to_string(num[i]) + <span class="string">','</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	str_out += <span class="built_in">std</span>::to_string(num[num.size() - <span class="number">1</span>]);</span><br><span class="line">	<span class="built_in">snprintf</span>(output, <span class="number">10000</span>, str_out.c_str());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> m;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; m)</span><br><span class="line">	&#123;		</span><br><span class="line">		<span class="keyword">if</span> (m &lt;= <span class="number">1</span> || m &gt;= <span class="number">100</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR!"</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">char</span> output[<span class="number">10000</span>] = &#123; <span class="number">0</span> &#125;;		</span><br><span class="line">		NumberOffGame(m, output);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; output &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个解法看上去比原先那个版本好多了，还有一种做法是通过入队出队来实现的，我觉得也是非常不错的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">string</span> str_out;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">NumberOffGame</span><span class="params">(<span class="keyword">int</span> m, <span class="keyword">char</span> * output)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">queue</span>&lt;<span class="keyword">int</span>&gt; num;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		num.push(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> count = num.size();</span><br><span class="line">	<span class="keyword">int</span> shu = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (count &gt;= m)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (shu != m)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> front = num.front();</span><br><span class="line">			num.pop();</span><br><span class="line">			num.push(front);</span><br><span class="line">			++shu;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			shu = <span class="number">1</span>;</span><br><span class="line">			num.pop();</span><br><span class="line">			--count;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count - <span class="number">1</span>; ++i)</span><br><span class="line">	&#123;		</span><br><span class="line">		str_out += <span class="built_in">std</span>::to_string(num.front()) + <span class="string">','</span>;</span><br><span class="line">		num.pop();</span><br><span class="line">	&#125;</span><br><span class="line">	str_out += <span class="built_in">std</span>::to_string(num.front());</span><br><span class="line">	<span class="built_in">snprintf</span>(output, <span class="number">10000</span>, str_out.c_str());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">size_t</span> m;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; m)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (m &lt;= <span class="number">1</span> || m &gt;= <span class="number">100</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR!"</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">char</span> output[<span class="number">10000</span>] = &#123; <span class="number">0</span> &#125;;</span><br><span class="line">		NumberOffGame(m, output);</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; output &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一种解法是使用数学，推到出相应的递推公式</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔试/">笔试</a></li></ul>
 
       
     </footer>
@@ -436,7 +390,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-03-linux-day3"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-09-06-在字符串中找出连续最长的数字串"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -444,7 +398,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/03/2017-03-03-linux-day3/">linux Day3</a>
+      <a class="article-title" href="/2017/09/06/2017-09-06-在字符串中找出连续最长的数字串/">在字符串中找出连续最长的数字串</a>
     </h1>
   
 
@@ -452,45 +406,40 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/03/2017-03-03-linux-day3/" class="article-date">
-	  <time datetime="2017-03-02T16:00:00.000Z" itemprop="datePublished">三月 3, 2017</time>
+	<a href="/2017/09/06/2017-09-06-在字符串中找出连续最长的数字串/" class="article-date">
+	  <time datetime="2017-09-05T16:00:00.000Z" itemprop="datePublished">九月 6, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>修改文件后要让文件生效<br>. 文件</p>
-<h1 id="调试gdb"><a href="#调试gdb" class="headerlink" title="调试gdb"></a>调试gdb</h1><p>gdb 文件 core文件<br>gdb &ndash;q 文件 core文件       关闭无用信息</p>
-<p>gdb                             文件<br>run                             在gdb下运行<br>where                           显示出错的代码<br>list                            显示出错代码的上下<br>print                           显示变量的值<br>break                           设置断点  +行号/+函数名/+文件名：行号or函数名<br>continue                        从断点后继续执行<br>delete                          删除一个断点<br>info break                      查看断点<br>quit                            推出调试<br>set variable varname = value    设置变量的值<br>step                            单步进入函数<br>next                            当遇到函数时，函数当成一条语句<br>return+数据                      停止当前函数，数据为返回值</p>
-<h1 id="Stack-栈"><a href="#Stack-栈" class="headerlink" title="Stack 栈"></a>Stack 栈</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">abc</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>_stdcall   Pascal默认调用函数方式<br>函数从右向左压入栈<br>函数参数由被调用者压入或弹出栈</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> _attribute_((stdcall)) abc(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span><br></pre></td></tr></table></figure>
-<p>_cdecl    c/c++默认调用函数方式<br>函数从右向左压入栈<br>函数参数由被调用者压入或弹出栈</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> _attribute_((cdecl)) abc(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span><br></pre></td></tr></table></figure>
-<p>如果用free释放“new创建的动态对象”，那么该对象因无法执行析构函数而可能导致程序出错。<br>如果用delete释放“malloc申请的动态内存”，结果也会导致程序出错，但是该程序的可读性很差。<br>所以new/delete必须配对使用，malloc/free也一样。<br>看看《Effective C++》这个吧。<br>摘一段：<br>把new和delete 与malloc和 free混在一起用也是个坏想法。<br>对一个用new获取来的指针调用 free，或者对一个用 malloc 获取来的指针调用 delete，其后果是不可预测的。大家都知道&ldquo;不可预测&rdquo;的意思：它可能在开发阶段工作良好，在测试阶段工作良好，但也可能会最后在你最重要的客户的脸上爆炸。</p>
-<h1 id="内存分配"><a href="#内存分配" class="headerlink" title="内存分配"></a>内存分配</h1><p>calloc(sizeof(data type),num)    分配内存并置零<br>realloc 分配的内存连续，如果不够，会找个新内存，把copy过去<br>realloc不初始化<br>不要用悬空指针</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *s = <span class="literal">NULL</span>; <span class="built_in">free</span>(s); s = <span class="literal">NULL</span>;释放完再置为空</span><br></pre></td></tr></table></figure>
-<p>不建议使用scanf，无法输入空格，不检测越界问题</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *longNum1 = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="keyword">char</span> *longNum2 =  (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%9s"</span>,longNum1);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%9s"</span>,longNum2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,longNum1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s\n"</span>,longNum2);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>用read(STDIN_FILENO，buf, sizeof(buf))<br>标准输入（standard input）的文件描述符是 0，标准输出（standard output）是 1，标准错误（standard error）是 2。</p>
-<h1 id="open"><a href="#open" class="headerlink" title="open"></a>open</h1><p>open(file, flags)<br>Flags:O_RDONLY,O_WRONLY,O_RDWR,O_CREAT,O_APPEND<br>成功后返回一个文件描述符<br>open失败后会返回-1，并设置errno变量<br>close()   关闭  </p>
-<p>tty     查看屏幕位置<br>file+文件 查看文件类型<br>cat abc.cpp &gt; a.txt 将abc的结果 输出到a.txt<br>chmod 000 file 修改权限 000 expression permission denied<br>sleep(1) 延迟1s<br>usleep() 微秒</p>
-
+        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>请在一个字符串中找出连续最长的数字串，并把这个串的长度返回；如果存在长度相同的连续数字串，返回最后一个连续数字串；</p>
+<p>注意：数字串只需要是数字组成的就可以，并不要求顺序，比如数字串“1234”的长度就小于数字串“1359055”，如果没有数字，则返回空字符串（“”）而不是NULL！</p>
+<h2 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h2><p>字符串</p>
+<h2 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h2><p>连续数字串，在所有数字串最长的长度</p>
+<h2 id="样例输入"><a href="#样例输入" class="headerlink" title="样例输入"></a>样例输入</h2><p>abcd12345ed125ss123058789</p>
+<p>abcd12345ss54761</p>
+<h2 id="样例输出"><a href="#样例输出" class="headerlink" title="样例输出"></a>样例输出</h2><p>输出123058789，函数返回值9</p>
+<p>输出54761，函数返回值5</p>
+<p>还是如以前一样，使用两种风格去处理这个问题，第一种是c++98</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">string</span> str;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; str)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">string</span> str_out;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">string</span> str_max;</span><br><span class="line">		<span class="keyword">size_t</span> max_size = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; str.size(); ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (<span class="built_in">isdigit</span>(str[i]))</span><br><span class="line">			&#123;</span><br><span class="line">				str_out += str[i];</span><br><span class="line">				<span class="keyword">while</span> (<span class="built_in">isdigit</span>(str[i + <span class="number">1</span>]))</span><br><span class="line">				&#123;</span><br><span class="line">					++i;</span><br><span class="line">					str_out += str[i];</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span> (str_out.size() &gt;= max_size)</span><br><span class="line">				&#123;</span><br><span class="line">					max_size = str_out.size();</span><br><span class="line">					str_max = str_out;</span><br><span class="line">				&#125;			</span><br><span class="line">			&#125;</span><br><span class="line">			str_out.clear();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_max &lt;&lt; <span class="string">'\n'</span> &lt;&lt; max_size &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>c++14的风格</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">string</span> str;</span><br><span class="line">	<span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; str)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; i : str)					<span class="comment">//这里使用了一个小的技巧，从string流读string默认是忽略空格的，通过设置std::noskipws取消跳过空格</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (!<span class="built_in">isdigit</span>(i))</span><br><span class="line">			&#123;</span><br><span class="line">				i = <span class="string">' '</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">stringstream</span> str_temp&#123; str &#125;;	<span class="comment">//这里使用了string的数据流非常好的处理手法</span></span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">string</span> str_out, str_max;</span><br><span class="line">		<span class="keyword">size_t</span> max_size&#123;&#125;;</span><br><span class="line">		<span class="keyword">while</span> (str_temp &gt;&gt; str_out)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">if</span> (max_size &lt;= str_out.size())</span><br><span class="line">			&#123;</span><br><span class="line">				max_size = str_out.size();</span><br><span class="line">				str_max = str_out;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_max &lt;&lt; <span class="string">'\n'</span> &lt;&lt; max_size &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔试/">笔试</a></li></ul>
 
       
     </footer>
@@ -502,7 +451,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-02-linux-day2"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-09-01-决策树算法"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -510,7 +459,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/02/2017-03-02-linux-day2/">linux Day2</a>
+      <a class="article-title" href="/2017/09/01/2017-09-01-决策树算法/">决策树算法</a>
     </h1>
   
 
@@ -518,44 +467,187 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/02/2017-03-02-linux-day2/" class="article-date">
-	  <time datetime="2017-03-01T16:00:00.000Z" itemprop="datePublished">三月 2, 2017</time>
+	<a href="/2017/09/01/2017-09-01-决策树算法/" class="article-date">
+	  <time datetime="2017-08-31T16:00:00.000Z" itemprop="datePublished">九月 1, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="int-main-int-argc-char-argv"><a href="#int-main-int-argc-char-argv" class="headerlink" title="int main(int argc,char *argv[])"></a>int main(int argc,char *argv[])</h1><p>argc        代表参数个数<br>a.out 1 2   表示三个参数<br>argv        表示指向参数的指针数组  </p>
-<h1 id="数组指针与指针数组"><a href="#数组指针与指针数组" class="headerlink" title="数组指针与指针数组"></a>数组指针与指针数组</h1><p>int (<em>p)[]    数组指针（行指针）类似于函数指针<br>int </em>p[]      指针数组</p>
-<h1 id="gcc指令"><a href="#gcc指令" class="headerlink" title="gcc指令"></a>gcc指令</h1><p>gcc &ndash;o hello hello.c           编译hello.c 文件生成hello文件<br>gcc &ndash;o hello1.c &ndash;E hello.c     只进行预编译，预编译将结果输出到hello1.c文件中<br>gcc &ndash;o hello.o &ndash;c hello1.c     只进行编译不链接<br>gcc &ndash;o hello hello.o           连接<br>-o filename                    输出文件名<br>-g                             包含调试信息<br>-I                             连接指定库文件<br>-O                             优化编译后的代码<br>-w                             关闭所有警告<br>-Wall                          开启所有警告<br>编译c++文件<br>连接的时候 gcc &ndash;o hello hello.o &ndash;lstdc++</p>
-<h1 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h1><p>预编译-&gt;编译-&gt;连接<br>预编译：头文件<br>编译：生成目标代理 *.o<br>连接：连接库代码，生成可执行文件  </p>
-<p>ldd+执行文件   查看用到哪些库文件<br>nm+执行文件   列出某些文件中的符号<br>c++在编译完代码后函数名称会发生改变，主要是由于函数重载，所以c++写不了dll文件  </p>
-<h1 id="安装文件"><a href="#安装文件" class="headerlink" title="安装文件"></a>安装文件</h1><p>rpm &ndash;ivh     安装软件<br>rpm &ndash;e       卸载软件</p>
-<h1 id="makefile规则"><a href="#makefile规则" class="headerlink" title="makefile规则"></a>makefile规则</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">start:hello.o            表示需要依赖 .o文件</span><br><span class="line">        gcc &amp;ndash;o hello hello.o</span><br><span class="line">        @echo &amp;lsquo;--------------------------&amp;lsquo;        表示只输出结果</span><br><span class="line">hello.o:</span><br><span class="line">        gcc &amp;ndash;o hello.o &amp;ndash;c hello.c</span><br></pre></td></tr></table></figure>
-<p>注意不是空格键而是tab键<br>make执行文件<br>make target 执行表号下的语句  </p>
-<p>变量varname=some_text<br>$(varname)引用该变量<br>例如：CC=gcc<br>gcc 改为 $(CC)  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CC=gcc  </span><br><span class="line">SRCS=hello.c</span><br><span class="line">OBJS=$(SRCS:.c=.o)    将SRCS变量中的.c 替代为 .o</span><br><span class="line">EXEC=hello</span><br></pre></td></tr></table></figure>
-<p>模式规则<br>.SUFFIXES:.c .o   便是两个文件有关联<br>表示任意x.c文件与x.o文件 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- .c.o:  任何x.o文件都从x.c编译而来</span><br></pre></td></tr></table></figure>
-<p>例子：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.SUFFIXES:.c .o    //.c和.o建立关联</span><br><span class="line">CC=gcc</span><br><span class="line">SRCS=hello.c\</span><br><span class="line">        add.c    //同时编译两个.c文件</span><br><span class="line">OBJS=$(SRCS:.c=.o)    将SRCS变量中的.c 替代为 .o //ORJS=hello.o add.o</span><br><span class="line">EXEC=hello</span><br><span class="line">start:$(OBJS)    //依赖hello.o add.o</span><br><span class="line">        $(CC)  &amp;ndash;o  $(EXEC)  $(OBJS)</span><br><span class="line">        @echo  &amp;lsquo;---------------------ok---------------------&amp;lsquo;</span><br><span class="line">.c.o:</span><br><span class="line">        $(CC)  -o  $@  -c  $&amp;lt;    //自动根据$(OBJS) 中.o的数量循环编译, 直到编</span><br><span class="line">&amp;nbsp;                                //译完所有的.c文件</span><br><span class="line">clean:</span><br><span class="line">        Rm  &amp;ndash;f  $(OBJS)</span><br></pre></td></tr></table></figure>
-<h1 id="常见的make错误"><a href="#常见的make错误" class="headerlink" title="常见的make错误"></a>常见的make错误</h1><p>No rule to make target &lsquo;target&rsquo; .Stop<br>没有规则可以用<br>;target; is up to date<br>target 相关文件没有变化<br>command : Command not found<br>make找不到命令<br>missing separator. Stop.<br>空格与tab的问题</p>
+        <p>评定一个算法的好坏的标准：</p>
+<p>准确率  速度  强壮性  可规模性  可解释性</p>
+<h2 id="Decision-tree"><a href="#Decision-tree" class="headerlink" title="Decision tree:"></a>Decision tree:</h2><p>判断树是一个类似与流程图的树结构，其中内部结点表示在一个属性上的测试，每个分支代表一个属性输出，而每个树叶节点代表类和类分布。树的最顶层是根节点。</p>
+<p>熵（entropy）概念：</p>
+<p>信息量的度量就等于不确定性的多少。变量的不确定性越大，熵也就越大</p>
+<p>决策树归纳算法（ID3）</p>
+<p>选择属性判断节点</p>
+<p>信息获取量（information Gain）：Gain(A) = Info(D) - Info_A(D)没有A时的信息量-增加A时的信息量。对于连续性数据的处理，就是把它变成离散化。</p>
+<p>其他算法：</p>
+<p>C4.5：QuinLan</p>
+<p>Classification and Regression Trees（CART）</p>
+<p>共同点：都是贪心算法，自上而下（Top-down approach）</p>
+<p>区别：属性选择度量方法不同：C4.5(gain ratio)，CART(gini index)，ID3(Information Gain)</p>
+<p>剪枝（避免overfitting）</p>
+<p>分的太细了</p>
+<p>有两种方案：先剪枝，后剪枝</p>
+<p>决策树优点：直观，便于理解，小规模数据集有效</p>
+<p>决策树缺点：处理连续性变量不好，类别较多时，错误增加的比较快，可规模性一般</p>
+<h2 id="决策树的应用"><a href="#决策树的应用" class="headerlink" title="决策树的应用"></a>决策树的应用</h2><p>Python机器学习的库scikit-learn</p>
+<p>覆盖领域：</p>
+<p>分类（classification） 回归（regression） 聚类（clustering） 降维（dimensionality reduction） </p>
+<p>模型选择（model selection）</p>
+<p>预处理（preprocessing）</p>
+<p>使用scikit-learn</p>
+<p>安装scikit-learn：pip</p>
+<p>安装必要的package：numpy，scipy和matplotlib，可使用anaconda</p>
+<p>测试数据</p>
+<table>
+<thead>
+<tr>
+<th>RID</th>
+<th>age</th>
+<th>income</th>
+<th>student</th>
+<th>credit_rating</th>
+<th>Class_buys_computer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>youth</td>
+<td>high</td>
+<td>no</td>
+<td>fair</td>
+<td>no</td>
+</tr>
+<tr>
+<td>2</td>
+<td>youth</td>
+<td>high</td>
+<td>no</td>
+<td>excellent</td>
+<td>no</td>
+</tr>
+<tr>
+<td>3</td>
+<td>middle_aged</td>
+<td>high</td>
+<td>no</td>
+<td>fair</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>4</td>
+<td>senior</td>
+<td>medium</td>
+<td>no</td>
+<td>fair</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>5</td>
+<td>senior</td>
+<td>low</td>
+<td>yes</td>
+<td>fair</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>6</td>
+<td>senior</td>
+<td>low</td>
+<td>yes</td>
+<td>excellent</td>
+<td>no</td>
+</tr>
+<tr>
+<td>7</td>
+<td>middle_aged</td>
+<td>low</td>
+<td>yes</td>
+<td>excellent</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>8</td>
+<td>youth</td>
+<td>medium</td>
+<td>no</td>
+<td>fair</td>
+<td>no</td>
+</tr>
+<tr>
+<td>9</td>
+<td>youth</td>
+<td>low</td>
+<td>yes</td>
+<td>fair</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>10</td>
+<td>senior</td>
+<td>medium</td>
+<td>yes</td>
+<td>fair</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>11</td>
+<td>youth</td>
+<td>medium</td>
+<td>yes</td>
+<td>excellent</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>12</td>
+<td>middle_aged</td>
+<td>medium</td>
+<td>no</td>
+<td>excellent</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>13</td>
+<td>middle_aged</td>
+<td>high</td>
+<td>yes</td>
+<td>fair</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>14</td>
+<td>senior</td>
+<td>medium</td>
+<td>no</td>
+<td>excellent</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<p>测试代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">Created on Sep 1, 2017</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: coordinate</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line"><span class="keyword">from</span> sklearn.externals.six <span class="keyword">import</span> StringIO</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> tree</span><br><span class="line"></span><br><span class="line">allElectronicData = open(<span class="string">r'D:\eclipse workspace\DeepLearningBasicsMachineLearning\AllElectronic.csv'</span>)</span><br><span class="line">reader = csv.reader(allElectronicData) <span class="comment">#read by line</span></span><br><span class="line">headers = reader.next()</span><br><span class="line"></span><br><span class="line">print(headers)</span><br><span class="line">featureList = []</span><br><span class="line">labelList = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    labelList.append(row[len(row) - <span class="number">1</span>])</span><br><span class="line">    rowDict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, len(row) - <span class="number">1</span>):</span><br><span class="line">        rowDict[headers[i]] = row[i]</span><br><span class="line">    featureList.append(rowDict)</span><br><span class="line">print(featureList)</span><br><span class="line"></span><br><span class="line">vec = DictVectorizer()</span><br><span class="line">dummyX = vec.fit_transform(featureList).toarray()</span><br><span class="line"></span><br><span class="line">print(<span class="string">"dummyX:"</span> +str(dummyX))</span><br><span class="line">print(vec.get_feature_names())</span><br><span class="line"></span><br><span class="line">print(<span class="string">"labelList: "</span> + str(labelList))</span><br><span class="line"></span><br><span class="line">lb = preprocessing.LabelBinarizer()</span><br><span class="line">dummyY = lb.fit_transform(labelList)</span><br><span class="line">print(<span class="string">"dummyY: "</span> + str(dummyY))</span><br><span class="line"></span><br><span class="line">clf = tree.DecisionTreeClassifier(criterion = <span class="string">'entropy'</span>)</span><br><span class="line">clf = clf.fit(dummyX, dummyY)</span><br><span class="line">print(<span class="string">"clf: "</span> + str(clf))</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"allElectronicInformationGainOri.dot"</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f = tree.export_graphviz(clf, feature_names=vec.get_feature_names(), out_file = f)</span><br><span class="line"></span><br><span class="line"><span class="comment">#predict</span></span><br><span class="line">oneRowX = dummyX[<span class="number">0</span>, :]</span><br><span class="line">print(<span class="string">"oneRowX: "</span> + str(oneRowX))</span><br><span class="line"></span><br><span class="line">newRowX = oneRowX</span><br><span class="line">newRowX[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">newRowX[<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">print(<span class="string">"newRowX: "</span> + str(newRowX))</span><br><span class="line"></span><br><span class="line">predictedY = clf.predict(newRowX)</span><br><span class="line">print(<span class="string">"predictedY:"</span> +str(predictedY))</span><br></pre></td></tr></table></figure>
+<p> 测试结果</p>
+<p>通过<a href="http://www.graphviz.org/Download_windows.php" target="_blank" rel="noopener">Graphviz</a>显示，在文件夹下建立cmd.bat文件，文件内容为 <code>dot -T pdf allElectronicInformationGainOri.dot -o output.pdf</code> ,运行这个批处理文件即可</p>
+<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1fj4ap3pxvfj20r80mm419.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fj4ap3pxvfj20r80mm419.jpg" class="img-fluid"><br></a></p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/决策树算法/">决策树算法</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
 
       
     </footer>
@@ -567,7 +659,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-03-01-linux-day1"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-08-31-机器学习中的基本概念"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -575,7 +667,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/03/01/2017-03-01-linux-day1/">linux Day1</a>
+      <a class="article-title" href="/2017/08/31/2017-08-31-机器学习中的基本概念/">机器学习中的基本概念</a>
     </h1>
   
 
@@ -583,65 +675,49 @@
     
     <div class="article-meta">
       
-	<a href="/2017/03/01/2017-03-01-linux-day1/" class="article-date">
-	  <time datetime="2017-02-28T16:00:00.000Z" itemprop="datePublished">三月 1, 2017</time>
+	<a href="/2017/08/31/2017-08-31-机器学习中的基本概念/" class="article-date">
+	  <time datetime="2017-08-30T16:00:00.000Z" itemprop="datePublished">八月 31, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="关机"><a href="#关机" class="headerlink" title="关机"></a>关机</h1><p>shutdown &ndash;h now<br>poweroff</p>
-<h1 id="显示文件"><a href="#显示文件" class="headerlink" title="显示文件"></a>显示文件</h1><p>ls &ndash;a       显示所有文件<br>ls &ndash;l       详细显示文件<br>ls &ndash;al      组合使用<br>dir /a            windows 平台  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 表示常规文件；d 表示目录；c 便是字符设备文件；b 表示块设备文件；s 表示管道文件；l 表示连接文件</span><br></pre></td></tr></table></figure>
-<p>ls | more 表示分页显示<br>ls &gt; 文件    创建文件</p>
-<h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>cd ..      回到上一级<br>cd         回到起始目录<br>cd /       回到根目录<br>pwd        显示目录<br>cat+文件   看文件内容</p>
-<h1 id="查找文件内容"><a href="#查找文件内容" class="headerlink" title="查找文件内容"></a>查找文件内容</h1><p>grep+参数+内容+文件<br>-n    显示所在行<br>-v    显示出所在行外的所有行</p>
-<h1 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h1><p>find +目录 &ndash;name       查找目录下是否有这个名字的文件<br>find+目录 &ndash;user        查找目录下是否与这个人的文件</p>
-<h1 id="移除文件"><a href="#移除文件" class="headerlink" title="移除文件"></a>移除文件</h1><p>rm+参数+文件    移除文件<br>-f             不显示删除信息<br>-r             删文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*              删除所有文件</span><br></pre></td></tr></table></figure></p>
-<h1 id="拷贝文件"><a href="#拷贝文件" class="headerlink" title="拷贝文件"></a>拷贝文件</h1><p>cp+目标文件+生成文件</p>
-<h1 id="移动文件"><a href="#移动文件" class="headerlink" title="移动文件"></a>移动文件</h1><p>mv+移动文件+目标文件 用此条命令可以改变移动文件的名字</p>
-<h1 id="查看进程"><a href="#查看进程" class="headerlink" title="查看进程"></a>查看进程</h1><p>ps &ndash;a    查看所有进程<br>ps &ndash;u    显示进程所有信息<br>ps &ndash;x    显示没有控制终端的进程<br>top      显示类似任务管理器</p>
-<h1 id="查看当前用户"><a href="#查看当前用户" class="headerlink" title="查看当前用户"></a>查看当前用户</h1><p>whoami</p>
-<h1 id="查看登陆用户"><a href="#查看登陆用户" class="headerlink" title="查看登陆用户"></a>查看登陆用户</h1><p>who</p>
-<h1 id="归档管理"><a href="#归档管理" class="headerlink" title="归档管理"></a>归档管理</h1><p>tar+参数+打包文件名+文件<br>-cvf    打包<br>-xvf    解包  </p>
-<h1 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h1><p>gzip+文件            压缩文件<br>gzip &ndash;d + 文件       解压文件</p>
-<h1 id="帮助"><a href="#帮助" class="headerlink" title="帮助"></a>帮助</h1><p>man+命令 man+参数+命令</p>
-<ol>
-<li>General commands</li>
-<li>System calls</li>
-<li>Library functions, covering in particular the C standard library</li>
-<li>Special files (usually devices, those found in /dev) and drivers</li>
-<li>File formats and conventions</li>
-<li>Games and screensavers</li>
-<li>Miscellanea</li>
-<li>System administration commands and daemons</li>
-</ol>
-<h1 id="建立用户"><a href="#建立用户" class="headerlink" title="建立用户"></a>建立用户</h1><p>useradd &ndash;d /home/test5 tes5<br>passwd test5                 建立密码<br>su &ndash; test5             切换到test5用户<br>su &ndash;                   切换到root</p>
-<h1 id="让linux在当前目录寻找"><a href="#让linux在当前目录寻找" class="headerlink" title="让linux在当前目录寻找"></a>让linux在当前目录寻找</h1><ol>
-<li>cd</li>
-<li>vi .bash_profile</li>
-<li>在path后面加:.代表在当前目录寻找</li>
-<li>:wq</li>
-<li>让文件生效 . .bash_profile 每个用户都有各自的profile文件</li>
-</ol>
-<h1 id="网络设置"><a href="#网络设置" class="headerlink" title="网络设置"></a>网络设置</h1><p>nmtui     图形化设置界面</p>
-<h1 id="清屏操作"><a href="#清屏操作" class="headerlink" title="清屏操作"></a>清屏操作</h1><p>clear<br>cls       windows 平台</p>
+        <p>概念学习：概念学习是指从有关某个布尔函数的输入输出训练样例中推断出布尔函数</p>
+<p>概念定义在实例（instance）之上，这个集合表示为X。带学习的概念或目标函数成为目标概念，记作c。c(x) = 1，当享受运动时，c(x) = 0，不享受运行。c(x)记作y。</p>
+<p>x：每一个实例</p>
+<p>X：所有实例的集合</p>
+<p>学习目标：f: X-&gt;Y</p>
+<p>训练集/训练样例：进行训练，产生模型或者算法的数据集</p>
+<p>测试集/测试样例：专门进行测试已经学习好的模型或者算法的数据集</p>
+<p>特征向量（features）：属性的集合，常用一个向量表示，附属于一个实例</p>
+<p>标记：(label):c(x) 实例类别的标记 就是对于目标的记号</p>
+<p>正例（positive example）</p>
+<p>反例（negative example）</p>
+<p>分类（classification）:目标标记为类别型数据（category）</p>
+<p>回归（regression）：目标标记为连续性数值（continuous numeric value）</p>
+<p>有监督学习（supervised learning）：训练有类别标记（class label）训练集知道答案</p>
+<p>无监督学习（unsupervised learning）：无类别标记（class label）训练集不知道答案</p>
+<p>半监督学习（semi-supervised learning）：有类别标记的训练集+无标记的训练集</p>
+<p>机器学习步骤框架</p>
+<p>把数据拆分为训练集和测试集</p>
+<p>用训练集和训练集的特征向量来训练算法</p>
+<p>用学习来的算法运用在测试集上来评估算法（可能要涉及到调整参数（parameter tuning），用验证集（validation set））</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/linux/">linux</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
 
       
     </footer>
@@ -653,7 +729,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-02-14-千里之行始于足下"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-08-30-POJ 1017 packets"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -661,7 +737,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/02/14/2017-02-14-千里之行始于足下/">千里之行始于足下</a>
+      <a class="article-title" href="/2017/08/30/2017-08-30-POJ 1017 packets/">POJ 1017 packets</a>
     </h1>
   
 
@@ -669,32 +745,157 @@
     
     <div class="article-meta">
       
-	<a href="/2017/02/14/2017-02-14-千里之行始于足下/" class="article-date">
-	  <time datetime="2017-02-13T16:00:00.000Z" itemprop="datePublished">二月 14, 2017</time>
+	<a href="/2017/08/30/2017-08-30-POJ 1017 packets/" class="article-date">
+	  <time datetime="2017-08-29T16:00:00.000Z" itemprop="datePublished">八月 30, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    千里之行，始于足下。谓走一千里路，也是从迈第一步开始的。比喻事情是从头做起，逐步进行的。</span><br><span class="line">语出老子·《道德经》·第六十四章：“合抱之木，生于毫末；九层之台，起于垒土；千里之行，始于足下。”</span><br><span class="line">易《温尧卿等授官赐绯充沧景江陵判官制》：“夫千里之行，始于足下。苟自强不息，亦何远而不届哉？”</span><br></pre></td></tr></table></figure>
-<p><a href="http://wx3.sinaimg.cn/mw690/af2d2659gy1fdq7blkc7lj20rs0swwhg.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659gy1fdq7blkc7lj20rs0swwhg.jpg" class="img-fluid"><br></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    春秋时期，著名的哲学家老子根据事物的发展规律提出谨小慎微和慎终如始的主张，他主张：处理问题要在它未发生以前。</span><br><span class="line">治理国家要在未乱之前。合抱的大树是细小的幼苗长成，九层的高台是一筐一筐泥土砌成的，千里远的行程是从脚下开始的。</span><br></pre></td></tr></table></figure>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>A factory produces products packed in square packets of the same height h and of the sizes 1*1, 2*2, 3*3, 4*4, 5*5, 6*6. These products are always delivered to customers in the square parcels of the same height h as the products have and of the size 6*6. Because of the expenses it is the interest of the factory as well as of the customer to minimize the number of parcels necessary to deliver the ordered products from the factory to the customer. A good program solving the problem of finding the minimal number of parcels necessary to deliver the given products according to an order would save a lot of money. You are asked to make such a program.</p>
+<h2 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h2><p>The input file consists of several lines specifying orders. Each line specifies one order. Orders are described by six integers separated by one space representing successively the number of packets of individual size from the smallest size 1*1 to the biggest size 6*6. The end of the input file is indicated by the line containing six zeros.</p>
+<h2 id="Output"><a href="#Output" class="headerlink" title="Output"></a>Output</h2><p>The output file contains one line for each line in the input file. This line contains the minimal number of parcels into which the order from the corresponding line of the input file can be packed. There is no line in the output file corresponding to the last  line of the input file.</p>
+<h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input"></a>Sample Input</h2><p>0 0 4 0 0 1<br>7 5 1 0 0 0<br>0 0 0 0 0 0 </p>
+<h2 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output"></a>Sample Output</h2><p>2<br>1</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; box(<span class="number">6</span>);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;</span><br><span class="line">	<span class="comment">//对于边长为3的板子，只有一块时，需要5个2*2，有两块时，需要3个，有三快时，需要1个，有四块时，需要0个</span></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; mon&#123; <span class="number">0</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span> &#125;;</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> sum&#123;&#125;;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> temp;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">			box[i] = temp;</span><br><span class="line">			sum += temp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (sum == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//如果边长是3 4 5 6</span></span><br><span class="line">		<span class="keyword">int</span> ans = box[<span class="number">5</span>] + box[<span class="number">4</span>] + box[<span class="number">3</span>] + (box[<span class="number">2</span>] + <span class="number">3</span>) / <span class="number">4</span>;</span><br><span class="line">		<span class="comment">//需要边长为2的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_2 = box[<span class="number">3</span>] * <span class="number">5</span> + mon[(box[<span class="number">2</span>] % <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">//2*2 box数量剩余时，需要增加box的数量</span></span><br><span class="line">		<span class="keyword">if</span> (len_2 &lt; box[<span class="number">1</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">1</span>] - len_2 + <span class="number">8</span>) / <span class="number">9</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//需要边长为1的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_1 = ans * <span class="number">36</span> - box[<span class="number">5</span>] * <span class="number">36</span> - box[<span class="number">4</span>] * <span class="number">25</span> - box[<span class="number">3</span>] * <span class="number">16</span> - box[<span class="number">2</span>] * <span class="number">9</span> - box[<span class="number">1</span>] * <span class="number">4</span>;</span><br><span class="line">		<span class="keyword">if</span> (len_1 &lt; box[<span class="number">0</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">0</span>] - len_1 + <span class="number">35</span>) / <span class="number">36</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		result.push_back(ans);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//容器的最后一行一定是000000	</span></span><br><span class="line">	<span class="built_in">std</span>::copy(<span class="built_in">std</span>::begin(result), <span class="built_in">std</span>::end(result), <span class="built_in">std</span>::ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">"\n"</span>));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为平台不兼容C++14，所以我就写了下面这样的做法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; box(<span class="number">6</span>);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;</span><br><span class="line">	<span class="comment">//对于边长为3的板子，只有一块时，需要5个2*2，有两块时，需要3个，有三快时，需要1个，有四块时，需要0个</span></span><br><span class="line">	<span class="keyword">int</span> mon[<span class="number">4</span>] = &#123; <span class="number">0</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">	<span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> sum = <span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> temp;</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">			box[i] = temp;</span><br><span class="line">			sum += temp;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (sum == <span class="number">0</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//如果边长是3 4 5 6</span></span><br><span class="line">		<span class="keyword">int</span> ans = box[<span class="number">5</span>] + box[<span class="number">4</span>] + box[<span class="number">3</span>] + (box[<span class="number">2</span>] + <span class="number">3</span>) / <span class="number">4</span>;</span><br><span class="line">		<span class="comment">//需要边长为2的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_2 = box[<span class="number">3</span>] * <span class="number">5</span> + mon[(box[<span class="number">2</span>] % <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">//2*2 box数量剩余时，需要增加box的数量</span></span><br><span class="line">		<span class="keyword">if</span> (len_2 &lt; box[<span class="number">1</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">1</span>] - len_2 + <span class="number">8</span>) / <span class="number">9</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//需要边长为1的box数量</span></span><br><span class="line">		<span class="keyword">int</span> len_1 = ans * <span class="number">36</span> - box[<span class="number">5</span>] * <span class="number">36</span> - box[<span class="number">4</span>] * <span class="number">25</span> - box[<span class="number">3</span>] * <span class="number">16</span> - box[<span class="number">2</span>] * <span class="number">9</span> - box[<span class="number">1</span>] * <span class="number">4</span>;</span><br><span class="line">		<span class="keyword">if</span> (len_1 &lt; box[<span class="number">0</span>])</span><br><span class="line">		&#123;</span><br><span class="line">			ans += (box[<span class="number">0</span>] - len_1 + <span class="number">35</span>) / <span class="number">36</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		result.push_back(ans);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//容器的最后一行一定是000000	</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; result.size(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; result[i] &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/acm/">acm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/贪心算法/">贪心算法</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-08-28-Kolakoski sequence"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/08/28/2017-08-28-Kolakoski sequence/">Kolakoski sequence</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/28/2017-08-28-Kolakoski sequence/" class="article-date">
+	  <time datetime="2017-08-27T16:00:00.000Z" itemprop="datePublished">八月 28, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>Kolakoski序列是个自生成的无限序列。</p>
+<p>例如，当给定的整数组为[1,2]时，Kolakoski序列是这样的：</p>
+<p>[1,2,2,1,1,2,1,2,2,1,2,2,1,1,2……]</p>
+<p>如果我们将相邻的相同的数字分成一组，那么将会得到：</p>
+<p>[[1],[2,2],[1,1],[2],[1],[2,2],[1],[2,2],[1,1],[2]……..]</p>
+<p>可以看出，每组数字交替由1，2组成。</p>
+<p>接下来对每个分组求他的长度，得到：</p>
+<p>[1,2,2,1,1,2,1,2,2,1,2,2,1,1,2……]</p>
+<h2 id="输入描述"><a href="#输入描述" class="headerlink" title="输入描述"></a>输入描述</h2><p>输入有两行组成：</p>
+<p>第一行包括两个整数n，m</p>
+<p>第二行包括m个正整数a[]</p>
+<p>数据规模限制：</p>
+<p>0 &lt; n &lt; 10000    1 &lt; m &lt; 1000    0 &lt; a[i] &lt; 1000</p>
+<p>a[i] != a[i+1]     a[0] != a[m-1]</p>
+<h2 id="输出描述"><a href="#输出描述" class="headerlink" title="输出描述"></a>输出描述</h2><p>每行一个数字，共n行</p>
+<p>整数组a生成的Kolakoski序列的前n项</p>
+<h2 id="问题的解决"><a href="#问题的解决" class="headerlink" title="问题的解决"></a>问题的解决</h2><p>我觉得下面这个解法还不错</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iterator&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;			//adjacent_find</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> m, n;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter number n,m:\n"</span>;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; n &gt;&gt; m;</span><br><span class="line">	<span class="keyword">if</span> (n &lt;= <span class="number">0</span> || n &gt;= <span class="number">10000</span> || m &lt;= <span class="number">1</span> || m &gt;= <span class="number">1000</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error"</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; a(m);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"Enter m numbers:\n"</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> temp;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; temp;</span><br><span class="line">		a[i] = temp;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (a[<span class="number">0</span>] == a[m - <span class="number">1</span>])</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error : a[0] == a[m - 1]"</span>;</span><br><span class="line">         <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//查找相邻元素有很多做法，我这里使用的标准库里的做法</span></span><br><span class="line">	<span class="keyword">auto</span>&amp;&amp; pan = <span class="built_in">std</span>::adjacent_find(<span class="built_in">std</span>::begin(a), <span class="built_in">std</span>::end(a));</span><br><span class="line">	<span class="keyword">if</span> (pan != a.end())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"input error : have the same adjacent element"</span>;</span><br><span class="line">         <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result&#123;&#125;;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, j = <span class="number">0</span>; i &lt; n &amp;&amp; j &lt; n; ++i, ++j)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> curNum = a[i % m];</span><br><span class="line">		result.push_back(curNum);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> count = <span class="number">1</span>; count &lt; result[i] &amp;&amp; j &lt; n; ++count, ++j)</span><br><span class="line">		&#123;</span><br><span class="line">			result.push_back(curNum);</span><br><span class="line">		&#125;		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">std</span>::copy(<span class="built_in">std</span>::begin(result), <span class="built_in">std</span>::end(result), <span class="built_in">std</span>::ostream_iterator&lt;<span class="keyword">int</span>&gt;(<span class="built_in">std</span>::<span class="built_in">cout</span>, <span class="string">"\n"</span>));</span><br><span class="line">	system(<span class="string">"pause"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kolakoski/">Kolakoski</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+</article>
+
+<!-- Table of Contents -->
+
+  
+    <article id="post-2017-08-27-vector iterator not dereferencable"  class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      <a class="article-title" href="/2017/08/27/2017-08-27-vector iterator not dereferencable/">vector iterator not dereferencable</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2017/08/27/2017-08-27-vector iterator not dereferencable/" class="article-date">
+	  <time datetime="2017-08-26T16:00:00.000Z" itemprop="datePublished">八月 27, 2017</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+ 
+      
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天碰到这样一个问题，在对如下问题编译时出现了这样的报错信息 <code>vector iterator not dereferencable</code>，这个报错信息非常的常见。以下是程序的出错片段：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_hands</span><span class="params">(Hands&amp; hands, Deck&amp; deck)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> d = dist();</span><br><span class="line">	<span class="comment">//每个人输出一个牌，最后全部放在deck中</span></span><br><span class="line">	<span class="keyword">while</span> (deck.size() != <span class="number">52</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Card&gt; tempHand;</span><br><span class="line">		Card maxCard&#123;&#125;;</span><br><span class="line">	</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; iter = <span class="built_in">std</span>::begin(hands); iter &lt; <span class="built_in">std</span>::end(hands); ++iter)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">size_t</span> max_index = (*iter).size() - <span class="number">1</span>;</span><br><span class="line">			d.param(Range&#123; <span class="number">0</span>, max_index &#125;);</span><br><span class="line">			<span class="keyword">auto</span> tIter = <span class="built_in">std</span>::begin(*iter);</span><br><span class="line">			<span class="built_in">std</span>::advance(tIter, d(rng()));</span><br><span class="line">			deck.push_back(*tIter);</span><br><span class="line">			tempHand.push_back(*tIter);</span><br><span class="line">			<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; *tIter &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">			(*iter).erase(tIter);			<span class="comment">//注意的是erase是传入的指针变量</span></span><br><span class="line">          	 Card tempCard = *tIter;		<span class="comment">//报错位置</span></span><br><span class="line">			maxCard = <span class="built_in">std</span>::max(maxCard, tempCard, [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; crd1, <span class="keyword">const</span> <span class="keyword">auto</span>&amp; crd2) &#123;</span><br><span class="line">				<span class="keyword">return</span> crd1.first &lt; crd2.first || (crd1.first == crd2.first &amp;&amp; crd1.second &lt; crd2.second);</span><br><span class="line">			&#125;);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"最大的牌是："</span> &lt;&lt; maxCard &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这个问题很不应该，很明显可以看出我是在对 <code>tIter</code>做了 <code>erase</code> 操作后，又使用<code>*tIter</code> 。原因在于 <code>erase</code> 操作后原来的指针就不存在了，自然再去访问就会报错。</p>
+<p>还有一种情况就是访问越界，它也会造成这样的问题。</p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/cpp/">cpp</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Eassy/">Eassy</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/error/">error</a></li></ul>
 
       
     </footer>
@@ -710,7 +911,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/19/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span>
+    <a class="extend prev" rel="prev" href="/page/19/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/21/">下一页</a>
   </nav>
 
 </section>
@@ -810,8 +1011,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
-              <span>四月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-130-被围绕的区域（最详细的解法！！！）/">Leetcode 130：被围绕的区域（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -822,8 +1023,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
-              <span>四月 7, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-200-岛屿的个数（最详细的解法！！！）/">Leetcode 200：岛屿的个数（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -834,8 +1035,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
-              <span>四月 4, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-401-二进制手表（最详细的解法！！！）/">Leetcode 401：二进制手表（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -846,8 +1047,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
-              <span>四月 2, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-79-单词搜索（最详细的解法！！！）/">Leetcode 79：单词搜索（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -858,8 +1059,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
-              <span>三月 31, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/11/2018-09-11-Leetcode-90-子集 II（最详细的解法！！！）/">Leetcode 90：子集 II（最详细的解法！！！）</a></h6>
+              <span>九月 11, 2018</span>
             </div>
 
           </li>
@@ -870,8 +1071,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
-              <span>三月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/10/2018-09-10-Leetcode-40-组合总和 II（最详细的解法！！！）/">Leetcode 40：组合总和 II（最详细的解法！！！）</a></h6>
+              <span>九月 10, 2018</span>
             </div>
 
           </li>
@@ -885,7 +1086,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">35</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">112</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -895,7 +1096,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.67px;">1080ti</a> <a href="/tags/ADL/" style="font-size: 10px;">ADL</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.33px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.33px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/JSON/" style="font-size: 10.67px;">JSON</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.67px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.67px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.33px;">QT</a> <a href="/tags/SNIP/" style="font-size: 10px;">SNIP</a> <a href="/tags/Ubuntu/" style="font-size: 11.33px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 14.67px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.67px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/big-file/" style="font-size: 10px;">big file</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 19.33px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 18.67px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 18px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 16.67px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.33px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.33px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.67px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 14.67px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.33px;">error</a> <a href="/tags/estimator/" style="font-size: 11.33px;">estimator</a> <a href="/tags/fire/" style="font-size: 10px;">fire</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.67px;">namehiding</a> <a href="/tags/network/" style="font-size: 12px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 17.33px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.67px;">numpy</a> <a href="/tags/office/" style="font-size: 10.67px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.67px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.67px;">overload</a> <a href="/tags/override/" style="font-size: 10.67px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.67px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/pytorch/" style="font-size: 11.33px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.33px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.33px;">re</a> <a href="/tags/requests/" style="font-size: 10.67px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.67px;">shell</a> <a href="/tags/signal/" style="font-size: 10.67px;">signal</a> <a href="/tags/sql/" style="font-size: 10.67px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16px;">stl</a> <a href="/tags/super/" style="font-size: 10.67px;">super</a> <a href="/tags/tensorflow/" style="font-size: 14.67px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.67px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.67px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 16.67px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.67px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.33px;">笔试</a> <a href="/tags/算法/" style="font-size: 14px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.67px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.33px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -905,7 +1106,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

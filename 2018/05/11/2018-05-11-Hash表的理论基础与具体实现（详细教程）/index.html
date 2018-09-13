@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hash表的理论基础与具体实现（详细教程） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cc++" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="字典通常可以用三种数据类型表示：线性表，跳表，Hash表。 Hash表又称为散列表，使用一个散列函数把字典的数对映射到一个散列表的具体位置。如果数对p的关键字是k，散列函数为f，那么在理想情况下，p在散列表中的位置为f(k)。暂时假定散列表的每一个位置最多能够存储一个记录。为了搜索关键字为k的数对，先要计算f(k)，然后查看在散列表的f(k)处是否已有一个数对。如果有，便找到该数对。如果没有，字典">
+<meta name="keywords" content="c,c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hash表的理论基础与具体实现（详细教程）">
+<meta property="og:url" content="http://coordinate.wang/2018/05/11/2018-05-11-Hash表的理论基础与具体实现（详细教程）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="字典通常可以用三种数据类型表示：线性表，跳表，Hash表。 Hash表又称为散列表，使用一个散列函数把字典的数对映射到一个散列表的具体位置。如果数对p的关键字是k，散列函数为f，那么在理想情况下，p在散列表中的位置为f(k)。暂时假定散列表的每一个位置最多能够存储一个记录。为了搜索关键字为k的数对，先要计算f(k)，然后查看在散列表的f(k)处是否已有一个数对。如果有，便找到该数对。如果没有，字典">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-14T02:27:47.848Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hash表的理论基础与具体实现（详细教程）">
+<meta name="twitter:description" content="字典通常可以用三种数据类型表示：线性表，跳表，Hash表。 Hash表又称为散列表，使用一个散列函数把字典的数对映射到一个散列表的具体位置。如果数对p的关键字是k，散列函数为f，那么在理想情况下，p在散列表中的位置为f(k)。暂时假定散列表的每一个位置最多能够存储一个记录。为了搜索关键字为k的数对，先要计算f(k)，然后查看在散列表的f(k)处是否已有一个数对。如果有，便找到该数对。如果没有，字典">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-05-11-Hash表的理论基础与具体实现（详细教程）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Hash表的理论基础与具体实现（详细教程）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/11/2018-05-11-Hash表的理论基础与具体实现（详细教程）/" class="article-date">
+	  <time datetime="2018-05-10T16:00:00.000Z" itemprop="datePublished">五月 11, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>字典通常可以用三种数据类型表示：线性表，跳表，<code>Hash</code>表。</p>
+<p><code>Hash</code>表又称为<strong>散列表</strong>，使用一个散列函数把字典的数对映射到一个散列表的具体位置。如果数对<em>p</em>的关键字是<em>k</em>，散列函数为<em>f</em>，那么在理想情况下，<em>p</em>在散列表中的位置为<em>f(k)</em>。暂时假定散列表的每一个位置最多能够存储一个记录。为了搜索关键字为<em>k</em>的数对，先要计算<em>f(k)</em>，然后查看在散列表的<em>f(k)</em>处是否已有一个数对。如果有，便找到该数对。如果没有，字典就不包含该数对。在前一种情况下，可以删除该数对，为此只需使散列表的<em>f(k)</em>位置为空。在后一种情况下，可以把该数对插入<em>f(k)</em>的位置。</p>
+<p>#0x01 bucket 和 home bucket</p>
+<p>当关键字的范围太大，不能用理想方法表示时，可以采用并不理想的散列表和散列函数。散列表位置的数量比关键字的个数少，散列函数把若干不同的关键字映射到散列表的同一位置。散列表的每一个位置称为一个<strong>bucket</strong>；对关键字为<em>k</em> 的数对，<em>f(k)</em> 是<strong>home bucket</strong>；<strong>bucket</strong>的数量等同于散列表的长度。因为散列函数可以把若干个关键字映射到同一个<strong>bucket</strong>，所以<strong>bucket</strong>要能够容纳多个数对。</p>
+<p>#0x02 除法散列函数</p>
+<p>在多种散列函数中，最常用的就是除法散列函数，它的形式如下：</p>
+<ul>
+<li>$f(k) =k\%D$</li>
+</ul>
+<p>其中<em>k</em>是关键字，<em>D</em>是散列表长度。</p>
+<p>#0x03 冲突与溢出</p>
+<p>我们先考虑一种情况，每个<strong>bucket</strong>只能存储一个数对。现在有这样一个散列表，它有11个<strong>bucket</strong>，序号从0到10。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0   1   2   3   4   5   6   7   8   9   10</span><br><span class="line">            80              40          65</span><br></pre></td></tr></table></figure>
+<p><em>D</em>为11。我们很容易就可以计算出$80\%11=3$，$40\%11=7$，$65\%11=10$。其余的<strong>bucket</strong>为空。</p>
+<p>现在我们要插入<code>58</code>，那么我们通过计算$58\%11=3$，但是这个<strong>bucket</strong>已经有一个数了。当两个不同的关键字所对应的<strong>home bucket</strong>相同，这个时候就发生了<strong>冲突</strong>。因为我们这个例子中的<strong>bucket</strong>只能存放一个数对，所以这个时候同时发生了<strong>溢出</strong>，但是如果我们的<strong>bucket</strong>可以存放多个数对的话，就不会发生<strong>溢出</strong>。</p>
+<p>我们可以通过<strong>线性探查</strong>（找到下一个可用的<strong>bucket</strong>）的方法解决这个问题。我们将<code>58</code>加入到<strong>4号bucket</strong>。通过这种方法，我们将散列表看成是一个环形表。例如，对于$98\%11=10$，我们将<code>98</code>加入到<strong>0号bucket</strong>。</p>
+<p>#0x04 一个好的散列函数</p>
+<p>我们很容易就能想明白的一点是：<strong>冲突不可怕，可怕的是溢出</strong>。除非每个<strong>bucket</strong>可以存放<strong>无限个</strong>数对，否则插入时发生溢出就是一个很难解决的问题。当映射到散列表中任何一个<strong>bucket</strong>里的关键字数量大致相等时，冲突和溢出发生的平均次数最少。基于这一点，我们就有了<strong>均匀散列函数</strong>。</p>
+<ul>
+<li>假定散列有<em>b</em>个<strong>bucket</strong>，且$b &gt; 1$，<strong>bucket</strong>的序号从 0 到 $b-1$。如果对所有的<em>k</em>，散列函数$f(k) = 0$，那么<em>f(k)</em>就不是一个<strong>均匀散列函数</strong>，因为它把所有的关键字都映射到一个<em>0</em>号桶里。这样的散列函数使冲突和溢出的数量最大。假设$b=11$，关键字范围为<code>[0, 999]</code>，那么它应该大约把每99个关键字映射到同一个桶<strong>bucket</strong>中。</li>
+<li>理想的<em>D</em>应该是一个<strong>素数</strong>。当不能找到一个接近散列表长度的素数时，你应该选择不能被2和19之间的数整除的<em>D</em>。</li>
+</ul>
+<p>#0x05 除法和非整型关键字</p>
+<p>为了使用<strong>除法散列函数</strong>，在计算<em>f(k)</em>之前，需要把关键字转换为非负整数。因为所有散列函数都把若干个关键字分不到相同的<strong>home bucket</strong>，所以没有必要把关键字转化为统一的非负整数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stringToInt</span><span class="params">(<span class="built_in">string</span> s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> length = (<span class="keyword">int</span>)s.length();</span><br><span class="line">    <span class="keyword">int</span> answer = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (length % <span class="number">2</span> == <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        answer = s.at(length - <span class="number">1</span>);</span><br><span class="line">        --length;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        answer += s.at(i);</span><br><span class="line">        answer += ((<span class="keyword">int</span>)s.at(i + <span class="number">1</span>)) &lt;&lt; <span class="number">8</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (answer &lt; <span class="number">0</span>) ? -answer : answer;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们通过上述代码将字符逐个转换为一个唯一整数，并累积求和。这个函数中有一个有意思的操作：<strong>左移24位</strong>。我们为什么不直接将所有字符加起来，而要左移后相加呢？我们希望充分的利用数据空间，原先如果没有左移操作，那么对于长度为8的字符串，直接相加转化为整数的话，只是用了11位字节，而<code>int</code>有32位（win32下）。</p>
+<p>参考STL，我们给出令一个版本的<code>hash</code>函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hash</span>&lt;string&gt;</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">size_t</span> <span class="keyword">operator</span>()(<span class="keyword">const</span> <span class="built_in">string</span> theKey) <span class="keyword">const</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> hashValue = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> length = (<span class="keyword">int</span>) theKey.length();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            hashValue = <span class="number">5</span> * hashValue + theKey.at(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">size_t</span>(hashValue)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#0x06 hashTable类的设计</p>
+<p>我们使用前面设计的<code>hash</code>函数设计这样的一个<code>hashTable</code>类</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">hashTable</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    hashTable(<span class="keyword">int</span> theDivisor);</span><br><span class="line">    ~hashTable();</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">search</span><span class="params">(<span class="keyword">const</span> K&amp; theKey)</span> <span class="keyword">const</span></span>;</span><br><span class="line">    pair&lt;<span class="keyword">const</span> K, E&gt;* find(<span class="keyword">const</span> K&amp; theKey) <span class="keyword">const</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(<span class="keyword">const</span> pair&lt;<span class="keyword">const</span> K, E&gt;&amp; thePair)</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    pair&lt;<span class="keyword">const</span> K, E&gt;** table;<span class="comment">//散列表</span></span><br><span class="line">    hash&lt;K&gt; hash;			<span class="comment">//hash函数</span></span><br><span class="line">    <span class="keyword">int</span> dSize;				<span class="comment">//散列表中的数对个数</span></span><br><span class="line">    <span class="keyword">int</span> divisor;			<span class="comment">//D</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同时这里我们给出构造函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">hashTable</span>&lt;K, E&gt;:</span>:hashTable(<span class="keyword">int</span> theDivisor)</span><br><span class="line">&#123;</span><br><span class="line">    divisor = theDivisor;</span><br><span class="line">    dSize = <span class="number">0</span>;</span><br><span class="line">    table = <span class="keyword">new</span> pair&lt;<span class="keyword">const</span> K, E&gt;*[divisor];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; divisor; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        table[i] = <span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>#0x07 查找记录</p>
+<p>如果你明白了之前的线性探查法进行插入过程，那么就可以轻松的设计出散列表的查找方法。假设要查找的关键字为<em>k</em>的数对，首先搜索<em>f(k)</em>，然后把散列表当作环形表继续搜索下一个<strong>bucket</strong>，直到下面的情况发生：</p>
+<ul>
+<li>关键字<em>k</em>的<strong>bucket</strong>找到</li>
+<li>到达一个空的<strong>bucket</strong></li>
+<li>回到<em>f(k)</em></li>
+</ul>
+<p>后两者说明关键字<em>k</em>的数对不存在。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">int</span> <span class="title">hashTable</span>&lt;K, E&gt;:</span>:search(<span class="keyword">const</span> K&amp; theKey) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> i = (<span class="keyword">int</span>) hash(theKey) % divisor;</span><br><span class="line">    <span class="keyword">int</span> j = i; </span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (table[j] == <span class="literal">nullptr</span> || table[j]-&gt;first == theKey) <span class="keyword">return</span> j;</span><br><span class="line">        j = (j + <span class="number">1</span>) % divisor;</span><br><span class="line">    &#125;<span class="keyword">while</span>(j != i);</span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">pair</span>&lt;const K, E&gt;* <span class="title">hashTable</span>&lt;K, E&gt;:</span>:find(<span class="keyword">const</span> K&amp; theKey) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> b = search(theKey);</span><br><span class="line">    <span class="keyword">if</span> (table[b] == <span class="literal">nullptr</span> || table[b]-&gt;first != theKey) <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">return</span> table[b];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们这里给出的<code>search</code>函数中，函数返回值有三种情况：</p>
+<ul>
+<li><code>table[b]</code>是一个指针，指向关键字<code>theKey</code>的数对</li>
+<li>散列表没有关键字<code>theKey</code>的数对，并且<code>table[b]=nullptr</code></li>
+<li>散列表没有关键字<code>theKey</code>的数对，但是<code>table[b]!=nullptr</code>，这表示表满。</li>
+</ul>
+<p>#0x08 删除记录</p>
+<p>删除一个记录要保证查找过程可以正常进行。例如，我们添加记录$35\%11=2$，根据线性探查法，插入到5号<strong>bucket</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0   1   2   3   4   5   6   7   8   9   10</span><br><span class="line">            80  58  35      40          65</span><br></pre></td></tr></table></figure>
+<p>删除58，我们不能仅仅将4号<strong>bucket</strong>置空，这样我们就无法找到关键字35的数对。从删除位置的下一个<strong>bucket</strong>开始，逐个检查每个<strong>bucket</strong>，以确定要移动的元素，直至到达一个空的<strong>bucket</strong>或回到删除位置为止。</p>
+<p>实现删除的另一个策略是为每个<strong>bucket</strong>增加一个域<code>neverUsed</code>。在散列表初始化时，这个域被设置为<code>true</code>。当一个数对存入一个<strong>bucket</strong>中时，<code>neverUsed</code>域被设置为<code>false</code>。现在搜索结束条件：<strong>到达一个空bucket</strong>变为<strong>bucket的neverUsed域为true</strong>。不过在删除时，只是把表的相应位置置为空。一个新元素被插入在其对应的<strong>home bucket</strong>之后所找到的第一个空的<strong>bucket</strong>中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">hashTable</span>&lt;K, E&gt;:</span>:erase(<span class="keyword">const</span> K&amp; theKey)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> b = search(theKey);</span><br><span class="line">    <span class="keyword">if</span> (table[b] == <span class="literal">nullptr</span> || table[b]-&gt;first != theKey) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> i = theKey % divisor;</span><br><span class="line">    <span class="keyword">int</span> j = i;</span><br><span class="line">    <span class="keyword">delete</span> table[j];</span><br><span class="line">    table[j] = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">    &#123;      </span><br><span class="line">        <span class="keyword">int</span> pre = j;</span><br><span class="line">        j = (j + <span class="number">1</span>) % divisor; </span><br><span class="line">        <span class="keyword">if</span> (table[j] != <span class="literal">nullptr</span> &amp;&amp; (table[j]-&gt;first) % divisor == j)</span><br><span class="line">        &#123;</span><br><span class="line">            table[pre] = <span class="literal">nullptr</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        table[pre] = table[j];     </span><br><span class="line">    &#125; <span class="keyword">while</span> (i != j || table[j] != <span class="literal">nullptr</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="0x09-插入记录"><a href="#0x09-插入记录" class="headerlink" title="0x09 插入记录"></a>0x09 插入记录</h1><p>我们首先调用<code>search</code>方法，根据<code>search</code>方法，如果返回的<code>b</code>号<strong>bucket</strong>为空，则白哦是没有关键字为<code>thePair.first</code>的数对，该数对可以插入<strong>bucket</strong>中。若返回的值非空，则表示在表中已经存在<code>thePair.first</code>的数对了或者表满。如果是前面一种情况，把该<strong>bucket</strong>的数对值改为<code>thePair.second</code>。如果是后一种情况，那么抛出异常。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">hashTableFull</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	hashTableFull(<span class="built_in">string</span> theMessage =</span><br><span class="line">		<span class="string">"The hash table is full"</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		message = theMessage;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">outputMessage</span><span class="params">()</span> </span>&#123; <span class="built_in">cout</span> &lt;&lt; message &lt;&lt; <span class="built_in">endl</span>; &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	<span class="built_in">string</span> message;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">K</span>, <span class="title">class</span> <span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">hashTable</span>&lt;K, E&gt;:</span>:insert(<span class="keyword">const</span> pair&lt;<span class="keyword">const</span> K, E&gt;&amp; thePair)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> b = search(thePair.first);</span><br><span class="line">    <span class="keyword">if</span> (table[b] == <span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        table[b] = <span class="keyword">new</span> pair&lt;<span class="keyword">const</span> K, E&gt;(thePair);</span><br><span class="line">        ++dSize;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (table[b]-&gt;first == thePair.first)</span><br><span class="line">        &#123;</span><br><span class="line">            table[b]-&gt;second == thePair.second;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">throw</span> hashTableFull();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>如有任何问题，希望大家指正！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/12/2018-05-12-Leetcode-3--无重复字符的最长子串/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Leetcode 3:无重复字符的最长子串（最详细解决方案！！！）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/11/2018-05-10-python-递归解析-JSON/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">python递归解析JSON（目前最好的方案）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x09-插入记录"><span class="nav-number">1.</span> <span class="nav-text">0x09 插入记录</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

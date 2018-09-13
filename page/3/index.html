@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2018-01-26-python字符串令牌解析"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-30-Leetcode-235二叉搜索树的最近公共祖先（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/26/2018-01-26-python字符串令牌解析/">python字符串令牌解析</a>
+      <a class="article-title" href="/2018/08/30/2018-08-30-Leetcode-235二叉搜索树的最近公共祖先（最详细的解法！！！）/">Leetcode 235：二叉搜索树的最近公共祖先（最详细的解法！！！）</a>
     </h1>
   
 
@@ -124,40 +124,55 @@
     
     <div class="article-meta">
       
-	<a href="/2018/01/26/2018-01-26-python字符串令牌解析/" class="article-date">
-	  <time datetime="2018-01-25T16:00:00.000Z" itemprop="datePublished">一月 26, 2018</time>
+	<a href="/2018/08/30/2018-08-30-Leetcode-235二叉搜索树的最近公共祖先（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-29T16:00:00.000Z" itemprop="datePublished">八月 30, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉搜索树, 找到该树中两个指定节点的最近公共祖先。</p>
+<p><a href="https://baike.baidu.com/item/%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/8918834?fr=aladdin" target="_blank" rel="noopener">百度百科</a>中最近公共祖先的定义为：“对于有根树 T 的两个结点 p、q，最近公共祖先表示为一个结点 x，满足 x 是 p、q 的祖先且 x 的深度尽可能大（<strong>一个节点也可以是它自己的祖先</strong>）。”</p>
+<p>例如，给定如下二叉搜索树:  root = [6,2,8,0,4,7,9,null,null,3,5]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">     _______6______</span><br><span class="line">    /              \</span><br><span class="line"> ___2__          ___8__</span><br><span class="line">/      \        /      \</span><br><span class="line">0      _4       7       9</span><br><span class="line">      /  \</span><br><span class="line">      3   5</span><br></pre></td></tr></table></figure>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8</span><br><span class="line">输出: 6 </span><br><span class="line">解释: 节点 2 和节点 8 的最近公共祖先是 6。</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4</span><br><span class="line">输出: 2</span><br><span class="line">解释: 节点 2 和节点 4 的最近公共祖先是 2, 因为根据定义最近公共祖先节点可以为节点本身。</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>所有节点的值都是唯一的。</li>
+<li>p、q 为不同节点且均存在于给定的二叉搜索树中。</li>
+</ul>
+<p><strong>解题思路</strong></p>
+<p>这是一个非常经典的问题，我们通过递归可以非常快的解决这个问题，我们只要理清楚这样的几种情况：</p>
+<ul>
+<li><code>root.val &gt; p.val and root.val &gt; q.val</code>，那我们在<code>root.left</code>继续搜索</li>
+<li><code>root.val &lt; p.val and root.val &lt; q.val</code>，那我们在<code>root.right</code>继续搜索</li>
+<li>其他的情况，返回<code>root</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span><span class="params">(self, root, p, q)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type p: TreeNode</span></span><br><span class="line"><span class="string">        :type q: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> p.val &lt; root.val &gt; q.val:</span><br><span class="line">            <span class="keyword">return</span> self.lowestCommonAncestor(root.left, p, q)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> p.val &gt; root.val &lt; q.val:</span><br><span class="line">            <span class="keyword">return</span> self.lowestCommonAncestor(root.right, p, q)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+<p>我们通过迭代解决这个问题，同样非常简单。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lowestCommonAncestor</span><span class="params">(self, root, p, q)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type p: TreeNode</span></span><br><span class="line"><span class="string">        :type q: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: TreeNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> p.val &lt; root.val &gt; q.val:</span><br><span class="line">                root = root.left</span><br><span class="line">            <span class="keyword">elif</span> p.val &gt; root.val &lt; q.val:</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+<p>上述做法的前提是这是一棵<code>二分搜索树</code>，对于更一般的情况我们要怎么做呢？</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          在分析这个问题之前，我们先看一下什么是分组。在正则表达式中，括号括起来的部分是一个分组。例如
-123456789import retext = 'Today is 11/27/2012. PyCon starts 3/13/2013.'datepat = re.compile(r'(\d+)/(\d+)/(\d+)')m = datepat.match('11/27/2012')print(m.group(0))print(m.group(1))print(m.group(2))print(m.group(3))print(m.groups())
-
-        
-          <p class="article-more-link">
-            <a href="/2018/01/26/2018-01-26-python字符串令牌解析/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/字符串令牌/">字符串令牌</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -169,7 +184,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2018-01-15-RefineDet论文笔记"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-29-Leetcode-437路径总和 III（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -177,7 +192,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/15/2018-01-15-RefineDet论文笔记/">RefineDet论文笔记</a>
+      <a class="article-title" href="/2018/08/29/2018-08-29-Leetcode-437路径总和 III（最详细的解法！！！）/">Leetcode 437：路径总和 III（最详细的解法！！！）</a>
     </h1>
   
 
@@ -185,46 +200,51 @@
     
     <div class="article-meta">
       
-	<a href="/2018/01/15/2018-01-15-RefineDet论文笔记/" class="article-date">
-	  <time datetime="2018-01-14T16:00:00.000Z" itemprop="datePublished">一月 15, 2018</time>
+	<a href="/2018/08/29/2018-08-29-Leetcode-437路径总和 III（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-28T16:00:00.000Z" itemprop="datePublished">八月 29, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树，它的每个结点都存放着一个整数值。</p>
+<p>找出路径和等于给定数值的路径总数。</p>
+<p>路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。</p>
+<p>二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8</span><br><span class="line"></span><br><span class="line">      10</span><br><span class="line">     /  \</span><br><span class="line">    5   -3</span><br><span class="line">   / \    \</span><br><span class="line">  3   2   11</span><br><span class="line"> / \   \</span><br><span class="line">3  -2   1</span><br><span class="line"></span><br><span class="line">返回 3。和等于 8 的路径有:</span><br><span class="line"></span><br><span class="line">1.  5 -&gt; 3</span><br><span class="line">2.  5 -&gt; 2 -&gt; 1</span><br><span class="line">3.  -3 -&gt; 11</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题非常有意思。和之前问题</p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/82115520" target="_blank" rel="noopener"> Leetcode 112：路径总和（最详细的解法！！！）</a></p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/82149899" target="_blank" rel="noopener"> Leetcode 113：路径总和 II（最详细的解法！！！）</a></p>
+<p>的区别在于，这个问题不一定是从根节点出发。知道这一点的话，我们很容易写出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    result += self.findPath(root, sum)</span><br><span class="line">    result += self.pathSum(root.left, sum)</span><br><span class="line">    result += self.pathSum(root.right, sum)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>这里我们一定要明确<code>findPath</code>和<code>pathSum</code>的区别。<code>findPath</code>的含义就是查找包含<code>root</code>并且和为<code>sum</code>的路径个数。而<code>pathSum</code>是查找不一定包含<code>root</code>并且和为<code>sum</code>的路径个数。也就是含义上<code>pathSum</code>包括了<code>findPath</code>。那么我们能不能使用<code>pathSum</code>替代<code>findPath</code>呢？显然不行。而<code>findPath</code>，我们在前面就写过很多次，不再赘述。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findPath</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root.val == sum:</span><br><span class="line">            result += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        result += self.findPath(root.left, sum - root.val)</span><br><span class="line">        result += self.findPath(root.right, sum - root.val)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        result += self.findPath(root, sum)</span><br><span class="line">        result += self.pathSum(root.left, sum)</span><br><span class="line">        result += self.pathSum(root.right, sum)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>你可能已经发现了，上面的解法是一种暴力破解，这种做法中存在着大量的重复运算。我们对这个问题进行优化，其中我们主要用到这样的一个性质：<code>curSum - sum = oldSum</code>，<code>oldSum</code>就是我们要记录的。</p>
+<p>用题目的例子来说</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      10</span><br><span class="line">     /  \</span><br><span class="line">    5   -3</span><br><span class="line">   / \    \</span><br><span class="line">-&gt;3   2   11</span><br><span class="line"> / \   \</span><br><span class="line">3  -2   1</span><br></pre></td></tr></table></figure>
+<p>当我们遍历到<code>3</code>，我们此时目标是<code>sum=8</code>，我们这个时候不一定要向下找，可以向上找<code>sum=8</code>的路径。我们此时知道从<code>root</code>到<code>3</code>这个节点的<code>sum=18</code>，那么这个时候我们只要知道从根节点开始到<code>3</code>这个节点的路径上有没有<code>sum=10</code>的路径就可以了。而<code>sum=10</code>的这个路径，我们可以在向下遍历的过程中，通过一个<code>map</code>记录。这里我们默认情况下，和的个数为<code>0</code>，所以我们要用到<code>collections.defaultdict</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> collections</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root: </span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        freq = collections.defaultdict(int)</span><br><span class="line">        freq[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        self.dfs(root, <span class="number">0</span>, freq, sum)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(self, node, pathSum, freq, sum)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            pathSum += node.val</span><br><span class="line">            self.result += freq[pathSum - sum]</span><br><span class="line">            freq[pathSum] += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            self.dfs(node.left, pathSum, freq, sum)</span><br><span class="line">            self.dfs(node.right, pathSum, freq, sum)</span><br><span class="line"></span><br><span class="line">            freq[pathSum] -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>我们的这些优化居然打出了暴击，从原先的<code>1464ms</code>变成了<code>56ms</code>，超越了<code>100%</code>的用户。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          论文地址：Single-Shot Refinement Neural Network for Object Detection
-项目地址：RefineDet
-0x01 Abstract当前的目标检测网络主要分为两大类：
-
-single-stage：SSD、YOLO、YOLO9000
-two-stage：Faster RCNN 、 R-FCN、Mask R-CNN
-
-single-stage通过对位置，比例和长宽进行规则和密度采样来检测对象。two-stage首先选取目标区域，然后对目标分类。single-stage方法速度快，但是检测精度比two-stage低。
-
-        
-          <p class="article-more-link">
-            <a href="/2018/01/15/2018-01-15-RefineDet论文笔记/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -236,7 +256,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
 <!-- Table of Contents -->
 
   
-    <article id="post-2018-01-09-has-no-attribute-items问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-29-Leetcode-129求根到叶子节点数字之和（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -244,7 +264,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/09/2018-01-09-has-no-attribute-items问题/">AttributeError &#39;dict&#39; object has no attribute &#39;items&#39; 问题</a>
+      <a class="article-title" href="/2018/08/29/2018-08-29-Leetcode-129求根到叶子节点数字之和（最详细的解法！！！）/">Leetcode 129：二叉树的所有路径（最详细的解法！！！）</a>
     </h1>
   
 
@@ -252,42 +272,45 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
     
     <div class="article-meta">
       
-	<a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/" class="article-date">
-	  <time datetime="2018-01-08T16:00:00.000Z" itemprop="datePublished">一月 9, 2018</time>
+	<a href="/2018/08/29/2018-08-29-Leetcode-129求根到叶子节点数字之和（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-28T16:00:00.000Z" itemprop="datePublished">八月 29, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树，它的每个结点都存放一个 <code>0-9</code> 的数字，每条从根到叶子节点的路径都代表一个数字。</p>
+<p>例如，从根到叶子节点路径 <code>1-&gt;2-&gt;3</code> 代表数字 <code>123</code>。</p>
+<p>计算从根到叶子节点生成的所有数字之和。</p>
+<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,3]</span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line">输出: 25</span><br><span class="line">解释:</span><br><span class="line">从根到叶子节点路径 1-&gt;2 代表数字 12.</span><br><span class="line">从根到叶子节点路径 1-&gt;3 代表数字 13.</span><br><span class="line">因此，数字总和 = 12 + 13 = 25.</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">输入: [4,9,0,5,1]</span><br><span class="line">    4</span><br><span class="line">   / \</span><br><span class="line">  9   0</span><br><span class="line"> / \</span><br><span class="line">5   1</span><br><span class="line">输出: 1026</span><br><span class="line">解释:</span><br><span class="line">从根到叶子节点路径 4-&gt;9-&gt;5 代表数字 495.</span><br><span class="line">从根到叶子节点路径 4-&gt;9-&gt;1 代表数字 491.</span><br><span class="line">从根到叶子节点路径 4-&gt;0 代表数字 40.</span><br><span class="line">因此，数字总和 = 495 + 491 + 40 = 1026.</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题几乎和<a href="https://blog.csdn.net/qq_17550379/article/details/82144047" target="_blank" rel="noopener">Leetcode 257：二叉树的所有路径（最详细的解法！！！）</a>一模一样，我们直接套用之前方法就可以了。我这里的写法参考了<a href="https://blog.csdn.net/qq_17550379/article/details/82149899" target="_blank" rel="noopener">Leetcode 113：二叉树的所有路径（最详细的解法！！！）</a>中最后的<code>回溯</code>写法，如果采用<code>Leetcode 257</code>，会碰到一些问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_sumNumbers</span><span class="params">(self, root, value)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> root:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root.left <span class="keyword">and</span> <span class="keyword">not</span> root.right:</span><br><span class="line">                self.result += value*<span class="number">10</span> + root.val</span><br><span class="line"></span><br><span class="line">            self._sumNumbers(root.left, value*<span class="number">10</span>+root.val)</span><br><span class="line">            self._sumNumbers(root.right, value*<span class="number">10</span>+root.val)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumNumbers</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.result = <span class="number">0</span></span><br><span class="line">        self._sumNumbers(root, <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> self.result</span><br></pre></td></tr></table></figure>
+<p>我们知道python语法中，对于不可变参数是通过<code>值传递</code>的，这样的话，我们传递<code>result</code>参数就不能简单的通过<code>形参</code>来传递了，而是要通过全局变量的方式。</p>
+<p>同样我们我们希望可以通过递归的方法去解决这个问题。这里我们可以使用<code>Leetcode 257</code>中的写法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumNumbers</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        path = [(<span class="number">0</span>, root)]</span><br><span class="line">        <span class="keyword">while</span> path:</span><br><span class="line">            pre, node = path.pop()</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right :</span><br><span class="line">                    result += pre*<span class="number">10</span> + node.val</span><br><span class="line">                </span><br><span class="line">                path += [(pre*<span class="number">10</span> + node.val, node.right), (pre*<span class="number">10</span> + node.val, node.left)]</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          其实这是一个很小的问题，但是我看到网上很多答案不怎么喜欢，所以写一下。
-我们通常这样做的时候
-1dict_obj.has_key(key1)
-这样做在python3中会报错。因为python3中去除了has_key这个方法。
-
-        
-          <p class="article-more-link">
-            <a href="/2018/01/09/2018-01-09-has-no-attribute-items问题/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dict/">dict</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -299,7 +322,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
 <!-- Table of Contents -->
 
   
-    <article id="post-2018-01-08-python如果获取windows管理员权限（二）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-28-Leetcode-113路径总和 II（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -307,7 +330,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/08/2018-01-08-python如果获取windows管理员权限（二）/">python如果获取windows管理员权限（二）</a>
+      <a class="article-title" href="/2018/08/28/2018-08-28-Leetcode-113路径总和 II（最详细的解法！！！）/">Leetcode 113：路径总和 II（最详细的解法！！！）</a>
     </h1>
   
 
@@ -315,42 +338,51 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
     
     <div class="article-meta">
       
-	<a href="/2018/01/08/2018-01-08-python如果获取windows管理员权限（二）/" class="article-date">
-	  <time datetime="2018-01-07T16:00:00.000Z" itemprop="datePublished">一月 8, 2018</time>
+	<a href="/2018/08/28/2018-08-28-Leetcode-113路径总和 II（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-27T16:00:00.000Z" itemprop="datePublished">八月 28, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树和一个目标和，找到所有从根节点到叶子节点路径总和等于给定目标和的路径。</p>
+<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
+<p><strong>示例:</strong><br>给定如下二叉树，以及目标和 <code>sum = 22</code>，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    4   8</span><br><span class="line">   /   / \</span><br><span class="line">  11  13  4</span><br><span class="line"> /  \    / \</span><br><span class="line">7    2  5   1</span><br></pre></td></tr></table></figure>
+<p>返回:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">   [5,4,11,2],</span><br><span class="line">   [5,8,4,5]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题和下面这两个问题很类似。</p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/82115520" target="_blank" rel="noopener">Leetcode 112：路径总和（最详细的解法！！！）</a></p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/82144047" target="_blank" rel="noopener">Leetcode 257：二叉树的所有路径（最详细的解法！！！）</a></p>
+<p>当访问的节点是<code>叶子节点</code>的时候，我们新建一个<code>list</code>，插入到<code>result</code>中，然后返回<code>result</code>。分别遍历<code>左右子树的节点</code>，然后将他们分别插入到<code>叶子节点</code>之前就可以了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = list()</span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left <span class="keyword">and</span> <span class="keyword">not</span> root.right <span class="keyword">and</span> sum == root.val:</span><br><span class="line">            result.append([root.val])</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        left = self.pathSum(root.left, sum - root.val)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> left:</span><br><span class="line">            i.insert(<span class="number">0</span>, root.val)</span><br><span class="line">            result.append(i)</span><br><span class="line"></span><br><span class="line">        right = self.pathSum(root.right, sum - root.val)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> right:</span><br><span class="line">            i.insert(<span class="number">0</span>, root.val)</span><br><span class="line">            result.append(i)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>我们看看怎么使用迭代来解决这个问题，这里我们和之前问题<a href="https://blog.csdn.net/qq_17550379/article/details/82144047" target="_blank" rel="noopener">Leetcode 257：二叉树的所有路径（最详细的解法！！！）</a></p>
+<p>的写法没有太大的差别，无非是<code>string</code>变成了<code>list</code>，多了个变量<code>sum</code>的区别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span>    </span><br><span class="line">        result = list()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        stack = [(list(), sum, root)]</span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            path, val_, node = stack.pop()</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                path.append(node.val)</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right <span class="keyword">and</span> val_ == node.val:</span><br><span class="line">                    result.append(path)</span><br><span class="line"></span><br><span class="line">                stack += [(path.copy(), val_ - node.val, node.left), (path.copy(), val_ - node.val, node.right)]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>这里我们要注意<code>path.copy()</code>，这是因为<code>string</code>是一个不可变类型，它是通过值传递，而<code>list</code>是一个可变类型，它是通过引用传递，如果想要<code>list</code>通过值传递的话，就必须使用<code>copy</code>。</p>
+<p>这个问题的第一种递归实现<code>cpp</code>版本，有一些陷阱，可以参考我的实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; pathSum(TreeNode* root, <span class="keyword">int</span> sum) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; result;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="literal">nullptr</span>) <span class="keyword">return</span> result;</span><br><span class="line">        <span class="keyword">if</span> (root-&gt;left == <span class="literal">nullptr</span> <span class="keyword">and</span> root-&gt;right == <span class="literal">nullptr</span> <span class="keyword">and</span> sum == root-&gt;val) </span><br><span class="line">        &#123;</span><br><span class="line">            result.push_back(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;(<span class="number">1</span>, root-&gt;val));<span class="comment">// 1</span></span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; left = pathSum(root-&gt;left, sum - root-&gt;val);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; i : left)</span><br><span class="line">        &#123;</span><br><span class="line">            i.insert(i.begin(), <span class="number">1</span>, root-&gt;val);<span class="comment">// 2</span></span><br><span class="line">            result.push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; right = pathSum(root-&gt;right, sum - root-&gt;val);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; i : right)</span><br><span class="line">        &#123;</span><br><span class="line">            i.insert(i.begin(), <span class="number">1</span>, root-&gt;val);</span><br><span class="line">            result.push_back(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>所以递归的话，我这里更推荐你使用下面<code>回溯</code>的方式去写。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span>   </span><br><span class="line">        result = list()     </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line">        </span><br><span class="line">        self._pathSum(result, list(), root, sum)       </span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_pathSum</span><span class="params">(self,result, path, node, num)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> node:</span><br><span class="line">            path.append(node.val)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right <span class="keyword">and</span> num == node.val:</span><br><span class="line">                result.append(path.copy())</span><br><span class="line">            </span><br><span class="line">            self._pathSum(result, path, node.left, num - node.val)</span><br><span class="line">            self._pathSum(result, path, node.right, num - node.val)</span><br><span class="line">            path.pop()</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          我们在python如果获取windows管理员权限（一）中谈到了UAC的问题。
-很多时候我们不希望我们的软件弹出UAC提示，这个时候我们可以通过注册表的方法去解决。这其实已经不在是一个安全的编程了，它变成了一把双刃剑。
-当然我们只是讨论这种问题该怎么解决。具体用在什么方面那是你的问题咯！
-通过下面的代码我们可以轻松绕过UAC
-
-        
-          <p class="article-more-link">
-            <a href="/2018/01/08/2018-01-08-python如果获取windows管理员权限（二）/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/">windows</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -362,7 +394,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
 <!-- Table of Contents -->
 
   
-    <article id="post-2018-01-07-python如果获取windows管理员权限（一）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-28-Leetcode-257二叉树的所有路径（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -370,7 +402,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/">python如果获取windows管理员权限（一）</a>
+      <a class="article-title" href="/2018/08/28/2018-08-28-Leetcode-257二叉树的所有路径（最详细的解法！！！）/">Leetcode 257：二叉树的所有路径（最详细的解法！！！）</a>
     </h1>
   
 
@@ -378,44 +410,41 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
     
     <div class="article-meta">
       
-	<a href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/" class="article-date">
-	  <time datetime="2018-01-06T16:00:00.000Z" itemprop="datePublished">一月 7, 2018</time>
+	<a href="/2018/08/28/2018-08-28-Leetcode-257二叉树的所有路径（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-27T16:00:00.000Z" itemprop="datePublished">八月 28, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树，返回所有从根节点到叶子节点的路径。</p>
+<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输入:</span><br><span class="line"></span><br><span class="line">   1</span><br><span class="line"> /   \</span><br><span class="line">2     3</span><br><span class="line"> \</span><br><span class="line">  5</span><br><span class="line"></span><br><span class="line">输出: [&quot;1-&gt;2-&gt;5&quot;, &quot;1-&gt;3&quot;]</span><br><span class="line"></span><br><span class="line">解释: 所有根节点到叶子节点的路径为: 1-&gt;2-&gt;5, 1-&gt;3</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题和之前的<a href="https://blog.csdn.net/qq_17550379/article/details/82115520" target="_blank" rel="noopener">Leetcode 112：路径总和（最详细的解法！！！）</a>有点像。如果之前问题会的话，这个问题应该就不会有问题。当<code>node.left==None and node.right==None</code>的时候，<code>node</code>就是<code>叶子节点</code>。然后我们还要考虑初始条件为空<code>root==None</code>的情况。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">binaryTreePaths</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: List[str]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = list()</span><br><span class="line">        <span class="keyword">if</span> root == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root.left == <span class="keyword">None</span> <span class="keyword">and</span> root.right == <span class="keyword">None</span>:</span><br><span class="line">            result.append(str(root.val))</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        left = self.binaryTreePaths(root.left)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(left)):</span><br><span class="line">            result.append(str(root.val) + <span class="string">'-&gt;'</span> + left[i])</span><br><span class="line"></span><br><span class="line">        right = self.binaryTreePaths(root.right)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(len(right)):</span><br><span class="line">            result.append(str(root.val) + <span class="string">'-&gt;'</span> + right[i])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>我们看看怎么使用迭代来解决这个问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">binaryTreePaths</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: List[str]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = list()</span><br><span class="line">        stack = [(root, <span class="string">''</span>)]</span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            node, p = stack.pop()</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> (node.left <span class="keyword">or</span> node.right):</span><br><span class="line">                    result.append(p + str(node.val))</span><br><span class="line"></span><br><span class="line">                stack += [(node.left, p+str(node.val)+<span class="string">'-&gt;'</span>), (node.right, p+str(node.val)+<span class="string">'-&gt;'</span>)]</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>和之前问题的解法基本上是一样的。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          我们在运行我们编写好的python代码时，会碰到这样的报错问题
-1PermissionError: [WinError 5] 拒绝访问。
-这是因为我们编写的脚本的权限不够。一种解决办法是在管理员cmd中运行我们的脚本（右键以 run as administrator），但是这种办法不够优雅。我们经常看到当我们运行一些需要高权限的软件时，会弹出以下对话框
-
-
-这被称为用户安全控制，简称为UAC。
-
-        
-          <p class="article-more-link">
-            <a href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/">windows</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -427,7 +456,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
 <!-- Table of Contents -->
 
   
-    <article id="post-2018-01-01-YOLOv2源码分析--reorg layer"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-27-Leetcode-404左叶子之和（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -435,7 +464,7 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/">YOLOv2源码分析--reorg layer</a>
+      <a class="article-title" href="/2018/08/27/2018-08-27-Leetcode-404左叶子之和（最详细的解法！！！）/">Leetcode 404：左叶子之和（最详细的解法！！！）</a>
     </h1>
   
 
@@ -443,41 +472,43 @@ single-stage通过对位置，比例和长宽进行规则和密度采样来检�
     
     <div class="article-meta">
       
-	<a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" class="article-date">
-	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">一月 1, 2018</time>
+	<a href="/2018/08/27/2018-08-27-Leetcode-404左叶子之和（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-26T16:00:00.000Z" itemprop="datePublished">八月 27, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>计算给定二叉树的所有左叶子之和。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这里我们主要要解决的问题就是<code>什么是左叶子？</code>它满足这样的性质</p>
+<blockquote>
+<p>node.left == True and node.left.left == None and node.left.right == None</p>
+</blockquote>
+<p>那么问题就和容易了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumOfLeftLeaves</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> root.left <span class="keyword">and</span> root.left.left == <span class="keyword">None</span> <span class="keyword">and</span> root.left.right == <span class="keyword">None</span>:</span><br><span class="line">            result += root.left.val</span><br><span class="line"></span><br><span class="line">        result += self.sumOfLeftLeaves(root.left) + self.sumOfLeftLeaves(root.right)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>同样，我们希望可以通过迭代的思路来解决这个问题。可以参照这个问题<a href="https://blog.csdn.net/qq_17550379/article/details/82115520" target="_blank" rel="noopener">Leetcode 112：路径总和（最详细的解法！！！）</a>的解题思路，通过前序遍历很容易就解决。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumOfLeftLeaves</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = <span class="number">0</span> </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">        stack = [root]</span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            node = stack.pop()</span><br><span class="line">            <span class="keyword">if</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.left.left <span class="keyword">and</span> <span class="keyword">not</span> node.left.right:</span><br><span class="line">                result += node.left.val</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.left:</span><br><span class="line">                stack.append(node.left)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.right:</span><br><span class="line">                stack.append(node.right)  </span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          文章全部YOLOv2源码分析
-reorg layer中最关键的代码如下
-12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&#123;    int b,i,j,k;    int out_c = c/(stride*stride);    for(b = 0; b &lt; batch; ++b)&#123;        for(k = 0; k &lt; c; ++k)&#123;            for(j = 0; j &lt; h; ++j)&#123;                for(i = 0; i &lt; w; ++i)&#123;                    int in_index  = i + w*(j + h*(k + c*b));                    int c2 = k % out_c;                    int offset = k / out_c;                    int w2 = i*stride + offset % stride;                    int h2 = j*stride + offset / stride;                    int out_index = w2 + w*stride*(h2 + h*stride*(c2 + out_c*b));                    if(forward) out[out_index] = x[in_index];                    else out[in_index] = x[out_index];                &#125;            &#125;        &#125;    &#125;&#125;
-
-        
-          <p class="article-more-link">
-            <a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -489,7 +520,7 @@ reorg layer中最关键的代码如下
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-30-torch.autograd.backward中的参数问题"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-27-Leetcode-112路径总和（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -497,7 +528,7 @@ reorg layer中最关键的代码如下
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/">torch.autograd.backward中的参数问题</a>
+      <a class="article-title" href="/2018/08/27/2018-08-27-Leetcode-112路径总和（最详细的解法！！！）/">Leetcode 112：路径总和（最详细的解法！！！）</a>
     </h1>
   
 
@@ -505,48 +536,46 @@ reorg layer中最关键的代码如下
     
     <div class="article-meta">
       
-	<a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" class="article-date">
-	  <time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">十二月 30, 2017</time>
+	<a href="/2018/08/27/2018-08-27-Leetcode-112路径总和（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-26T16:00:00.000Z" itemprop="datePublished">八月 27, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树和一个目标和，判断该树中是否存在根节点到叶子节点的路径，这条路径上所有节点值相加等于目标和。</p>
+<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
+<p><strong>示例:</strong><br>给定如下二叉树，以及目标和 <code>sum = 22</code>，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      5</span><br><span class="line">     / \</span><br><span class="line">    4   8</span><br><span class="line">   /   / \</span><br><span class="line">  11  13  4</span><br><span class="line"> /  \      \</span><br><span class="line">7    2      1</span><br></pre></td></tr></table></figure>
+<p>返回 <code>true</code>, 因为存在目标和为 22 的根节点到叶子节点的路径 <code>5-&gt;4-&gt;11-&gt;2</code>。</p>
+<p><strong>解题思路</strong></p>
+<p>这个问题太简单了，我们只要搞清楚什么时候才是叶子节点，这个问题就解决了。当<code>node.left==None and node.right==None</code>的时候，<code>node</code>就是<code>叶子节点</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasPathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> (root.left <span class="keyword">or</span> root.right):</span><br><span class="line">            <span class="keyword">return</span> sum == root.val</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.hasPathSum(root.left, sum - root.val) <span class="keyword">or</span> self.hasPathSum(root.right, sum - root.val)</span><br></pre></td></tr></table></figure>
+<p>同样的，我们看看通过迭代怎么解决这个问题？无非是通过非递归遍历来解决这个问题。</p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/80731041" target="_blank" rel="noopener">Leetcode 144:二叉树的前序遍历（最优雅的解法！！！）</a></p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/80809930" target="_blank" rel="noopener">Leetcode 94:二叉树的中序遍历（最优雅的解法！！！）</a></p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/81044345" target="_blank" rel="noopener">Leetcode 145:二叉树的后序遍历（最详细的解法！！！）</a></p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/80824320" target="_blank" rel="noopener">Leetcode 102:二叉树的层次遍历（最详细解决方案！！！）</a></p>
+<p>我这里通过前序遍历来解决，大家可以尝试通过中序和后续以及BFS来解决。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">hasPathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        stack = [(root, <span class="number">0</span>)]</span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            node, t = stack.pop()</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> (node.left <span class="keyword">or</span> node.right) <span class="keyword">and</span> node.val + t == sum:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">                stack += [(node.right, node.val + t), (node.left, node.val + t)]</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False)
-给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=True。那么此函数需要指定grad_variables，它的长度应该和variables的长度匹配，里面保存了相关variable的梯度(对于不需要gradient tensor的variable，None是可取的)。
-此函数累积leaf variables计算的梯度。你可能需要在调用此函数之前将leaf variable的梯度置零。
-参数：
-
-variables（变量的序列） - 被求微分的叶子节点，即 ys 。
-grad_variables（（张量，变量）的序列或无） - 对应variable的梯度。仅当variable不是标量且需要求梯度的时候使用。
-retain_graph（bool，可选） - 如果为False，则用于释放计算grad的图。请注意，在几乎所有情况下，没有必要将此选项设置为True，通常可以以更有效的方式解决。默认值为create_graph的值。
-create_graph（bool，可选） - 如果为True，则将构造派生图，允许计算更高阶的派生产品。默认为False。
-
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/">pytorch</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -558,7 +587,7 @@ create_graph（bool，可选） - 如果为True，则将构造派生图，允许
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-29-numpy.stack最通俗的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-27-Leetcode-111平衡二叉树（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -566,7 +595,7 @@ create_graph（bool，可选） - 如果为True，则将构造派生图，允许
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/">numpy.stack最通俗的理解</a>
+      <a class="article-title" href="/2018/08/27/2018-08-27-Leetcode-111平衡二叉树（最详细的解法！！！）/">Leetcode 111：二叉树的最小深度（最详细的解法！！！）</a>
     </h1>
   
 
@@ -574,47 +603,50 @@ create_graph（bool，可选） - 如果为True，则将构造派生图，允许
     
     <div class="article-meta">
       
-	<a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/" class="article-date">
-	  <time datetime="2017-12-28T16:00:00.000Z" itemprop="datePublished">十二月 29, 2017</time>
+	<a href="/2018/08/27/2018-08-27-Leetcode-111平衡二叉树（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-26T16:00:00.000Z" itemprop="datePublished">八月 27, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树，找出其最小深度。</p>
+<p>最小深度是从根节点到最近叶子节点的最短路径上的节点数量。</p>
+<p><strong>说明:</strong> 叶子节点是指没有子节点的节点。</p>
+<p><strong>示例:</strong></p>
+<p>给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
+<p>返回它的最小深度  2.</p>
+<p><strong>解题思路</strong></p>
+<p>这个问题非常的简单，我们只要对访问的节点<code>node</code>作如下几种判断</p>
+<ul>
+<li><code>node</code>为空</li>
+<li><code>node.left</code>为空</li>
+<li><code>node.right</code>为空</li>
+<li><code>node.left</code>和<code>node.right</code>都为空（叶子节点）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDepth</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left:</span><br><span class="line">            <span class="keyword">return</span> self.minDepth(root.right) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> self.minDepth(root.left) + <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> min(self.minDepth(root.left), self.minDepth(root.right)) + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>同样，我们希望可以通过迭代的思路来解决这个问题。这里我们可以参考这个问题的解题思路</p>
+<p><a href="https://blog.csdn.net/qq_17550379/article/details/82115520" target="_blank" rel="noopener"> Leetcode 112：路径总和（最详细的解法！！！）</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minDepth</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        result = float(<span class="string">'inf'</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        stack = [(root, <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            node, depth = stack.pop()</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right:</span><br><span class="line">                result = min(result, depth)</span><br><span class="line">                </span><br><span class="line">            <span class="keyword">if</span> node.left:</span><br><span class="line">                stack.append((node.left, depth + <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> node.right:</span><br><span class="line">                stack.append((node.right, depth + <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          numpy.stack(arrays, axis=0)
-沿着新轴连接数组的序列。
-axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它将是第一个维度，如果axis=-1，它将是最后一个维度。
-
-参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。 
-返回： 堆叠：ndarray堆叠数组比输入数组多一个维。
-
-上面是官方给出的解释，很难理解。
-我们先从增加维度说起。
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -626,7 +658,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-25-YOLOv2代码分析（七）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-25-Leetcode-222完全二叉树的节点个数（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -634,7 +666,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/">YOLOv2代码分析（七）</a>
+      <a class="article-title" href="/2018/08/25/2018-08-25-Leetcode-222完全二叉树的节点个数（最详细的解法！！！）/">Leetcode 222：完全二叉树的节点个数（最详细的解法！！！）</a>
     </h1>
   
 
@@ -642,42 +674,59 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/" class="article-date">
-	  <time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">十二月 25, 2017</time>
+	<a href="/2018/08/25/2018-08-25-Leetcode-222完全二叉树的节点个数（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-24T16:00:00.000Z" itemprop="datePublished">八月 25, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给出一个<strong>完全二叉树</strong>，求出该树的节点个数。</p>
+<p><strong>说明：</strong></p>
+<p><a href="https://baike.baidu.com/item/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/7773232?fr=aladdin" target="_blank" rel="noopener">完全二叉树</a>的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \  /</span><br><span class="line">4  5 6</span><br><span class="line"></span><br><span class="line">输出: 6</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题使用递归很好解决，我们只要考虑好如下四种情况就可以很快解决这个问题。</p>
+<ul>
+<li><code>root</code>为空</li>
+<li><code>root.left</code>和<code>root.right</code>都不为空</li>
+<li><code>root.left</code>为空，<code>root.right</code>不为空</li>
+<li><code>root.right</code>为空，<code>root.left</code>不为空</li>
+<li><code>root.left</code>和<code>root.right</code>都为空</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root.left <span class="keyword">and</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> self.countNodes(root.left) + self.countNodes(root.right) + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> self.countNodes(root.right) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root.left:</span><br><span class="line">            <span class="keyword">return</span> self.countNodes(root.left) + <span class="number">1</span>  </span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>这里如果我们将<code>None</code>也看做是一个二叉树的话，那么这个问题就变得很容易，只存在</p>
+<ul>
+<li><code>root</code>为空</li>
+<li><code>root</code>不为空</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> self.countNodes(root.left) + self.countNodes(root.right) + <span class="number">1</span> <span class="keyword">if</span> root <span class="keyword">else</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>同样的，对于可以用递归解决的问题，我们都应该思考一下怎么可以通过迭代去解决。那这个问题怎么通过迭代解决呢？我们首先要知道</p>
+<ul>
+<li>二叉树的第n层最多为$2^{ n}$个节点</li>
+<li>二叉树最多有$2^{ n+1 }-1$个节点（满二叉树）</li>
+</ul>
+<p>基于这两个性质，我们可以这样思考。如果<code>右子树</code>的高度等于<code>整棵二叉树的高度-1</code>的话，那么<code>左子树</code>一定是一棵<code>满二叉树</code>，这个时候我们就很容易的计算出总结点数<code>nodes=2**(h)-1 + 1 +右子树节点数</code>（这里的<code>+1</code>表示<code>root</code>节点）。如果<code>右子树</code>的高度不等于<code>整棵二叉树的高度-1</code>的话，那么<code>左子树</code>不一定是一棵<code>满二叉树</code>，但是有一点可以确定，<code>右子树</code>一定是一棵<code>满二叉树</code>，这个时候我们就很容易的计算出总结点数<code>nodes=2**(h-1)-1 + 1 +左子树节点数</code>（这里的<code>+1</code>表示<code>root</code>节点）。根据这个思路我们只要不断循环下去直到<code>root==None</code>结束。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">height</span><span class="params">(t)</span>:</span></span><br><span class="line">            h = <span class="number">-1</span></span><br><span class="line">            <span class="keyword">while</span> t:</span><br><span class="line">                h += <span class="number">1</span></span><br><span class="line">                t = t.left</span><br><span class="line">            <span class="keyword">return</span> h</span><br><span class="line">        </span><br><span class="line">        h = height(root)</span><br><span class="line"></span><br><span class="line">        nodes = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> root:</span><br><span class="line">            <span class="keyword">if</span> height(root.right) == h - <span class="number">1</span>: </span><br><span class="line">                nodes += <span class="number">2</span>**h</span><br><span class="line">                root = root.right</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                nodes += <span class="number">2</span>**(h - <span class="number">1</span>)</span><br><span class="line">                root = root.left</span><br><span class="line"></span><br><span class="line">            h -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nodes</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          原本一开始上来我们是要说LSTM和CRNN的，因为我觉得这部分内容对于YOLOv2来说并没有那么重要，所以我打算放到最后去讲。
-我们再次回到了parse_network_cfg函数
-1234//parse_network_cfgelse if(lt == CONNECTED)&#123;          l = parse_connected(options, params);      &#125;
-接着看后面这个parse_connected函数
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -689,7 +738,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-12-24-YOLOv2参数解析"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-08-25-Leetcode-110平衡二叉树（最详细的解法！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -697,7 +746,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/12/24/2017-12-24-YOLOv2参数解析/">YOLOv2参数解析</a>
+      <a class="article-title" href="/2018/08/25/2018-08-25-Leetcode-110平衡二叉树（最详细的解法！！！）/">Leetcode 110：平衡二叉树（最详细的解法！！！）</a>
     </h1>
   
 
@@ -705,40 +754,87 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     
     <div class="article-meta">
       
-	<a href="/2017/12/24/2017-12-24-YOLOv2参数解析/" class="article-date">
-	  <time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">十二月 24, 2017</time>
+	<a href="/2018/08/25/2018-08-25-Leetcode-110平衡二叉树（最详细的解法！！！）/" class="article-date">
+	  <time datetime="2018-08-24T16:00:00.000Z" itemprop="datePublished">八月 25, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个二叉树，判断它是否是高度平衡的二叉树。</p>
+<p>本题中，一棵高度平衡二叉树定义为：</p>
+<blockquote>
+<p>一个二叉树<em>每个节点</em> 的左右两个子树的高度差的绝对值不超过1。</p>
+</blockquote>
+<p><strong>示例 1:</strong></p>
+<p>给定二叉树 <code>[3,9,20,null,null,15,7]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
+<p>返回 <code>true</code> 。<br><strong>示例 2:</strong></p>
+<p>给定二叉树 <code>[1,2,2,3,3,null,null,4,4]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">      1</span><br><span class="line">     / \</span><br><span class="line">    2   2</span><br><span class="line">   / \</span><br><span class="line">  3   3</span><br><span class="line"> / \</span><br><span class="line">4   4</span><br></pre></td></tr></table></figure>
+<p>返回 <code>false</code> 。</p>
+<p><strong>解题思路</strong></p>
+<p>对于这个问题，我们可以非常快的写出递归版本。当<code>root</code>为空的时候，我们将<code>None</code>也看成是一棵二叉树，所以返回<code>True</code>。接着我们判断<code>左子树高度</code>和<code>右子树高度</code>差是不是大于1，如果是，那么我们返回<code>False</code>就好啦。如果不是接着递归判断<code>左子树</code>和<code>右子树</code>是不是一棵平衡二叉树。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isBalanced</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">height</span><span class="params">(node)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> max(height(node.left), height(node.right)) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> abs(height(root.left) - height(root.right)) &gt; <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.isBalanced(root.left) <span class="keyword">and</span> self.isBalanced(root.right)</span><br></pre></td></tr></table></figure>
+<p>但是如你所见，这个解法有一个很明显的弊端，就是我们在每次求<code>height</code>的时候有大量的重复运算，我们怎么可以避免这种重复运算呢？或者说我们有什么办法在遍历一遍树（求一次<code>height</code>）的过程中就可以得到答案呢？我们希望当左右子树中存在不平衡的时候就可以提前停止。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isBalanced</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">height</span><span class="params">(node)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">            left = height(node.left)</span><br><span class="line">            right = height(node.right)</span><br><span class="line">            <span class="keyword">if</span> left == <span class="number">-1</span> <span class="keyword">or</span> right == <span class="number">-1</span> <span class="keyword">or</span> abs(left - right) &gt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> max(left, right) + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> height(root) != <span class="number">-1</span></span><br></pre></td></tr></table></figure>
+<p>上面这种解法非常的巧妙，当树出现不平衡的时候，我们令树的高度是<code>-1</code>。</p>
+<p>同样的，对于可以用递归解决的问题，我们都应该思考一下怎么可以通过迭代去解决。那这个问题怎么通过迭代解决呢？我们可以先通过BFS得到一个list，然后从list的最后一个节点回退到root，并且计算节点的深度差，更新各节点深度。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isBalanced</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        nodes = [root]</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> nodes:</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                nodes.extend([node.left, node.right])</span><br><span class="line"></span><br><span class="line">        depths = &#123;&#125;</span><br><span class="line">        nodes.reverse()</span><br><span class="line">        <span class="keyword">for</span> node <span class="keyword">in</span> nodes:</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> abs(depths.get(node.left, <span class="number">0</span>) - depths.get(node.right, <span class="number">0</span>)) &gt; <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">                depths[node] = max(depths.get(node.left, <span class="number">0</span>), depths.get(node.right, <span class="number">0</span>)) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>我们也可以通过前序遍历的方式去更新节点的深度。但是这里的问题和之前的<a href="http://blog.csdn.net/qq_17550379/article/details/80731041" target="_blank" rel="noopener">Leetcode 144:二叉树的前序遍历（最优雅的解法！！！）</a>中有一些区别，之前的问题中是输出节点，而我们这里是要更新节点。所以我们不能直接将节点弹出，而是要保留到更新完节点后再弹出。这要怎么做呢？我们可以通过建立一个<code>tuple</code>包含一个<code>seen</code>信息，表示这个节点之前是不是访问过。如果访问过我们再将节点弹出，否则的话再将节点插回去。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isBalanced</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        stack = list()</span><br><span class="line">        stack.append((root, <span class="number">0</span>))</span><br><span class="line">        depths = &#123;&#125;</span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            node, seen = stack.pop()</span><br><span class="line">            <span class="keyword">if</span> node:</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> seen:</span><br><span class="line">                    stack.extend([(node, <span class="number">1</span>), (node.right, <span class="number">0</span>), (node.left, <span class="number">0</span>)])</span><br><span class="line">                <span class="keyword">if</span> abs(depths.get(node.left,<span class="number">0</span>) - depths.get(node.right,<span class="number">0</span>)) &gt; <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                depths[node] = max(depths.get(node.left,<span class="number">0</span>), depths.get(node.right,<span class="number">0</span>)) + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>依照这种思路，我们也可以写出<code>中序遍历</code>和<code>后序遍历</code>的版本。这个问题还没有结束，它还能延伸出这样的问题：如何判断完全二叉树？如何判断满二叉树？我们由前面的问题<a href="https://blog.csdn.net/qq_17550379/article/details/82052746" target="_blank" rel="noopener"> Leetcode 222：完全二叉树的节点个数（最详细的解法！！！）</a>知道了完全二叉树的定义</p>
+<blockquote>
+<p>在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。</p>
+</blockquote>
+<p>递归实现：</p>
+<p>我们知道这样的两个性质，如果我们将<code>root.index</code>从<code>0</code>开始计算的话</p>
+<ul>
+<li>左孩子=2*i + 1</li>
+<li>右孩子=2*i + 2</li>
+</ul>
+<p>基于这个性质，我们可以先计算节点的个树，然后每个节点的<code>index</code>是不是<code>&gt;=len(tree)</code>，如果是的话，那么自然就返回<code>False</code>，直到所有节点都访问完。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_isCompleteBT</span><span class="params">(self, root, index, num)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> index &gt;= num:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">return</span> self._isCompleteBT(root.left, index*<span class="number">2</span> + <span class="number">1</span>, num) <span class="keyword">and</span> self._isCompleteBT(root.left, index*<span class="number">2</span> + <span class="number">2</span>, num)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isCompleteBT</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span><span class="params">(node)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>+ countNodes(node.left) + countNodes(node.right)</span><br><span class="line">        </span><br><span class="line">        num = countNodes(root)</span><br><span class="line">        <span class="keyword">return</span> self._isCompleteBT(root, <span class="number">0</span>, num)</span><br></pre></td></tr></table></figure>
+<p>迭代实现：</p>
+<p>我们可以通过BSF遍历整棵二叉树，对于每个节点我们要做这样的判断</p>
+<ul>
+<li>左孩子为空，右孩子也必须为空</li>
+<li>左右孩子都为空或者左孩子不为空而右孩子为空，那么接下来要遍历的节点都必须是叶子节点</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isCompleteBT</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        </span><br><span class="line">        queue = [root]</span><br><span class="line">        flag = <span class="keyword">False</span></span><br><span class="line">        <span class="keyword">while</span> queue:</span><br><span class="line">            node = queue.pop(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">if</span> node.left:</span><br><span class="line">                <span class="keyword">if</span> flag:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                queue.append(node.left)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                flag = <span class="keyword">True</span></span><br><span class="line">                </span><br><span class="line">            <span class="keyword">if</span> node.right:</span><br><span class="line">                <span class="keyword">if</span> flag:</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">                queue.append(node.right)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                flag = <span class="keyword">True</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p>如何判断满二叉树呢？</p>
+<p>递归实现：</p>
+<p>主要分成这样几种情况：</p>
+<ul>
+<li><code>root</code>空，True</li>
+<li><code>root</code>非空，<code>root.left</code>和<code>root.right</code>都为空，True</li>
+<li><code>root</code>非空，<code>root.left</code>和<code>root.right</code>都不为空，递归下去</li>
+<li><code>root</code>非空，<code>root.left</code>为空<code>root.right</code>不为空，<code>root.left</code>不为空<code>root.right</code>为空，False</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isFullBT</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left <span class="keyword">and</span> <span class="keyword">not</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.left <span class="keyword">and</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> self.isFullBT(root.left) <span class="keyword">and</span> self.isFullBT(root.right)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>递归实现：</p>
+<p>计算树的节点个数<code>num_nodes</code>和树的深度<code>depth</code>。然后通过<code>depth</code>计算出节点数，比较二者是否想同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span>        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isFullBT</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span><span class="params">(node)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>+ countNodes(node.left) + countNodes(node.right)</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">height</span><span class="params">(node)</span>:</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">return</span> max(height(node.left), height(node.right)) + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        num_nodes = countNodes(root)</span><br><span class="line">        depth = height(root)</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span> <span class="keyword">if</span> <span class="number">2</span>**depth - <span class="number">1</span> == num_nodes <span class="keyword">else</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>
+<p>至此，这个问题告一段落了。一个<code>Easy</code>的问题，不知不觉就被我们展开成了一个不小的问题QAQ。。。。但是</p>
+<p>我们能否将<code>height</code>和<code>countNodes</code>合并到一块去呢？这似乎是一个有意思的问题。好吧，就这样吧！！！大家可以想一想。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          前言其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章YOLOv2源码分析
-参数总结其实yolo v2的参数主要集中在两个结构体中一个是network，一个是layer
-
-        
-          <p class="article-more-link">
-            <a href="/2017/12/24/2017-12-24-YOLOv2参数解析/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -754,7 +850,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/2/">上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/4/">下一页</a>
   </nav>
 
 </section>
@@ -854,8 +950,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
-              <span>四月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-130-被围绕的区域（最详细的解法！！！）/">Leetcode 130：被围绕的区域（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -866,8 +962,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
-              <span>四月 7, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-200-岛屿的个数（最详细的解法！！！）/">Leetcode 200：岛屿的个数（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -878,8 +974,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
-              <span>四月 4, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-401-二进制手表（最详细的解法！！！）/">Leetcode 401：二进制手表（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -890,8 +986,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
-              <span>四月 2, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-79-单词搜索（最详细的解法！！！）/">Leetcode 79：单词搜索（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -902,8 +998,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
-              <span>三月 31, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/11/2018-09-11-Leetcode-90-子集 II（最详细的解法！！！）/">Leetcode 90：子集 II（最详细的解法！！！）</a></h6>
+              <span>九月 11, 2018</span>
             </div>
 
           </li>
@@ -914,8 +1010,8 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
-              <span>三月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/10/2018-09-10-Leetcode-40-组合总和 II（最详细的解法！！！）/">Leetcode 40：组合总和 II（最详细的解法！！！）</a></h6>
+              <span>九月 10, 2018</span>
             </div>
 
           </li>
@@ -929,7 +1025,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">35</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">112</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -939,7 +1035,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.67px;">1080ti</a> <a href="/tags/ADL/" style="font-size: 10px;">ADL</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.33px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.33px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/JSON/" style="font-size: 10.67px;">JSON</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.67px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.67px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.33px;">QT</a> <a href="/tags/SNIP/" style="font-size: 10px;">SNIP</a> <a href="/tags/Ubuntu/" style="font-size: 11.33px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 14.67px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.67px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/big-file/" style="font-size: 10px;">big file</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 19.33px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 18.67px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 18px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 16.67px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.33px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.33px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.67px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 14.67px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.33px;">error</a> <a href="/tags/estimator/" style="font-size: 11.33px;">estimator</a> <a href="/tags/fire/" style="font-size: 10px;">fire</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.67px;">namehiding</a> <a href="/tags/network/" style="font-size: 12px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 17.33px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.67px;">numpy</a> <a href="/tags/office/" style="font-size: 10.67px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.67px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.67px;">overload</a> <a href="/tags/override/" style="font-size: 10.67px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.67px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/pytorch/" style="font-size: 11.33px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.33px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.33px;">re</a> <a href="/tags/requests/" style="font-size: 10.67px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.67px;">shell</a> <a href="/tags/signal/" style="font-size: 10.67px;">signal</a> <a href="/tags/sql/" style="font-size: 10.67px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16px;">stl</a> <a href="/tags/super/" style="font-size: 10.67px;">super</a> <a href="/tags/tensorflow/" style="font-size: 14.67px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.67px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.67px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 16.67px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.67px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.33px;">笔试</a> <a href="/tags/算法/" style="font-size: 14px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.67px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.33px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -949,7 +1045,7 @@ axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它�
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

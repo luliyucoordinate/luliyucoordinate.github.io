@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2017-11-11-numpy.array切片和索引操作"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-17-Leetcode-61旋转链表（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/11/2017-11-11-numpy.array切片和索引操作/">numpy.array切片和索引操作</a>
+      <a class="article-title" href="/2018/06/17/2018-06-17-Leetcode-61旋转链表（最详细解决方案！！！）/">Leetcode 61:旋转链表（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -124,41 +124,48 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/11/2017-11-11-numpy.array切片和索引操作/" class="article-date">
-	  <time datetime="2017-11-10T16:00:00.000Z" itemprop="datePublished">十一月 11, 2017</time>
+	<a href="/2018/06/17/2018-06-17-Leetcode-61旋转链表（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-16T16:00:00.000Z" itemprop="datePublished">六月 17, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个链表，旋转链表，将链表每个节点向右移动 <em>k</em> 个位置，其中 <em>k</em> 是非负数。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL, k = 2</span><br><span class="line">输出: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: 5-&gt;1-&gt;2-&gt;3-&gt;4-&gt;NULL</span><br><span class="line">向右旋转 2 步: 4-&gt;5-&gt;1-&gt;2-&gt;3-&gt;NULL</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: 0-&gt;1-&gt;2-&gt;NULL, k = 4</span><br><span class="line">输出: 2-&gt;0-&gt;1-&gt;NULL</span><br><span class="line">解释:</span><br><span class="line">向右旋转 1 步: 2-&gt;0-&gt;1-&gt;NULL</span><br><span class="line">向右旋转 2 步: 1-&gt;2-&gt;0-&gt;NULL</span><br><span class="line">向右旋转 3 步: 0-&gt;1-&gt;2-&gt;NULL</span><br><span class="line">向右旋转 4 步: 2-&gt;0-&gt;1-&gt;NULL</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题其实和<a href="https://blog.csdn.net/qq_17550379/article/details/80717212" target="_blank" rel="noopener">Leetcode 19:删除链表的倒数第N个节点（最详细解决方案！！！）</a>是一样的。其实就是一个循环链表</p>
+<p>首先，如果<code>head == None or head.next == None</code>我们直接返回<code>head</code>就可以了。接着我们设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pre </span><br><span class="line"> 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; NULL</span><br><span class="line"> count=1</span><br></pre></td></tr></table></figure>
+<p>直到<code>ppre.next!=None</code>，我们<code>pre=pre.next</code>、<code>count++</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">                   pre </span><br><span class="line">1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; NULL</span><br><span class="line">count=5</span><br></pre></td></tr></table></figure>
+<p>然后，我们将链表做成循环链表，只要<code>pre.next=head</code>即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">                   pre </span><br><span class="line">1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 </span><br><span class="line">|                   |</span><br><span class="line">---------------------</span><br><span class="line">count=5</span><br></pre></td></tr></table></figure>
+<p>接着我们设置一个指针<code>q=pre</code>，通过计算<code>n=count-k%count</code>，得到我们要向前移动多少距离</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">          q        pre </span><br><span class="line">1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 </span><br><span class="line">|                   |</span><br><span class="line">---------------------</span><br><span class="line">count=5 k=2 n=3</span><br></pre></td></tr></table></figure>
+<p>接着我们只要设置<code>ret=q.next</code>、<code>q.next=None</code>，然后返回<code>ret</code>即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rotateRight</span><span class="params">(self, head, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span> <span class="keyword">or</span> head.next == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">        pre = head</span><br><span class="line">        count = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> pre.next != <span class="keyword">None</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">            pre = pre.next</span><br><span class="line"></span><br><span class="line">        pre.next = head</span><br><span class="line">        n = count - k%count</span><br><span class="line">        q = pre</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(n):</span><br><span class="line">            q = q.next</span><br><span class="line"></span><br><span class="line">        ret = q.next</span><br><span class="line">        q.next = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">return</span> ret</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          基本索引操作
-12345import numpy as nparr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])print arr[2]#第2行的数组print arr[0][2]#第0行第2列的值print arr[0, 2] # 普通Python数组不能用，同上
-123[7 8 9]33
-
-        
-          <p class="article-more-link">
-            <a href="/2017/11/11/2017-11-11-numpy.array切片和索引操作/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -170,7 +177,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-10-如何有效地卸载office"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-17-Leetcode-143重排链表（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -178,7 +185,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/10/2017-11-10-如何有效地卸载office/">如何有效地卸载office</a>
+      <a class="article-title" href="/2018/06/17/2018-06-17-Leetcode-143重排链表（最详细解决方案！！！）/">Leetcode 143:重排链表（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -186,33 +193,46 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/10/2017-11-10-如何有效地卸载office/" class="article-date">
-	  <time datetime="2017-11-09T16:00:00.000Z" itemprop="datePublished">十一月 10, 2017</time>
+	<a href="/2018/06/17/2018-06-17-Leetcode-143重排链表（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-16T16:00:00.000Z" itemprop="datePublished">六月 17, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在平时office的卸载时经常出现一些论七八糟的问题。</p>
-<p>这里给出一个统一的答案，就是使用官方的<a href="https://support.office.com/en-us/article/Uninstall-Office-from-a-PC-9dd49b83-264a-477a-8fcc-2fdf5dbf61d8?ui=en-US&amp;rs=en-US&amp;ad=US#OfficeVersion=____________2016" target="_blank" rel="noopener">卸载工具</a></p>
-<p><a href="http://wx4.sinaimg.cn/mw690/af2d2659ly1flbm2gr17ij20s20ec0tu.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1flbm2gr17ij20s20ec0tu.jpg" class="img-fluid"><br></a></p>
-<p>下载完按步骤操作即可，这时候你只要开着电脑，泡杯咖啡，等它卸载完成。最后要记得重启电脑。^_^!!!</p>
+        <p>给定一个单链表 <em>L</em>：<em>L</em>0→<em>L</em>1→…→<em>Ln</em>-1→<em>L</em>n ，<br>将其重新排列后变为： <em>L</em>0→<em>Ln</em>→<em>L</em>1→<em>Ln</em>-1→<em>L</em>2→<em>Ln</em>-2→…</p>
+<p>你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定链表 1-&gt;2-&gt;3-&gt;4, 重新排列为 1-&gt;4-&gt;2-&gt;3.</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定链表 1-&gt;2-&gt;3-&gt;4-&gt;5, 重新排列为 1-&gt;5-&gt;2-&gt;4-&gt;3.</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>我首先想到的思路是通过两个<code>stack</code>将中间元素的左边和右边分别入栈。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">stack1: 1 2</span><br><span class="line">stack2: 4 5</span><br><span class="line">mid: 3</span><br></pre></td></tr></table></figure>
+<p>然后先弹出<code>stack1</code>，在弹出<code>stack2</code>，最后弹出<code>mid</code>即可。现在的问题变成，我们怎么获得<code>mid</code>？我们可以通过两个指针，这两个指针，一个快<code>lat=lat.next.next</code>，一个慢<code>pre=pre.next.next</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">         pre             lat</span><br><span class="line">1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; null</span><br></pre></td></tr></table></figure>
+<p>但是这种做法没有符合题意，题目要求是在原有的链表上操作。怎么办呢？其实我们得到中间节点后问题已经快要解决了。我们可以将后面的链表<code>reverse</code>，然后每个一个元素去除前面的链表节点和后面的链表节点，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt; 2 -&gt; null</span><br><span class="line">5 -&gt; 4 -&gt; 3 -&gt; null</span><br></pre></td></tr></table></figure>
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reorderList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: void Do not return anything, modify head in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span> <span class="keyword">or</span> head.next == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        pre = head</span><br><span class="line">        lat = head.next</span><br><span class="line">        <span class="keyword">while</span> lat != <span class="keyword">None</span> <span class="keyword">and</span> lat.next != <span class="keyword">None</span>:</span><br><span class="line">            pre = pre.next</span><br><span class="line">            lat = lat.next.next</span><br><span class="line"></span><br><span class="line">        p = pre.next</span><br><span class="line">        pre.next = <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># reverse</span></span><br><span class="line">        </span><br><span class="line">        cur = <span class="keyword">None</span>        </span><br><span class="line">        <span class="keyword">while</span> p != <span class="keyword">None</span>:</span><br><span class="line">            q = p.next</span><br><span class="line">            p.next = cur</span><br><span class="line">            cur = p </span><br><span class="line">            p = q</span><br><span class="line">               </span><br><span class="line">        pre = head</span><br><span class="line">        <span class="keyword">while</span> pre != <span class="keyword">None</span> <span class="keyword">and</span> cur != <span class="keyword">None</span>:</span><br><span class="line">            tmp = cur.next  </span><br><span class="line">            cur.next = pre.next</span><br><span class="line">            pre.next = cur</span><br><span class="line">            pre = pre.next.next</span><br><span class="line">            cur = tmp</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/index/">index</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/office/">office</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/uninstall/">uninstall</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -224,7 +244,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-9-numpy.array-的创建"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-17-Leetcode-237删除链表中的节点（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -232,7 +252,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/09/2017-11-9-numpy.array-的创建/">numpy.array 的创建</a>
+      <a class="article-title" href="/2018/06/17/2018-06-17-Leetcode-237删除链表中的节点（最详细解决方案！！！）/">Leetcode 237:删除链表中的节点（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -240,42 +260,52 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/09/2017-11-9-numpy.array-的创建/" class="article-date">
-	  <time datetime="2017-11-08T16:00:00.000Z" itemprop="datePublished">十一月 9, 2017</time>
+	<a href="/2018/06/17/2018-06-17-Leetcode-237删除链表中的节点（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-16T16:00:00.000Z" itemprop="datePublished">六月 17, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>请编写一个函数，使其可以删除某个链表中给定的（非末尾）节点，你将只被给定要求被删除的节点。</p>
+<p>现有一个链表 – head = [4,5,1,9]，它可以表示为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4 -&gt; 5 -&gt; 1 -&gt; 9</span><br></pre></td></tr></table></figure>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: head = [4,5,1,9], node = 5</span><br><span class="line">输出: [4,1,9]</span><br><span class="line">解释: 给定你链表中值为 5 的第二个节点，那么在调用了你的函数之后，该链表应变为 4 -&gt; 1 -&gt; 9.</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: head = [4,5,1,9], node = 1</span><br><span class="line">输出: [4,5,9]</span><br><span class="line">解释: 给定你链表中值为 1 的第三个节点，那么在调用了你的函数之后，该链表应变为 4 -&gt; 5 -&gt; 9.</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>链表至少包含两个节点。</li>
+<li>链表中所有节点的值都是唯一的。</li>
+<li>给定的节点为非末尾节点并且一定是链表中的一个有效节点。</li>
+<li>不要从你的函数中返回任何结果。</li>
+</ul>
+<p><strong>解题思路</strong></p>
+<p>我们删除一个节点会碰到什么问题？下面删除<code>3</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt; 2 -&gt; 3 -&gt; 4</span><br></pre></td></tr></table></figure>
+<p>但是我们没有<code>2</code>的指针，该怎么办呢？我们可以将<code>3=3.next</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt; 2 -&gt; 4 -&gt; 4</span><br><span class="line">              del</span><br></pre></td></tr></table></figure>
+<p>这样我们通过删除<code>4</code>实现我们的操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleteNode</span><span class="params">(self, node)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type node: ListNode</span></span><br><span class="line"><span class="string">        :rtype: void Do not return anything, modify node in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> node == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> node</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> node.next == <span class="keyword">None</span>:</span><br><span class="line">            node = <span class="keyword">None</span></span><br><span class="line">             </span><br><span class="line">        node.val = node.next.val</span><br><span class="line">        node.next = node.next.next</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          通过array将数据（列表、元祖、数组等序列类型）转化为numpy array
-12345import numpy as npdata = (1, 2, 3.1)data2 = [1, 2, 3.1]arr = np.array(data)arr2 = np.array(data2)
-通过zeros创建全为0的numpy array
-12np.zeros(3) # 生成包含3个0的一维数组np.zeros((3, 3)) # 生成3*3的二维数组
-
-        
-          <p class="article-more-link">
-            <a href="/2017/11/09/2017-11-9-numpy.array-的创建/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -287,7 +317,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-8-numpy.array-和-array以及list的效率对比"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-17-Leetcode-234回文链表（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -295,7 +325,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/08/2017-11-8-numpy.array-和-array以及list的效率对比/">numpy.array 和 array以及list的效率对比</a>
+      <a class="article-title" href="/2018/06/17/2018-06-17-Leetcode-234回文链表（最详细解决方案！！！）/">Leetcode 234:回文链表（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -303,33 +333,43 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/08/2017-11-8-numpy.array-和-array以及list的效率对比/" class="article-date">
-	  <time datetime="2017-11-07T16:00:00.000Z" itemprop="datePublished">十一月 8, 2017</time>
+	<a href="/2018/06/17/2018-06-17-Leetcode-234回文链表（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-16T16:00:00.000Z" itemprop="datePublished">六月 17, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> timeit</span><br><span class="line"></span><br><span class="line">common_for = <span class="string">"""</span></span><br><span class="line"><span class="string">for d in data:</span></span><br><span class="line"><span class="string">    s += d</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">common_sum = <span class="string">"""</span></span><br><span class="line"><span class="string">sum(data)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line">&lt;!--more--&gt;</span><br><span class="line"></span><br><span class="line">common_numpy_sum = <span class="string">"""</span></span><br><span class="line"><span class="string">numpy.sum(data)</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_list</span><span class="params">(n, loops)</span>:</span></span><br><span class="line">    list_setup = <span class="string">"""</span></span><br><span class="line"><span class="string">import numpy</span></span><br><span class="line"><span class="string">data = [1] * &#123;0&#125;#生成n个数的列表</span></span><br><span class="line"><span class="string">s = 0</span></span><br><span class="line"><span class="string">"""</span>.format(n)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'list:'</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_for, list_setup, number = loops)<span class="comment">#'common_for'是要执行语句 list_setup导入执行语句需要的数据，loops表示执行语句最后要执行的次数</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_sum, list_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_numpy_sum, list_setup, number = loops)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_array</span><span class="params">(n, loops)</span>:</span></span><br><span class="line">    array_setup = <span class="string">"""</span></span><br><span class="line"><span class="string">import numpy</span></span><br><span class="line"><span class="string">import array</span></span><br><span class="line"><span class="string">data = array.array('L', [1] * &#123;0&#125;)#unsigned long，这里的初始化必须先给类型</span></span><br><span class="line"><span class="string">s = 0</span></span><br><span class="line"><span class="string">"""</span>.format(n)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'array:'</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_for, array_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_sum, array_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_numpy_sum, array_setup, number = loops)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeit_numpy</span><span class="params">(n, loops)</span>:</span></span><br><span class="line">    numpy_setup = <span class="string">"""</span></span><br><span class="line"><span class="string">import numpy</span></span><br><span class="line"><span class="string">data = numpy.array([1] * &#123;0&#125;)</span></span><br><span class="line"><span class="string">s = 0</span></span><br><span class="line"><span class="string">"""</span>.format(n)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'numpy:'</span></span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_for, numpy_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_sum, numpy_setup, number = loops)</span><br><span class="line">    <span class="keyword">print</span> timeit.timeit(common_numpy_sum, numpy_setup, number = loops)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    timeit_list(<span class="number">50000</span>, <span class="number">500</span>)</span><br><span class="line">    timeit_array(<span class="number">50000</span>, <span class="number">500</span>)</span><br><span class="line">    timeit_numpy(<span class="number">50000</span>, <span class="number">500</span>)</span><br></pre></td></tr></table></figure>
-<p>我这里的结果是</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">list:</span><br><span class="line"><span class="number">0.743401847752</span></span><br><span class="line"><span class="number">0.244681626678</span></span><br><span class="line"><span class="number">1.00076942461</span></span><br><span class="line">array:</span><br><span class="line"><span class="number">1.83873936113</span></span><br><span class="line"><span class="number">1.36051825384</span></span><br><span class="line"><span class="number">4.02721759923</span></span><br><span class="line">numpy:</span><br><span class="line"><span class="number">3.86211620789</span></span><br><span class="line"><span class="number">3.34397739435</span></span><br><span class="line"><span class="number">0.0103776763518</span></span><br></pre></td></tr></table></figure>
-<p>所以对于numpy，我们尽量使用它的内置函数吧！</p>
+        <p>请判断一个链表是否为回文链表。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2</span><br><span class="line">输出: false</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;2-&gt;1</span><br><span class="line">输出: true</span><br></pre></td></tr></table></figure>
+<p><strong>进阶：</strong><br>你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？</p>
+<p><strong>解题思路</strong></p>
+<p>我们首先想到的思路是通过建立一个<code>list</code>，然后将链表中的数存进去，然后判断这个<code>list</code>是否回文。但是这样做的空间复杂度是<code>O(n)</code>，显然无法满足空间复杂度<code>O(1)</code>的需求。</p>
+<p>我们可以建立快慢指针，通过这两个指针获得两个列表，参看这篇文章<a href="https://mp.csdn.net/postedit/80722615" target="_blank" rel="noopener">Leetcode 143:重排链表（最详细解决方案！！！）</a> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt; 2 -&gt; 2 -&gt; 1 -&gt; null</span><br><span class="line">    pre       lat</span><br></pre></td></tr></table></figure>
+<p>然后我们将<code>pre</code>右侧链表<code>reverse</code>，然后比较链表的每个元素是不是一样。这里我们不需要关注链表是奇数还是偶数，大家可以想一下为什么？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isPalindrome</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: bool</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span> <span class="keyword">or</span> head.next == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">        lat = head.next</span><br><span class="line">        pre = head</span><br><span class="line">        <span class="keyword">while</span> lat != <span class="keyword">None</span> <span class="keyword">and</span> lat.next != <span class="keyword">None</span>:</span><br><span class="line">            lat = lat.next.next</span><br><span class="line">            pre = pre.next</span><br><span class="line"></span><br><span class="line">        cur = pre.next</span><br><span class="line">        pre.next = <span class="keyword">None</span></span><br><span class="line">        p = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">while</span> cur != <span class="keyword">None</span>:</span><br><span class="line">            q = cur.next</span><br><span class="line">            cur.next = p</span><br><span class="line">            p = cur</span><br><span class="line">            cur = q</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> p != <span class="keyword">None</span> <span class="keyword">and</span> head != <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">if</span> p.val != head.val:</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">False</span></span><br><span class="line">            p = p.next</span><br><span class="line">            head = head.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/python/">python</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -341,7 +381,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-7-静态绑定和动态绑定总结"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-17-Leetcode-19删除链表的倒数第N个节点（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -349,7 +389,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/07/2017-11-7-静态绑定和动态绑定总结/">静态绑定和动态绑定总结</a>
+      <a class="article-title" href="/2018/06/17/2018-06-17-Leetcode-19删除链表的倒数第N个节点（最详细解决方案！！！）/">Leetcode 19:删除链表的倒数第N个节点（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -357,30 +397,45 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/07/2017-11-7-静态绑定和动态绑定总结/" class="article-date">
-	  <time datetime="2017-11-06T16:00:00.000Z" itemprop="datePublished">十一月 7, 2017</time>
+	<a href="/2018/06/17/2018-06-17-Leetcode-19删除链表的倒数第N个节点（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-16T16:00:00.000Z" itemprop="datePublished">六月 17, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><a href="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl7a7htnodj20su0d1wfw.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx1.sinaimg.cn/mw690/af2d2659ly1fl7a7htnodj20su0d1wfw.jpg" class="img-fluid"><br></a></p>
+        <p>给定一个链表，删除链表的倒数第 <em>n</em> 个节点，并且返回链表的头结点。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">给定一个链表: 1-&gt;2-&gt;3-&gt;4-&gt;5, 和 n = 2.</span><br><span class="line"></span><br><span class="line">当删除了倒数第二个节点后，链表变为 1-&gt;2-&gt;3-&gt;5.</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<p>给定的 <em>n</em> 保证是有效的。</p>
+<p><strong>进阶：</strong></p>
+<p>你能尝试使用一趟扫描实现吗？</p>
+<p><strong>解题思路</strong></p>
+<p>先将指针<code>q</code>移动<code>n+1</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p              q</span><br><span class="line">h -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; null</span><br></pre></td></tr></table></figure>
+<p>然后同时移动<code>q</code>和<code>p</code>，直到<code>q==null</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">               p         q</span><br><span class="line">h -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; null</span><br></pre></td></tr></table></figure>
+<p>此时<code>p.next</code>指向的位置，就是我们要删除的元素的位置。我们直接<code>p.next = p.next.next</code>即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeNthFromEnd</span><span class="params">(self, head, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        p, q = h, h</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> _ <span class="keyword">in</span> range(n + <span class="number">1</span>):</span><br><span class="line">            q = q.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> q != <span class="keyword">None</span>:</span><br><span class="line">            p = p.next</span><br><span class="line">            q = q.next</span><br><span class="line"></span><br><span class="line">        p.next = p.next.next</span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/binding/">binding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -392,7 +447,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-6-虚函数表到底是怎么存放的"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-16-Leetcode-148排序链表（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -400,7 +455,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/">虚函数表到底是怎么存放的</a>
+      <a class="article-title" href="/2018/06/16/2018-06-16-Leetcode-148排序链表（最详细解决方案！！！）/">Leetcode 148:排序链表（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -408,52 +463,41 @@
     
     <div class="article-meta">
       
-	<a href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/" class="article-date">
-	  <time datetime="2017-11-05T16:00:00.000Z" itemprop="datePublished">十一月 6, 2017</time>
+	<a href="/2018/06/16/2018-06-16-Leetcode-148排序链表（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-15T16:00:00.000Z" itemprop="datePublished">六月 16, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>在 <em>O</em>(<em>n</em> log <em>n</em>) 时间复杂度和常数级空间复杂度下，对链表进行排序。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 4-&gt;2-&gt;1-&gt;3</span><br><span class="line">输出: 1-&gt;2-&gt;3-&gt;4</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: -1-&gt;5-&gt;3-&gt;4-&gt;0</span><br><span class="line">输出: -1-&gt;0-&gt;3-&gt;4-&gt;5</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>根据问题的提示<strong><em>O</em>(<em>n</em> log <em>n</em>)时间复杂度和常数级空间复杂度</strong></p>
+<p>最简单的做法，我们可以使用归并排序（没有链表之间的跳转操作）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_merge</span><span class="params">(self, head1, head2)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> head1 == <span class="keyword">None</span> <span class="keyword">or</span> head2 == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head2 <span class="keyword">or</span> head1</span><br><span class="line"></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        tmp = h</span><br><span class="line">        <span class="keyword">while</span> head1 != <span class="keyword">None</span> <span class="keyword">and</span> head2 != <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">if</span> head1.val &lt; head2.val:</span><br><span class="line">                tmp.next = head1</span><br><span class="line">                head1 = head1.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                tmp.next = head2</span><br><span class="line">                head2 = head2.next</span><br><span class="line">            tmp = tmp.next</span><br><span class="line">        </span><br><span class="line">        tmp.next = head1 <span class="keyword">or</span> head2</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> h.next</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span> <span class="keyword">or</span> head.next == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line">        </span><br><span class="line">        lat = pre = head</span><br><span class="line">        <span class="keyword">while</span> lat.next != <span class="keyword">None</span> <span class="keyword">and</span> lat.next.next != <span class="keyword">None</span>:</span><br><span class="line">            lat = lat.next.next</span><br><span class="line">            pre = pre.next</span><br><span class="line"></span><br><span class="line">        lat = pre.next</span><br><span class="line">        pre.next = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">return</span> self._merge(self.sortList(head), self.sortList(lat))</span><br></pre></td></tr></table></figure>
+<p>加入我们这里使用快速排序，我同样给出一个快速排序的版本。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          
-“when VTABLE is get created in Memory , In compiletime or runtime?”
-Compile time. The vtable is simple an array of function pointers that gets stored in the executable. It never changes and this array is shared by all instances of a given class. Each instance of a class that has virtual methods contains one vtable pointer (for single inheritance), usually stored at offset 0, before all data members. This pointer is initialized at construction time to point to the vtable for that class.
-
-
-“当VTABLE被创建在内存中，在编译时或运行时？“
-编译时。 vtable是一个简单的函数指针数组，存储在可执行文件中。 它永远不会改变，并且这个数组被给定类的所有实例共享。 具有虚拟方法的类的每个实例都包含一个vtable指针（用于单个继承），通常存储在所有数据成员之前的偏移量0处。 这个指针在构造时被初始化，指向该类的虚表。
-
-“If the class contain one virtual function , then what is the size of class?”
-The class has the same size if it has 1 or 100 virtual functions, size of the class data members + size of the vtable pointer (4 bytes for x86, 8 bytes for x64) (for single inheritance).
-
-
-“如果这个类包含一个虚拟函数，那么类的大小是多少？”
-如果具有1或100个虚拟函数，类数据成员的大小+ vtable指针的大小（x86为4个字节，x64为8个字节）（单个继承），则该类具有相同的大小。
-
-        
-          <p class="article-more-link">
-            <a href="/2017/11/06/2017-11-6-虚函数表到底是怎么存放的/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vfptr/">vfptr</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -465,7 +509,7 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-5-纯虚函数调用"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-15-Leetcode-147对链表进行插入排序（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -473,7 +517,7 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/05/2017-11-5-纯虚函数调用/">纯虚函数的调用</a>
+      <a class="article-title" href="/2018/06/15/2018-06-15-Leetcode-147对链表进行插入排序（最详细解决方案！！！）/">Leetcode 147:对链表进行插入排序（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -481,40 +525,64 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
     
     <div class="article-meta">
       
-	<a href="/2017/11/05/2017-11-5-纯虚函数调用/" class="article-date">
-	  <time datetime="2017-11-04T16:00:00.000Z" itemprop="datePublished">十一月 5, 2017</time>
+	<a href="/2018/06/15/2018-06-15-Leetcode-147对链表进行插入排序（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-14T16:00:00.000Z" itemprop="datePublished">六月 15, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>对链表进行插入排序。</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif" alt="img"><br>插入排序的动画演示如上。从第一个元素开始，该链表可以被认为已经部分排序（用黑色表示）。<br>每次迭代时，从输入数据中移除一个元素（用红色表示），并原地将其插入到已排好序的链表中。</p>
+<p><strong>插入排序算法：</strong></p>
+<ol>
+<li>插入排序是迭代的，每次只移动一个元素，直到所有元素可以形成一个有序的输出列表。</li>
+<li>每次迭代中，插入排序只从输入数据中移除一个待排序的元素，找到它在序列中适当的位置，并将其插入。</li>
+<li>重复直到所有输入数据插入完为止。</li>
+</ol>
+<p><strong>示例 1：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 4-&gt;2-&gt;1-&gt;3</span><br><span class="line">输出: 1-&gt;2-&gt;3-&gt;4</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: -1-&gt;5-&gt;3-&gt;4-&gt;0</span><br><span class="line">输出: -1-&gt;0-&gt;3-&gt;4-&gt;5</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>因为有<code>insert</code>操作，所有我们上来就定义三个指针<code>pre</code>、<code>cur</code>、<code>lat</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pre    cur    lat</span><br><span class="line"> h  -&gt;  4  -&gt;  2  -&gt;  5  -&gt;  3  -&gt;  null</span><br><span class="line">       tmp</span><br></pre></td></tr></table></figure>
+<p>当<code>tmp!=lat</code>并且<code>tmp.val&lt;lat.val</code>的时候 ，我们要移动<code>tmp</code>和<code>pre</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">       cur    lat</span><br><span class="line"> h  -&gt;  4  -&gt;  2  -&gt;  5  -&gt;  3  -&gt;  null</span><br><span class="line">pre    tmp</span><br></pre></td></tr></table></figure>
+<p>接着<code>insert</code>操作<code>2</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">        ---------------</span><br><span class="line">        |             |</span><br><span class="line">       cur    lat</span><br><span class="line"> h      4  &lt;-  2      5  -&gt;  3  -&gt;  null</span><br><span class="line">pre    tmp</span><br><span class="line"> |             |</span><br><span class="line"> ---------------</span><br></pre></td></tr></table></figure>
+<p>接着我们要让<code>pre</code>和<code>tmp</code>复位，因为每次都是从前往后找插入位置（和图有区别，对于单向链表，我们无法从后往前）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">              cur    lat</span><br><span class="line"> h  -&gt;  2  -&gt;  4  -&gt;  5  -&gt;  3  -&gt;  null</span><br><span class="line">pre           tmp</span><br></pre></td></tr></table></figure>
+<p>由于<code>tmp.val &lt; lat.val</code>，移动<code>pre</code>和<code>tmp</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">             cur    lat</span><br><span class="line">h  -&gt;  2  -&gt;  4  -&gt;  5  -&gt;  3  -&gt;  null</span><br><span class="line">             pre    tmp</span><br></pre></td></tr></table></figure>
+<p>这个时候我们不用<code>reverse</code>，所以我们让<code>cur = lat</code>并且<code>lat=cur.next</code>，跳过去就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">                    cur    lat</span><br><span class="line">h  -&gt;  2  -&gt;  4  -&gt;  5  -&gt;  3  -&gt;  null</span><br><span class="line">             pre    tmp</span><br></pre></td></tr></table></figure>
+<p>接着<code>tmp.val &gt; lat.val</code>，所以进行<code>insert</code>操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">       ----------------------</span><br><span class="line">       |                    |</span><br><span class="line">			 ---------------</span><br><span class="line">              |             |     </span><br><span class="line">                    cur    lat</span><br><span class="line">h  -&gt;  2      4  -&gt;  5      3      null</span><br><span class="line">      pre    tmp</span><br><span class="line">                     |              |</span><br><span class="line">                     ----------------</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">                            cur     lat</span><br><span class="line"> h  -&gt;  2  -&gt;  3  -&gt;  4  -&gt;  5  -&gt;  null</span><br><span class="line">pre    tmp</span><br></pre></td></tr></table></figure>
+<p>以下是这个过程的完整代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insertionSortList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span> <span class="keyword">or</span> head.next == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        cur = head</span><br><span class="line">        lat = cur.next</span><br><span class="line">        <span class="keyword">while</span> lat != <span class="keyword">None</span>: </span><br><span class="line">            tmp, pre = h.next, h</span><br><span class="line">            <span class="keyword">while</span> tmp != lat <span class="keyword">and</span> tmp.val &lt; lat.val:</span><br><span class="line">                tmp = tmp.next</span><br><span class="line">                pre = pre.next</span><br><span class="line">            <span class="keyword">if</span> tmp == lat:</span><br><span class="line">                cur = lat</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur.next = lat.next</span><br><span class="line">                lat.next = tmp</span><br><span class="line">                pre.next = lat</span><br><span class="line"></span><br><span class="line">            lat = cur.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>这个问题其实不是很复杂，主要就是指针比较多，一定要理清楚每个指针的含义。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">insertionSortList</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span> <span class="keyword">or</span> head.next == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        pre = h</span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur != <span class="keyword">None</span>: </span><br><span class="line">            lat = cur.next</span><br><span class="line">            <span class="keyword">if</span> lat != <span class="keyword">None</span> <span class="keyword">and</span> lat.val &lt; cur.val:<span class="comment">#只有cur.next比cur小的时候我们才寻找插入点</span></span><br><span class="line">                <span class="keyword">while</span> pre.next != <span class="keyword">None</span> <span class="keyword">and</span> pre.next.val &lt; lat.val:</span><br><span class="line">                    pre = pre.next</span><br><span class="line">                tmp = pre.next</span><br><span class="line">                pre.next = lat</span><br><span class="line">                cur.next = lat.next</span><br><span class="line">                lat.next = tmp</span><br><span class="line">                pre = h</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur = lat</span><br><span class="line">           </span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>这种写法的好处是避免了大量的重复比较操作。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          看到这个标题的时候你可能会惊讶？纯虚函数怎么可以调用呢？看下面这个例子
-123456789101112131415161718192021222324class Abstract_base&#123;public:	virtual ~Abstract_base();	virtual void interface() = 0;	const char* mumble() const &#123; return _mumble; &#125;protected:	char *_mumble;&#125;;class Concrete_derived :public Abstract_base&#123;public:	void Concrete_deriverd() &#123;&#125;;	virtual void interface();&#125;;inline void Abstract_base::interface()&#123;    function      //...&#125;inline void Concrete_derived::interface()&#123;    Abstract_base::interface();//静态调用&#125;
-
-        
-          <p class="article-more-link">
-            <a href="/2017/11/05/2017-11-5-纯虚函数调用/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -526,7 +594,7 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-4-关于重载、隐藏、重写的一些思考（2）"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-13-Leetcode-25k个一组翻转链表（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -534,7 +602,7 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/04/2017-11-4-关于重载、隐藏、重写的一些思考（2）/">关于重载、隐藏、重写的一些思考（2）</a>
+      <a class="article-title" href="/2018/06/13/2018-06-13-Leetcode-25k个一组翻转链表（最详细解决方案！！！）/">Leetcode 25:k个一组翻转链表（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -542,40 +610,65 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
     
     <div class="article-meta">
       
-	<a href="/2017/11/04/2017-11-4-关于重载、隐藏、重写的一些思考（2）/" class="article-date">
-	  <time datetime="2017-11-03T16:00:00.000Z" itemprop="datePublished">十一月 4, 2017</time>
+	<a href="/2018/06/13/2018-06-13-Leetcode-25k个一组翻转链表（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-12T16:00:00.000Z" itemprop="datePublished">六月 13, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给出一个链表，每 <em>k</em> 个节点一组进行翻转，并返回翻转后的链表。</p>
+<p><em>k</em> 是一个正整数，它的值小于或等于链表的长度。如果节点总数不是 <em>k</em> 的整数倍，那么将最后剩余节点保持原有顺序。</p>
+<p><strong>示例 :</strong></p>
+<p>给定这个链表：<code>1-&gt;2-&gt;3-&gt;4-&gt;5</code></p>
+<p>当 <em>k</em> = 2 时，应当返回: <code>2-&gt;1-&gt;4-&gt;3-&gt;5</code></p>
+<p>当 <em>k</em> = 3 时，应当返回: <code>3-&gt;2-&gt;1-&gt;4-&gt;5</code></p>
+<p><strong>说明 :</strong></p>
+<ul>
+<li>你的算法只能使用常数的额外空间。</li>
+<li><strong>你不能只是单纯的改变节点内部的值</strong>，而是需要实际的进行节点交换。</li>
+</ul>
+<p><strong>解题思路</strong></p>
+<p>关于这个问题，首先我们很容易想到的思路就是通过两个指针指向一个<code>group</code>的头和尾，然后对这个<code>group</code>做<code>reverse</code>操作，如果这两个指针间的距离小于<code>k</code>，我们不进行操作。另外，我们要确定我们<code>reverse</code>的边界，我这里假设边界为<code>（pre, lat）</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pre                 lat</span><br><span class="line"> h -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5</span><br><span class="line"> k = 3</span><br></pre></td></tr></table></figure>
+<p>另外，大家也可以想一想，我们的边界能不能是<code>[pre, lat]</code>、<code>(pre, lat]</code>、<code>[pre, lat)</code>这样的呢？这里的<code>[pre, lat]</code>实际上就是<a href="http://blog.csdn.net/qq_17550379/article/details/80647926" target="_blank" rel="noopener">Leetcode 206:反转链表（最详细解决方案！！！）</a>文章的内容，和这个问题相比，我们这里有一个不变量<code>pre</code>。</p>
+<p>接着，我们来看怎么进行<code>reverse</code>，首先定义两个指针<code>lpre=pre.next</code>和<code>cur=lpre.next</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pre  lpre cur       lat</span><br><span class="line"> h -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5</span><br><span class="line"> k = 3</span><br></pre></td></tr></table></figure>
+<p>当<code>cur!=lat</code>的时候我们要做的操作就是<code>lpre.next=cur.next</code>、<code>cur.next=pre.next</code>、<code>pre.next=cur</code>、<code>cur=lpre.next</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pre  lpre      cur  lat</span><br><span class="line">      -----------</span><br><span class="line">      |         |</span><br><span class="line"> h    1 &lt;- 2    3 -&gt; 4 -&gt; 5</span><br><span class="line"> |         |</span><br><span class="line"> -----------</span><br></pre></td></tr></table></figure>
+<p>我们就可以很容易的写出这个<code>reverse</code>操作，我们函数<code>_reverseGroup</code>的返回值是<code>lat</code>的前一个<code>node</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_reverseGroup</span><span class="params">(self, pre, lat)</span>:</span></span><br><span class="line">    lpre = pre.next</span><br><span class="line">    cur = lpre.next</span><br><span class="line">    <span class="keyword">while</span> cur != lat:</span><br><span class="line">        lpre.next = cur.next</span><br><span class="line">        cur.next = pre.next</span><br><span class="line">        pre.next = cur</span><br><span class="line">        cur = lpre.next</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> lpre</span><br></pre></td></tr></table></figure>
+<p>接着我们就要写整个大循环。整个大循环结束的条件是<code>cur!=None</code>，然后每<code>k</code>个节点我们做一次<code>reverse</code>，将<code>reverse</code>的结果给<code>pre</code>，接着更新<code>cur=pre.next</code>。如果没有<code>k</code>个节点的话，我们<code>cur=cur.next</code>即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> cur != <span class="keyword">None</span>:</span><br><span class="line">    <span class="keyword">if</span> t % k == <span class="number">0</span>:</span><br><span class="line">        pre = self._reverseGroup(pre, cur.next)</span><br><span class="line">        cur = pre.next</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cur = cur.next</span><br></pre></td></tr></table></figure>
+<p>以下是整个代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_reverseGroup</span><span class="params">(self, pre, lat)</span>:</span></span><br><span class="line">        lpre = pre.next</span><br><span class="line">        cur = lpre.next</span><br><span class="line">        <span class="keyword">while</span> cur != lat:</span><br><span class="line">            lpre.next = cur.next</span><br><span class="line">            cur.next = pre.next</span><br><span class="line">            pre.next = cur</span><br><span class="line">            cur = lpre.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> lpre</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseKGroup</span><span class="params">(self, head, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        pre = h</span><br><span class="line">        cur = head</span><br><span class="line">        </span><br><span class="line">        t = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> cur != <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">if</span> t % k == <span class="number">0</span>:</span><br><span class="line">                pre = self._reverseGroup(pre, cur.next)</span><br><span class="line">                cur = pre.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur = cur.next</span><br><span class="line">            t += <span class="number">1</span></span><br><span class="line">           </span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>我们当然可以把这个写到一个函数中。我们有两种做法</p>
+<ul>
+<li>先遍历一遍链表，统计链表长度，然后每<code>k</code>个链表做反转操作。</li>
+<li>遍历链表的过程中，每<code>k</code>个链表做反转操作</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseKGroup</span><span class="params">(self, head, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        pre = h</span><br><span class="line">        cur = head</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> cur != <span class="keyword">None</span>:</span><br><span class="line">            t = cur</span><br><span class="line">            count = <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> count &lt; k <span class="keyword">and</span> t != <span class="keyword">None</span>:</span><br><span class="line">                t = t.next</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> count == k <span class="keyword">and</span> t != <span class="keyword">None</span>:             </span><br><span class="line">                <span class="keyword">for</span> _ <span class="keyword">in</span> range(k - <span class="number">1</span>):</span><br><span class="line">                    lat = cur.next</span><br><span class="line">                    cur.next = lat.next</span><br><span class="line">                    lat.next = pre.next</span><br><span class="line">                    pre.next = lat </span><br><span class="line"></span><br><span class="line">                pre = cur</span><br><span class="line">                cur = pre.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>对于第二种</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reverseKGroup</span><span class="params">(self, head, k)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type k: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        pre = h</span><br><span class="line">        cur = head</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> cur != <span class="keyword">None</span>:</span><br><span class="line">            t = cur</span><br><span class="line">            count = <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> count &lt; k <span class="keyword">and</span> t != <span class="keyword">None</span>:</span><br><span class="line">                t = t.next</span><br><span class="line">                count += <span class="number">1</span></span><br><span class="line">            <span class="keyword">if</span> count == k <span class="keyword">and</span> t != <span class="keyword">None</span>:             </span><br><span class="line">                <span class="keyword">for</span> _ <span class="keyword">in</span> range(k - <span class="number">1</span>):</span><br><span class="line">                    lat = cur.next</span><br><span class="line">                    cur.next = lat.next</span><br><span class="line">                    lat.next = pre.next</span><br><span class="line">                    pre.next = lat </span><br><span class="line"></span><br><span class="line">                pre = cur</span><br><span class="line">                cur = pre.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>我更喜欢第一种写法。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          关于重载、隐藏、重写的一些思考（1）内容我们谈到了override，我说它和namehiding看上去很相似。我们先验证一下，它是否有namehiding的一些特征，并且又有哪些不同。
-1234567891011121314151617class Base&#123;public:	virtual void func1() = 0;	virtual void func2();	virtual void func2(int);	//重载	void func3();	void func3(int);			//重载&#125;;class Derived: public Base&#123;public:	virtual void func1();	virtual void func2();		//override	void func3();	void func4();&#125;;
-
-        
-          <p class="article-more-link">
-            <a href="/2017/11/04/2017-11-4-关于重载、隐藏、重写的一些思考（2）/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/namehiding/">namehiding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/overload/">overload</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/override/">override</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -587,7 +680,7 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-11-3-关于重载、隐藏、重写的一些思考"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-13-Leetcode-24两两交换链表中的节点（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -595,7 +688,7 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/11/03/2017-11-3-关于重载、隐藏、重写的一些思考/">关于重载、隐藏、重写的一些思考（1）</a>
+      <a class="article-title" href="/2018/06/13/2018-06-13-Leetcode-24两两交换链表中的节点（最详细解决方案！！！）/">Leetcode 24:两两交换链表中的节点（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -603,43 +696,47 @@ The class has the same size if it has 1 or 100 virtual functions, size of the cl
     
     <div class="article-meta">
       
-	<a href="/2017/11/03/2017-11-3-关于重载、隐藏、重写的一些思考/" class="article-date">
-	  <time datetime="2017-11-02T16:00:00.000Z" itemprop="datePublished">十一月 3, 2017</time>
+	<a href="/2018/06/13/2018-06-13-Leetcode-24两两交换链表中的节点（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-12T16:00:00.000Z" itemprop="datePublished">六月 13, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">给定 1-&gt;2-&gt;3-&gt;4, 你应该返回 2-&gt;1-&gt;4-&gt;3.</span><br></pre></td></tr></table></figure>
+<p><strong>说明:</strong></p>
+<ul>
+<li>你的算法只能使用常数的额外空间。</li>
+<li><strong>你不能只是单纯的改变节点内部的值</strong>，而是需要实际的进行节点交换。</li>
+</ul>
+<p><strong>解题思路</strong></p>
+<p>我们首先需要建立<code>pre</code>、<code>node1</code>、<code>node2</code>和<code>lat</code>四个指针即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cur   node1  node2   lat</span><br><span class="line"> h  -&gt;  1  -&gt;  2  -&gt;  3  -&gt;  4</span><br></pre></td></tr></table></figure>
+<p>然后<code>pre-&gt;next=node2;node2.next=node1;node1.next=lat</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">     -----------</span><br><span class="line">     |         |</span><br><span class="line">h    1 &lt;- 2 -&gt; 3 -&gt; 4</span><br><span class="line">|         |</span><br><span class="line">-----------</span><br></pre></td></tr></table></figure>
+<p>接着更新四个指针即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swapPairs</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        h = ListNode(<span class="number">-1</span>)</span><br><span class="line">        h.next = head</span><br><span class="line">        pre = h</span><br><span class="line">        <span class="keyword">while</span> pre.next != <span class="keyword">None</span> <span class="keyword">and</span> pre.next.next != <span class="keyword">None</span>:</span><br><span class="line">            node1 = pre.next</span><br><span class="line">            node2 = node1.next</span><br><span class="line">            lat = node2.next</span><br><span class="line"></span><br><span class="line">            pre.next = node2            </span><br><span class="line">            node2.next = node1</span><br><span class="line">            node1.next = lat</span><br><span class="line">            </span><br><span class="line">            pre = node1</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>在结合<a href="http://blog.csdn.net/qq_17550379/article/details/80647926" target="_blank" rel="noopener">Leetcode 206:反转链表（最详细解决方案！！！）</a>和<a href="http://blog.csdn.net/qq_17550379/article/details/80649221" target="_blank" rel="noopener">Leetcode 92:反转链表 II（最详细解决方案！！！）</a>这篇文章，我相信大家对链表反转操作中的指针是放在循环体内还是循环体外会有一些新的认识！</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          开始这个问题之前，首先你要已经对于虚函数和虚函数表的概念有了一定得了解。
-首先说一下重载（overload）这个概念，这很简单，在C语言里面就有的东西。
-
-When two or more different declarations are specified for a single name in the same scope,  that name is said to overloaded.  By extension, two declarations in the same scope that declare the same name but with different types are called overloaded declarations. Only function declarations can be overloaded; object and type declarations cannot be overloaded. 
-
-
-        
-          <p class="article-more-link">
-            <a href="/2017/11/03/2017-11-3-关于重载、隐藏、重写的一些思考/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cpp/">cpp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/namehiding/">namehiding</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/overload/">overload</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/override/">override</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -651,7 +748,7 @@ When two or more different declarations are specified for a single name in the s
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-10-28-关于u盘快捷方式病毒的解决方案"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-06-12-Leetcode-203删除链表中的节点（最详细解决方案！！！）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -659,7 +756,7 @@ When two or more different declarations are specified for a single name in the s
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/10/28/2017-10-28-关于u盘快捷方式病毒的解决方案/">关于u盘快捷方式病毒的解决方案</a>
+      <a class="article-title" href="/2018/06/12/2018-06-12-Leetcode-203删除链表中的节点（最详细解决方案！！！）/">Leetcode 203:删除链表中的节点（最详细解决方案！！！）</a>
     </h1>
   
 
@@ -667,41 +764,43 @@ When two or more different declarations are specified for a single name in the s
     
     <div class="article-meta">
       
-	<a href="/2017/10/28/2017-10-28-关于u盘快捷方式病毒的解决方案/" class="article-date">
-	  <time datetime="2017-10-27T16:00:00.000Z" itemprop="datePublished">十月 28, 2017</time>
+	<a href="/2018/06/12/2018-06-12-Leetcode-203删除链表中的节点（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-11T16:00:00.000Z" itemprop="datePublished">六月 12, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>删除链表中等于给定值 <strong>val</strong> 的所有节点。</p>
+<p><strong>示例:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: 1-&gt;2-&gt;6-&gt;3-&gt;4-&gt;5-&gt;6, val = 6</span><br><span class="line">输出: 1-&gt;2-&gt;3-&gt;4-&gt;5</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>这个问题没什么好说的，遍历一遍链表删除对应的节点。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1 -&gt; 2   6 -&gt; 3 -&gt; 4 -&gt; 5   6 -&gt; null</span><br><span class="line">     |        |		   |          |</span><br><span class="line">     ----------         -----------</span><br></pre></td></tr></table></figure>
+<p>如果我们直接对链表操作的话，我们是要对链表的头节点做一些讨论的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeElements</span><span class="params">(self, head, val)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type val: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">while</span> head != <span class="keyword">None</span> <span class="keyword">and</span> head.val == val:</span><br><span class="line">            delNode = head</span><br><span class="line">            head = delNode.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> head == <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">return</span> head</span><br><span class="line"></span><br><span class="line">        cur = head</span><br><span class="line">        <span class="keyword">while</span> cur.next != <span class="keyword">None</span>:</span><br><span class="line">            delNode = cur.next</span><br><span class="line">            <span class="keyword">if</span> delNode.val == val:</span><br><span class="line">                cur.next = delNode.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur = cur.next</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> head</span><br></pre></td></tr></table></figure>
+<p>我们可以通过建立虚拟头节点的方式解决这个问题。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">removeElements</span><span class="params">(self, head, val)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type head: ListNode</span></span><br><span class="line"><span class="string">        :type val: int</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        h = ListNode(<span class="number">-1</span>) <span class="comment">#head</span></span><br><span class="line">        h.next = head</span><br><span class="line">        cur = h</span><br><span class="line">        <span class="keyword">while</span> cur.next != <span class="keyword">None</span>:</span><br><span class="line">            delNode = cur.next</span><br><span class="line">            <span class="keyword">if</span> delNode.val == val:</span><br><span class="line">                cur.next = delNode.next</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                cur = cur.next</span><br><span class="line">        <span class="keyword">return</span> h.next</span><br></pre></td></tr></table></figure>
+<p>但是这种解法没有前者快（在测试的时候）。</p>
+<p>要注意的地方是，<strong>如果使用c++或者c语言，删除链表节点后，不要忘记释放内存</strong>。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
 
-          
-          <div class="entry-summary">
-          最近学校的电脑中了病毒，导致上课时u盘插上电脑后，u盘里面的文件全变成了快捷方式。可能是xxx的一个恶作剧吧，但是挺麻烦的。解决方法非常简单
-123456789@echo off@echo 2017.10.28 by coordinate@echo +-------------------------------------------------------------+attrib -s -h *. /S /Dattrib +s +h System~1attrib +s +h Recycledattrib +s +h +a ntldr@echo 完成！@echo on
-将上面的代码copy到一个.txt文件中，然后将这个命名为go.bat，注意后缀名变为bat，也就是一个批处理。接着将go.bat文件copy到u盘中，双击运行即可。
-
-        
-          <p class="article-more-link">
-            <a href="/2017/10/28/2017-10-28-关于u盘快捷方式病毒的解决方案/#more">阅读全文</a>
-          </p>
-        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/信息安全/">信息安全</a>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vbs/">vbs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/病毒/">病毒</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -717,7 +816,7 @@ When two or more different declarations are specified for a single name in the s
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/5/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/7/">下一页</a>
   </nav>
 
 </section>
@@ -817,8 +916,8 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
-              <span>四月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-130-被围绕的区域（最详细的解法！！！）/">Leetcode 130：被围绕的区域（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -829,8 +928,8 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
-              <span>四月 7, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-200-岛屿的个数（最详细的解法！！！）/">Leetcode 200：岛屿的个数（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -841,8 +940,8 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
-              <span>四月 4, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-401-二进制手表（最详细的解法！！！）/">Leetcode 401：二进制手表（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -853,8 +952,8 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
-              <span>四月 2, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-79-单词搜索（最详细的解法！！！）/">Leetcode 79：单词搜索（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -865,8 +964,8 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
-              <span>三月 31, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/11/2018-09-11-Leetcode-90-子集 II（最详细的解法！！！）/">Leetcode 90：子集 II（最详细的解法！！！）</a></h6>
+              <span>九月 11, 2018</span>
             </div>
 
           </li>
@@ -877,8 +976,8 @@ When two or more different declarations are specified for a single name in the s
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
-              <span>三月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/10/2018-09-10-Leetcode-40-组合总和 II（最详细的解法！！！）/">Leetcode 40：组合总和 II（最详细的解法！！！）</a></h6>
+              <span>九月 10, 2018</span>
             </div>
 
           </li>
@@ -892,7 +991,7 @@ When two or more different declarations are specified for a single name in the s
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">35</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">112</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -902,7 +1001,7 @@ When two or more different declarations are specified for a single name in the s
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.67px;">1080ti</a> <a href="/tags/ADL/" style="font-size: 10px;">ADL</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.33px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.33px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/JSON/" style="font-size: 10.67px;">JSON</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.67px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.67px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.33px;">QT</a> <a href="/tags/SNIP/" style="font-size: 10px;">SNIP</a> <a href="/tags/Ubuntu/" style="font-size: 11.33px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 14.67px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.67px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/big-file/" style="font-size: 10px;">big file</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 19.33px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 18.67px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 18px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 16.67px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.33px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.33px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.67px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 14.67px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.33px;">error</a> <a href="/tags/estimator/" style="font-size: 11.33px;">estimator</a> <a href="/tags/fire/" style="font-size: 10px;">fire</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.67px;">namehiding</a> <a href="/tags/network/" style="font-size: 12px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 17.33px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.67px;">numpy</a> <a href="/tags/office/" style="font-size: 10.67px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.67px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.67px;">overload</a> <a href="/tags/override/" style="font-size: 10.67px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.67px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/pytorch/" style="font-size: 11.33px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.33px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.33px;">re</a> <a href="/tags/requests/" style="font-size: 10.67px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.67px;">shell</a> <a href="/tags/signal/" style="font-size: 10.67px;">signal</a> <a href="/tags/sql/" style="font-size: 10.67px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16px;">stl</a> <a href="/tags/super/" style="font-size: 10.67px;">super</a> <a href="/tags/tensorflow/" style="font-size: 14.67px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.67px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.67px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 16.67px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.67px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.33px;">笔试</a> <a href="/tags/算法/" style="font-size: 14px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.67px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.33px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -912,7 +1011,7 @@ When two or more different declarations are specified for a single name in the s
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

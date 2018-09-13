@@ -108,7 +108,7 @@
         
           <section id="main">
   
-    <article id="post-2017-05-13-IA-32指令类型2"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-01-07-python如果获取windows管理员权限（一）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -116,7 +116,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/13/2017-05-13-IA-32指令类型2/">IA-32指令类型（2）</a>
+      <a class="article-title" href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/">python如果获取windows管理员权限（一）</a>
     </h1>
   
 
@@ -124,40 +124,44 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/13/2017-05-13-IA-32指令类型2/" class="article-date">
-	  <time datetime="2017-05-12T16:00:00.000Z" itemprop="datePublished">五月 13, 2017</time>
+	<a href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/" class="article-date">
+	  <time datetime="2018-01-06T16:00:00.000Z" itemprop="datePublished">一月 7, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="控制转移指令"><a href="#控制转移指令" class="headerlink" title="控制转移指令"></a>控制转移指令</h1><p>指令执行可按顺序或跳转到转移目标指令处执行<br>无条件转移指令<br>JMP DST：无条件转移到目标指令DST处执行<br>条件转移指令<br>Jcc DST：cc为条件码，根据标志判断是否满足条件，若条件满足，则转移到目标指令DST处执行，否则按顺序执行<br>条件设置<br>SET cc DST ：按条件码cc判断的结果保存到 DST（8位寄存器）<br>调用和返回指令<br>CALL DST：返回地址RA入栈，转DST处执行<br>RET：从栈中取出返回地址RA，转到RA<br>中断指令</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> a[],<span class="keyword">unsigned</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i,sum = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(i =<span class="number">0</span>; i &lt;= len<span class="number">-1</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		sum += a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当参数len为0时，返回值应该是0，但是在机器上执行时，却发生了存储器访问异常。<br>原因在于len是一个无符号数，len-1得到的是32个1所以，循环时会无限循环，所以这里再次告诉我们尽量不要使用unsigned。  </p>
-<h1 id="X87浮点处理指令"><a href="#X87浮点处理指令" class="headerlink" title="X87浮点处理指令 "></a>X87浮点处理指令 </h1><p>IA-32中处理的浮点数类型有三种：float（32位IEEE 754）、double（64位IEEE 754）、long double（80位双精度扩展格式）<br>1位符号位s、15位阶码e（偏致常数16383）、1位显示首位有效位j和63位尾数f。它与IEEE 754单精度和双精度浮点格式的一个重要区别是：他没有隐藏位，有效位共64位。  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1.0</span>/x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> a,b;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	a = f(<span class="number">10</span>);</span><br><span class="line">	b = f(<span class="number">10</span>);</span><br><span class="line">	i = a== b;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>, i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1.0</span>/x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> a,b,c;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	a = f(<span class="number">10</span>);</span><br><span class="line">	b = f(<span class="number">10</span>);</span><br><span class="line">	c = f(<span class="number">10</span>);</span><br><span class="line">	i = a== b;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>, i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在早期的gcc编译器中，程序一结果0，程序二结果1，原因在于对于数据结果存储时有数据丢失。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdafx.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">	<span class="keyword">double</span>*p = (<span class="keyword">double</span> *)&amp;a;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%f\n"</span>, *p);<span class="comment">//0.000000</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%f\n"</span>, (<span class="keyword">double</span>)a);<span class="comment">//10.000000</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>前后两次打印结果不一样，原因在于后面一种做法是使用了转换指令先把int转为double，而第一个没有。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">	printf(&quot;%f\n&quot;, *p);//0.000000</span><br><span class="line">00FB1795  mov         eax,dword ptr [p]  </span><br><span class="line">00FB1798  sub         esp,8  </span><br><span class="line">00FB179B  movsd       xmm0,mmword ptr [eax]  </span><br><span class="line">00FB179F  movsd       mmword ptr [esp],xmm0  </span><br><span class="line">00FB17A4  push        offset string &quot;%f\n&quot; (0FB6B30h)  </span><br><span class="line">00FB17A9  call        _printf (0FB1316h)  </span><br><span class="line">00FB17AE  add         esp,0Ch  </span><br><span class="line">	printf(&quot;%f\n&quot;, (double)a);//10.000000</span><br><span class="line">00FB17B1  cvtsi2sd    xmm0,dword ptr [a]  </span><br><span class="line">00FB17B6  sub         esp,8  </span><br><span class="line">00FB17B9  movsd       mmword ptr [esp],xmm0  </span><br><span class="line">00FB17BE  push        offset string &quot;%f\n&quot; (0FB6B30h)  </span><br><span class="line">00FB17C3  call        _printf (0FB1316h)  </span><br><span class="line">00FB17C8  add         esp,0Ch</span><br></pre></td></tr></table></figure>
-<p>从汇编我们可以看到第二个打印函数中出现了一个cvsi2sd，而这个指令就是用于将双字整数转换成标量双精度浮点值</p>
-<h1 id="MMX及SSE指令"><a href="#MMX及SSE指令" class="headerlink" title="MMX及SSE指令"></a>MMX及SSE指令</h1><p>MMX指令使用8个64位寄存器MM0~MM7，借用8个80位寄存器ST(0)~ST(7)中的64位尾数所占的位，可同时处理8个字节，或4个字，或2个双字，或一个64位数据，是一种SIMD技术。SSE是在MMX基础上提出来的。单指令多数据技术。<br>SSE指令集价格80位浮点寄存器扩充到128位多媒体扩展通用寄存器XMM0~XMM7，可同时处理16个字节，或8个字，或4个双字，或两个字节的数据。</p>
+        
 
+          
+          <div class="entry-summary">
+          我们在运行我们编写好的python代码时，会碰到这样的报错问题
+1PermissionError: [WinError 5] 拒绝访问。
+这是因为我们编写的脚本的权限不够。一种解决办法是在管理员cmd中运行我们的脚本（右键以 run as administrator），但是这种办法不够优雅。我们经常看到当我们运行一些需要高权限的软件时，会弹出以下对话框
+
+
+这被称为用户安全控制，简称为UAC。
+
+        
+          <p class="article-more-link">
+            <a href="/2018/01/07/2018-01-07-python如果获取windows管理员权限（一）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/windows/">windows</a></li></ul>
 
       
     </footer>
@@ -169,7 +173,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-12-IA-32指令类型1"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2018-01-01-YOLOv2源码分析--reorg layer"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -177,7 +181,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/12/2017-05-12-IA-32指令类型1/">IA-32指令类型（1）</a>
+      <a class="article-title" href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/">YOLOv2源码分析--reorg layer</a>
     </h1>
   
 
@@ -185,43 +189,41 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/12/2017-05-12-IA-32指令类型1/" class="article-date">
-	  <time datetime="2017-05-11T16:00:00.000Z" itemprop="datePublished">五月 12, 2017</time>
+	<a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/" class="article-date">
+	  <time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">一月 1, 2018</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="传送指令"><a href="#传送指令" class="headerlink" title="传送指令"></a>传送指令</h1><h2 id="通用数据传送指令"><a href="#通用数据传送指令" class="headerlink" title="通用数据传送指令"></a>通用数据传送指令</h2><p>MOV：一般传送，包括movb、movw、movl<br>MOVS：符号传送，如movsbw、movswl<br>MOVZ：零扩展传送，如movzwl、movzbl<br>XCHG：数据交换<br>PUSH/POP：入栈出栈，如pushl、pushw、popl、popw<br>入栈sp-，出栈sp+</p>
-<h2 id="地址传送指令"><a href="#地址传送指令" class="headerlink" title="地址传送指令"></a>地址传送指令</h2><p>LEA：加载有效地址，如leal (%edx,%eax),%eax的功能为R[eax]&lt;-R[edx]+R[eax]，执行前，若R[edx]=i,R[eax]=j，则执行指令后，R[eax]=i+j</p>
-<h2 id="输入输出指令"><a href="#输入输出指令" class="headerlink" title="输入输出指令"></a>输入输出指令</h2><p>IN和OUT：I/O端口与寄存器之间的交换</p>
-<h2 id="标志传送指令"><a href="#标志传送指令" class="headerlink" title="标志传送指令"></a>标志传送指令</h2><p>PUSHF、POPF：将EFLAG压栈，或将栈顶内容送EFLAG</p>
-<h1 id="定点算术运算指令"><a href="#定点算术运算指令" class="headerlink" title="定点算术运算指令"></a>定点算术运算指令</h1><h2 id="加减运算指令（影响标志、不区分无-带符号）"><a href="#加减运算指令（影响标志、不区分无-带符号）" class="headerlink" title="加减运算指令（影响标志、不区分无/带符号）"></a>加减运算指令（影响标志、不区分无/带符号）</h2><p>ADD：加，包括addb、addw、addl<br>SUB：减，包括subb、subw、subl<br>假设R[ax]=fffah，R[bx]=fff0h，则执行指令后“addw %bx,%ax”<br>R[ax]=fffah+fff0h=ffeah，bx中内容不变<br>CF=1，OF=0，ZF=0，SF=1<br>若是无符号数运算，则CF=1说明结果溢出<br>若是带符号整数运算，则OF=0说明结果没有溢出</p>
-<h2 id="增1-减1运算（影响除CF以外的标志、不区分无-带符号）"><a href="#增1-减1运算（影响除CF以外的标志、不区分无-带符号）" class="headerlink" title="增1/减1运算（影响除CF以外的标志、不区分无/带符号）"></a>增1/减1运算（影响除CF以外的标志、不区分无/带符号）</h2><p>INC：加，包括incb、incw、incl<br>DEC：减，包括decb、decw、decl</p>
-<h2 id="取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）"><a href="#取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）" class="headerlink" title="取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）"></a>取负运算（影响标志、若对0取负、则结果为0且CF清0，否则CF置1）</h2><p>NEG：取负，包括negb、negw、negl</p>
-<h2 id="比较运算（做减法得到标志、不区分无-带符号）"><a href="#比较运算（做减法得到标志、不区分无-带符号）" class="headerlink" title="比较运算（做减法得到标志、不区分无/带符号）"></a>比较运算（做减法得到标志、不区分无/带符号）</h2><p>CMP：比较，包括cmpb、cmpw、cmpl</p>
-<h2 id="乘-除运算（不影响标志、区分无-带符号）"><a href="#乘-除运算（不影响标志、区分无-带符号）" class="headerlink" title="乘/除运算（不影响标志、区分无/带符号）"></a>乘/除运算（不影响标志、区分无/带符号）</h2><p>MUL/IMUL：无符号乘/带符号乘<br>DIV/IDIV：无符号乘/带符号乘<br>乘法指令：可以给出一个、两个或三个操作数<br>若给出一个操作数SRC，则另一个源操作数隐含在AL/AX/EAX中，将SRC和累加器内容相乘，结果存放在AX或DX-AX或EDX-EAX中。DX-AX表示32位乘积的高、低位分别在DX和AX中。n<em>n=2n<br>若指令中给出两个操作数DST和SRC，则将DST和SRC相乘，结果在DST中。n</em>n=n<br>若指令给出三个操作数REG、SRC、IMM，则将SRC和立即数IMM相乘，结果在REG中。n<em>n=n<br>除法指令：只明显指出除数，用EDX-EAX中内容除以指定的除数<br>若为8位，则16位被除数在AX寄存器中，商送回AL，余数在AH<br>若为16位，则32位被除数在DX-AX寄存器中，商送回AX，余数在DX<br>若为32，则被除数在EDX-EAX寄存器中，商送EAX，余数在EDX<br>假设R[eax]=000000b4h，R[ebx]=00000011h，M[000000f8h]=000000a0h，执行下面指令mulb %bl功能为$$R[ax]&lt;-R[al]</em>R[bl]$$，执行结果    $$R[ax]=b4h<em>11h=0bf4h$$(无符号整数180和17相乘)<br>$$R[ax]=b4h</em>11h=faf4h$$(带符号整数-76和17相乘)<br>对于带符号数乘，若乘积只取低n位，则和无符号数相同；若取2n位，则采用布斯乘法。<br>执行$$imull -16,(\%eax,\%ebx,4),\%eax$$功能为$$R[eax]&lt;-(-16)<em>M[R[eax]+R[ebx]</em>4]$$，执行结果为<br>$$R[eax]+R[ebx]<em>4=000000b4h+00000011h&lt;&lt;2=000000f8h$$<br>$$R[eax]=-16</em>M[000000f8h]=16*(-000000a0h)=ffffff60h&lt;&lt;4=fffff600h$$  </p>
-<h1 id="按位运算指令"><a href="#按位运算指令" class="headerlink" title="按位运算指令"></a>按位运算指令</h1><h2 id="逻辑运算"><a href="#逻辑运算" class="headerlink" title="逻辑运算"></a>逻辑运算</h2><p>NOT：非，包括notb、notw、notl<br>AND：与，包括andb、andw、andl<br>OR：或，包括orb、orw、orl<br>XOR：异或，包括xorb、xorw、xorl<br>TEST：做“与”操作测试，仅影响标志<br>只有not指令不影响标志，其他指令OF=CF=0，而ZF和SF则根据结果设置：若全0，则ZF=1；若最高位为1，则SF=1<br>假设M[0x1000]=00000f89h,M[0x1004]=000001270h,R[eax]=ff000001h,R[ecx]=00001000h  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">notw %ax R[ax]=fffeh;  </span><br><span class="line">andl %eax,(%ecx)=00000f89h^ff000001h=00000001h  </span><br><span class="line">orb 4(%ecx),%al=70h | 01h=71h</span><br></pre></td></tr></table></figure>
-<h2 id="移位运算（左-右移时，最高-最低位送CF）"><a href="#移位运算（左-右移时，最高-最低位送CF）" class="headerlink" title="移位运算（左/右移时，最高/最低位送CF）"></a>移位运算（左/右移时，最高/最低位送CF）</h2><p>SHL/SHR：逻辑左/右移，包括shlb，shrw，shrl<br>SAL/SAR：算数左/右移，左移要判断溢出，右移高位补符号（移位前、后符号位发生变化，则OF=1）包括salb、sarw、sarl<br>ROL/ROR：循环左/右移，包括rolb、rorw、roll<br>RCL/RCR：带进位循环左/右移，即：将CF作为操作数一部分循环移位，包括rclb、rcrw、rcll<br>假设short型变量x被编译器分配在寄存器AX中，R[ax]=ff80h,则以下汇编代码执行后变量x的机器数和真值  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">movw %ax,%dx    R[dx]&lt;-R[ax]  </span><br><span class="line">salw $2,%ax    1111 1111 1000 0000&lt;&lt;2  </span><br><span class="line">addl %dx,%ax    1111 1110 0000 0000 +1111 1111 1000 0000  </span><br><span class="line">sarw $1,%ax    1111 1101 1000 0000&gt;&gt;1=1111 1110 1100 0000</span><br></pre></td></tr></table></figure>
-<p>\$2与\$1表示立即数2和1。</p>
+        
 
+          
+          <div class="entry-summary">
+          文章全部YOLOv2源码分析
+reorg layer中最关键的代码如下
+12345678910111213141516171819202122void reorg_cpu(float *x, int w, int h, int c, int batch, int stride, int forward, float *out)&#123;    int b,i,j,k;    int out_c = c/(stride*stride);    for(b = 0; b &lt; batch; ++b)&#123;        for(k = 0; k &lt; c; ++k)&#123;            for(j = 0; j &lt; h; ++j)&#123;                for(i = 0; i &lt; w; ++i)&#123;                    int in_index  = i + w*(j + h*(k + c*b));                    int c2 = k % out_c;                    int offset = k / out_c;                    int w2 = i*stride + offset % stride;                    int h2 = j*stride + offset / stride;                    int out_index = w2 + w*stride*(h2 + h*stride*(c2 + out_c*b));                    if(forward) out[out_index] = x[in_index];                    else out[in_index] = x[out_index];                &#125;            &#125;        &#125;    &#125;&#125;
+
+        
+          <p class="article-more-link">
+            <a href="/2018/01/01/2018-01-01-YOLOv2源码分析--reorg layer/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/yolo/">yolo</a></li></ul>
 
       
     </footer>
@@ -233,7 +235,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-11-IA-32指令系统概述"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-30-torch.autograd.backward中的参数问题"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -241,7 +243,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/11/2017-05-11-IA-32指令系统概述/">IA-32指令系统概述</a>
+      <a class="article-title" href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/">torch.autograd.backward中的参数问题</a>
     </h1>
   
 
@@ -249,53 +251,48 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/11/2017-05-11-IA-32指令系统概述/" class="article-date">
-	  <time datetime="2017-05-10T16:00:00.000Z" itemprop="datePublished">五月 11, 2017</time>
+	<a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/" class="article-date">
+	  <time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">十二月 30, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="程序转换概述"><a href="#程序转换概述" class="headerlink" title="程序转换概述"></a>程序转换概述</h1><h2 id="指令的概念"><a href="#指令的概念" class="headerlink" title="指令的概念"></a>指令的概念</h2><p>计算机中的指令有微指令、机器指令和伪指令<br>机器指令处于硬件和软件的交界面，相当于一个菜谱指定的一个完整做菜过程<br>微指令是微程序命令，属于硬件范畴，相当于洗，切煮等过程<br>伪指令是由若干机器指令组成的指令序列，属于软件范畴，相当于由多个菜谱合成一个大菜的过程<br>汇编指令是机器指令的汇编表示形式，即符号表示。机器指令与汇编指令一一对应，它们都与机器结构有关，都属于机器级指令。</p>
-<h1 id="IA-32指令系统概述"><a href="#IA-32指令系统概述" class="headerlink" title="IA-32指令系统概述"></a>IA-32指令系统概述</h1><h2 id="IA-32的寄存器组织"><a href="#IA-32的寄存器组织" class="headerlink" title="IA-32的寄存器组织"></a>IA-32的寄存器组织</h2><p>EAX累加器000<br>EBX基址寄存器011<br>ECX计数寄存器001<br>EDX数据寄存器010<br>ESP堆栈指针100<br>EBP基址指针101<br>ESI源变址寄存器110<br>EDI目标变址寄存器111<br>EIP指令指针<br>EFLAGS标志寄存器<br>CS代码段<br>SS堆栈段<br>DS数据段<br>ES附加段<br>FS附加段<br>GS附加段</p>
-<h2 id="IA-32的标志寄存器"><a href="#IA-32的标志寄存器" class="headerlink" title="IA-32的标志寄存器"></a>IA-32的标志寄存器</h2><p>6个条件标志<br>零标志ZF、溢出标志OF、进借位标志CF、符号标志SF、辅助进位标志AF（BCD码运算时才有意义）、奇偶标志PF<br>3个控制标志<br>DF：方向标志（自动变址方向是增还是减）<br>IF：中断允许标志（仅对外部可屏蔽中断有用）<br>TF：陷阱标志（是否是单步跟踪状态）   </p>
-<h2 id="IA-32的寻址方式"><a href="#IA-32的寻址方式" class="headerlink" title="IA-32的寻址方式"></a>IA-32的寻址方式</h2><p>寻址方式：如何根据指令给定信息得到操作数或操作数的地址<br>操作数所在的位置:   </p>
-<ol>
-<li>指令中：立即寻址    </li>
-<li>寄存器中：寄存器寻址  </li>
-<li>存储单元中（属于存储器操作数，按字节编址）：其他寻址方式</li>
-</ol>
-<p>存储器操作数的寻址方式与微处理器的工作模式有关：   </p>
-<ol>
-<li>实地址模式（基本用不到）<br>为与8086/8088兼容设置，加电或复位时，寻址空间1MB，20位地址：(CS) &lt;&lt; 4 + (IP)  </li>
-<li>保护模式（需要掌握）<br>加电后进入，采用虚拟存储管理，多任务情况下隔离、保护，80286以上微处理器的工作方式，寻址空间2^32B，32位线性寻址分段（段基址+段内偏移量）</li>
-</ol>
-<p>存储器操作数的寻址方式<br>在linux系统中：double型变量按4B边界对齐<br>在windows系统中：double型变量按8B边界对齐  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> a[<span class="number">100</span>];</span><br><span class="line"><span class="keyword">short</span> b[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line"><span class="keyword">double</span> d[<span class="number">10</span>];</span><br></pre></td></tr></table></figure>
-<p>a[i]的地址计算：$$104+i<em>4$$，位移+比例变址<br>b[i][j]的地址计算：$$504+i</em>8+j<em>2(4</em>2 = 8)$$，位移+基址+比例变址<br>d[i]的地址计算：$$544+i<em>8$$，位移+比例变址<br>将b[i][j]取到AX中的指令可以是：movew 504(%ebp, %esi), %ax，其中i</em>8在EBP中，j在ESI中，2为比例因子</p>
-<h2 id="IA-32机器指令格式"><a href="#IA-32机器指令格式" class="headerlink" title="IA-32机器指令格式"></a>IA-32机器指令格式</h2><p><table border="1" align="left"><br>    <tr><br>        <td>操作码</td><br>        <td>寻址方式</td><br>        <td>SIB</td><br>        <td>位移</td><br>        <td>直接数据</td><br>    </tr><br>    <tr><br>        <td>1或2</td><br>        <td>0或1</td><br>        <td>0或1</td><br>        <td>1、2、4</td><br>        <td>立即数</td><br>    </tr><br></table><br><br><br><br></p>
-<p>寻址方式</p>
-<p><table border="1" align="left"><br>    <tr><br>        <td>Mod</td><br>        <td>Reg/OP</td><br>        <td>R/M</td><br>    </tr><br>    <tr><br>        <td>(6~7)</td><br>        <td>(3~5)</td><br>        <td>(0~2)</td><br>    </tr><br></table><br><br><br><br></p>
-<p>SIB</p>
-<p><table border="1" align="left"><br>    <tr><br>        <td>SS</td><br>        <td>Index</td><br>        <td>Base</td><br>    </tr><br>    <tr><br>        <td>(6~7)</td><br>        <td>(3~5)</td><br>        <td>(0~2)</td><br>    </tr><br></table><br><br><br><br></p>
-<p>位移量和立即数都可以是：1B/2B/4B<br>SIB中的基址B和变址I都可以是8个GRS中任一个：SS给出比例因子(00 01 10 11)<br>操作码：opcode；W：与机器模式（16/32位）一起确定寄存器位数（AL/AX/EAX）；D：操作方向（确定源和目标）<br>寻址方式：mod、r/m、reg/op三个字段与w字段和机器模式(16/32)一起确定操作数所在的寄存器编号或有效地址计算方式<br>例如：  </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1000 1101 0000 0100 0000 0010</span><br><span class="line">8d 04 02 leal (%edx,%eax,1),%eax</span><br><span class="line">1:SS eax:Index edx:Base eax:Reg/OP</span><br></pre></td></tr></table></figure>
+        
 
+          
+          <div class="entry-summary">
+          torch.autograd.backward(variables, grad_variables=None, retain_graph=None, create_graph=False)
+给定图的叶子节点variables, 计算图中变量的梯度和。 计算图可以通过链式法则求导。如果variables中的任何一个variable是 非标量(non-scalar)的，且requires_grad=True。那么此函数需要指定grad_variables，它的长度应该和variables的长度匹配，里面保存了相关variable的梯度(对于不需要gradient tensor的variable，None是可取的)。
+此函数累积leaf variables计算的梯度。你可能需要在调用此函数之前将leaf variable的梯度置零。
+参数：
+
+variables（变量的序列） - 被求微分的叶子节点，即 ys 。
+grad_variables（（张量，变量）的序列或无） - 对应variable的梯度。仅当variable不是标量且需要求梯度的时候使用。
+retain_graph（bool，可选） - 如果为False，则用于释放计算grad的图。请注意，在几乎所有情况下，没有必要将此选项设置为True，通常可以以更有效的方式解决。默认值为create_graph的值。
+create_graph（bool，可选） - 如果为True，则将构造派生图，允许计算更高阶的派生产品。默认为False。
+
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/30/2017-12-30-torch.autograd.backward中的参数问题/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/">pytorch</a></li></ul>
 
       
     </footer>
@@ -307,7 +304,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-09-乘除运算及浮点数运算2"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-29-numpy.stack最通俗的理解"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -315,7 +312,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/09/2017-05-09-乘除运算及浮点数运算2/">乘除运算及浮点数运算（2）</a>
+      <a class="article-title" href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/">numpy.stack最通俗的理解</a>
     </h1>
   
 
@@ -323,35 +320,47 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/09/2017-05-09-乘除运算及浮点数运算2/" class="article-date">
-	  <time datetime="2017-05-08T16:00:00.000Z" itemprop="datePublished">五月 9, 2017</time>
+	<a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/" class="article-date">
+	  <time datetime="2017-12-28T16:00:00.000Z" itemprop="datePublished">十二月 29, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="浮点数运算"><a href="#浮点数运算" class="headerlink" title="浮点数运算"></a>浮点数运算</h1><h2 id="浮点数运算及结果"><a href="#浮点数运算及结果" class="headerlink" title="浮点数运算及结果"></a>浮点数运算及结果</h2><p>设置两个规格化的浮点数分别为$$A=M_a<em>2^{Ea} B=M_b</em>2^{Eb}$$,则：<br>$$A+B=(M_a+M_b<em>2^{(-(Ea-Eb))</em>2^{Ea})}(假设Ea&gt;=Eb)$$<br>$$A<em>B=(M_a</em>M_b) 2^{(Ea+Eb)}$$<br>$$A / B =(M_a/M_b)2^{(Ea-Eb)}$$<br>会出现下面这种情况：<br>阶码溢出：一个正指数超过了最大允许值，一个负指数超过了最小允许值。最高有效位有进位，出现尾数溢出（右归）。数值部分高位为0，出现非规格化尾数（左归）。右归或对阶时，右归有效位丢失，运算过程中允许添加有效位。<br>IEEE建议实现时为每种情况提供有一个自陷允许位。若某异常对应的位为1，则发生相应异常时，就调用一个特定的异常处理程序。  </p>
-<h2 id="对于浮点数除以0的问题"><a href="#对于浮点数除以0的问题" class="headerlink" title="对于浮点数除以0的问题 "></a>对于浮点数除以0的问题 </h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;conio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">1</span>, b = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"Division by zero:%d\n"</span>, a/b);</span><br><span class="line">	getchar();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">double</span> x = <span class="number">1</span>,y = <span class="number">-1</span>,z = <span class="number">0.0</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"division by zero:%f %f\n"</span>, x/z, y/z);</span><br><span class="line">	getchar();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对于第一个函数出现异常，第二个结果是1.#INF00和-1.#INF00。因为浮点数可以表示无穷大，而整数不可以。<br>浮点数加减运算<br>计算$$1.123<em>10^5+2.56</em>10^2  $$<br>过程如下：<br>$$1.123<em>10^5+2.56</em>10^2 = 1.123<em>10^5+0.00256</em>10^5 = 1.125656<em>10^5 = 1.126</em>10^5 $$<br>其中56是附加位，最后考虑，计算位数加减法前，必须对阶，最后考虑舍入。<br>对阶操作，目的是使两数的阶数相同。小阶向大阶看齐，阶小的那个数的尾数右移。IEEE 754尾数右移时，要将隐含的“1”移到小数部分，高位补0，移出的低位保留到特定的“附加位”上。<br>用二进制浮点数计算0.5+(-0.4375) = ?<br>$$0.5 = 1.000<em>2^{(-1)}，-0.4375 = -0.111</em>2^{(-1)}  $$<br>$$1.000<em>2^{(-1)}+(-0.111</em>2^{(-1)}) = 0.001*2^{(-1)}$$<br>为何IEEE 754加减运算右归时最多只需要一次。因为即使是两个最大的尾数相加，得到的和的尾数也不会达到4，故尾数的整数部分最多有两位，保留一个隐含的“1”后，最多只有一位被右移到小数部分。  </p>
-<h2 id="Extra-bits"><a href="#Extra-bits" class="headerlink" title="Extra bits"></a>Extra bits</h2><p>IEEE 754规定：中间结果必须在右边加两个附加位（guard &amp; round），guard（保护位）在significand右边的位，round（舍入位）在保护位右边的位。<br>附加位的作用：用以保护对阶时右移的位或运算的中间结果。<br>附加位的处理：左归时被移到significand中，作为舍入的依据。<br>IEEE 754舍入方式<br>就近舍入(default)：舍入为最近可表示的数。非中间值：0舍1入；中间值：强迫结果为偶数<br>例如：<br>1.110111-&gt; 1.1110; 1.110101-&gt;1.1101；1.110110-&gt;1.1110<br>01舍11入10强迫结果为偶数  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line">main()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">float</span> a;</span><br><span class="line">	<span class="keyword">double</span> b;</span><br><span class="line">	a = <span class="number">123456.789e4</span>;</span><br><span class="line">	b = <span class="number">123456.789e4</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%f/n%f/n"</span>, a,b);</span><br><span class="line"><span class="comment">//1234567936.000000 1234567890.000000</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>float可以表示的7个十进制有效位，后面的数位是舍入后的结果，舍入后的结果可能会更大，也可能更小。<br>float和double是IEEE 754的标准，和处理器、编译器没有关系。而long double类型的长度和格式随编译器和处理器类型的不同而有所不同。从int到float不会发生溢出，但可能数据被舍入。<br>要注意的是浮点数不满足结合了率，原因是由于精度问题，会出现大数吃小数的问题。</p>
+        
 
+          
+          <div class="entry-summary">
+          numpy.stack(arrays, axis=0)
+沿着新轴连接数组的序列。
+axis参数指定新轴在结果尺寸中的索引。例如，如果axis=0，它将是第一个维度，如果axis=-1，它将是最后一个维度。
+
+参数： 数组：array_like的序列每个数组必须具有相同的形状。axis：int，可选输入数组沿其堆叠的结果数组中的轴。 
+返回： 堆叠：ndarray堆叠数组比输入数组多一个维。
+
+上面是官方给出的解释，很难理解。
+我们先从增加维度说起。
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/29/2017-12-29-numpy.stack最通俗的理解/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/python/">python</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -363,7 +372,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-08-乘除运算及浮点数运算1"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-25-YOLOv2代码分析（七）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -371,7 +380,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/08/2017-05-08-乘除运算及浮点数运算1/">乘除运算及浮点数运算（1）</a>
+      <a class="article-title" href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/">YOLOv2代码分析（七）</a>
     </h1>
   
 
@@ -379,39 +388,42 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/08/2017-05-08-乘除运算及浮点数运算1/" class="article-date">
-	  <time datetime="2017-05-07T16:00:00.000Z" itemprop="datePublished">五月 8, 2017</time>
+	<a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/" class="article-date">
+	  <time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">十二月 25, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="整数的乘法运算"><a href="#整数的乘法运算" class="headerlink" title="整数的乘法运算"></a>整数的乘法运算</h1><h2 id="整数的乘法运算-1"><a href="#整数的乘法运算-1" class="headerlink" title="整数的乘法运算"></a>整数的乘法运算</h2><p>通常，高级语言中两个n位整数相乘得到的结果通常也是一个n位整数，也即结果只取2n位乘积中的低n位。<br>在计算机内部，一定有$$x^2&gt;=0$$吗？<br>若x是带符号整数，则不一定；若x为浮点数，则不一定。原因就是只取低n位元素。<br>如何判断返回的值z是正确的值？<br>当$$!x || z/x==y$$为真<br>编译器是如何判断结果是不是真确的？<br>当$$-2^{(n-1)}≤x*y≤2^{(n-1)}$$（不溢出），即乘积的高n位为全0或全1，并等于低n位的最高位。即乘积的高n+1位全0或全1<br>若x和y都是unsigned类型，则判断方式是乘积的高n位全0，则不溢出。<br>要注意的是硬件不判断溢出，所以如果程序不采用防止溢出的措施，且编译器也不生成用于溢出处理的代码，就会发生一些由于整数溢出而带来的问题。</p>
-<h2 id="整数乘法溢出漏洞"><a href="#整数乘法溢出漏洞" class="headerlink" title="整数乘法溢出漏洞"></a>整数乘法溢出漏洞</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">copy_array</span><span class="params">(<span class="keyword">int</span> *<span class="built_in">array</span>,<span class="keyword">int</span> count)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">int</span> *myarray = (<span class="keyword">int</span>*) <span class="built_in">malloc</span>(count*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	<span class="keyword">if</span>(myarray == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">0</span>; i &lt; count; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		myarray[i] = <span class="built_in">array</span>[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果count很大的时候，如$$count=2^{32}+1$$时，count*sizeof(int)=4.攻击者可以构造特殊参数来触发整数溢出，以一段预设信息覆盖一个已分配的对缓冲区，造成远程服务器崩溃或者改变内存数据并执行任意代码。  </p>
-<h2 id="变量与常数之间的乘运算"><a href="#变量与常数之间的乘运算" class="headerlink" title="变量与常数之间的乘运算"></a>变量与常数之间的乘运算</h2><p>编译器在处理变量与常数相乘时，往往以移位、加法、和减法的组合运算来代替乘法运算。因为乘法运算就是重复的加若干次实现的，所以非常耗时间。<br>例如，对于表达式$$x<em>20$$，编译器可以利用$$20=16+4=2^4+2^2$$，将$x</em>20$转换为$$(x&lt;&lt;4)+(x&lt;&lt;2)$$，这样，一次乘法转换成了两次移位和一次加法。<br>不管是无符号数还是带符号数得乘法，即使乘积溢出时，利用移位和加减运算组合的方式得到的结果都是和采用直接项城的结果是一样的。  </p>
-<h1 id="整数的除法运算"><a href="#整数的除法运算" class="headerlink" title="整数的除法运算"></a>整数的除法运算</h1><h2 id="整数的除法运算-1"><a href="#整数的除法运算-1" class="headerlink" title="整数的除法运算"></a>整数的除法运算</h2><p>对于带符号整数来说，n位整数除以n位整数，除$$-2^{(n-1)}/(-1)=2^{(n-1)}$$会发生溢出外，其他情况不会发生。因为$$2^{(n-1)}$$无法表示。<br>因为整数除法，其商也是整数，所以，再不能整除的时候需要进行舍入，通常按照朝0方向舍入，即正数商取比自身小的最接近整数，负数商取比自身大的最接近整数。<br>整除0的结果无法使用一个、机器数表示。整数除法时，除数不能为0，否则会发生异常，此时，需要调出操作系统中的异常处理程序。<br>代码段一：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0x80000000</span>;</span><br><span class="line"><span class="keyword">int</span> b = a/<span class="number">-1</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, b);<span class="comment">//-2147483648</span></span><br></pre></td></tr></table></figure>
-<p>原因在于编译器对于除-1优化为neg<br>代码段二：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0x80000000</span>;</span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> c = a/b;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, b);<span class="comment">//floating point execption</span></span><br></pre></td></tr></table></figure>
-<h2 id="变量与常数之间的除运算"><a href="#变量与常数之间的除运算" class="headerlink" title="变量与常数之间的除运算"></a>变量与常数之间的除运算</h2><p>除法运算是非常耗时间的，所以最好少使用除法运算。为了缩短除法运算的时间，编译器在处理一个变量与一个2的幂次形式的整数相除时，常采用右移运算实现。<br>无符号数：逻辑右移<br>带符号数：算术右移<br>能整除时，直接右移得到结果，移出的全为0；不能整除时，右移移除的位中有非0，需要进行相应处理。<br>例如：<br>$$12/4 = 3:0000 1100&gt;&gt;2=0000 0011$$<br>不能整除时，采用朝0舍入，即截断的方式。无符号数、带符号正整数，移出的低位直接丢弃。带符号负整数，加偏移量$$（2^k-1）$$，然后在右移k位，低位截断（这里k是右移位数）<br>例如：<br>无符号数 $$14/4=3:0000 1110&gt;&gt;2 = 0000 0011$$<br>带符号负整数$$ -14/4=(-14+2^2-1)/4=(1111 0010+0000 0011)&gt;&gt;2=1111 0101&gt;&gt;2=1111 1101$$</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">div32</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> b = (x &gt;&gt; <span class="number">31</span>)&amp;<span class="number">0x1f</span>;<span class="comment">//偏移量</span></span><br><span class="line">	<span class="keyword">return</span> (x+b) &gt;&gt; <span class="number">5</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
 
+          
+          <div class="entry-summary">
+          原本一开始上来我们是要说LSTM和CRNN的，因为我觉得这部分内容对于YOLOv2来说并没有那么重要，所以我打算放到最后去讲。
+我们再次回到了parse_network_cfg函数
+1234//parse_network_cfgelse if(lt == CONNECTED)&#123;          l = parse_connected(options, params);      &#125;
+接着看后面这个parse_connected函数
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/25/2017-12-25-YOLOv2代码分析（七）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -423,7 +435,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-07-运算电路基础2"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-24-YOLOv2参数解析"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -431,7 +443,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/07/2017-05-07-运算电路基础2/">运算电路基础（2）</a>
+      <a class="article-title" href="/2017/12/24/2017-12-24-YOLOv2参数解析/">YOLOv2参数解析</a>
     </h1>
   
 
@@ -439,40 +451,40 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/07/2017-05-07-运算电路基础2/" class="article-date">
-	  <time datetime="2017-05-06T16:00:00.000Z" itemprop="datePublished">五月 7, 2017</time>
+	<a href="/2017/12/24/2017-12-24-YOLOv2参数解析/" class="article-date">
+	  <time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">十二月 24, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="C语言中的各类计算"><a href="#C语言中的各类计算" class="headerlink" title="C语言中的各类计算"></a>C语言中的各类计算</h1><h2 id="C语言中涉及的运算"><a href="#C语言中涉及的运算" class="headerlink" title="C语言中涉及的运算"></a>C语言中涉及的运算</h2><p>从运算符无法区分逻辑移位和算数移位，由数的类型决定。<br>如果是无符号数，那么是逻辑左（右）移。具体规则是：高（低）位移出，低（高）位补0，左移可能溢出。如果左移时高位是1，就发生溢出。<br>如果是带符号数，那么是算数左（右）移。具体规则如下：左移，高位移出，低位补0，可能发生溢出。如果移出的位不等于新的符号位，则发生溢出。右移，低位移出，高位补符，可能发生有效数据丢失。<br>位扩展和位截断运算，没有专门操作运算符，根据类型转换前、后数据长短确定是扩展还是截断。扩展就是短转长，无符号数（前面补0），带符号数（前面补符号）。截断就是长转短，可能发生溢出。例子：  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">short</span> si = <span class="number">-32768</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">short</span> usi = si;</span><br><span class="line"><span class="keyword">int</span> i = si;</span><br><span class="line"><span class="keyword">unsigned</span> ui = usi;</span><br></pre></td></tr></table></figure>
-<p>分析结果<br>si = -32768  8000<br>usi = 32768  8000<br>i = -32768  ffff 8000<br>ui = 32768  0000 8000<br>溢出的例子：<br>int i = 32768<br>short si = (short) i;<br>int j = si;<br>最后的结果是i与j不相等，j=-32768，原因是对i截断时发生溢出，超出了16位带符号数能表示的最大值。  </p>
-<h2 id="条件标志位"><a href="#条件标志位" class="headerlink" title="条件标志位"></a>条件标志位</h2><p>零标志ZF、溢出标志OF、进借位标志CF、符号标志SF称为条件标志。条件标志在运算电路中产生，被记录到专门的寄存器中。存放标志的寄存器通常称为程序/状态寄存器或标志寄存器。每个标志对应标志寄存器的一个标志位。<br>OF：若a与b同号但与sum不同，则1，否则0；C_n⊕C_(n-1)<br>SF：sum最高位<br>ZF：如sum为0，则1，否则0<br>CF：cout⊕sub<br>例子：<br>若n=8，计算107+46=?<br>107    0110 1011<br>46     0010 1110<br>溢出标志OF=1、零标志ZF=0、符号标志SF=1、进位标志CF=0<br>作为无符号数运算的结果是未发生溢出，看CF<br>作为带符号数运算的结果是发生溢出，看OF<br>做减法用来比较大小，规则：<br>无符号数：CF=0时，大于<br>带符号数：OF=SF时，大于<br>例子：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> x = <span class="number">134</span>;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> y = <span class="number">246</span>;</span><br><span class="line"><span class="keyword">int</span> m = x;</span><br><span class="line"><span class="keyword">int</span> n = y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> z1 = x-y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> z2 = x+y;</span><br><span class="line"><span class="keyword">int</span> k1 = m-n;</span><br><span class="line"><span class="keyword">int</span> k2 = m+n;</span><br></pre></td></tr></table></figure>
-<p>x和m的机器码是一样的1000 0110，y和n的机器数一样1111 0110，z1和k1的机器数是一样的1001 0000，CF=1，OF=0，SF=1，z2和k2的机器数是一样的0111 1100，CF=1，OF=1，SF=0<br>z1的值是144，是错误的值。k1的值是-112<br>z2的值是124，是错误的值。k2的值是124，也是错误的值。  </p>
-<h2 id="判断溢出的程序"><a href="#判断溢出的程序" class="headerlink" title="判断溢出的程序"></a>判断溢出的程序</h2><p>对于无符号数<br>发生溢出时，一定满足result&lt;x  and  result&gt;y,否则，若$$x+y-2^n&gt;=x$$，则$y&gt;=2^n$，显然是错误的。  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x,<span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> sum = x + y;</span><br><span class="line">	<span class="keyword">return</span> sum &gt;= x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">usub_ok</span><span class="params">(<span class="keyword">unsigned</span> x,<span class="keyword">unsigned</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> uadd_ok(x,-y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对与带符号数<br>带符号数的溢出包括正溢出和负溢出  </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> sum = x + y;</span><br><span class="line">	<span class="keyword">int</span> neg_over = x&lt;<span class="number">0</span> &amp;&amp; y&lt;<span class="number">0</span> &amp;&amp; sum&gt;=<span class="number">0</span>;<span class="comment">//负溢出</span></span><br><span class="line">	<span class="keyword">int</span> pos_over = x&gt;=<span class="number">0</span> &amp;&amp; y&gt;=<span class="number">0</span> &amp;&amp; xum&lt;<span class="number">0</span>;<span class="comment">//正溢出</span></span><br><span class="line">	<span class="keyword">return</span> !neg_over &amp;&amp; !pos_over;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tsub_ok</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> tadd_ok(x,-y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当x=0，y=0x80000000时，判断减法函数是错误的</p>
+        
 
+          
+          <div class="entry-summary">
+          前言其实这一部分内容我在源代码分析中都有讲过，但是由于参数太多，所以特意做一次总结。如果你对于源代码很感兴趣，但对于这么多的代码，无从下手的话，你可以看我写的一系列文章YOLOv2源码分析
+参数总结其实yolo v2的参数主要集中在两个结构体中一个是network，一个是layer
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/24/2017-12-24-YOLOv2参数解析/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -484,7 +496,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-06-运算电路基础1"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-22-YOLOv2代码分析（六）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -492,7 +504,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/06/2017-05-06-运算电路基础1/">运算电路基础（1）</a>
+      <a class="article-title" href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/">YOLOv2代码分析（六）</a>
     </h1>
   
 
@@ -500,41 +512,40 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/06/2017-05-06-运算电路基础1/" class="article-date">
-	  <time datetime="2017-05-05T16:00:00.000Z" itemprop="datePublished">五月 6, 2017</time>
+	<a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/" class="article-date">
+	  <time datetime="2017-12-21T16:00:00.000Z" itemprop="datePublished">十二月 22, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="数字逻辑电路基础"><a href="#数字逻辑电路基础" class="headerlink" title="数字逻辑电路基础"></a>数字逻辑电路基础</h1><h2 id="组合逻辑部件"><a href="#组合逻辑部件" class="headerlink" title="组合逻辑部件"></a>组合逻辑部件</h2><p>根据电路是否具有存储功能，将逻辑电路划分为两种类型<br>组合逻辑电路：没有存储功能，其输出仅依赖于输入<br>时序逻辑电路：具有存储功能，其输出不仅依赖于当前输入，还依赖于存储单元的当前状态</p>
-<h2 id="多路选择器"><a href="#多路选择器" class="headerlink" title="多路选择器"></a>多路选择器</h2><p>K路选择器应该有k路输入，因而控制端S的位数应该是$log_2 K$</p>
-<h2 id="一位加法器"><a href="#一位加法器" class="headerlink" title="一位加法器"></a>一位加法器</h2><p>一位加法器称为全加器。两个加数A和B，低位进位为cin和为F,向高位的位为cout<br>化简后逻辑表达式为<br>F = A⊕B⊕cin<br>cout = A•B + A•cin + B•cin</p>
-<h2 id="n位带符号数加法器"><a href="#n位带符号数加法器" class="headerlink" title="n位带符号数加法器"></a>n位带符号数加法器</h2><p>程序中经常比较大小，通过做减法得到的标识信息实现</p>
-<p><a href="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg" data-lightbox="roadtrip" target="_blank" rel="noopener"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659gy1ffcz5xyd7xj20ef07w75o.jpg" class="img-fluid"><br></a></p>
-<p>溢出标志OF:<br>OF = C_n⊕C_(n-1)<br>符号标志SF:<br>SF = F_(n-1)<br>0标志ZF=1当且仅当F=0；<br>进位借位标志CF:<br>CF = cout⊕cin</p>
-<h2 id="算数逻辑单元"><a href="#算数逻辑单元" class="headerlink" title="算数逻辑单元"></a>算数逻辑单元</h2><p>进行基本的算术运算和逻辑运算：无符号整数加减、带符号整数加减、与或非异或等逻辑运算<br>核心电路是带标志加法器<br>有一个操作控制端（ALUop），用来决定ALU所执行的处理功能。ALUop的位数k决定了操作的种类，例如，当位数k为3时，ALU最多只有2^3=8种操作。</p>
-<p><table border="1" align="left"><br>    <tr><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>        <td>ALUop    Result</td><br>    </tr><br>    <tr><br>        <td>000       a+b</td><br>        <td>010       a&amp;b</td><br>        <td>100       ~a</td><br>        <td>110       a </td><br>    </tr><br>    <tr><br>        <td>001       a-b</td><br>        <td>011       a|b</td><br>        <td>101       a⊕b</td><br>        <td>      未用    </td><br>    </tr><br></table><br><br><br><br><br><br></p>
-<p><a href="https://link.zhihu.com/?target=http://fanfeilong.github.io/exceltk0.0.4.7z" target="_blank" rel="noopener">好用的md表格轮子</a></p>
-<h1 id="从c表达式到逻辑电路"><a href="#从c表达式到逻辑电路" class="headerlink" title="从c表达式到逻辑电路"></a>从c表达式到逻辑电路</h1><h2 id="从c表达式到运算类指令"><a href="#从c表达式到运算类指令" class="headerlink" title="从c表达式到运算类指令"></a>从c表达式到运算类指令</h2><p>基本数据类型：无符号数（二进制）、带符号整数（补码）、浮点数（IEEE 754）、字符串（ASCII）<br>基本算术运算符中的算术运算符在底层都是减法实现。<br>对于c赋值语句y = (x&gt;&gt;2)+k;是通过转换为指令序列，通过执行运算类指令实现。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sarw $2,%ax;//将操作数“2”和“R[ax]”送移位器运算</span><br><span class="line">addw %bx,%ax;//将R[ax]和R[bx]送整数加减运算器中运算</span><br></pre></td></tr></table></figure>
-<h2 id="数据的运算"><a href="#数据的运算" class="headerlink" title="数据的运算"></a>数据的运算</h2><p>指令集中涉及到的运算<br>涉及到的定点运算：带符号整数（取负、符号扩展、加、减、乘、除、算术移位）、无符号整数（0扩展、加、减、乘、除、逻辑移位）、逻辑操作（与、或、非）<br>涉及到的浮点数运算：加、减、乘、除</p>
+        
 
+          
+          <div class="entry-summary">
+          我们再次回到了parse_network_cfg函数
+1234//parse_network_cfgelse if(lt == ACTIVE)&#123;          l = parse_activation(options, params);      &#125;
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/22/2017-12-22-YOLOv2代码分析（六）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -546,7 +557,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-05-浮点数的表示"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-21-YOLOv2代码分析（五）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -554,7 +565,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/05/2017-05-05-浮点数的表示/">浮点数的表示</a>
+      <a class="article-title" href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/">YOLOv2代码分析（五）</a>
     </h1>
   
 
@@ -562,37 +573,40 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/05/2017-05-05-浮点数的表示/" class="article-date">
-	  <time datetime="2017-05-04T16:00:00.000Z" itemprop="datePublished">五月 5, 2017</time>
+	<a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/" class="article-date">
+	  <time datetime="2017-12-20T16:00:00.000Z" itemprop="datePublished">十二月 21, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>第0位符号S；第1-8位为8位移码表示阶码E；第9-31位为24位二进制原码小数表示的尾数M。规格化尾数的小数点后第一位是1，故规定的第一位默认的“1”不明显表示出来。这样可用23个数位表示24位尾数。<br>移码 定点整数，用来表示浮点数的阶，移码和补码差别仅仅是符号位差别相反。也可以这样计算 偏致常数+目标数=移码<br>最大正数：$$0.11…1 <em> 2^{(11…1)}= (1 - 2^{(-24)}) </em> 2^{127}$$<br>最小正数：$$0.10…0 <em> 2^{(00…0)} = (1/2) </em> 2^{(-128)}$$<br>机器0：尾数为0或落在下溢区中的数<br>浮点数范围比定点数大，但数的个数没有变多，数之间更稀疏，不均匀。<br>为了表示更多的有效数字，通常规定规格化数的小数点前为1。<br>在IEEE 754标准中<br>Sign bit：1表示negative；0表示positive<br>Exponent（阶码）：<br>SP规格化阶码范围为0000 0001（-126）~1111 1110（127）（全0或全1表示特殊值）<br>Bias为127（single），1023（double）<br>要注意的是双精度数的Exponent是11位，Significand为52位<br>SP:$$ (-1)^S <em> (1 + Significand) </em> 2^{(Exponent-127)}$$<br>DP: $$(-1)^S <em> (1 + Significand) </em> 2^{(Exponent-1023)}$$</p>
-<h2 id="How-to-represent-0"><a href="#How-to-represent-0" class="headerlink" title="How to represent 0?"></a>How to represent 0?</h2><p>Exponent: all zeros<br>Significand: all zeros<br>What about sign? Both cases calid.<br>浮点数除0的结果是+/-∞，而不是溢出异常（整数除0异常）<br>这样做的原因是：可以利用+∞/-∞作比较。</p>
-<h2 id="How-to-represent-∞-∞"><a href="#How-to-represent-∞-∞" class="headerlink" title="How to represent +∞/-∞?"></a>How to represent +∞/-∞?</h2><p>Exponent: all ones<br>Significand: all zeros<br>相关操作：<br>5.0 / 0 = +∞</p>
-<h2 id="“非数”的表示"><a href="#“非数”的表示" class="headerlink" title="“非数”的表示"></a>“非数”的表示</h2><p>Sqrt(-4.0) = ?  0/0 = ?<br>称为Not a Number(NaN) – “非数”<br>How to represent NaN?<br>Exponent = 255<br>Significand：nonzero<br>NaNs可以帮助调试程序<br>相关操作：<br>sqrt(-4.0) = NaN</p>
-<h2 id="非规格化数"><a href="#非规格化数" class="headerlink" title="非规格化数"></a>非规格化数</h2><p>Exponent: all ones<br>Significand: nonzero<br>并且它的首位数字不再是1而是0</p>
-<h2 id="非数值数据的编码"><a href="#非数值数据的编码" class="headerlink" title="非数值数据的编码"></a>非数值数据的编码</h2><p>逻辑数据的编码表示<br>计算机中何时会用到逻辑及数据？<br>用一位表示，N位二进制可表示N个逻辑数据，运算时按位进行，逻辑数据和数值数据在形式上并无差异，也是一串0/1序列，计算机靠指令来识别。</p>
-<h2 id="西文字符的编码表示"><a href="#西文字符的编码表示" class="headerlink" title="西文字符的编码表示"></a>西文字符的编码表示</h2><p>特点：只是一种拼音文字，用有限的几个字母拼写出所有的单词。只需要对有限的字母和数学符号、标点符号等辅助字符编码。所有的字符总数不超过256，使用7或8个二进制可表示。<br>表示：常用7位ASCII码表示<br>操作：字符串操作</p>
-<h2 id="汉字及国际字符的编码"><a href="#汉字及国际字符的编码" class="headerlink" title="汉字及国际字符的编码"></a>汉字及国际字符的编码</h2><p>汉字特点：汉字是一种图形文字，汉字数据量非常大<br>编码形式：输入码：对汉字用相应按键进行编码表示，用于输入<br>内码：用于系统中进行存储、查找、传送等处理<br>字模点阵或轮廓描述：描述汉字字模点阵或轮廓，用于显示/打印<br>西文字符没有输入码，内码就是ASCII，有字模点阵<br>至少需要两个字节才可以表示汉字内码，有汉字的总数（超过6万字）决定。<br>可在GB2312国标码的基础上产生汉字内码<br>为了与ASCII区别，将国标码的两个字节的第一位置“1”后得到一种汉字内码。例如<br>汉字“大”在码表中位于20行，83列。因此区位码为0010100 1010011，在区位码上加32得到两个字节的编码，即00110100 01110011=3473H。前面的34H和字符“4”的ASCII码相同，后面的73H和字符“S”的ASCII码相同，但是，将每个字节的最高位各设为“1”后，就得到其内码：10110100 11110011=B4F3H，因此不会和ASCII码混淆。</p>
+        
 
+          
+          <div class="entry-summary">
+          #0x01 make_convolutional_layer
+终于又回到了make_convolutional_layer这个函数
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/21/2017-12-21-YOLOv2代码分析（五）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -604,7 +618,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-05-04-数据的宽度和存储容量的单位"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-20-YOLOv2代码分析（四）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -612,7 +626,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/05/04/2017-05-04-数据的宽度和存储容量的单位/">数据的宽度和存储容量的单位</a>
+      <a class="article-title" href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/">YOLOv2代码分析（四）</a>
     </h1>
   
 
@@ -620,33 +634,40 @@
     
     <div class="article-meta">
       
-	<a href="/2017/05/04/2017-05-04-数据的宽度和存储容量的单位/" class="article-date">
-	  <time datetime="2017-05-03T16:00:00.000Z" itemprop="datePublished">五月 4, 2017</time>
+	<a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/" class="article-date">
+	  <time datetime="2017-12-19T16:00:00.000Z" itemprop="datePublished">十二月 20, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="数据的基本宽度"><a href="#数据的基本宽度" class="headerlink" title="数据的基本宽度"></a>数据的基本宽度</h2><p>比特是计算机中处理、存储、传输信息的最小单位<br>二进制信息最基本的单位是 “字节”，现代计算机中，存储器按字节编址，字节是最小的寻址单位。如果以字节为一个排列单位，则LSB表示最低有效字节，MSB表示最高有效字节<br>除位和字节外，还经常用“字”作为单位。<br>字与字长的概念不同，IA-32中的字是16位，表示被处理信息的单位，用来度量数据类型的宽度。而字长是32位，指定点数据通路的宽度，等于CPU内的总线宽度、运算器的位数、通用寄存器的宽度。<br>例如：对于x86架构，不管字长多少，定义字的宽度都为16位，而从386开始字长就是32位了。</p>
-<h2 id="数据的存储和排列顺序"><a href="#数据的存储和排列顺序" class="headerlink" title="数据的存储和排列顺序"></a>数据的存储和排列顺序</h2><p>变量的地址是其最小地址。例如：<br>若int x = -110;，x的存放地址是100，即x存放在100#~103#<br>多个字节在存储单元中存储方式分为大端方式和小端方式，在intel中是按小端方式存放数据的，也就是数据的最高位存放在地址的最低位。<br>Union的存放顺序是所有成员从低地址开始，利用该特性可测试CPU的大/小端方式。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">union</span> NUM</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> a;</span><br><span class="line">		<span class="keyword">char</span> b;</span><br><span class="line">	&#125; num;</span><br><span class="line">	num.a = <span class="number">0x1234567</span>;</span><br><span class="line">	<span class="keyword">if</span>(num.b == <span class="number">0x12</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Big Endian\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"Little Endian\n"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"num.b = 0x%X\n"</span>, num.b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>假定小端方式机器中某条指令的地址为1000<br>该指令的汇编形式为：mov AX, 0x12345(BX)<br>其中操作码 mov 为40H，寄存器AX和BX的编号分别为0001B和0010B。立即数占32位，则存放顺序为：<br>401245230100  小端方式<br>401200012345  大端方式</p>
+        
 
+          
+          <div class="entry-summary">
+          0x01 backward_convolutional_layer12345678void backward_convolutional_layer(convolutional_layer l, network net)&#123;    int i, j;    int m = l.n/l.groups;				//每组卷积核的个数    int n = l.size*l.size*l.c/l.groups;	//每组卷积核的元素个数    int k = l.out_w*l.out_h;			//输出图像的元素个数    gradient_array(l.output, l.outputs*l.batch, l.activation, l.delta);
+这里出现了一个gradient_array函数，我们看看这个函数有什么作用。
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/20/2017-12-20-YOLOv2代码分析（四）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/计算机系统原理/">计算机系统原理</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原理/">原理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -658,7 +679,7 @@
 <!-- Table of Contents -->
 
   
-    <article id="post-2017-04-30-声明与定义"  class="article article-type-post" itemscope itemprop="blogPost" >
+    <article id="post-2017-12-19-YOLOv2代码分析（三）"  class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
     
     
@@ -666,7 +687,7 @@
         
   
     <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2017/04/30/2017-04-30-声明与定义/">声明与定义</a>
+      <a class="article-title" href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/">YOLOv2代码分析（三）</a>
     </h1>
   
 
@@ -674,52 +695,42 @@
     
     <div class="article-meta">
       
-	<a href="/2017/04/30/2017-04-30-声明与定义/" class="article-date">
-	  <time datetime="2017-04-29T16:00:00.000Z" itemprop="datePublished">四月 30, 2017</time>
+	<a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/" class="article-date">
+	  <time datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished">十二月 19, 2017</time>
 	</a>
 
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
  
       
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>转自<a href="http://blog.csdn.net/xiaoyusmile/article/details/5420252" target="_blank" rel="noopener">小鱼的学习笔记</a></p>
-<h1 id="变量的定义、声明"><a href="#变量的定义、声明" class="headerlink" title="变量的定义、声明"></a>变量的定义、声明</h1><p>变量的声明有两种情况：<br>一种是需要建立存储空间的。例如：int  a。在声明的时候就已经建立了存储空间。这种声明是”定义性声明(defining declaration)”，即我们平时所说的“定义”。<br>另一种是不需要建立存储空间的，只是告诉编译器某变量已经在别处定义过了。例如：extern int a。其中，变量a是在别处定义的。这种声明是”引用性声明(referncing declaration)”，即我们平时所说的“声明”。</p>
-<p>从广义的角度来讲，声明中包含着定义，但是并非所有的声明都是定义。即，定义性声明既是定义又是声明，而引用性声明只是声明。例如：int a。它既是声明，同时又是定义。然而对于 extern int a 来讲，它只是声明不是定义。</p>
-<p>一般的情况下我们常常这样叙述，把建立空间的声明称之为”定义”，而把不需要建立存储空间的称之为”声明”。很明显这里指的声明是范围比较窄的，也就是说引用性的声明。</p>
-<p>例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a; <span class="comment">//定义性声明，分配存储空间，初值default为0</span></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">0</span>; <span class="comment">//定义性声明，分配存储空间，赋初值</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> c; <span class="comment">//引用性声明，不分配存储空间，只是告诉编译器这个变量已经在别处定义过了</span></span><br></pre></td></tr></table></figure>
-<h1 id="函数的定义、声明"><a href="#函数的定义、声明" class="headerlink" title="函数的定义、声明"></a>函数的定义、声明</h1><p>函数的定义和声明也是一样，定义需要分配存储空间；声明只是告诉编译器这个函数已经在别处定义过了。<br>函数的定义和声明比较好区分。有函数体的即为定义，不带函数体即为声明。</p>
-<p>例子：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//声明</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">double</span> x)</span></span>;</span><br><span class="line"> </span><br><span class="line"><span class="comment">//定义</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">double</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">          <span class="keyword">return</span> x*x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在C语言中，如果在定义和声明一个函数之前直接使用的话，它的返回值默认类型是整形</p>
-<h1 id="定义与声明的区别"><a href="#定义与声明的区别" class="headerlink" title="定义与声明的区别"></a>定义与声明的区别</h1><ol>
-<li>是否需要分配存储空间。</li>
-<li>在一个作用域中可以重复声明，但不能重复定义。这是由（1）决定的，可以重复几次告诉编译器某个变量、函数已经在别处定义了，但不能重复多次地让编译器为同一个变量、函数分配不同的存储空间。</li>
-</ol>
-<h1 id="关于extern要注意的一点"><a href="#关于extern要注意的一点" class="headerlink" title="关于extern要注意的一点"></a>关于extern要注意的一点</h1><p>extern 只是用来声明全局变量，在一个文件中声明全局变量，声明方法可以如下两种（都一样）：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> a;<span class="comment">//第一种</span></span><br><span class="line"><span class="keyword">int</span> a;<span class="comment">//第二种</span></span><br></pre></td></tr></table></figure>
-<p>也就是在一个文件中声明全局变量，extern可以省略；<br>如果在一个文件中声明了一个全局变量(extern)int a，要想在另一个文件中使用这个变量，则要在另一个文件前面加上全局变量声明，即加上：extern int a;（extern 不可省略）这样两个文件的全局变量a就是同一个，它的值就可以互相使用了，也可以在任意文件中改变了。还要注意的是第二种做法<strong>在C语言中，如果一个变量在多个源文件中定义却没有指定初始值，在某些系统中是接受的，在c++中不允许</strong>。有几个问题我也不知道为什么，例如在函数中声明一个字符变量，可以将这个字符变量打印出来结果是’?’，但是别的变量类型没法打印，报错是”没有对变量赋值”，这里记录这个问题，以后解决。</p>
-<p>转自<a href="http://blog.csdn.net/fukai555/article/details/11403433" target="_blank" rel="noopener">剑圣风暴</a></p>
-<h1 id="实际情况下一个比较好的处理方式"><a href="#实际情况下一个比较好的处理方式" class="headerlink" title="实际情况下一个比较好的处理方式"></a>实际情况下一个比较好的处理方式</h1><p>在实际的编程中，全局变量对我们编程来说既是喜又是泪，虽然说项目中尽量避免使用全局变量，但总有些时候不得不使用它，并且可能使用得不少，各个模块可能有含有或多或少的几个全局变量，而当别的模块需要引用的时候，就必须extern它，造成你定义了一遍又声明了一遍，这样就稍显得麻烦。下面介绍一种全局变量的管理方法，至始至终只定义一次，所有的全局变量以某种声明方式放入一个名叫global.h的头文件中，然后别的模块include它就OK。那么如何操作呢？这里还要新建一个同名的global.c源文件，用来定义所有全局变量，注意这里并不是手工一个一个定义，而是采用预处理方式，废话少说见下面程序</p>
-<p>global.h</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _GLOBAL_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _GLOBAL_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> GLOBAL_VAR  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GLOBAL_EXTERN   </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GLOBAL_EXTERN extern  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  </span></span><br><span class="line">  </span><br><span class="line">GLOBAL_EXTERN <span class="keyword">int</span> g_var1;  </span><br><span class="line">GLOBAL_EXTERN <span class="keyword">int</span> g_var2;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-<p>global.c</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GLOBAL_VAR  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"global.h"</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">undef</span> GLOBAL_VAR</span></span><br></pre></td></tr></table></figure>
+        
 
+          
+          <div class="entry-summary">
+          接着上一讲没有讲完的make_convolutional_layer函数
+0x01 make_convolutional_layer1234//make_convolutional_layerl.forward = forward_convolutional_layer;   l.backward = backward_convolutional_layer;   l.update = update_convolutional_layer;
+上来就是三坐大山^_^，我们先从第一个forward_convolutional_layer开始。
+0x0101 forward_convolutional_layer12345void forward_convolutional_layer(convolutional_layer l, network net)&#123;//传入卷积层参数和网络的总参数    int i, j;    fill_cpu(l.outputs*l.batch, 0, l.output, 1);
+
+        
+          <p class="article-more-link">
+            <a href="/2017/12/19/2017-12-19-YOLOv2代码分析（三）/#more">阅读全文</a>
+          </p>
+        </div>
       
     </div>
     <footer class="entry-meta entry-footer">
       
 	<span class="ico-folder"></span>
-    <a class="article-category-link" href="/categories/cpp/">cpp</a>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
 
       
   <span class="ico-tags"></span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/notes/">notes</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/YOLO/">YOLO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/darknet/">darknet</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 
       
     </footer>
@@ -735,7 +746,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/14/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/16/">下一页</a>
+    <a class="extend prev" rel="prev" href="/page/14/">上一页</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/32/">32</a><a class="extend next" rel="next" href="/page/16/">下一页</a>
   </nav>
 
 </section>
@@ -835,8 +846,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/09/2018-04-09-目标检测中的mAP计算/">目标检测中的mAP计算</a></h6>
-              <span>四月 9, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-130-被围绕的区域（最详细的解法！！！）/">Leetcode 130：被围绕的区域（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -847,8 +858,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/07/2018-04-07-Iterative-Visual-Reasoning-Beyond-Convolutions论文笔记/">Iterative Visual Reasoning Beyond Convolutions论文笔记</a></h6>
-              <span>四月 7, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/13/2018-09-13-Leetcode-200-岛屿的个数（最详细的解法！！！）/">Leetcode 200：岛屿的个数（最详细的解法！！！）</a></h6>
+              <span>九月 13, 2018</span>
             </div>
 
           </li>
@@ -859,8 +870,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/04/2018-04-04-最简单的K-means++算法原理和实践教程/">最简单的K-means++算法原理和实践教程</a></h6>
-              <span>四月 4, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-401-二进制手表（最详细的解法！！！）/">Leetcode 401：二进制手表（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -871,8 +882,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/04/02/2018-04-02-最简单的K-means算法原理和实践教程/">最简单的K-means算法原理和实践教程</a></h6>
-              <span>四月 2, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/12/2018-09-12-Leetcode-79-单词搜索（最详细的解法！！！）/">Leetcode 79：单词搜索（最详细的解法！！！）</a></h6>
+              <span>九月 12, 2018</span>
             </div>
 
           </li>
@@ -883,8 +894,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/31/2018-03-31-为什么希尔排序表现出来的速度比归并排序快呢？/">为什么希尔排序表现出来的速度比归并排序快呢？</a></h6>
-              <span>三月 31, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/11/2018-09-11-Leetcode-90-子集 II（最详细的解法！！！）/">Leetcode 90：子集 II（最详细的解法！！！）</a></h6>
+              <span>九月 11, 2018</span>
             </div>
 
           </li>
@@ -895,8 +906,8 @@
               <div class="widget-entry-summary" style="margin: 0;">
             
 
-              <h6 style="margin: 0;"><a href="/2018/03/26/2018-03-26-YOLOv3论文笔记/">YOLOv3论文笔记</a></h6>
-              <span>三月 26, 2018</span>
+              <h6 style="margin: 0;"><a href="/2018/09/10/2018-09-10-Leetcode-40-组合总和 II（最详细的解法！！！）/">Leetcode 40：组合总和 II（最详细的解法！！！）</a></h6>
+              <span>九月 10, 2018</span>
             </div>
 
           </li>
@@ -910,7 +921,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">31</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">24</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/QT/">QT</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/asp/">asp</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/c/">c++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/cpp/">cpp</a><span class="category-list-count">78</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/index/">index</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/">python</a><span class="category-list-count">35</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/toy/">toy</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/信息安全/">信息安全</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/图像处理/">图像处理</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/机器学习/">机器学习</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/算法/">算法</a><span class="category-list-count">112</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统原理/">计算机系统原理</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/">计算机网络</a><span class="category-list-count">2</span></li></ul>
     </div>
   </div>
 
@@ -920,7 +931,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/1080ti/" style="font-size: 10.71px;">1080ti</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.43px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.43px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.71px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.71px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.43px;">QT</a> <a href="/tags/Ubuntu/" style="font-size: 11.43px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 15px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.71px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 17.86px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 20px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 17.14px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.43px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.43px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.71px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 15px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.43px;">error</a> <a href="/tags/estimator/" style="font-size: 11.43px;">estimator</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16.43px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.71px;">namehiding</a> <a href="/tags/network/" style="font-size: 12.14px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 18.57px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.86px;">numpy</a> <a href="/tags/office/" style="font-size: 10.71px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14.29px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.71px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.71px;">overload</a> <a href="/tags/override/" style="font-size: 10.71px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.71px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 19.29px;">python</a> <a href="/tags/pytorch/" style="font-size: 10px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.57px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.43px;">re</a> <a href="/tags/requests/" style="font-size: 10.71px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.71px;">shell</a> <a href="/tags/signal/" style="font-size: 10.71px;">signal</a> <a href="/tags/sql/" style="font-size: 10.71px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16.43px;">stl</a> <a href="/tags/super/" style="font-size: 10.71px;">super</a> <a href="/tags/tensorflow/" style="font-size: 15px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.71px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.71px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.71px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 17.14px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.71px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.43px;">笔试</a> <a href="/tags/算法/" style="font-size: 14.29px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.71px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.71px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12.14px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
+      <a href="/tags/1080ti/" style="font-size: 10.67px;">1080ti</a> <a href="/tags/ADL/" style="font-size: 10px;">ADL</a> <a href="/tags/Aggregate/" style="font-size: 10px;">Aggregate</a> <a href="/tags/Dell/" style="font-size: 11.33px;">Dell</a> <a href="/tags/Eassy/" style="font-size: 11.33px;">Eassy</a> <a href="/tags/Eval/" style="font-size: 10px;">Eval</a> <a href="/tags/Execute/" style="font-size: 10px;">Execute</a> <a href="/tags/ExecuteGlobal/" style="font-size: 10px;">ExecuteGlobal</a> <a href="/tags/Fibonacci/" style="font-size: 10px;">Fibonacci</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/IOU/" style="font-size: 10px;">IOU</a> <a href="/tags/JSON/" style="font-size: 10.67px;">JSON</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means</a> <a href="/tags/K-means/" style="font-size: 10px;">K-means++</a> <a href="/tags/Kolakoski/" style="font-size: 10px;">Kolakoski</a> <a href="/tags/Li-Fei-Fei/" style="font-size: 10px;">Li Fei Fei</a> <a href="/tags/MNIST/" style="font-size: 10.67px;">MNIST</a> <a href="/tags/MySQL/" style="font-size: 10.67px;">MySQL</a> <a href="/tags/PIL/" style="font-size: 10px;">PIL</a> <a href="/tags/POD/" style="font-size: 10px;">POD</a> <a href="/tags/Pickle/" style="font-size: 10px;">Pickle</a> <a href="/tags/QT/" style="font-size: 11.33px;">QT</a> <a href="/tags/SNIP/" style="font-size: 10px;">SNIP</a> <a href="/tags/Ubuntu/" style="font-size: 11.33px;">Ubuntu</a> <a href="/tags/YOLO/" style="font-size: 14.67px;">YOLO</a> <a href="/tags/acm/" style="font-size: 10px;">acm</a> <a href="/tags/advance/" style="font-size: 10px;">advance</a> <a href="/tags/algorithm/" style="font-size: 10px;">algorithm</a> <a href="/tags/array/" style="font-size: 10px;">array</a> <a href="/tags/asp/" style="font-size: 10px;">asp</a> <a href="/tags/auto/" style="font-size: 10.67px;">auto</a> <a href="/tags/auto/" style="font-size: 10px;">auto&</a> <a href="/tags/auto/" style="font-size: 10px;">auto&&</a> <a href="/tags/big-file/" style="font-size: 10px;">big file</a> <a href="/tags/binding/" style="font-size: 10px;">binding</a> <a href="/tags/c/" style="font-size: 19.33px;">c</a> <a href="/tags/c/" style="font-size: 10px;">c#</a> <a href="/tags/c/" style="font-size: 18.67px;">c++</a> <a href="/tags/cin/" style="font-size: 10px;">cin</a> <a href="/tags/constexpr/" style="font-size: 10px;">constexpr</a> <a href="/tags/cpp/" style="font-size: 18px;">cpp</a> <a href="/tags/cpp标准库/" style="font-size: 16.67px;">cpp标准库</a> <a href="/tags/cpp第二版/" style="font-size: 11.33px;">cpp第二版</a> <a href="/tags/cuda/" style="font-size: 11.33px;">cuda</a> <a href="/tags/cudnn/" style="font-size: 10.67px;">cudnn</a> <a href="/tags/darknet/" style="font-size: 14.67px;">darknet</a> <a href="/tags/dd/" style="font-size: 10px;">dd</a> <a href="/tags/default/" style="font-size: 10px;">default</a> <a href="/tags/descriptor/" style="font-size: 10px;">descriptor</a> <a href="/tags/dict/" style="font-size: 10px;">dict</a> <a href="/tags/downcasting/" style="font-size: 10px;">downcasting</a> <a href="/tags/error/" style="font-size: 11.33px;">error</a> <a href="/tags/estimator/" style="font-size: 11.33px;">estimator</a> <a href="/tags/fire/" style="font-size: 10px;">fire</a> <a href="/tags/forward/" style="font-size: 10px;">forward</a> <a href="/tags/game/" style="font-size: 10px;">game</a> <a href="/tags/glvalue/" style="font-size: 10px;">glvalue</a> <a href="/tags/hook/" style="font-size: 10px;">hook</a> <a href="/tags/identity/" style="font-size: 10px;">identity</a> <a href="/tags/lambda/" style="font-size: 10px;">lambda</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/lvalue/" style="font-size: 10px;">lvalue</a> <a href="/tags/mAP/" style="font-size: 10px;">mAP</a> <a href="/tags/map/" style="font-size: 10px;">map</a> <a href="/tags/merge/" style="font-size: 10px;">merge</a> <a href="/tags/mismatch/" style="font-size: 10px;">mismatch</a> <a href="/tags/move/" style="font-size: 10px;">move</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/namehiding/" style="font-size: 10.67px;">namehiding</a> <a href="/tags/network/" style="font-size: 12px;">network</a> <a href="/tags/next/" style="font-size: 10px;">next</a> <a href="/tags/notes/" style="font-size: 17.33px;">notes</a> <a href="/tags/numpy/" style="font-size: 12.67px;">numpy</a> <a href="/tags/office/" style="font-size: 10.67px;">office</a> <a href="/tags/oj/" style="font-size: 10px;">oj</a> <a href="/tags/opencv/" style="font-size: 14px;">opencv</a> <a href="/tags/oracle/" style="font-size: 10.67px;">oracle</a> <a href="/tags/overload/" style="font-size: 10.67px;">overload</a> <a href="/tags/override/" style="font-size: 10.67px;">override</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/piecewise-construct/" style="font-size: 10px;">piecewise_construct</a> <a href="/tags/pip/" style="font-size: 10px;">pip</a> <a href="/tags/pipe/" style="font-size: 10.67px;">pipe</a> <a href="/tags/process/" style="font-size: 10px;">process</a> <a href="/tags/property/" style="font-size: 10px;">property</a> <a href="/tags/prvalue/" style="font-size: 10px;">prvalue</a> <a href="/tags/pytesseract/" style="font-size: 10px;">pytesseract</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/pytorch/" style="font-size: 11.33px;">pytorch</a> <a href="/tags/qt/" style="font-size: 13.33px;">qt</a> <a href="/tags/quit/" style="font-size: 10px;">quit</a> <a href="/tags/re/" style="font-size: 11.33px;">re</a> <a href="/tags/requests/" style="font-size: 10.67px;">requests</a> <a href="/tags/rvalue/" style="font-size: 10px;">rvalue</a> <a href="/tags/shell/" style="font-size: 10.67px;">shell</a> <a href="/tags/signal/" style="font-size: 10.67px;">signal</a> <a href="/tags/sql/" style="font-size: 10.67px;">sql</a> <a href="/tags/sql注入/" style="font-size: 10px;">sql注入</a> <a href="/tags/stl/" style="font-size: 16px;">stl</a> <a href="/tags/super/" style="font-size: 10.67px;">super</a> <a href="/tags/tensorflow/" style="font-size: 14.67px;">tensorflow</a> <a href="/tags/thread/" style="font-size: 10.67px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/trie树/" style="font-size: 10px;">trie树</a> <a href="/tags/uninstall/" style="font-size: 10.67px;">uninstall</a> <a href="/tags/unordered-multimap/" style="font-size: 10px;">unordered_multimap</a> <a href="/tags/upcasting/" style="font-size: 10px;">upcasting</a> <a href="/tags/vbs/" style="font-size: 10px;">vbs</a> <a href="/tags/vector/" style="font-size: 10px;">vector</a> <a href="/tags/vfptr/" style="font-size: 10px;">vfptr</a> <a href="/tags/vmware/" style="font-size: 10px;">vmware</a> <a href="/tags/wait/" style="font-size: 10px;">wait</a> <a href="/tags/windows/" style="font-size: 10.67px;">windows</a> <a href="/tags/xlvalue/" style="font-size: 10px;">xlvalue</a> <a href="/tags/yolo/" style="font-size: 10px;">yolo</a> <a href="/tags/人工智能/" style="font-size: 10px;">人工智能</a> <a href="/tags/仿函数/" style="font-size: 10px;">仿函数</a> <a href="/tags/内存模型/" style="font-size: 10px;">内存模型</a> <a href="/tags/决策树算法/" style="font-size: 10px;">决策树算法</a> <a href="/tags/分配器/" style="font-size: 10px;">分配器</a> <a href="/tags/原理/" style="font-size: 16.67px;">原理</a> <a href="/tags/反斜杠/" style="font-size: 10px;">反斜杠</a> <a href="/tags/回文字符串/" style="font-size: 10px;">回文字符串</a> <a href="/tags/多态/" style="font-size: 10px;">多态</a> <a href="/tags/字典树/" style="font-size: 10px;">字典树</a> <a href="/tags/字符串令牌/" style="font-size: 10px;">字符串令牌</a> <a href="/tags/引用折叠/" style="font-size: 10px;">引用折叠</a> <a href="/tags/排列组合/" style="font-size: 10px;">排列组合</a> <a href="/tags/时间复杂度/" style="font-size: 10px;">时间复杂度</a> <a href="/tags/木马/" style="font-size: 10px;">木马</a> <a href="/tags/机器学习/" style="font-size: 10.67px;">机器学习</a> <a href="/tags/模式识别/" style="font-size: 10px;">模式识别</a> <a href="/tags/正则表达式/" style="font-size: 10px;">正则表达式</a> <a href="/tags/深度学习/" style="font-size: 10px;">深度学习</a> <a href="/tags/漏洞/" style="font-size: 10px;">漏洞</a> <a href="/tags/病毒/" style="font-size: 10px;">病毒</a> <a href="/tags/空字符串/" style="font-size: 10px;">空字符串</a> <a href="/tags/笔试/" style="font-size: 11.33px;">笔试</a> <a href="/tags/算法/" style="font-size: 14px;">算法</a> <a href="/tags/缓冲区溢出/" style="font-size: 10px;">缓冲区溢出</a> <a href="/tags/计算机网络/" style="font-size: 10.67px;">计算机网络</a> <a href="/tags/贪吃蛇/" style="font-size: 10px;">贪吃蛇</a> <a href="/tags/贪心算法/" style="font-size: 10px;">贪心算法</a> <a href="/tags/转载/" style="font-size: 15.33px;">转载</a> <a href="/tags/迭代器/" style="font-size: 12px;">迭代器</a> <a href="/tags/适配器/" style="font-size: 10px;">适配器</a>
     </div>
   </div>
 
@@ -930,7 +941,7 @@
     <h3 class="widget-title">归档</h3>
 
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">八月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">六月 2018</a><span class="archive-list-count">46</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">十月 2017</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">九月 2017</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">八月 2017</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">20</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">二月 2017</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>FPN理论基础与具体实现（详细教程） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="pythonpytorch" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="论文地址：Feature Pyramid Networks for Object Detection 项目地址：FPN_pytorch 0x00 前言我们在做目标检测和超分辨率重建等问题的时候，我们一般是对同一个尺寸的图片进行网络训练。我们希望我们的网络能够适应更多尺寸的图片，我们传统的做法使用图像金字塔，但是这种做法从侧面提升了计算的复杂度，我们希望可以改善这个问题，所以本文就提出了一种在特征图">
+<meta name="keywords" content="python,pytorch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FPN理论基础与具体实现（详细教程）">
+<meta property="og:url" content="http://coordinate.wang/2018/05/17/2018-05-17-FPN理论基础与具体实现/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="论文地址：Feature Pyramid Networks for Object Detection 项目地址：FPN_pytorch 0x00 前言我们在做目标检测和超分辨率重建等问题的时候，我们一般是对同一个尺寸的图片进行网络训练。我们希望我们的网络能够适应更多尺寸的图片，我们传统的做法使用图像金字塔，但是这种做法从侧面提升了计算的复杂度，我们希望可以改善这个问题，所以本文就提出了一种在特征图">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgdo2lobdj20dp08g40b.jpg">
+<meta property="og:image" content="http://wx3.sinaimg.cn/mw690/af2d2659ly1frgf2ss1l0j20va09b429.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgff4tsikj20bv08ojse.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgr1ow3lxj20ni050wfn.jpg">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1frgqozcvz2j20lj07y3yl.jpg">
+<meta property="og:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgff6s2i7j20a107mt97.jpg">
+<meta property="og:updated_time" content="2018-05-19T08:59:58.066Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FPN理论基础与具体实现（详细教程）">
+<meta name="twitter:description" content="论文地址：Feature Pyramid Networks for Object Detection 项目地址：FPN_pytorch 0x00 前言我们在做目标检测和超分辨率重建等问题的时候，我们一般是对同一个尺寸的图片进行网络训练。我们希望我们的网络能够适应更多尺寸的图片，我们传统的做法使用图像金字塔，但是这种做法从侧面提升了计算的复杂度，我们希望可以改善这个问题，所以本文就提出了一种在特征图">
+<meta name="twitter:image" content="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgdo2lobdj20dp08g40b.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-05-17-FPN理论基础与具体实现" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      FPN理论基础与具体实现（详细教程）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/05/17/2018-05-17-FPN理论基础与具体实现/" class="article-date">
+	  <time datetime="2018-05-16T16:00:00.000Z" itemprop="datePublished">五月 17, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>论文地址：<a href="https://arxiv.org/abs/1612.03144" target="_blank" rel="noopener">Feature Pyramid Networks for Object Detection</a></p>
+<p>项目地址：<a href="">FPN_pytorch</a></p>
+<h1 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h1><p>我们在做目标检测和超分辨率重建等问题的时候，我们一般是对同一个尺寸的图片进行网络训练。我们希望我们的网络能够适应更多尺寸的图片，我们传统的做法使用图像金字塔，但是这种做法从侧面提升了计算的复杂度，我们希望可以改善这个问题，所以本文就提出了一种在特征图金字塔的方法，我们称这种网络结构叫做<code>FPN</code>。</p>
+<h1 id="0x01-论文分析"><a href="#0x01-论文分析" class="headerlink" title="0x01 论文分析"></a>0x01 论文分析</h1><center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgdo2lobdj20dp08g40b.jpg"><br></center>
+
+<p>传统的图像金字塔任务是将不同尺度的图片进行特征提取（图a），主要使用人工提取特征，在人工提取特征的时代，大量使用特征化图像金字塔。它们非常重要，以至于像DPM这样的物体检测器需要密集的比例采样才能获得好的结果。但是这种做法变相的增加了训练数据，提高了运算耗时，所以这种做法已经很少被使用。</p>
+<p>对于识别任务，工程特征已经被深度卷积网络（<code>ConvNets</code>）计算的特征大部分所取代。除了能够表示更高级别的语义，<code>ConvNets</code>不同层的特征图尺度也不同，从而有助于从单一输入尺度上计算的特征识别（图b）。但是这种做法的缺陷在于只使用了高分辨率特征，因为不同层之间的语义差别很大，最后一层主要都是高分辨率的特征，所以对于低分辨率的特征表现力不足。</p>
+<p>接着为了改善上面的做法，一个很简洁的改进就是对不同尺度的特征图都进行利用，这也是<code>SSD</code>算法中使用的方法（图c）。理想情况下，<code>SSD</code>风格的金字塔将重复使用正向传递中计算的不同层次的多尺度特征图。但为了避免使用低层次特征，<code>SSD</code>会从偏后的<code>conv4_3</code>开始构建特征金字塔，这种做法没有对<code>conv4_3</code>之前的层进行利用，而这些层对于检测小目标很重要。</p>
+<center class="half"><br><img src="http://wx3.sinaimg.cn/mw690/af2d2659ly1frgf2ss1l0j20va09b429.jpg"><br></center>
+
+<p>本文提出一种新的做法（图d），通过高层特征进行上采样和低层特征进行自顶向下的连接，而且每一层都会进行预测。</p>
+<h1 id="0x02-网络结构"><a href="#0x02-网络结构" class="headerlink" title="0x02 网络结构"></a>0x02 网络结构</h1><p>作者这里做了一个有意思的比较。如果我们不是对不同尺寸的特征图进行预测，而是将不同尺寸的特征图融合后进行预测，会怎么样呢？</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgff4tsikj20bv08ojse.jpg"><br></center>
+
+<p>作者通过实验发现后者做法（也就是本文的做法）结果上会好很多。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgr1ow3lxj20ni050wfn.jpg"><br></center>
+
+<p>上图中的（f only finest level）就上通过不同尺度特征图融合后，只采用最后一层预测的结果。（d bottom-up pyramid）表示没有采用自顶向下的过程得到的结果。</p>
+<p>作者的主网络是使用的<code>ResNet</code>，而特征图金字塔分成三个部分，一个<strong>自底向上的路径</strong>（左边），一个<strong>自顶向下的路径</strong>（右边）和<strong>中间的连接</strong>部分。</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1frgqozcvz2j20lj07y3yl.jpg"><br></center>
+
+<p><strong>自底向上的路径</strong>：自下而上的路径是卷积网络的前馈计算，该算法计算由不同比例的特征映射组成的特征层级，其缩放步长为2。通常有许多层产生相同大小的输出映射，并且我们说这些层 处于相同的网络阶段。 对于我们的特征图金字塔，为每个阶段定义一个金字塔等级， 然后选择每个阶段的最后一层的输出作为我们特征图的参考集。 这种选择是自然的，因为每个阶段的最深层应具有最强的特征。<br>具体而言，对于<code>ResNets</code>，我们使用每个阶段的最后一个<code>residual block</code>输出的特征激活输出。 对于<code>conv2</code>，<code>conv3</code>，<code>conv4</code>和<code>conv5</code>输出，我们将这些最后<code>residual block</code>的输出表示为<code>{C2，C3，C4，C5}</code>，并且它们相对于输入图像具有<code>{4, 8, 16, 32}</code> 的步长。 由于其庞大的内存占用，我们不会将<code>conv1</code>纳入金字塔中。</p>
+<p><strong>自顶向下的路径</strong>：自顶向下的路径通过对在空间上更抽象但语义更强高层特征图进行上采样来幻化高分辨率的特征。随后通过侧向连接从底向上的路径，使得高层特征得到增强。每个横向连接自底向上路径和自顶向下路径的特征图具有相同的尺寸。将低分辨率的特征图做2倍上采样（为了简单起见，使用最近邻上采样）。然后通过按元素相加，将上采样映射与相应的自底而上映射合并。这个过程是迭代的，直到生成最终的分辨率图。<br>为了开始迭代，我们只需在<code>C5</code>上附加一个<code>1×1</code>卷积层来生成低分辨率图<code>P5</code>。最后，我们在每个合并的图上附加一个<code>3×3</code>卷积来生成最终的特征映射，这是为了减少上采样的混叠效应。这个最终的特征映射集称为<code>{P2，P3，P4，P5}</code>，分别对应于<code>{C2，C3，C4，C5}</code>，它们具有相同的尺寸。<br>由于金字塔的所有层次都像传统的特征化图像金字塔一样使用共享分类器/回归器，因此我们在所有特征图中固定特征维度（通道数，记为d）。我们在本文中设置<code>d = 256</code>，因此所有额外的卷积层都有<code>256</code>个通道的输出。</p>
+<center class="half"><br><img src="http://wx2.sinaimg.cn/mw690/af2d2659ly1frgff6s2i7j20a107mt97.jpg"><br></center>
+
+<p><strong>中间连接</strong>：采用<code>1×1</code>的卷积核进行连接（减少特征图数量）。</p>
+<h1 id="0x03-网络的具体实现"><a href="#0x03-网络的具体实现" class="headerlink" title="0x03 网络的具体实现"></a>0x03 网络的具体实现</h1><p>我们这里参考了<code>pytorch</code>的<code>resnet</code>的设计，关于<code>resent</code>的设计可以参看这篇<a href="https://blog.csdn.net/qq_17550379/article/details/80359471" target="_blank" rel="noopener">ResNet理论基础与具体实现（详细教程）</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FPN</span><span class="params">(nn.Module)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, block, layers)</span>:</span></span><br><span class="line">        super(FPN, self).__init__()</span><br><span class="line">        self.inplanes = <span class="number">64</span></span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2d(<span class="number">3</span>, <span class="number">64</span>, kernel_size=<span class="number">7</span>, stride=<span class="number">2</span>, padding=<span class="number">3</span>, bias=<span class="keyword">False</span>)</span><br><span class="line">        self.bn1 = nn.BatchNorm2d(<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line">        self.relu = nn.ReLU(inplace=<span class="keyword">True</span>)</span><br><span class="line">        self.maxpool = nn.MaxPool2d(kernel_size=<span class="number">3</span>, stride=<span class="number">2</span>, padding=<span class="number">1</span>)</span><br><span class="line">        <span class="comment"># Bottom-up layers</span></span><br><span class="line">        self.layer1 = self._make_layer(block,  <span class="number">64</span>, layers[<span class="number">0</span>])</span><br><span class="line">        self.layer2 = self._make_layer(block, <span class="number">128</span>, layers[<span class="number">1</span>], stride=<span class="number">2</span>)</span><br><span class="line">        self.layer3 = self._make_layer(block, <span class="number">256</span>, layers[<span class="number">2</span>], stride=<span class="number">2</span>)</span><br><span class="line">        self.layer4 = self._make_layer(block, <span class="number">512</span>, layers[<span class="number">3</span>], stride=<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Top layer</span></span><br><span class="line">        self.toplayer = nn.Conv2d(<span class="number">2048</span>, <span class="number">256</span>, kernel_size=<span class="number">1</span>, stride=<span class="number">1</span>, padding=<span class="number">0</span>)  <span class="comment"># Reduce channels</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Smooth layers</span></span><br><span class="line">        self.smooth1 = nn.Conv2d(<span class="number">256</span>, <span class="number">256</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.smooth2 = nn.Conv2d(<span class="number">256</span>, <span class="number">256</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line">        self.smooth3 = nn.Conv2d(<span class="number">256</span>, <span class="number">256</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Lateral layers</span></span><br><span class="line">        self.latlayer1 = nn.Conv2d(<span class="number">1024</span>, <span class="number">256</span>, kernel_size=<span class="number">1</span>, stride=<span class="number">1</span>, padding=<span class="number">0</span>)</span><br><span class="line">        self.latlayer2 = nn.Conv2d( <span class="number">512</span>, <span class="number">256</span>, kernel_size=<span class="number">1</span>, stride=<span class="number">1</span>, padding=<span class="number">0</span>)</span><br><span class="line">        self.latlayer3 = nn.Conv2d( <span class="number">256</span>, <span class="number">256</span>, kernel_size=<span class="number">1</span>, stride=<span class="number">1</span>, padding=<span class="number">0</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> m <span class="keyword">in</span> self.modules():</span><br><span class="line">            <span class="keyword">if</span> isinstance(m, nn.Conv2d):</span><br><span class="line">                n = m.kernel_size[<span class="number">0</span>] * m.kernel_size[<span class="number">1</span>] * m.out_channels</span><br><span class="line">                m.weight.data.normal_(<span class="number">0</span>, math.sqrt(<span class="number">2.</span> / n))</span><br><span class="line">            <span class="keyword">elif</span> isinstance(m, nn.BatchNorm2d):</span><br><span class="line">                m.weight.data.fill_(<span class="number">1</span>)</span><br><span class="line">                m.bias.data.zero_()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_make_layer</span><span class="params">(self, block, planes, blocks, stride=<span class="number">1</span>)</span>:</span></span><br><span class="line">        downsample  = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">if</span> stride != <span class="number">1</span> <span class="keyword">or</span> self.inplanes != block.expansion * planes:</span><br><span class="line">            downsample  = nn.Sequential(</span><br><span class="line">                nn.Conv2d(self.inplanes, block.expansion * planes, kernel_size=<span class="number">1</span>, stride=stride, bias=<span class="keyword">False</span>),</span><br><span class="line">                nn.BatchNorm2d(block.expansion * planes)</span><br><span class="line">            )</span><br><span class="line">        layers = []</span><br><span class="line">        layers.append(block(self.inplanes, planes, stride, downsample))</span><br><span class="line">        self.inplanes = planes * block.expansion</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, blocks):</span><br><span class="line">            layers.append(block(self.inplanes, planes))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nn.Sequential(*layers)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_upsample_add</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        _,_,H,W = y.size()</span><br><span class="line">        <span class="keyword">return</span> F.upsample(x, size=(H,W), mode=<span class="string">'bilinear'</span>) + y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="comment"># Bottom-up</span></span><br><span class="line">        x = self.conv1(x)</span><br><span class="line">        x = self.bn1(x)</span><br><span class="line">        x = self.relu(x)</span><br><span class="line">        c1 = self.maxpool(x)</span><br><span class="line">        </span><br><span class="line">        c2 = self.layer1(c1)</span><br><span class="line">        c3 = self.layer2(c2)</span><br><span class="line">        c4 = self.layer3(c3)</span><br><span class="line">        c5 = self.layer4(c4)</span><br><span class="line">        <span class="comment"># Top-down</span></span><br><span class="line">        p5 = self.toplayer(c5)</span><br><span class="line">        p4 = self._upsample_add(p5, self.latlayer1(c4))</span><br><span class="line">        p3 = self._upsample_add(p4, self.latlayer2(c3))</span><br><span class="line">        p2 = self._upsample_add(p3, self.latlayer3(c2))</span><br><span class="line">        <span class="comment"># Smooth</span></span><br><span class="line">        p4 = self.smooth1(p4)</span><br><span class="line">        p3 = self.smooth2(p3)</span><br><span class="line">        p2 = self.smooth3(p2)</span><br><span class="line">        <span class="keyword">return</span> p2, p3, p4, p5</span><br></pre></td></tr></table></figure>
+<p>关于<code>FPN</code>的全部代码在这里：<a href="https://github.com/luliyucoordinate/FPN_pytorch" target="_blank" rel="noopener">FPN_pytorch</a></p>
+<p><strong>如有任何问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/机器学习/">机器学习</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pytorch/">pytorch</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/17/2018-05-17-ResNet理论基础与具体实现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          ResNet理论基础与具体实现（详细教程）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/05/12/2018-05-12-Leetcode-3--无重复字符的最长子串/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Leetcode 3:无重复字符的最长子串（最详细解决方案！！！）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-前言"><span class="nav-number">1.</span> <span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-论文分析"><span class="nav-number">2.</span> <span class="nav-text">0x01 论文分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-网络结构"><span class="nav-number">3.</span> <span class="nav-text">0x02 网络结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-网络的具体实现"><span class="nav-number">4.</span> <span class="nav-text">0x03 网络的具体实现</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

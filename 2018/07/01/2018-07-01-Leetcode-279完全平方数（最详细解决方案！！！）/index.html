@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Leetcode 279:完全平方数（最详细解决方案！！！） | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="cpythonc++" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。 示例 1: 123输入: n = 12输出: 3 解释: 12 = 4 + 4 + 4. 示例 2: 123输入: n = 13输出: 2解释: 13 = 4 + 9. 解题思路 很多人第一眼看到这个问题，想到的第一种做法就是使用贪心算法，但是对于这个问题是不">
+<meta name="keywords" content="c,python,c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode 279:完全平方数（最详细解决方案！！！）">
+<meta property="og:url" content="http://coordinate.wang/2018/07/01/2018-07-01-Leetcode-279完全平方数（最详细解决方案！！！）/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。 示例 1: 123输入: n = 12输出: 3 解释: 12 = 4 + 4 + 4. 示例 2: 123输入: n = 13输出: 2解释: 13 = 4 + 9. 解题思路 很多人第一眼看到这个问题，想到的第一种做法就是使用贪心算法，但是对于这个问题是不">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fsrq774zfhj20oz0hfmyi.jpg">
+<meta property="og:updated_time" content="2018-07-01T09:27:47.999Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode 279:完全平方数（最详细解决方案！！！）">
+<meta name="twitter:description" content="给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。 示例 1: 123输入: n = 12输出: 3 解释: 12 = 4 + 4 + 4. 示例 2: 123输入: n = 13输出: 2解释: 13 = 4 + 9. 解题思路 很多人第一眼看到这个问题，想到的第一种做法就是使用贪心算法，但是对于这个问题是不">
+<meta name="twitter:image" content="http://wx4.sinaimg.cn/mw690/af2d2659ly1fsrq774zfhj20oz0hfmyi.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-07-01-Leetcode-279完全平方数（最详细解决方案！！！）" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Leetcode 279:完全平方数（最详细解决方案！！！）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/07/01/2018-07-01-Leetcode-279完全平方数（最详细解决方案！！！）/" class="article-date">
+	  <time datetime="2018-06-30T16:00:00.000Z" itemprop="datePublished">七月 1, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>给定正整数 <em>n</em>，找到若干个完全平方数（比如 <code>1, 4, 9, 16, ...</code>）使得它们的和等于 <em>n</em>。你需要让组成和的完全平方数的个数最少。</p>
+<p><strong>示例 1:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: n = 12</span><br><span class="line">输出: 3 </span><br><span class="line">解释: 12 = 4 + 4 + 4.</span><br></pre></td></tr></table></figure>
+<p><strong>示例 2:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入: n = 13</span><br><span class="line">输出: 2</span><br><span class="line">解释: 13 = 4 + 9.</span><br></pre></td></tr></table></figure>
+<p><strong>解题思路</strong></p>
+<p>很多人第一眼看到这个问题，想到的第一种做法就是使用贪心算法，但是对于这个问题是不适用的，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12 = 9 + 1 + 1 + 1</span><br></pre></td></tr></table></figure>
+<p>我们根据题目中<strong>完全平方数的个数最少</strong>，我们在什么算法中用到过<strong>最少</strong>这个关键字？啊哈！<strong>最短路径问题</strong>。那么和这个问题有什么联系呢？</p>
+<center class="half"><br><img src="http://wx4.sinaimg.cn/mw690/af2d2659ly1fsrq774zfhj20oz0hfmyi.jpg"><br></center>
+
+<p>现在我们就可以用最短路径算法来解决这个问题。最短路径算法其实就是图的广度优先遍历。例如对于上图中的<code>5</code>，我们要前往<code>0</code>，我们的第一步有两种走法，先走<code>4</code>和先走<code>1</code>。所以我们需要建立一个队列或者栈，然后将第一步的走法压入队列或者栈中。如下（使用队列， 我们同时记录走的步数）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q : (4, 1) (1, 1)</span><br></pre></td></tr></table></figure>
+<p>我们将<code>4</code>出队，然后看<code>4</code>的下一步怎么走，发现只能走<code>3</code>，所以我们将<code>(3, 2)</code>入队</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">q : (1, 1) (3, 2)</span><br></pre></td></tr></table></figure>
+<p>接着我们将<code>(1, 1)</code>弹出，我们看<code>1</code>的下一步怎么走，发现只能走<code>0</code>，这个时候我们发现已经到达了<code>0</code>，那么我们更新<code>step+1</code>，然后出循环即可。以下是代码的全部过程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        q = list()</span><br><span class="line">        q.append([n, <span class="number">0</span>])</span><br><span class="line">        visited = [<span class="keyword">False</span> <span class="keyword">for</span> _ <span class="keyword">in</span> range(n+<span class="number">1</span>)]</span><br><span class="line">        visited[n] = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> any(q):</span><br><span class="line">            num, step = q.pop(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">            i = <span class="number">1</span></span><br><span class="line">            tNum = num - i**<span class="number">2</span></span><br><span class="line">            <span class="keyword">while</span> tNum &gt;= <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> tNum == <span class="number">0</span>:</span><br><span class="line">                    <span class="keyword">return</span> step + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> visited[tNum]:</span><br><span class="line">                    q.append((tNum, step + <span class="number">1</span>))</span><br><span class="line">                    visited[tNum] = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line">                i += <span class="number">1</span></span><br><span class="line">                tNum = num - i**<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<p>但是这个解法不是最优的解法，但是我认为是一个不错的思维方式。那么更加快速的解法是什么样的呢？我们就要用到数学知识了，这里使用的是<strong>四平方和定理</strong>。</p>
+<blockquote>
+<p>Lagrange 四平方定理： 任何一个正整数都可以表示成不超过四个整数的平方之和。 </p>
+</blockquote>
+<p>那么我们这个问题的解法就变得很简单了，我们的结果只有<code>1,2,3,4</code>，四种可能。</p>
+<p>另外还有一个非常重要的推论</p>
+<blockquote>
+<p>if and only if n is not of the form $n = 4^a(8b + 7)$ for integers a and b. </p>
+<p>满足四数平方和定理的数n（这里要满足由四个数构成，小于四个不行），必定满足 $n = 4^a(8b + 7)$ </p>
+</blockquote>
+<p>根据这个重要的推论，我们可以非常迅速的写出这样的代码。</p>
+<p>我们首先将输入的<code>n</code>迅速缩小。然后我们再判断，这个缩小后的数是否可以通过<code>两个平方数的和或一个平方数</code>组成，不能的话我们返回<code>3</code>，能的话我们返回<code>平方数的个数</code>。</p>
+<p>现在我们的问题已经缩减到了，怎么判断一个数是由一个还是由两个平方数的和构成？对于这个问题，我们当然可以暴力破解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">while</span> n % <span class="number">4</span> == <span class="number">0</span>:</span><br><span class="line">            n /= <span class="number">4</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> n % <span class="number">8</span> == <span class="number">7</span>: </span><br><span class="line">            <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line">        a = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> a**<span class="number">2</span> &lt;= n:</span><br><span class="line">            b = int((n - a**<span class="number">2</span>)**<span class="number">0.5</span>)</span><br><span class="line">            <span class="keyword">if</span> a**<span class="number">2</span> + b**<span class="number">2</span> == n:</span><br><span class="line">                <span class="keyword">return</span> (<span class="keyword">not</span> <span class="keyword">not</span> a) + (<span class="keyword">not</span> <span class="keyword">not</span> b)</span><br><span class="line"></span><br><span class="line">            a += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>另外这个问题还有一种经典的解法，就是使用动态规划。动态规划的问题关键在于状态转移方程，这里的思路还是和前面使用图的广度优先遍历一样。例如</p>
+<p>我们要知道<code>12</code>最少有多少个数构成，实际上如果我们走了一步的话，我们需要知道<code>11、8、3</code>对应的步数，如果我们不走，我们就需要知道<code>12</code>的步数，我们只要通过比较是走<code>0</code>步小，还是走<code>1步</code>哪个更小即可。通过一个式子表示就是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num[n] = min(num[n], num[n-i**2] + 1)</span><br></pre></td></tr></table></figure>
+<p>所以我们可以先定义一个<code>n</code>大小的数组（static类型），这里我们要使数组初始化为无穷大，在<code>python</code>中我们可以使用<code>float(&#39;inf&#39;)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    _dp = list()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type n: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        dp = self._dp</span><br><span class="line">        dp = [float(<span class="string">'inf'</span>) <span class="keyword">for</span> i <span class="keyword">in</span> range(n + <span class="number">1</span>)]</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(n + <span class="number">1</span>):</span><br><span class="line">            j = <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> i + j**<span class="number">2</span> &lt;= n:</span><br><span class="line">                dp[i + j**<span class="number">2</span>] = min(dp[i + j**<span class="number">2</span>], dp[i] + <span class="number">1</span>)</span><br><span class="line">                j += <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span> dp[n]</span><br></pre></td></tr></table></figure>
+<p>但是这里写法我们在实际测试的时候超时了。</p>
+<p>以下写法参考了<a href="https://leetcode.com/problems/perfect-squares/discuss/71512/Static-DP-C++-12-ms-Python-172-ms-Ruby-384-ms?page=3" target="_blank" rel="noopener">StefanPochmann</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    _dp = [<span class="number">0</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numSquares</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        dp = self._dp</span><br><span class="line">        <span class="keyword">while</span> len(dp) &lt;= n:</span><br><span class="line">            dp += list((min(dp[-i*i] <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, int(len(dp)**<span class="number">0.5</span>+<span class="number">1</span>))) + <span class="number">1</span>,))</span><br><span class="line">        <span class="keyword">return</span> dp[n]</span><br></pre></td></tr></table></figure>
+<p>思路还是和上面一样，但是这里<code>,</code>不是乱加的。为什么要加？这是因为<code>int</code>无法初始化<code>list</code>，我们只有通过加上一个<code>,</code>，将<code>int</code>变成<code>tuple</code>才可以初始化。</p>
+<p><strong>我将该问题的其他语言版本添加到了我的<a href="https://github.com/luliyucoordinate/Leetcode" target="_blank" rel="noopener">GitHub Leetcode</a></strong></p>
+<p><strong>如有问题，希望大家指出！！！</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/算法/">算法</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/07/01/2018-07-01-Leetcode-127单词接龙（最详细解决方案！！！）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Leetcode 127:单词接龙（最详细解决方案！！！）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/28/2018-06-28-Leetcode-341扁平化嵌套列表迭代器（最详细解决方案！！！）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">Leetcode 341:扁平化嵌套列表迭代器（最详细解决方案！！！）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav">无</ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

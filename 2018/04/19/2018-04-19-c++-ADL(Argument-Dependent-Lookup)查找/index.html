@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>c++ ADL(Argument-Dependent Lookup)查找 | coordinate</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="c++ADL" />
+  
+  
+    <meta name="google-site-verification" content="true" />
+  
+  
+    <meta name="baidu-site-verification" content="true" />
+  
+  
+    <meta name="360-site-verification" content="true" />
+  
+  <meta name="description" content="0X00 简述ADL全称是Argument-Dependent Lookup的简写，作用是扩展命名空间的查找范围，通过函数参数查找函数的命名空间。 0x01 问题引出我们通过一个例子引出为什么要有这种机制。现在我们有这样一种命名空间f1 12345678910namespace f1&amp;#123;    struct data &amp;#123;&amp;#125;;    data operator+(cons">
+<meta name="keywords" content="c++,ADL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++ ADL(Argument-Dependent Lookup)查找">
+<meta property="og:url" content="http://coordinate.wang/2018/04/19/2018-04-19-c++-ADL(Argument-Dependent-Lookup)查找/index.html">
+<meta property="og:site_name" content="coordinate">
+<meta property="og:description" content="0X00 简述ADL全称是Argument-Dependent Lookup的简写，作用是扩展命名空间的查找范围，通过函数参数查找函数的命名空间。 0x01 问题引出我们通过一个例子引出为什么要有这种机制。现在我们有这样一种命名空间f1 12345678910namespace f1&amp;#123;    struct data &amp;#123;&amp;#125;;    data operator+(cons">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-19T09:10:09.203Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="c++ ADL(Argument-Dependent Lookup)查找">
+<meta name="twitter:description" content="0X00 简述ADL全称是Argument-Dependent Lookup的简写，作用是扩展命名空间的查找范围，通过函数参数查找函数的命名空间。 0x01 问题引出我们通过一个例子引出为什么要有这种机制。现在我们有这样一种命名空间f1 12345678910namespace f1&amp;#123;    struct data &amp;#123;&amp;#125;;    data operator+(cons">
+  
+    <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Oswald%3A300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css" >
+  <link rel="stylesheet" href="/css/fashion.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+
+</head>
+
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+
+
+<header id="allheader" class="site-header" role="banner" 
+   >
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/pose.jpg">
+              </a>
+            
+          </h1>
+          
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+
+            <div class="clearfix sf-menu">
+              <ul id="main-nav" class="menu sf-js-enabled sf-arrows"  style="touch-action: pan-y;">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/about">关于</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-2018-04-19-c++-ADL(Argument-Dependent-Lookup)查找" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      c++ ADL(Argument-Dependent Lookup)查找
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2018/04/19/2018-04-19-c++-ADL(Argument-Dependent-Lookup)查找/" class="article-date">
+	  <time datetime="2018-04-18T16:00:00.000Z" itemprop="datePublished">四月 19, 2018</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/c/">c++</a>
+ 
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="0X00-简述"><a href="#0X00-简述" class="headerlink" title="0X00 简述"></a>0X00 简述</h1><p><code>ADL</code>全称是<code>Argument-Dependent Lookup</code>的简写，作用是扩展命名空间的查找范围，通过函数参数查找函数的命名空间。</p>
+<h1 id="0x01-问题引出"><a href="#0x01-问题引出" class="headerlink" title="0x01 问题引出"></a>0x01 问题引出</h1><p>我们通过一个例子引出为什么要有这种机制。现在我们有这样一种命名空间<code>f1</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> f1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">data</span> &#123;</span>&#125;;</span><br><span class="line">    data <span class="keyword">operator</span>+(<span class="keyword">const</span> data&amp; A, <span class="keyword">const</span> data&amp; B)</span><br><span class="line">    &#123;</span><br><span class="line">        data C;</span><br><span class="line">        add(A, B, C);<span class="comment">//A+B--&gt;C</span></span><br><span class="line">        <span class="keyword">return</span> C;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们想要实现这样的操作</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A = B + C + D</span><br></pre></td></tr></table></figure>
+<p>如果没有<code>ADL</code>机制的话，我们式子就会变得很复杂</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A = f1::<span class="keyword">operator</span>+(f1::<span class="keyword">operator</span>+(B, C), D);</span><br></pre></td></tr></table></figure>
+<p>而由于出现了<code>ADL</code>这种机制，我们的操作写法就变得很简洁</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A = <span class="keyword">operator</span>+(<span class="keyword">operator</span>+(B, C), D);</span><br></pre></td></tr></table></figure>
+<p>这实际上等价于<code>A = B + C + D;</code>这种写法。我们这里通过<code>ADL</code>机制获取了参数的命名空间。</p>
+<p>这个问题看上去很容易，但是一旦我们使用了多重命名空间、<code>name hiding</code>、<code>overload</code>混合，那么这个问题将会变得很复杂。</p>
+<h1 id="0x02-问题深入"><a href="#0x02-问题深入" class="headerlink" title="0x02 问题深入"></a>0x02 问题深入</h1><p>我们看这样的一个问题</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> c1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> c2</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">cc</span>&#123;</span>&#125;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line"><span class="keyword">namespace</span> f1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line">    <span class="keyword">namespace</span> f2</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            c1::c2::cc o;</span><br><span class="line">            f(o);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候我问你，在<code>f1::f2::g</code>中的<code>f(o)</code>使用的是哪个<code>f</code> ？我们分析一下，我们有几个选择</p>
+<ul>
+<li>因为我们知道参数<code>o</code>的类型是<code>c1::c2::cc</code>，所以我们通过<code>ADL</code>推测出命名空间为<code>c1::c2</code>，这时候的答案就是<code>c1::c2::f</code>。</li>
+<li><code>c1::f</code>可以吗？</li>
+<li><code>::f</code>可以吗？</li>
+<li><code>f1::f</code>可以吗？</li>
+<li><code>f1::f2::f</code>，这个有可能吗？可能啊，因为我们的<code>g</code>函数的命名空间就是<code>f1::f2::g</code>。同一个命名空间下的函数，这样调用也没问题啊。</li>
+</ul>
+<p>OK! 这个时候问题就出现了。到底答案是哪个呢？我们加大难度，这个时候我们将全局函数<code>f</code>的参数去除<code>const</code>，变为这样</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们这个时候从函数重载（<code>overload</code>）的角度考虑这个问题，那么现在这个全局的<code>f</code>成为了最佳匹配。但是它被<code>f1::f2::f</code>这个函数给隐藏了（<code>name hiding</code>）。那么同样的道理<code>f1::f</code>和<code>c1::f</code>也就不会被调用了。那么我们一定要使用这个全局函数怎么做呢？可以这样子做</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line"><span class="keyword">namespace</span> f1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line">    <span class="keyword">namespace</span> f2</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line">        <span class="keyword">using</span> ::f;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            c1::c2::cc o;</span><br><span class="line">            f(o);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个时候对于函数<code>g</code>，函数<code>c1::c2::f</code>和<code>::f</code>都是可调用的，但是根据参数类型的最佳匹配原则，我们调用了<code>::f</code>。</p>
+<p>接着回到最初问题，这个时候我们就有了两个答案<code>c1::c2::f</code>和<code>f1::f2::f</code>。实际上这个程序就会编译出错。</p>
+<h1 id="0x03-问题后续"><a href="#0x03-问题后续" class="headerlink" title="0x03 问题后续"></a>0x03 问题后续</h1><p>我们接着看这样的问题</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> c1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> c2</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">cc</span>&#123;</span>&#125;;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(cc&amp; o)</span></span>&#123;&#125;				<span class="comment">//#1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(c1::c2::cc&amp; o)</span></span>&#123;&#125;</span><br><span class="line"><span class="keyword">namespace</span> f1</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">namespace</span> f2</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">const</span> c1::c2::cc&amp; o)</span></span>&#123;&#125;	<span class="comment">//#2</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            c1::c2::cc o;</span><br><span class="line">            <span class="keyword">const</span> c1::c2::<span class="function">cc <span class="title">c</span><span class="params">(o)</span></span>;</span><br><span class="line">            f(o);</span><br><span class="line">            f(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(c1::c2::cc&amp; o)</span></span>&#123;&#125;		<span class="comment">//#3</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为<code>#3</code>是定义于<code>g</code>的后面，所以在<code>g</code>中是不可见的。全局函数<code>::f</code>被<code>#2</code>隐藏（<code>name hiding</code>）。因此对于<code>f(o)</code>来说，我们通过使用<code>ADL</code>可以调用<code>#1</code>，我们通过<code>name hiding</code>也可以调用<code>#2</code>，但是我们最后调用最佳匹配<code>#1</code>。而对于<code>f(c)</code>我们通过同样的分析，我们知道调用<code>#2</code>。</p>
+<p>最后我们总结为以下三个步骤帮助我们判断</p>
+<ul>
+<li>找到所有的重载函数<ul>
+<li>调用函数自己的命名空间中</li>
+<li>调用函数的父命名空间中</li>
+<li>参数的命名空间中</li>
+<li>通过<code>using directive;</code>导入的命名空间中（<code>using namespace std;</code>）</li>
+<li>通过<code>using declaration;</code>导入的命名空间中（<code>using std::cout;</code>）</li>
+</ul>
+</li>
+<li>排除掉所有的<code>name hiding</code></li>
+<li>选择最佳匹配（如果没有最佳匹配，程序编译出错）</li>
+</ul>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/c/">c++</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ADL/">ADL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+        <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDQxNC8xMDk1MQ==">
+        <script type="text/javascript">
+           (function(d, s) {
+               var j, e = d.getElementsByTagName(s)[0];
+               if (typeof LivereTower === 'function') { return; }
+               j = d.createElement(s);
+               j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+               j.async = true;
+               e.parentNode.insertBefore(j, e);
+           })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+        </div>
+        <!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/05/06/2018-05-06-python快速读取非常大的文件/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          python快速读取非常大的文件
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/04/14/2018-04-14-python-fire使用指南/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">python fire使用指南</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0X00-简述"><span class="nav-number">1.</span> <span class="nav-text">0X00 简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-问题引出"><span class="nav-number">2.</span> <span class="nav-text">0x01 问题引出</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-问题深入"><span class="nav-number">3.</span> <span class="nav-text">0x02 问题深入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-问题后续"><span class="nav-number">4.</span> <span class="nav-text">0x03 问题后续</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2018 coordinate All Rights Reserved.
+        
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+
+
+    <!-- headerblur min height -->
+    
+    
+</script>
+    
+<div style="display: none;">
+  <script src="https://s11.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+</div>
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>
