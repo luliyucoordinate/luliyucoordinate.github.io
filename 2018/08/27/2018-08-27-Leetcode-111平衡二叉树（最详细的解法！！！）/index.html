@@ -17,18 +17,18 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="给定一个二叉树，找出其最小深度。 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。 说明: 叶子节点是指没有子节点的节点。 示例: 给定二叉树 [3,9,20,null,null,15,7], 12345  3 / \9  20  /  \ 15   7 返回它的最小深度  2. 解题思路 这个问题非常的简单，我们只要对访问的节点node作如下几种判断  node为空 node.left为">
+  <meta name="description" content="给定一个二叉树，找出其最小深度。 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。 说明: 叶子节点是指没有子节点的节点。 示例: 给定二叉树 [3,9,20,null,null,15,7], 12345  3 / \9  20  /  \ 15   7 返回它的最小深度  2.">
 <meta name="keywords" content="c,python,c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 111：二叉树的最小深度（最详细的解法！！！）">
 <meta property="og:url" content="http://coordinate.wang/2018/08/27/2018-08-27-Leetcode-111平衡二叉树（最详细的解法！！！）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="给定一个二叉树，找出其最小深度。 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。 说明: 叶子节点是指没有子节点的节点。 示例: 给定二叉树 [3,9,20,null,null,15,7], 12345  3 / \9  20  /  \ 15   7 返回它的最小深度  2. 解题思路 这个问题非常的简单，我们只要对访问的节点node作如下几种判断  node为空 node.left为">
+<meta property="og:description" content="给定一个二叉树，找出其最小深度。 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。 说明: 叶子节点是指没有子节点的节点。 示例: 给定二叉树 [3,9,20,null,null,15,7], 12345  3 / \9  20  /  \ 15   7 返回它的最小深度  2.">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:28.780Z">
+<meta property="og:updated_time" content="2018-09-14T01:00:02.043Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 111：二叉树的最小深度（最详细的解法！！！）">
-<meta name="twitter:description" content="给定一个二叉树，找出其最小深度。 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。 说明: 叶子节点是指没有子节点的节点。 示例: 给定二叉树 [3,9,20,null,null,15,7], 12345  3 / \9  20  /  \ 15   7 返回它的最小深度  2. 解题思路 这个问题非常的简单，我们只要对访问的节点node作如下几种判断  node为空 node.left为">
+<meta name="twitter:description" content="给定一个二叉树，找出其最小深度。 最小深度是从根节点到最近叶子节点的最短路径上的节点数量。 说明: 叶子节点是指没有子节点的节点。 示例: 给定二叉树 [3,9,20,null,null,15,7], 12345  3 / \9  20  /  \ 15   7 返回它的最小深度  2.">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -152,6 +152,7 @@
 <p>给定二叉树 <code>[3,9,20,null,null,15,7]</code>,</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
 <p>返回它的最小深度  2.</p>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这个问题非常的简单，我们只要对访问的节点<code>node</code>作如下几种判断</p>
 <ul>

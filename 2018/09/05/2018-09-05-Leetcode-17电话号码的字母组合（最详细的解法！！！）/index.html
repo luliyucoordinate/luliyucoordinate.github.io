@@ -26,7 +26,7 @@
 <meta property="og:description" content="给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。     示例: 12输入：&amp;quot;23&amp;quot;输出：[&amp;quot;ad&amp;quot;, &amp;quot;ae&amp;quot;, &amp;quot;af&amp;quot;, &amp;quot;bd&amp;quot;, &amp;quot;be&amp;quot;, &amp;quot;bf&amp;quot;, &amp;qu">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.045Z">
+<meta property="og:updated_time" content="2018-09-14T00:58:34.612Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 17：电话号码的字母组合（最详细的解法！！！）">
 <meta name="twitter:description" content="给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。 给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。     示例: 12输入：&amp;quot;23&amp;quot;输出：[&amp;quot;ad&amp;quot;, &amp;quot;ae&amp;quot;, &amp;quot;af&amp;quot;, &amp;quot;bd&amp;quot;, &amp;quot;be&amp;quot;, &amp;quot;bf&amp;quot;, &amp;qu">
@@ -152,6 +152,7 @@
 <p><center class="half"><br>    <img src="http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Telephone-keypad2.svg/200px-Telephone-keypad2.svg.png"><br></center><br><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：&quot;23&quot;</span><br><span class="line">输出：[&quot;ad&quot;, &quot;ae&quot;, &quot;af&quot;, &quot;bd&quot;, &quot;be&quot;, &quot;bf&quot;, &quot;cd&quot;, &quot;ce&quot;, &quot;cf&quot;].</span><br></pre></td></tr></table></figure>
 <p><strong>说明:</strong><br>尽管上面的答案是按字典序排列的，但是你可以任意选择答案输出的顺序。</p>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这是一个典型的通过回溯思想来解决的问题，其实就是暴力破解。假设我们先输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a d</span><br></pre></td></tr></table></figure>

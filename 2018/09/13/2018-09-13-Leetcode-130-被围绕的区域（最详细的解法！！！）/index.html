@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="给定一个二维的矩阵，包含 &amp;#39;X&amp;#39; 和 &amp;#39;O&amp;#39;（字母 O）。 找到所有被 &amp;#39;X&amp;#39; 围绕的区域，并将这些区域里所有的 &amp;#39;O&amp;#39; 用 &amp;#39;X&amp;#39; 填充。 示例: 1234X X X XX O O XX X O XX O X X 运行你的函数后，矩阵变为： 1234X X X XX X X XX X X XX O X X 解释: 被">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.717Z">
+<meta property="og:updated_time" content="2018-09-14T00:55:51.861Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 130：被围绕的区域（最详细的解法！！！）">
 <meta name="twitter:description" content="给定一个二维的矩阵，包含 &amp;#39;X&amp;#39; 和 &amp;#39;O&amp;#39;（字母 O）。 找到所有被 &amp;#39;X&amp;#39; 围绕的区域，并将这些区域里所有的 &amp;#39;O&amp;#39; 用 &amp;#39;X&amp;#39; 填充。 示例: 1234X X X XX O O XX X O XX O X X 运行你的函数后，矩阵变为： 1234X X X XX X X XX X X XX O X X 解释: 被">
@@ -153,6 +153,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X X X X</span><br><span class="line">X X X X</span><br><span class="line">X X X X</span><br><span class="line">X O X X</span><br></pre></td></tr></table></figure>
 <p><strong>解释:</strong></p>
 <p>被围绕的区间不会存在于边界上，换句话说，任何边界上的 <code>&#39;O&#39;</code> 都不会被填充为 <code>&#39;X&#39;</code>。 任何不在边界上，或不与边界上的 <code>&#39;O&#39;</code> 相连的 <code>&#39;O&#39;</code> 最终都会被填充为 <code>&#39;X&#39;</code>。如果两个元素在水平或垂直方向相邻，则称它们是“相连”的。</p>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这个问题，和之前的<a href="https://blog.csdn.net/qq_17550379/article/details/82662595" target="_blank" rel="noopener"> Leetcode 79：单词搜索（最详细的解法！！！）</a>、<a href="https://blog.csdn.net/qq_17550379/article/details/82682536" target="_blank" rel="noopener">Leetcode 200：岛屿的个数（最详细的解法！！！）</a>很类似。这个问题一个很简单的处理思路就是将外围的<code>O</code>元素单独考虑。基于这个思路，我们将外围的<code>O</code>替换为标记为<code>*</code>。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">X X X X</span><br><span class="line">X O O X</span><br><span class="line">X X O X</span><br><span class="line">X * X X</span><br></pre></td></tr></table></figure>

@@ -26,7 +26,7 @@
 <meta property="og:description" content="二进制手表顶部有 4 个 LED 代表小时（0-11），底部的 6 个 LED 代表分钟（0-59）。 每个 LED 代表一个 0 或 1，最低位在右侧。       例如，上面的二进制手表读取 “3:25”。 给定一个非负整数 n 代表当前 LED 亮着的数量，返回所有可能的时间。 案例: 12输入: n = 1返回: [&amp;quot;1:00&amp;quot;, &amp;quot;2:00&amp;quot;, &amp;">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/8/8b/Binary_clock_samui_moon.jpg">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.686Z">
+<meta property="og:updated_time" content="2018-09-14T00:56:05.426Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 401：二进制手表（最详细的解法！！！）">
 <meta name="twitter:description" content="二进制手表顶部有 4 个 LED 代表小时（0-11），底部的 6 个 LED 代表分钟（0-59）。 每个 LED 代表一个 0 或 1，最低位在右侧。       例如，上面的二进制手表读取 “3:25”。 给定一个非负整数 n 代表当前 LED 亮着的数量，返回所有可能的时间。 案例: 12输入: n = 1返回: [&amp;quot;1:00&amp;quot;, &amp;quot;2:00&amp;quot;, &amp;">
@@ -161,6 +161,7 @@
 <li>小时不会以零开头，比如 “01:00” 是不允许的，应为 “1:00”。</li>
 <li>分钟必须由两位数组成，可能会以零开头，比如 “10:2” 是无效的，应为 “10:02”。</li>
 </ul>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这个问题使用回溯法可以很快的解决，我们首先看递归的边界条件，无非是</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> hours &gt;= <span class="number">12</span> <span class="keyword">or</span> mins &gt; <span class="number">59</span>:</span><br></pre></td></tr></table></figure>

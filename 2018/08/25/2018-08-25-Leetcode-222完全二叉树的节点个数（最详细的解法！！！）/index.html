@@ -17,18 +17,18 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="给出一个完全二叉树，求出该树的节点个数。 说明： 完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。 示例: 12345678输入:     1   / \  2   3 / \  /4  5 6输出: 6 解题思路 这个问题使用递归很好解决，我们只要">
+  <meta name="description" content="给出一个完全二叉树，求出该树的节点个数。 说明： 完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。 示例: 12345678输入:     1   / \  2   3 / \  /4  5 6输出: 6">
 <meta name="keywords" content="c,python,c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 222：完全二叉树的节点个数（最详细的解法！！！）">
 <meta property="og:url" content="http://coordinate.wang/2018/08/25/2018-08-25-Leetcode-222完全二叉树的节点个数（最详细的解法！！！）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="给出一个完全二叉树，求出该树的节点个数。 说明： 完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。 示例: 12345678输入:     1   / \  2   3 / \  /4  5 6输出: 6 解题思路 这个问题使用递归很好解决，我们只要">
+<meta property="og:description" content="给出一个完全二叉树，求出该树的节点个数。 说明： 完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。 示例: 12345678输入:     1   / \  2   3 / \  /4  5 6输出: 6">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:28.749Z">
+<meta property="og:updated_time" content="2018-09-14T01:00:09.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 222：完全二叉树的节点个数（最详细的解法！！！）">
-<meta name="twitter:description" content="给出一个完全二叉树，求出该树的节点个数。 说明： 完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。 示例: 12345678输入:     1   / \  2   3 / \  /4  5 6输出: 6 解题思路 这个问题使用递归很好解决，我们只要">
+<meta name="twitter:description" content="给出一个完全二叉树，求出该树的节点个数。 说明： 完全二叉树的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。 示例: 12345678输入:     1   / \  2   3 / \  /4  5 6输出: 6">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -150,6 +150,7 @@
 <p><a href="https://baike.baidu.com/item/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/7773232?fr=aladdin" target="_blank" rel="noopener">完全二叉树</a>的定义如下：在完全二叉树中，除了最底层节点可能没填满外，其余每层节点数都达到最大值，并且最下面一层的节点都集中在该层最左边的若干位置。若最底层为第 h 层，则该层包含 1~ 2h 个节点。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \  /</span><br><span class="line">4  5 6</span><br><span class="line"></span><br><span class="line">输出: 6</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这个问题使用递归很好解决，我们只要考虑好如下四种情况就可以很快解决这个问题。</p>
 <ul>

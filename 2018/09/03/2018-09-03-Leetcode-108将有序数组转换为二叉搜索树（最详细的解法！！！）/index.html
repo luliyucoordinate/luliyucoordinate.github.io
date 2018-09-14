@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。 本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。 示例: 123456789给定有序数组: [-10,-3,0,5,9],一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：      0     / \   -3   9   /   / -10">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.014Z">
+<meta property="og:updated_time" content="2018-09-14T00:58:43.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 108：将有序数组转换为二叉搜索树（最详细的解法！！！）">
 <meta name="twitter:description" content="将一个按照升序排列的有序数组，转换为一棵高度平衡二叉搜索树。 本题中，一个高度平衡二叉树是指一个二叉树每个节点 的左右两个子树的高度差的绝对值不超过 1。 示例: 123456789给定有序数组: [-10,-3,0,5,9],一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：      0     / \   -3   9   /   / -10">
@@ -149,6 +149,7 @@
 <p>本题中，一个高度平衡二叉树是指一个二叉树<em>每个节点</em> 的左右两个子树的高度差的绝对值不超过 1。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">给定有序数组: [-10,-3,0,5,9],</span><br><span class="line"></span><br><span class="line">一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：</span><br><span class="line"></span><br><span class="line">      0</span><br><span class="line">     / \</span><br><span class="line">   -3   9</span><br><span class="line">   /   /</span><br><span class="line"> -10  5</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>我们回到这样的一种性质：对于一个二叉搜索树来说，它的中序遍历是一个有序数组。所以，这个问题的另一种表述就是：通过一颗二叉搜索树的中序遍历，推导出这颗二叉搜索树的形状。但是这样推导出来的二叉搜索树形状有很多，所以题目又限定了这样的条件<strong>高度平衡二叉搜索树</strong>，但是依旧会出现很多答案，但是没关系，我们只要有一种解就可以啦。例如，有序数组<code>[-10, -3, -1, -0, 9]</code>，我们有如下几种情况</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   -1                           0</span><br><span class="line">  /   \                        / \</span><br><span class="line">-10    0          and        -3   9</span><br><span class="line">  \     \                   /  \</span><br><span class="line">   -3    9                -10  -1</span><br></pre></td></tr></table></figure>

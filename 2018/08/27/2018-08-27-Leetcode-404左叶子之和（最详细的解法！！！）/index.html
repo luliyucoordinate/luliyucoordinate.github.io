@@ -17,18 +17,18 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="计算给定二叉树的所有左叶子之和。 示例： 1234567    3   / \  9  20    /  \   15   7在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24 解题思路 这里我们主要要解决的问题就是什么是左叶子？它满足这样的性质  node.left == True and node.left.left == None and node.left.right ==">
+  <meta name="description" content="计算给定二叉树的所有左叶子之和。 示例： 1234567    3   / \  9  20    /  \   15   7在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24">
 <meta name="keywords" content="c,python,c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 404：左叶子之和（最详细的解法！！！）">
 <meta property="og:url" content="http://coordinate.wang/2018/08/27/2018-08-27-Leetcode-404左叶子之和（最详细的解法！！！）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="计算给定二叉树的所有左叶子之和。 示例： 1234567    3   / \  9  20    /  \   15   7在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24 解题思路 这里我们主要要解决的问题就是什么是左叶子？它满足这样的性质  node.left == True and node.left.left == None and node.left.right ==">
+<meta property="og:description" content="计算给定二叉树的所有左叶子之和。 示例： 1234567    3   / \  9  20    /  \   15   7在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:28.827Z">
+<meta property="og:updated_time" content="2018-09-14T00:59:47.376Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 404：左叶子之和（最详细的解法！！！）">
-<meta name="twitter:description" content="计算给定二叉树的所有左叶子之和。 示例： 1234567    3   / \  9  20    /  \   15   7在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24 解题思路 这里我们主要要解决的问题就是什么是左叶子？它满足这样的性质  node.left == True and node.left.left == None and node.left.right ==">
+<meta name="twitter:description" content="计算给定二叉树的所有左叶子之和。 示例： 1234567    3   / \  9  20    /  \   15   7在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -148,6 +148,7 @@
         <p>计算给定二叉树的所有左叶子之和。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    3</span><br><span class="line">   / \</span><br><span class="line">  9  20</span><br><span class="line">    /  \</span><br><span class="line">   15   7</span><br><span class="line"></span><br><span class="line">在这个二叉树中，有两个左叶子，分别是 9 和 15，所以返回 24</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这里我们主要要解决的问题就是<code>什么是左叶子？</code>它满足这样的性质</p>
 <blockquote>

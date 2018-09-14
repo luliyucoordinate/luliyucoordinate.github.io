@@ -17,18 +17,18 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。 示例: 12输入: &amp;quot;25525511135&amp;quot;输出: [&amp;quot;255.255.11.135&amp;quot;, &amp;quot;255.255.111.35&amp;quot;] 解题思路 我们知道IP地址分为四个小段，每一小段都是在0~255这个区间内（第一小段不能为0）。这个问题和Leetcode 17：电话号码的字">
+  <meta name="description" content="给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。 示例: 12输入: &amp;quot;25525511135&amp;quot;输出: [&amp;quot;255.255.11.135&amp;quot;, &amp;quot;255.255.111.35&amp;quot;]">
 <meta name="keywords" content="c,python,c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 93：复原IP地址（最详细的解法！！！）">
 <meta property="og:url" content="http://coordinate.wang/2018/09/06/2018-09-06-Leetcode-93-复原IP地址（最详细的解法！！！）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。 示例: 12输入: &amp;quot;25525511135&amp;quot;输出: [&amp;quot;255.255.11.135&amp;quot;, &amp;quot;255.255.111.35&amp;quot;] 解题思路 我们知道IP地址分为四个小段，每一小段都是在0~255这个区间内（第一小段不能为0）。这个问题和Leetcode 17：电话号码的字">
+<meta property="og:description" content="给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。 示例: 12输入: &amp;quot;25525511135&amp;quot;输出: [&amp;quot;255.255.11.135&amp;quot;, &amp;quot;255.255.111.35&amp;quot;]">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.139Z">
+<meta property="og:updated_time" content="2018-09-14T00:57:41.493Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 93：复原IP地址（最详细的解法！！！）">
-<meta name="twitter:description" content="给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。 示例: 12输入: &amp;quot;25525511135&amp;quot;输出: [&amp;quot;255.255.11.135&amp;quot;, &amp;quot;255.255.111.35&amp;quot;] 解题思路 我们知道IP地址分为四个小段，每一小段都是在0~255这个区间内（第一小段不能为0）。这个问题和Leetcode 17：电话号码的字">
+<meta name="twitter:description" content="给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。 示例: 12输入: &amp;quot;25525511135&amp;quot;输出: [&amp;quot;255.255.11.135&amp;quot;, &amp;quot;255.255.111.35&amp;quot;]">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -148,6 +148,7 @@
         <p>给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入: &quot;25525511135&quot;</span><br><span class="line">输出: [&quot;255.255.11.135&quot;, &quot;255.255.111.35&quot;]</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>我们知道<strong>IP地址</strong>分为四个小段，每一小段都是在<code>0~255</code>这个区间内（第一小段不能为<code>0</code>）。这个问题和<a href="https://blog.csdn.net/qq_17550379/article/details/82459849" target="_blank" rel="noopener">Leetcode 17：电话号码的字母组合（最详细的解法！！！）</a>非常类似，写法上也很相像。这个问题中，对于有效数字的判断存在一个陷阱</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isNum</span><span class="params">(num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> &lt;= int(num) &lt;= <span class="number">255</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">False</span></span><br></pre></td></tr></table></figure>

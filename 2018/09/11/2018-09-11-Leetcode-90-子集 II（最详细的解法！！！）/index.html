@@ -17,18 +17,18 @@
   
     <meta name="360-site-verification" content="true" />
   
-  <meta name="description" content="给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。 说明：解集不能包含重复的子集。 示例: 12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2],  []] 解题思路 这个问题是之前问题Leetcode 78：子集（最详细的解法！！！）的扩展。我们用之前的解法会出现这样的问题，[1,2]会出现两">
+  <meta name="description" content="给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。 说明：解集不能包含重复的子集。 示例: 12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2],  []]">
 <meta name="keywords" content="c,python,c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Leetcode 90：子集 II（最详细的解法！！！）">
 <meta property="og:url" content="http://coordinate.wang/2018/09/11/2018-09-11-Leetcode-90-子集 II（最详细的解法！！！）/index.html">
 <meta property="og:site_name" content="coordinate">
-<meta property="og:description" content="给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。 说明：解集不能包含重复的子集。 示例: 12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2],  []] 解题思路 这个问题是之前问题Leetcode 78：子集（最详细的解法！！！）的扩展。我们用之前的解法会出现这样的问题，[1,2]会出现两">
+<meta property="og:description" content="给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。 说明：解集不能包含重复的子集。 示例: 12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2],  []]">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.670Z">
+<meta property="og:updated_time" content="2018-09-14T00:56:27.769Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 90：子集 II（最详细的解法！！！）">
-<meta name="twitter:description" content="给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。 说明：解集不能包含重复的子集。 示例: 12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2],  []] 解题思路 这个问题是之前问题Leetcode 78：子集（最详细的解法！！！）的扩展。我们用之前的解法会出现这样的问题，[1,2]会出现两">
+<meta name="twitter:description" content="给定一个可能包含重复元素的整数数组 nums，返回该数组所有可能的子集（幂集）。 说明：解集不能包含重复的子集。 示例: 12345678910输入: [1,2,2]输出:[  [2],  [1],  [1,2,2],  [2,2],  [1,2],  []]">
   
     <link rel="alternate" href="/atom.xml" title="coordinate" type="application/atom+xml">
   
@@ -149,6 +149,7 @@
 <p><strong>说明：</strong>解集不能包含重复的子集。</p>
 <p><strong>示例:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">输入: [1,2,2]</span><br><span class="line">输出:</span><br><span class="line">[</span><br><span class="line">  [2],</span><br><span class="line">  [1],</span><br><span class="line">  [1,2,2],</span><br><span class="line">  [2,2],</span><br><span class="line">  [1,2],</span><br><span class="line">  []</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这个问题是之前问题<a href="https://blog.csdn.net/qq_17550379/article/details/82621887" target="_blank" rel="noopener">Leetcode 78：子集（最详细的解法！！！）</a>的扩展。我们用之前的解法会出现这样的问题，<code>[1,2]</code>会出现两次，因为我们有两个<code>2</code>。最简单的思路就是添加一个判断<code>if tmp not in result</code>，并且我们要对<code>nums</code>排序，为什么？为了避免出现这种情况</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1,4,1</span><br><span class="line">4,1,1</span><br></pre></td></tr></table></figure>

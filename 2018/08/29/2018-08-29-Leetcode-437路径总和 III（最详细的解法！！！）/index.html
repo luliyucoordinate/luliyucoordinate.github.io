@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="给定一个二叉树，它的每个结点都存放着一个整数值。 找出路径和等于给定数值的路径总数。 路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。 二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。 示例： 123456789101112131415root = [10,5,-3,3,2,null,11,3,-2,nu">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:28.936Z">
+<meta property="og:updated_time" content="2018-09-14T00:59:18.516Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 437：路径总和 III（最详细的解法！！！）">
 <meta name="twitter:description" content="给定一个二叉树，它的每个结点都存放着一个整数值。 找出路径和等于给定数值的路径总数。 路径不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。 二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。 示例： 123456789101112131415root = [10,5,-3,3,2,null,11,3,-2,nu">
@@ -151,6 +151,7 @@
 <p>二叉树不超过1000个节点，且节点数值范围是 [-1000000,1000000] 的整数。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root = [10,5,-3,3,2,null,11,3,-2,null,1], sum = 8</span><br><span class="line"></span><br><span class="line">      10</span><br><span class="line">     /  \</span><br><span class="line">    5   -3</span><br><span class="line">   / \    \</span><br><span class="line">  3   2   11</span><br><span class="line"> / \   \</span><br><span class="line">3  -2   1</span><br><span class="line"></span><br><span class="line">返回 3。和等于 8 的路径有:</span><br><span class="line"></span><br><span class="line">1.  5 -&gt; 3</span><br><span class="line">2.  5 -&gt; 2 -&gt; 1</span><br><span class="line">3.  -3 -&gt; 11</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>这个问题非常有意思。和之前问题</p>
 <p><a href="https://blog.csdn.net/qq_17550379/article/details/82115520" target="_blank" rel="noopener"> Leetcode 112：路径总和（最详细的解法！！！）</a></p>

@@ -25,7 +25,7 @@
 <meta property="og:site_name" content="coordinate">
 <meta property="og:description" content="给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。 candidates 中的数字可以无限制重复被选取。 说明：  所有数字（包括 target）都是正整数。 解集不能包含重复的组合。   示例 1: 123456输入: candidates = [2,3,6,7], target = 7,所求解集">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-13T07:42:29.202Z">
+<meta property="og:updated_time" content="2018-09-14T00:57:05.759Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Leetcode 39：组合总和（最详细的解法！！！）">
 <meta name="twitter:description" content="给定一个无重复元素的数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。 candidates 中的数字可以无限制重复被选取。 说明：  所有数字（包括 target）都是正整数。 解集不能包含重复的组合。   示例 1: 123456输入: candidates = [2,3,6,7], target = 7,所求解集">
@@ -156,6 +156,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">输入: candidates = [2,3,6,7], target = 7,</span><br><span class="line">所求解集为:</span><br><span class="line">[</span><br><span class="line">  [7],</span><br><span class="line">  [2,2,3]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p><strong>示例 2:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">输入: candidates = [2,3,5], target = 8,</span><br><span class="line">所求解集为:</span><br><span class="line">[</span><br><span class="line">  [2,2,2,2],</span><br><span class="line">  [2,3,3],</span><br><span class="line">  [3,5]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p><strong>解题思路</strong></p>
 <p>我们这个问题可以通过递归回溯的思想来解决。我们遍历<code>candidates=[2,3,6,7]</code>，<code>target=7</code>。我们先遍历到<code>2</code>，这个时候我们如果结果中有<code>2</code>的话，那么我们接下来的<code>target=5</code>，一次下去，结果就是</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2 2 2 2</span><br></pre></td></tr></table></figure>
